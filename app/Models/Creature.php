@@ -33,14 +33,16 @@ class Creature {
      */
     private function parsePostgresArray($pgArray) {
         if (is_array($pgArray)) return $pgArray;
-        return explode(',', trim($pgArray, '{}'));
+        $cleaned = trim($pgArray, '{}');
+        if ($cleaned === '') return [];
+        return explode(',', $cleaned);
     }
 
     /**
      * Sexy Helper: Gibt den vollen Pfad zum Bild zurück
      */
     public function getImageUrl() {
-        return "/assets/img/creatures/" . $this->image_path;
+        return "/assets/img/acnh/" . $this->image_path;
     }
 
     /**
@@ -48,5 +50,25 @@ class Creature {
      */
     public function getFormattedPrice() {
         return number_format($this->price, 0, ',', '.') . ' Sternis';
+    }
+
+    /**
+     * Gibt die formatierten Monate als String zurück (z.B. "Jul, Aug")
+     */
+    public function getFormattedMonths() {
+        if (empty($this->months_northern)) return 'Keine Angabe';
+        if (count($this->months_northern) === 12) return 'Ganzjährig';
+
+        $monthNames = [
+            1 => 'Jan', 2 => 'Feb', 3 => 'Mär', 4 => 'Apr',
+            5 => 'Mai', 6 => 'Jun', 7 => 'Jul', 8 => 'Aug',
+            9 => 'Sep', 10 => 'Okt', 11 => 'Nov', 12 => 'Dez'
+        ];
+
+        $names = array_map(function($m) use ($monthNames) {
+            return $monthNames[(int)$m] ?? '';
+        }, $this->months_northern);
+
+        return implode(', ', $names);
     }
 }

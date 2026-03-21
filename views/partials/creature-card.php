@@ -19,7 +19,7 @@
         </div>
         <div>
             <strong>📅 Saison:</strong>
-            <span><?= count($creature->months_northern) === 12 ? 'Ganzjährig' : count($creature->months_northern) . ' Monate' ?></span>
+            <span><?= htmlspecialchars($creature->getFormattedMonths()) ?></span>
         </div>
     </div>
 
