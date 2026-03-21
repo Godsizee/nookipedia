@@ -14,19 +14,19 @@ class Database {
     private $connection;
 
     private function __construct() {
-        // Laden der .env Datei
+        // Laden der .env Datei (falls vorhanden - z.B. für lokales XAMPP)
         $envPath = __DIR__ . '/../../.env';
-        if (!file_exists($envPath)) {
-            die("Kritischer Fehler: .env Datei nicht gefunden.");
+        $env = [];
+        if (file_exists($envPath)) {
+            $env = parse_ini_file($envPath);
         }
-        
-        $env = parse_ini_file($envPath);
 
-        $host = $env['DB_HOST'] ?? 'localhost';
-        $port = $env['DB_PORT'] ?? '5432';
-        $db   = $env['DB_NAME'] ?? 'nookipedia_db';
-        $user = $env['DB_USER'] ?? 'postgres';
-        $pass = $env['DB_PASS'] ?? '';
+        // Hole Variablen aus der .env ODER aus den Docker-Umgebungsvariablen (Portainer)
+        $host = $env['DB_HOST'] ?? getenv('DB_HOST') ?: 'localhost';
+        $port = $env['DB_PORT'] ?? getenv('DB_PORT') ?: '5432';
+        $db   = $env['DB_NAME'] ?? getenv('DB_NAME') ?: 'nookipedia_db';
+        $user = $env['DB_USER'] ?? getenv('DB_USER') ?: 'postgres';
+        $pass = $env['DB_PASS'] ?? getenv('DB_PASS') ?: '';
 
         // DSN für PostgreSQL
         $dsn = "pgsql:host=$host;port=$port;dbname=$db";
