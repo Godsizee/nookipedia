@@ -1,4 +1,5 @@
 # Sensible Daten
+.env
 # PHP Abhängigkeiten (falls später Composer genutzt wird)
 /vendor/
 # Betriebssystem-Dateien
