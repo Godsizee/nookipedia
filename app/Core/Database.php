@@ -42,9 +42,9 @@ class Database {
         }
 
         // Hole Variablen aus der .env ODER aus den Docker-Umgebungsvariablen (Portainer)
-        $host = $env['DB_HOST'] ?? getenv('DB_HOST') ?: 'localhost';
+        $host = $env['DB_HOST'] ?? getenv('DB_HOST') ?: '127.0.0.1';
         $port = $env['DB_PORT'] ?? getenv('DB_PORT') ?: '5432';
-        $db   = $env['DB_NAME'] ?? getenv('DB_NAME') ?: 'postgres';
+        $db   = $env['DB_NAME'] ?? getenv('DB_NAME') ?: 'nookipedia_db';
         $user = $env['DB_USER'] ?? getenv('DB_USER') ?: 'n8n_user';
         $pass = $env['DB_PASS'] ?? getenv('DB_PASS') ?: '';
 
