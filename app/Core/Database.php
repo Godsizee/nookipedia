@@ -17,8 +17,28 @@ class Database {
         // Laden der .env Datei (falls vorhanden - z.B. für lokales XAMPP)
         $envPath = __DIR__ . '/../../.env';
         $env = [];
+        
         if (file_exists($envPath)) {
-            $env = parse_ini_file($envPath);
+            // Eigener, robuster Parser anstelle von parse_ini_file(), 
+            // da .env Dateien oft nicht zu 100% INI-konform sind.
+            $lines = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+            foreach ($lines as $line) {
+                $line = trim($line);
+                
+                // Ignoriere Kommentare
+                if (strpos($line, '#') === 0 || strpos($line, ';') === 0) {
+                    continue;
+                }
+                
+                // Schlüssel und Wert am '=' trennen
+                if (strpos($line, '=') !== false) {
+                    list($key, $value) = explode('=', $line, 2);
+                    $key = trim($key);
+                    // Entfernt Leerzeichen und Anführungszeichen um den Wert
+                    $value = trim($value, " \t\n\r\0\x0B\"'"); 
+                    $env[$key] = $value;
+                }
+            }
         }
 
         // Hole Variablen aus der .env ODER aus den Docker-Umgebungsvariablen (Portainer)
