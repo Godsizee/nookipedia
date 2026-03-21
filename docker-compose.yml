@@ -1,0 +1,19 @@
+﻿version: '3.8'
+
+services:
+  nookipedia-app:
+    image: php:8.2-apache
+    container_name: nookipedia_wiki
+    restart: always
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html
+    environment:
+      - APP_ENV=production
+    networks:
+      - web_network
+
+networks:
+  web_network:
+    external: true
