@@ -1,6 +1,6 @@
 /**
  * Nookipedia-Next Main Styles
- * Design: Sexy, Fabulous, ACNH-Inspired
+ * Design: Sexy, Fabulous, ACNH-Inspired, Mobile-First
  */
 
 :root {
@@ -31,7 +31,7 @@
 
 * {
     box-sizing: border-box;
-    -webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color: transparent; /* Entfernt das blaue Flackern beim Tippen auf Touchscreens */
 }
 
 body {
@@ -83,7 +83,7 @@ header {
 #theme-toggle {
     background: rgba(118, 176, 65, 0.1);
     border: none;
-    padding: 10px;
+    padding: 12px; /* Größeres Tap-Target */
     border-radius: 50%;
     cursor: pointer;
     font-size: 1.2rem;
@@ -173,6 +173,7 @@ header {
     box-shadow: var(--shadow-soft);
     overflow-x: auto;
     scrollbar-width: none;
+    -webkit-overflow-scrolling: touch; /* Flüssiges Scrollen auf iOS */
 }
 
 .tab-nav::-webkit-scrollbar { display: none; }
@@ -181,7 +182,7 @@ header {
     flex: 1;
     min-width: 100px;
     text-align: center;
-    padding: 12px 10px;
+    padding: 14px 12px; /* Erhöhtes Padding für bessere Erreichbarkeit mit dem Daumen */
     text-decoration: none;
     color: var(--text-muted);
     font-weight: 700;
@@ -196,99 +197,162 @@ header {
     box-shadow: 0 4px 15px rgba(118, 176, 65, 0.3);
 }
 
-/* --- Creature Grid --- */
+/* --- Touch-Optimized Creature Grid --- */
 
 .creature-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
+    /* Auf extrem kleinen Bildschirmen nur eine Spalte für perfekte Lesbarkeit */
+    grid-template-columns: 1fr; 
+    gap: 20px;
     padding-bottom: 40px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 500px) {
     .creature-grid {
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 850px) {
+    .creature-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
         gap: 25px;
     }
 }
 
-.creature-card {
+.creature-card.touch-optimized {
     background: var(--card-bg);
     border-radius: var(--border-radius);
-    padding: 24px 16px;
-    text-align: center;
+    padding: 20px;
     box-shadow: var(--shadow-soft);
     transition: var(--transition);
     position: relative;
     border: 1px solid rgba(0,0,0,0.03);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    /* Verhindert unbeabsichtigtes Markieren von Text beim Swipen */
+    user-select: none; 
+    -webkit-user-select: none;
 }
 
-.creature-card:hover {
-    transform: scale(1.03);
+.creature-card.touch-optimized:hover {
+    transform: translateY(-4px); /* Subtilere Animation für Mobile */
     box-shadow: var(--shadow-fabulous);
 }
 
-.creature-card .img-container {
-    background: rgba(118, 176, 65, 0.05);
-    border-radius: 20px;
-    padding: 15px;
-    margin-bottom: 15px;
-}
-
-.creature-card img {
-    width: 80px;
-    height: 80px;
-    object-fit: contain;
-}
-
-.creature-card .name {
-    font-weight: 800;
-    font-size: 1.1rem;
-    color: var(--text-main);
-    margin-bottom: 8px;
-    display: block;
-}
-
-.creature-card .price-tag {
-    background: #fff8e1;
-    color: #fbc02d;
-    padding: 4px 12px;
-    border-radius: 12px;
-    font-weight: 800;
-    font-size: 0.85rem;
-    display: inline-flex;
+/* Layout auf kleinen Bildschirmen: Bild links, Titel rechts */
+.creature-card.touch-optimized .card-header {
+    display: flex;
     align-items: center;
-    gap: 5px;
-}
-
-[data-theme='dark'] .creature-card .price-tag {
-    background: #332b00;
-}
-
-.creature-info {
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 1px dashed var(--text-muted);
-    font-size: 0.8rem;
+    gap: 16px;
     text-align: left;
 }
 
-.creature-info div {
+.creature-card.touch-optimized .img-container {
+    background: rgba(118, 176, 65, 0.05);
+    border-radius: 20px;
+    padding: 12px;
+    width: 85px;
+    height: 85px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.creature-card.touch-optimized img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.creature-card.touch-optimized .title-price-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    align-items: flex-start;
+}
+
+.creature-card.touch-optimized .name {
+    font-weight: 800;
+    font-size: 1.15rem;
+    color: var(--text-main);
+    margin: 0;
+    line-height: 1.2;
+}
+
+.creature-card.touch-optimized .price-tag {
+    background: #fff8e1;
+    color: #fbc02d;
+    padding: 6px 14px;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+[data-theme='dark'] .creature-card.touch-optimized .price-tag {
+    background: #332b00;
+}
+
+.creature-card.touch-optimized .creature-info {
+    padding-top: 15px;
+    border-top: 1px dashed var(--text-muted);
+    font-size: 0.85rem;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.creature-card.touch-optimized .info-row {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 4px;
+    align-items: baseline;
+    gap: 12px;
 }
 
-.creature-info strong {
+.creature-card.touch-optimized .info-label {
     color: var(--nook-green);
+    white-space: nowrap;
 }
 
-.catchphrase-box {
-    margin-top: 12px;
-    padding: 8px;
+.creature-card.touch-optimized .info-value {
+    text-align: right;
+    /* Verhindert, dass super lange Monatslisten das Grid zerstören */
+    word-wrap: break-word;
+    line-height: 1.4;
+}
+
+.creature-card.touch-optimized .catchphrase-box {
+    margin-top: auto; /* Schiebt das Zitat immer an den unteren Rand, falls Karten unterschiedlich hoch sind */
+    padding: 14px;
     background: rgba(129, 212, 250, 0.1);
-    border-radius: 12px;
-    font-size: 0.75rem;
+    border-radius: 16px;
+    font-size: 0.85rem;
     font-style: italic;
     color: var(--text-muted);
+    line-height: 1.5;
+    text-align: center;
+}
+
+/* Auf größeren Bildschirmen: Wieder klassisch zentriert & gestapelt */
+@media (min-width: 500px) {
+    .creature-card.touch-optimized .card-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    .creature-card.touch-optimized .title-price-wrap {
+        align-items: center;
+    }
+    .creature-card.touch-optimized .img-container {
+        width: 100px;
+        height: 100px;
+        padding: 15px;
+    }
+    .creature-card.touch-optimized .name {
+        font-size: 1.25rem;
+    }
 }
