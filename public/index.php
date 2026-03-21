@@ -2,66 +2,54 @@
 
 /**
  * Nookipedia-Next 
- * Robuster Einstiegspunkt mit automatischer Pfaderkennung (XAMPP-kompatibel)
+ * Robuster Einstiegspunkt - Erkennt automatisch Live- vs. Lokal-Umgebung
  */
 
-// --- Autoloading (KISS-Prinzip) ---
+// --- Autoloading ---
 spl_autoload_register(function ($class) {
     $prefix = 'App\\';
     $base_dir = __DIR__ . '/../app/';
-
     $len = strlen($prefix);
-    if (strncmp($prefix, $class, $len) !== 0) {
-        return;
-    }
-
+    if (strncmp($prefix, $class, $len) !== 0) return;
     $relative_class = substr($class, $len);
     $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
-
-    if (file_exists($file)) {
-        require $file;
-    }
+    if (file_exists($file)) require $file;
 });
 
-// --- Intelligente Basis-Pfad Erkennung ---
-// Ermittelt den Pfad zum Projekt-Root (z.B. /files/nookipedia)
-$scriptName = $_SERVER['SCRIPT_NAME']; // e.g. /files/nookipedia/public/index.php
-$publicPath = str_replace('\\', '/', dirname($scriptName)); // e.g. /files/nookipedia/public
-$basePath = str_replace('\\', '/', dirname($publicPath)); // e.g. /files/nookipedia
+// --- Intelligente Pfad-Logik ---
+$scriptName = $_SERVER['SCRIPT_NAME']; // z.B. /index.php (Live) oder /files/nookipedia/public/index.php (Lokal)
+$requestUri = $_SERVER['REQUEST_URI'];
 
-// Falls wir direkt im Root sind, setzen wir einen leeren String statt /
-if ($basePath === '/') {
-    $basePath = '';
-}
+// Wir ermitteln, ob wir in einem Unterordner laufen
+// dirname($scriptName) gibt uns den Pfad zum public-Ordner
+$publicUrlPath = rtrim(str_replace('\\', '/', dirname($scriptName)), '/');
+
+// BASE_PATH ist alles VOR dem public-Ordner (für lokale Dev-Umgebungen)
+// Wenn public der Root ist (Live), wird BASE_PATH leer sein.
+$basePath = str_replace('/public', '', $publicUrlPath);
+if ($basePath === '/') $basePath = '';
 
 define('BASE_PATH', $basePath);
+// ASSET_PATH ist der Pfad, den der Browser nutzen muss, um den public-Ordner zu erreichen
+define('ASSET_PATH', $publicUrlPath);
 
 use App\Core\Router;
 
-// --- Router Setup ---
 $router = new Router();
-
-// Definition der Routen
 $router->add('', 'HomeController', 'index');
 $router->add('insekten', 'CreatureController', 'insects');
 $router->add('fische', 'CreatureController', 'fish');
 $router->add('meerestiere', 'CreatureController', 'sea');
 
-// --- Request URI verarbeiten ---
-$requestUri = str_replace('\\', '/', $_SERVER['REQUEST_URI']);
-
-// 1. BASE_PATH entfernen
-if (BASE_PATH !== '' && strpos($requestUri, BASE_PATH) === 0) {
-    $requestUri = substr($requestUri, strlen(BASE_PATH));
+// --- Route berechnen ---
+$route = $requestUri;
+// 1. Query String entfernen
+$route = explode('?', $route)[0];
+// 2. Den Pfad zum public-Ordner vorne wegschneiden
+if ($publicUrlPath !== '' && strpos($route, $publicUrlPath) === 0) {
+    $route = substr($route, strlen($publicUrlPath));
 }
+// 3. Trimmen
+$route = trim($route, '/');
 
-// 2. /public Pfad entfernen, falls er in der URL steht
-if (strpos($requestUri, '/public') === 0) {
-    $requestUri = substr($requestUri, 7);
-}
-
-// 3. Query Strings (Sonderzeichen nach ?) entfernen und Trimming
-$route = trim(explode('?', $requestUri)[0], '/');
-
-// Dispatcher starten
 $router->dispatch($route);
