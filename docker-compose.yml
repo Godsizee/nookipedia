@@ -5,16 +5,14 @@ services:
     build: .
     container_name: nookipedia_live
     restart: always
-    # Wir ändern den Host-Port auf 8080, um Konflikte mit deiner bestehenden Seite zu vermeiden.
-    # Der Container hört intern weiterhin auf Port 80.
-    ports:
-      - "8080:80"
+    # Wir brauchen keine "ports" Sektion mehr, da NPM den Container 
+    # intern über das Netzwerk auf Port 80 erreicht.
     environment:
       - APP_ENV=production
-    # Verbindung zum bestehenden Netzwerk deines Postgres-Containers
     networks:
-      - web_network
+      - npm_net
 
 networks:
-  web_network:
+  npm_net:
+    name: nginx-proxy-manager_default
     external: true
