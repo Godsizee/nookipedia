@@ -1,17 +1,12 @@
 # Sensible Daten
-
-
 # PHP Abhängigkeiten (falls später Composer genutzt wird)
 /vendor/
-
 # Betriebssystem-Dateien
 .DS_Store
 Thumbs.db
-
 # User-Uploads (Bilder der Tiere, falls sie dynamisch hochgeladen werden)
 /public/assets/img/creatures/*
 !/public/assets/img/creatures/.gitkeep
-
 # IDE Einstellungen
 .vscode/
 .idea/
