@@ -2,15 +2,16 @@
 
 services:
   nookipedia-app:
-    image: php:8.2-apache
-    container_name: nookipedia_wiki
+    build: .
+    container_name: nookipedia_live
     restart: always
+    # Wir ändern den Host-Port auf 8080, um Konflikte mit deiner bestehenden Seite zu vermeiden.
+    # Der Container hört intern weiterhin auf Port 80.
     ports:
       - "8080:80"
-    volumes:
-      - .:/var/www/html
     environment:
       - APP_ENV=production
+    # Verbindung zum bestehenden Netzwerk deines Postgres-Containers
     networks:
       - web_network
 
