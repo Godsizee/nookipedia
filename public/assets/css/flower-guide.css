@@ -55,6 +55,52 @@
     margin-bottom: 1.5rem;
 }
 
+/* --- Seeds Grid --- */
+.seeds-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.seed-card {
+    background: var(--ac-bg);
+    border: 2px dashed #f8bbd0;
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1 1 200px;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.seed-card:hover {
+    transform: translateY(-3px);
+    border-style: solid;
+    border-color: var(--ac-green);
+    background: #ffffff;
+}
+
+.seed-card img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+.seed-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.seed-source {
+    font-size: 0.85rem;
+    color: var(--ac-text-muted);
+    font-weight: 800;
+}
+
 /* --- Breeding List --- */
 .breeding-list {
     display: flex;
@@ -68,7 +114,7 @@
     border-radius: var(--radius-lg);
     box-shadow: 0 8px 24px rgba(0,0,0,0.04);
     display: flex;
-    flex-direction: column; /* Mobile: Untereinander */
+    flex-direction: column;
     align-items: center;
     text-align: center;
     gap: 1rem;
@@ -153,11 +199,13 @@
     font-style: italic;
 }
 
-/* --- Tips Grid --- */
+/* --- Tips Grid (NEW: Flexible Auto-Fit Layout!) --- */
 .tips-grid {
     display: grid;
-    grid-template-columns: 1fr; /* Mobile: 1 Column */
+    /* Auto-Fit sorgt dafür, dass sich 3 oder 4 Boxen harmonisch verteilen */
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 1.5rem;
+    align-items: stretch;
     margin-bottom: 3rem;
 }
 
@@ -167,31 +215,75 @@
     border-radius: var(--radius-lg);
     box-shadow: var(--ac-shadow);
     border-top: 6px solid var(--ac-green);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: flex-start;
 }
 
 .tip-card h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.15rem;
+    line-height: 1.3;
+    border-bottom: 2px dashed var(--ac-border);
+    padding-bottom: 0.8rem;
     margin-bottom: 1rem;
     font-weight: 900;
     color: var(--ac-green);
 }
 
-.tip-card p {
-    font-size: 0.95rem;
-    margin-bottom: 1rem;
+.tip-icon {
+    font-size: 1.5rem;
+    background: var(--ac-bg);
+    padding: 6px;
+    border-radius: 50%;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
 }
 
-.tip-card ul {
-    padding-left: 1.5rem;
+.tip-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.tip-content p {
+    font-size: 0.95rem;
+    margin-bottom: 0;
+}
+
+.tip-highlight {
+    background: var(--ac-bg);
+    padding: 0.8rem;
+    border-radius: var(--radius-sm);
+    margin-top: 0.8rem;
+    font-size: 0.9rem;
+    color: var(--ac-text);
+}
+
+.tip-content ul {
+    background: var(--ac-bg);
+    padding: 1rem 1rem 1rem 2.2rem;
+    border-radius: var(--radius-sm);
+    margin-top: 0.8rem;
     font-size: 0.9rem;
     color: var(--ac-text-muted);
 }
 
-.tip-card li { margin-bottom: 0.5rem; }
+.tip-content li { margin-bottom: 0.4rem; }
+.tip-content li:last-child { margin-bottom: 0; }
+
 
 /* --- Tablet & Desktop --- */
 @media (min-width: 768px) {
     .breeding-card {
-        flex-direction: row; /* Desktop: Nebeneinander! */
+        flex-direction: row; 
         justify-content: space-between;
         text-align: left;
         padding: 2rem;
@@ -217,53 +309,4 @@
         margin-top: 0;
         max-width: 200px;
     }
-
-    .tips-grid {
-        grid-template-columns: repeat(3, 1fr); /* Desktop: 3 Columns */
-    }
-    /* --- Seeds Grid --- */
-.seeds-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-.seed-card {
-    background: var(--ac-bg);
-    border: 2px dashed #f8bbd0;
-    border-radius: var(--radius-md);
-    padding: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    flex: 1 1 200px;
-    transition: transform 0.2s, border-color 0.2s;
-}
-
-.seed-card:hover {
-    transform: translateY(-3px);
-    border-style: solid;
-    border-color: var(--ac-green);
-    background: #ffffff;
-}
-
-.seed-card img {
-    width: 48px;
-    height: 48px;
-    object-fit: contain;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-}
-
-.seed-info {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.seed-source {
-    font-size: 0.85rem;
-    color: var(--ac-text-muted);
-    font-weight: 800;
-}
 }
