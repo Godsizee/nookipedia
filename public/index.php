@@ -36,11 +36,13 @@ define('ASSET_PATH', $publicUrlPath);
 use App\Core\Router;
 
 $router = new Router();
+$router = new Router();
 $router->add('', 'HomeController', 'index');
 $router->add('insekten', 'CreatureController', 'insects');
 $router->add('fische', 'CreatureController', 'fish');
 $router->add('meerestiere', 'CreatureController', 'sea');
 $router->add('blumen', 'FlowerController', 'index');
+$router->add('blume', 'FlowerController', 'show');
 
 // --- Route berechnen ---
 $route = $requestUri;

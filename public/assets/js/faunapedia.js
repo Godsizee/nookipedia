@@ -96,21 +96,26 @@ export function initFaunapediaFilter() {
                 const targetElement = document.getElementById(targetId);
                 
                 if (targetElement) {
+                    // Fix: Die Position des Elements dynamisch berechnen!
+                    const headerOffset = 90; // Platz für deinen Sticky-Header
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.scrollY - headerOffset;
                 
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: "smooth"
-                });
-                
-                // Sexy Highlight-Effekt der Zielkarte
-                targetElement.style.transition = "transform 0.4s ease, box-shadow 0.4s ease";
-                targetElement.style.transform = "scale(1.03)";
-                targetElement.style.boxShadow = "0 0 25px var(--ac-green)";
-                
-                setTimeout(() => {
-                    targetElement.style.transform = "";
-                    targetElement.style.boxShadow = "var(--ac-shadow)";
-                }, 1000);
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: "smooth"
+                    });
+                    
+                    // Sexy Highlight-Effekt der Zielkarte
+                    targetElement.style.transition = "transform 0.4s ease, box-shadow 0.4s ease";
+                    targetElement.style.transform = "scale(1.03)";
+                    targetElement.style.boxShadow = "0 0 25px var(--ac-green)";
+                    
+                    setTimeout(() => {
+                        targetElement.style.transform = "";
+                        targetElement.style.boxShadow = "var(--ac-shadow)";
+                    }, 1000);
+                }
             }
         });
     });

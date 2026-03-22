@@ -19,15 +19,17 @@
 <!-- ✨ FABULOUS GRID SECTION (Ohne Filter, da Blumen ganzjährig da sind) ✨ -->
 <div class="faunapedia-section" data-category="flowers" style="background-image: radial-gradient(#f8bbd0 2px, transparent 2px);">
     <!-- 3x3 Grid für die 9 Blumenarten -->
-    <div class="creature-grid-mini grid-3-cols">
+    <div class="creature-grid-mini">
         <?php if(!empty($flowers)): ?>
             <?php foreach ($flowers as $f): ?>
-                <a href="/blume?id=<?= $f->id ?>" 
+                <!-- Link geht nun wieder als Anker (#) direkt zur Karte darunter! -->
+                <a href="#flower-<?= $f->id ?>" 
                    class="mini-card" 
                    data-id="<?= $f->id ?>"
                    title="<?= htmlspecialchars($f->name) ?>">
                     <div class="mini-card-inner" style="border-radius: 20px;">
-                        <img src="/assets/img/acnh/<?= htmlspecialchars($f->image_path) ?>" 
+                        <!-- Verwendet die neue Helper-Methode für konsistente Pfade -->
+                        <img src="<?= htmlspecialchars($f->getImageUrl()) ?>" 
                              alt="<?= htmlspecialchars($f->name) ?>" 
                              loading="lazy"
                              onerror="this.src='/assets/img/acnh/koeder.png'">
