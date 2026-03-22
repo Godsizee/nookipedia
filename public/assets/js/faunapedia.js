@@ -86,16 +86,16 @@ export function initFaunapediaFilter() {
     // ✨ Fabulous Smooth Scrolling to Cards
     miniCards.forEach(card => {
         card.addEventListener('click', (e) => {
-            e.preventDefault(); // Verhindert den abrupten HTML-Sprung
+            const href = card.getAttribute('href');
             
-            const targetId = card.getAttribute('href').substring(1);
-            const targetElement = document.getElementById(targetId);
-            
-            if (targetElement) {
-                // Offset berechnen (z.B. Platz für deinen Header lassen)
-                const headerOffset = 90;
-                const elementPosition = targetElement.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.scrollY - headerOffset;
+            // NUR abfangen, wenn es ein In-Page Anchor Link (#) ist
+            if (href && href.startsWith('#')) {
+                e.preventDefault(); 
+                
+                const targetId = href.substring(1);
+                const targetElement = document.getElementById(targetId);
+                
+                if (targetElement) {
                 
                 window.scrollTo({
                     top: offsetPosition,
