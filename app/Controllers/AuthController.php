@@ -12,7 +12,29 @@ class AuthController {
         $envPath = __DIR__ . '/../../.env';
         
         if (file_exists($envPath)) {
-            $env = parse_ini_file($envPath);
+            // Robuster, eigener .env Parser (löst das parse_ini_file Problem mit # und !)
+            $env = [];
+            $lines = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+            
+            foreach ($lines as $line) {
+                $line = trim($line);
+                
+                // Ignoriere Kommentare (sowohl # als auch ;)
+                if (strpos($line, '#') === 0 || strpos($line, ';') === 0) {
+                    continue;
+                }
+                
+                // Nur Zeilen mit einem '=' verarbeiten
+                if (strpos($line, '=') !== false) {
+                    list($key, $value) = explode('=', $line, 2);
+                    $key = trim($key);
+                    // Entferne Leerzeichen und umgebende Anführungszeichen (Single & Double) vom Wert
+                    $value = trim($value, " \t\n\r\0\x0B\"'");
+                    
+                    $env[$key] = $value;
+                }
+            }
+            
             $this->adminUser = $env['ADMIN_USER'] ?? null;
             $this->adminPass = $env['ADMIN_PASS'] ?? null;
         } else {
