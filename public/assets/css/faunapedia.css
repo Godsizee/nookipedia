@@ -1,0 +1,159 @@
+/**
+ * Faunapedia Native CSS Module
+ * Authentisches ACNH Critterpedia Design (basiert auf In-Game Screenshots)
+ */
+
+/* --- Container mit In-Game Pattern --- */
+.faunapedia-section {
+    /* Authentisches ACNH Faunapädie-Gelb mit dezentem Punktemuster */
+    background-color: #fdf5dd; 
+    background-image: radial-gradient(#e6d5a7 2px, transparent 2px);
+    background-size: 20px 20px;
+    
+    padding: 1.5rem;
+    border-radius: var(--radius-lg, 28px);
+    border: 6px solid #ffffff;
+    box-shadow: 0 12px 32px rgba(139, 90, 43, 0.15);
+    margin: 2rem 0;
+}
+
+/* --- Filter Controls --- */
+.filter-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 1.5rem;
+    border-bottom: 3px dotted #e6d5a7;
+}
+
+.ac-checkbox {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    font-weight: 800;
+    color: var(--ac-text, #5c4e3f);
+    font-size: 0.95rem;
+}
+
+.ac-checkbox input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    height: 24px;
+    width: 24px;
+    background-color: #ffffff;
+    border: 3px solid #d4c59a;
+    border-radius: 8px;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.ac-checkbox:hover input ~ .checkmark { border-color: var(--ac-green, #59a683); }
+.ac-checkbox input:checked ~ .checkmark {
+    background-color: var(--ac-green, #59a683);
+    border-color: var(--ac-green, #59a683);
+}
+
+.checkmark:after {
+    content: "✔";
+    color: white;
+    display: none;
+    font-size: 14px;
+}
+.ac-checkbox input:checked ~ .checkmark:after { display: block; }
+
+.btn-clear {
+    background: #ffffff;
+    color: var(--ac-text-muted, #968a7c);
+    border: 3px solid #d4c59a;
+    padding: 0.4rem 1.2rem;
+    border-radius: 100px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    font-family: inherit;
+}
+
+.btn-clear:hover {
+    background: #ffebee;
+    color: #d81b60;
+    border-color: #f8bbd0;
+    transform: scale(1.05);
+}
+
+/* --- ACNH Grid (Mobile First) --- */
+.creature-grid-mini {
+    display: grid;
+    gap: 8px;
+    /* Mobile Fallback */
+    grid-template-columns: repeat(4, 1fr); 
+}
+
+/* Tablet & Desktop */
+@media (min-width: 600px) {
+    .grid-8-cols { grid-template-columns: repeat(8, 1fr); } /* Insekten/Fische */
+    .grid-5-cols { grid-template-columns: repeat(5, 1fr); } /* Meerestiere */
+    .creature-grid-mini { gap: 12px; }
+}
+
+/* --- Circular Critter Items (Wie im Bild) --- */
+.mini-card {
+    display: block;
+    aspect-ratio: 1 / 1;
+    text-decoration: none;
+    transition: transform 0.2s;
+}
+
+.mini-card-inner {
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    border-radius: 50%; /* Exakt wie im ACNH Screenshot */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15%; /* Abstand zum Rand */
+    box-shadow: 0 4px 10px rgba(139, 90, 43, 0.15);
+    border: 3px solid transparent;
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.mini-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+.mini-card:hover .mini-card-inner {
+    border-color: var(--ac-green, #59a683);
+    background: #f0f9f5;
+    transform: scale(1.15);
+    box-shadow: 0 8px 20px rgba(89, 166, 131, 0.3);
+    z-index: 2;
+    position: relative;
+}
+
+/* --- Filter State: "Uncaught" / Ausgegraut Look --- */
+.mini-card.faded .mini-card-inner {
+    background: transparent;
+    border: 3px dashed #d4c59a; /* Gestrichelter Rahmen wie bei fehlenden Tieren */
+    box-shadow: none;
+    opacity: 0.35;
+    filter: grayscale(100%) blur(1px);
+}
+.mini-card.faded {
+    pointer-events: none; 
+}
