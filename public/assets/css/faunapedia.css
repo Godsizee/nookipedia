@@ -111,8 +111,8 @@
 /* --- Circular Critter Items --- */
 .mini-card {
     display: block;
-    width: 60px; /* Feste Mobile-Größe */
-    height: 60px; /* Feste Mobile-Größe */
+    width: 72px; /* Feste Mobile-Größe (Vergrößert) */
+    height: 72px; /* Feste Mobile-Größe (Vergrößert) */
     flex-shrink: 0; /* Verhindert Stauchen, falls der Platz eng wird */
     text-decoration: none;
     transition: transform 0.2s;
@@ -120,8 +120,8 @@
 
 @media (min-width: 600px) {
     .mini-card {
-        width: 76px; /* Einheitliche PC & Tablet-Größe für Blumen, Fische & Insekten */
-        height: 76px;
+        width: 96px; /* Einheitliche PC & Tablet-Größe (Vergrößert) */
+        height: 96px;
     }
 }
 
@@ -133,7 +133,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 15%; 
+    padding: 8%; /* Reduziertes Padding für ein deutlich größeres Bild im Kreis */
     box-shadow: 0 4px 10px rgba(139, 90, 43, 0.15);
     border: 3px solid transparent;
     transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
