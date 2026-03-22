@@ -7,7 +7,26 @@
     <div class="hero-flower-icon">
         <img src="<?= htmlspecialchars($flower->getImageUrl()) ?>" alt="Icon">
     </div>
-    <h1>Der ultimative <?= htmlspecialchars($flower->name) ?>-Guide</h1>
+    
+    <?php
+    // Smartes Wörterbuch für die grammatikalisch korrekte Guide-Bezeichnung
+    $pluralNames = [
+        'Anemone' => 'Anemonen',
+        'Alpenveilchen' => 'Alpenveilchen',
+        'Chrysantheme' => 'Chrysanthemen',
+        'Cosmea' => 'Cosmeen',
+        'Hyazinthe' => 'Hyazinthen',
+        'Lilie' => 'Lilien',
+        'Rose' => 'Rosen',
+        'Tulpe' => 'Tulpen',
+        'Maiglöckchen' => 'Maiglöckchen'
+    ];
+    
+    // Falls der Name im Array steht, nimm den Plural, sonst hänge zur Sicherheit einfach ein 'n' an.
+    $guideName = $pluralNames[$flower->name] ?? $flower->name . 'n';
+    ?>
+    
+    <h1>Der ultimative <?= htmlspecialchars($guideName) ?>-Guide</h1>
     <p>Von der einfachen Samentüte zur seltenen Pracht.</p>
 </div>
 
