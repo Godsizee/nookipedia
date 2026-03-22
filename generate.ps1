@@ -1,4 +1,4 @@
-$baseDir = "views\partials\guides"
+﻿$baseDir = "views\partials\guides"
 
 # Erstelle das Verzeichnis, falls es nicht existiert
 if (-not (Test-Path $baseDir)) {
@@ -245,10 +245,17 @@ $files = @{
     "tips_9.php"  = $tips9
 }
 
+# UTF-8 Ohne BOM (Byte Order Mark) erzwingen
+$utf8NoBom = New-Object System.Text.UTF8Encoding $false
+
 foreach ($file in $files.GetEnumerator()) {
     $path = Join-Path $baseDir $file.Name
-    Set-Content -Path $path -Value $file.Value -Encoding UTF8
-    Write-Host "Datei erfolgreich erstellt: $path" -ForegroundColor Cyan
+    $fullPath = Join-Path $PWD.Path $path
+    
+    # Datei schreiben und dabei BOM vermeiden
+    [System.IO.File]::WriteAllText($fullPath, $file.Value, $utf8NoBom)
+    
+    Write-Host "Datei erfolgreich (ohne BOM) erstellt: $path" -ForegroundColor Cyan
 }
 
 Write-Host "`nDie gewünschten Guide-Dateien wurden erfolgreich generiert! ✨" -ForegroundColor Yellow
