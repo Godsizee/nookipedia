@@ -12,15 +12,19 @@
 </div>
 
 <section class="guide-section">
+    <!-- Modulares Laden des spezifischen Intro-Textes -->
     <div class="guide-intro">
-        <p>
-            <?= htmlspecialchars($flower->name) ?>n gehören zu den vielseitigsten Blumen in Animal Crossing. 
-            Besonders die seltenen Hybridvarianten sind bei Züchtern extrem heiß begehrt. 
-            Dieser Guide erklärt dir Schritt für Schritt, wie du eine makellose Zucht aufbaust!
-        </p>
+        <?php 
+            $introFile = __DIR__ . "/partials/guides/intro_{$flower->id}.php";
+            if (file_exists($introFile)) {
+                include $introFile;
+            } else {
+                echo "<p>Willkommen beim Zucht-Guide für die " . htmlspecialchars($flower->name) . ".</p>";
+            }
+        ?>
     </div>
 
-<!-- Sektion: Samen -->
+    <!-- Sektion: Samen -->
     <h2 class="guide-heading">🌱 1. Die Grundfarben (Samen)</h2>
     <div class="guide-card">
         <p style="margin-bottom: 1.5rem;">Um eine <strong>saubere Zucht</strong> zu garantieren, solltest du immer mit frischen Samentüten von Nooks Laden oder Gerd beginnen. Wild gewachsene Blumen haben oft eine unbekannte Genetik!</p>
@@ -80,23 +84,15 @@
     <!-- Sektion: Profi-Tipps -->
     <h2 class="guide-heading">🎓 3. Profi-Tipps für die Zucht</h2>
     <div class="tips-grid">
-        <div class="tip-card">
-            <h3>💧 Der Besucher-Bonus</h3>
-            <p>Das Gießen durch fremde Besucher erhöht die Chance auf neue Knospen massiv!</p>
-            <ul>
-                <li><strong>Du selbst:</strong> ~5% Chance</li>
-                <li><strong>1 Besucher:</strong> ~25% Chance</li>
-                <li><strong>5 Besucher:</strong> ~80% Chance (Blumen glitzern golden!)</li>
-            </ul>
-        </div>
-        <div class="tip-card">
-            <h3>👯 Das Klonen</h3>
-            <p>Wenn du eine seltene Farbe hast und mehr willst, stelle die Blume <strong>alleine</strong> auf ein Feld (kein Kontakt zu anderen Blumen). Gießt du sie, klont sie sich exakt selbst.</p>
-        </div>
-        <div class="tip-card">
-            <h3>📏 Layout & Sauberkeit</h3>
-            <p>Ein Schachbrettmuster ist super für große Flächen. Willst du 100% reine Genetik, nutze <strong>Paarweise Isolierung</strong>. Entferne zudem "ungewollte" Blumenkinder sofort, damit sie den Genpool nicht ruinieren.</p>
-        </div>
+        <!-- Modulares Laden der spezifischen Tipps -->
+        <?php 
+            $tipsFile = __DIR__ . "/partials/guides/tips_{$flower->id}.php";
+            if (file_exists($tipsFile)) {
+                include $tipsFile;
+            } else {
+                echo "<div class='tip-card'><p>Gieße deine Blumen jeden Tag für maximale Erfolge!</p></div>";
+            }
+        ?>
     </div>
 </section>
 
