@@ -91,36 +91,38 @@
     transform: scale(1.05);
 }
 
-/* --- ACNH Grid (Mobile First) --- */
+/* --- ACNH Grid (Konsistente feste Größe) --- */
 .creature-grid-mini {
-    display: grid;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 8px;
     width: 100%;
-    grid-template-columns: repeat(4, 1fr); 
+    max-width: 850px; /* Hält das Grid auf ultra-breiten Bildschirmen kompakt */
+    margin: 0 auto;
 }
 
-/* Tablet Ansicht */
 @media (min-width: 600px) {
-    .grid-8-cols { grid-template-columns: repeat(8, 1fr); }
-    .grid-5-cols { grid-template-columns: repeat(5, 1fr); }
-    .grid-3-cols { grid-template-columns: repeat(3, 1fr); }
-    .creature-grid-mini { gap: 12px; }
-}
-
-/* PC Ansicht - Grid auf 50% verkleinern */
-@media (min-width: 1024px) {
-    .creature-grid-mini {
-        width: 50%;
-        margin: 0 auto; /* Zentriert das Grid mittig auf dem Bildschirm */
+    .creature-grid-mini { 
+        gap: 14px; 
     }
 }
 
 /* --- Circular Critter Items --- */
 .mini-card {
     display: block;
-    aspect-ratio: 1 / 1;
+    width: 60px; /* Feste Mobile-Größe */
+    height: 60px; /* Feste Mobile-Größe */
+    flex-shrink: 0; /* Verhindert Stauchen, falls der Platz eng wird */
     text-decoration: none;
     transition: transform 0.2s;
+}
+
+@media (min-width: 600px) {
+    .mini-card {
+        width: 76px; /* Einheitliche PC & Tablet-Größe für Blumen, Fische & Insekten */
+        height: 76px;
+    }
 }
 
 .mini-card-inner {
