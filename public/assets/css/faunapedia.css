@@ -98,7 +98,7 @@
     justify-content: center;
     gap: 8px;
     width: 100%;
-    max-width: 850px; /* Hält das Grid auf ultra-breiten Bildschirmen kompakt */
+    max-width: 850px; 
     margin: 0 auto;
 }
 
@@ -111,16 +111,16 @@
 /* --- Circular Critter Items --- */
 .mini-card {
     display: block;
-    width: 72px; /* Feste Mobile-Größe (Vergrößert) */
-    height: 72px; /* Feste Mobile-Größe (Vergrößert) */
-    flex-shrink: 0; /* Verhindert Stauchen, falls der Platz eng wird */
+    width: 72px; 
+    height: 72px; 
+    flex-shrink: 0; 
     text-decoration: none;
     transition: transform 0.2s;
 }
 
 @media (min-width: 600px) {
     .mini-card {
-        width: 96px; /* Einheitliche PC & Tablet-Größe (Vergrößert) */
+        width: 96px; 
         height: 96px;
     }
 }
@@ -133,7 +133,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 8%; /* Reduziertes Padding für ein deutlich größeres Bild im Kreis */
+    padding: 8%; 
     box-shadow: 0 4px 10px rgba(139, 90, 43, 0.15);
     border: 3px solid transparent;
     transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -158,4 +158,63 @@
 /* --- Filter State: Komplett ausblenden! --- */
 .mini-card.faded {
     display: none !important; 
+}
+
+/* =========================================================
+   🌙 DARK MODE ANPASSUNGEN (Für ein entspanntes Auge)
+   ========================================================= */
+@media (prefers-color-scheme: dark) {
+    /* Basis-Grid Hintergrund (Fische, Insekten, Meerestiere) */
+    .faunapedia-section {
+        background-color: var(--ac-surface, #2c2f33); 
+        background-image: radial-gradient(rgba(255, 255, 255, 0.05) 2px, transparent 2px) !important;
+        border-color: var(--ac-border, #1e1e1e);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+    }
+
+    /* Spezieller, dezenterer Brombeer-Ton für das Blumen-Grid (Überschreibt das harte Inline-Pink) */
+    .faunapedia-section[data-category="flowers"] {
+        background-color: #3b2832 !important; 
+        background-image: radial-gradient(#613b4d 2px, transparent 2px) !important;
+        border-color: #2a1b23 !important;
+    }
+
+    /* Abgedunkelte Karten-Hintergründe statt knallweiß */
+    .mini-card-inner {
+        background: var(--ac-bg, #18191c);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Edler, grüner Glow-Effekt beim Hovern im Dark Mode */
+    .mini-card:hover .mini-card-inner {
+        background: #1e2c25; /* Sehr dunkles Nook-Grün */
+        border-color: var(--ac-green, #59a683);
+        box-shadow: 0 8px 20px rgba(89, 166, 131, 0.2);
+    }
+
+    /* Anpassungen der Filter-Leiste */
+    .filter-controls {
+        border-bottom-color: var(--ac-border, #40444b);
+    }
+
+    .ac-checkbox {
+        color: var(--ac-text, #e0e0e0);
+    }
+
+    .checkmark {
+        background-color: var(--ac-bg, #1a1a1a);
+        border-color: var(--ac-border, #40444b);
+    }
+
+    .btn-clear {
+        background: var(--ac-surface, #2c2f33);
+        border-color: var(--ac-border, #40444b);
+        color: var(--ac-text, #dcddde);
+    }
+
+    .btn-clear:hover {
+        background: #3b2832;
+        border-color: #ff80ab;
+        color: #ff80ab;
+    }
 }
