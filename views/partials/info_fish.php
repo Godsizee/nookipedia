@@ -1,4 +1,4 @@
-<h2>🐟 Petri Heil, Darling!</h2>
+<h2>🐟 Petri Heil!</h2>
 <p>
     Tauche ein in unsere komplette Übersicht aller 80 schuppigen Inselbewohner. 
     Zücke deine <strong>Angel</strong>, aber bemühe dich, nicht direkt am Ufer zu rennen, um deine wertvolle Beute nicht zu verscheuchen!
