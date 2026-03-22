@@ -165,6 +165,7 @@ header .container {
     align-items: center;
     justify-content: center;
     border-radius: var(--radius-md);
+    font-style: normal;
 }
 
 .cat-card span {
@@ -177,18 +178,21 @@ header .container {
     transform: scale(0.98);
 }
 
+/* Specific Card Colors */
+.cat-card.faunapaedie { border-color: rgba(139, 90, 43, 0.2); }
+.cat-card.flowers { border-color: rgba(255, 105, 180, 0.2); }
 .cat-card.insects { border-color: rgba(89, 166, 131, 0.2); }
 .cat-card.fish { border-color: rgba(129, 212, 250, 0.2); }
 .cat-card.sea { border-color: rgba(206, 147, 216, 0.2); }
 
-/* --- 6. TAB NAVIGATION (HORIZONTAL SCROLL) --- */
+/* --- 6. TAB NAVIGATION & INFO BOXES --- */
 .tab-nav {
     display: flex;
     gap: 0.5rem;
     padding: 0.5rem;
     background: var(--ac-surface);
     border-radius: 100px;
-    margin: 1.5rem 0 2rem;
+    margin: 1.5rem 0 1.5rem;
     box-shadow: 0 4px 15px rgba(0,0,0,0.02);
     overflow-x: auto;
     scroll-snap-type: x mandatory;
@@ -215,6 +219,45 @@ header .container {
     background: var(--ac-green);
     color: #ffffff;
     box-shadow: 0 4px 12px rgba(89, 166, 131, 0.3);
+}
+
+/* Info Box (Fluff Texts) */
+.info-box {
+    background: var(--ac-surface);
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--ac-shadow);
+    margin-bottom: 2rem;
+    border-left: 6px solid var(--ac-green);
+    line-height: 1.6;
+    color: var(--ac-text);
+}
+
+.info-box h2 {
+    color: var(--ac-green);
+    font-size: 1.3rem;
+    margin-bottom: 0.75rem;
+    font-weight: 900;
+}
+
+.info-box p {
+    margin-bottom: 0.8rem;
+    font-size: 0.95rem;
+}
+
+.info-box p:last-child {
+    margin-bottom: 0;
+}
+
+.info-box strong {
+    color: var(--ac-text);
+    font-weight: 800;
+}
+
+.info-box em {
+    font-style: italic;
+    color: var(--ac-green);
+    font-weight: 600;
 }
 
 /* --- 7. CREATURE CARDS (MOBILE FIRST) --- */

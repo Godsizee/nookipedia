@@ -1,7 +1,10 @@
 ﻿C:\xampp\htdocs\files\nookipedia\.env
+C:\xampp\htdocs\files\nookipedia\.gitattributes
 C:\xampp\htdocs\files\nookipedia\.gitignore
 C:\xampp\htdocs\files\nookipedia\.htaccess
-C:\xampp\htdocs\files\nookipedia\setup.ps1
+C:\xampp\htdocs\files\nookipedia\docker-compose.yml
+C:\xampp\htdocs\files\nookipedia\Dockerfile
+C:\xampp\htdocs\files\nookipedia\README.md
 C:\xampp\htdocs\files\nookipedia\zusammenfassung.ps1
 C:\xampp\htdocs\files\nookipedia\app\Controllers\CreatureController.php
 C:\xampp\htdocs\files\nookipedia\app\Controllers\HomeController.php
@@ -233,6 +236,7 @@ C:\xampp\htdocs\files\nookipedia\public\assets\img\acnh\zitronenfalter.png
 C:\xampp\htdocs\files\nookipedia\public\assets\js\theme-switch.js
 C:\xampp\htdocs\files\nookipedia\views\creature-list.php
 C:\xampp\htdocs\files\nookipedia\views\home.php
+C:\xampp\htdocs\files\nookipedia\views\errors\404.php
 C:\xampp\htdocs\files\nookipedia\views\partials\creature-card.php
 C:\xampp\htdocs\files\nookipedia\views\partials\footer.php
 C:\xampp\htdocs\files\nookipedia\views\partials\header.php

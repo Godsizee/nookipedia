@@ -11,6 +11,13 @@
     <a href="/meerestiere" class="tab-item <?= $category === 'sea' ? 'active' : '' ?>">🐙 Meerestiere</a>
 </nav>
 
+<!-- Modulares Einbinden der Info-Texte, falls vom Controller definiert -->
+<?php if (isset($infoTemplate) && file_exists(__DIR__ . '/' . $infoTemplate)): ?>
+    <div class="info-box">
+        <?php include $infoTemplate; ?>
+    </div>
+<?php endif; ?>
+
 <div class="creature-grid">
     <?php if (empty($creatures)): ?>
         <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
