@@ -42,7 +42,8 @@ $router->add('insekten', 'CreatureController', 'insects');
 $router->add('fische', 'CreatureController', 'fish');
 $router->add('meerestiere', 'CreatureController', 'sea');
 $router->add('blumen', 'FlowerController', 'index');
-$router->add('blume', 'FlowerController', 'show');
+$router->add('blumen', 'FlowerController', 'index'); // Für die Übersicht
+$router->add('blume', 'FlowerController', 'show');   // WICHTIG: Für die Detailseite!
 
 // --- Route berechnen ---
 $route = $requestUri;
