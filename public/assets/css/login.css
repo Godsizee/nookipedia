@@ -1,0 +1,119 @@
+/**
+ * Dodo Airlines Check-In / Login Styles
+ */
+
+.login-body {
+    /* Wunderschöner Dodo-Airlines Blau/Grün Hintergrund */
+    background-color: #78c2b4;
+    background-image: radial-gradient(#62a89a 3px, transparent 3px);
+    background-size: 30px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Nunito', sans-serif;
+}
+
+.login-container {
+    background: #fff;
+    padding: 3rem 2rem;
+    border-radius: 36px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    /* Der typische ACNH-Pinnwand-Rand */
+    border: 8px solid #fdf5dd;
+    animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes popIn {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.nook-logo {
+    font-size: 4.5rem;
+    margin-bottom: 0.5rem;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+}
+
+.login-container h1 {
+    color: var(--ac-text);
+    font-size: 1.4rem;
+    font-weight: 900;
+    margin-bottom: 2rem;
+    line-height: 1.4;
+}
+
+.input-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    font-weight: 900;
+    color: var(--ac-text-muted);
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 1rem;
+    border: 3px solid #e6d5a7;
+    border-radius: 16px;
+    font-size: 1.05rem;
+    color: var(--ac-text);
+    font-family: inherit;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    background: #faf8f2;
+}
+
+.input-group input:focus {
+    outline: none;
+    border-color: var(--ac-green);
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(89, 166, 131, 0.2);
+}
+
+.btn-login {
+    background: var(--ac-green);
+    color: white;
+    border: none;
+    padding: 1.2rem;
+    font-size: 1.15rem;
+    font-weight: 900;
+    border-radius: 100px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 1rem;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s;
+    box-shadow: 0 6px 20px rgba(89,166,131,0.4);
+}
+
+.btn-login:hover {
+    background: #4a8f6e;
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 10px 25px rgba(89,166,131,0.5);
+}
+
+.btn-login:active {
+    transform: translateY(2px) scale(0.98);
+}
+
+.error-msg {
+    background: #ffebee;
+    color: #d81b60;
+    padding: 1rem;
+    border-radius: 12px;
+    font-weight: 800;
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid #d81b60;
+    text-align: left;
+}

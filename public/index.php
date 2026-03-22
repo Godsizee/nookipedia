@@ -1,9 +1,23 @@
 <?php
+// 1. ZUERST SESSION STARTEN!
+session_start();
 
-/**
- * Nookipedia-Next 
- * Robuster Einstiegspunkt - Erkennt automatisch Live- vs. Lokal-Umgebung
- */
+// 2. GLOBALE LOGIN-PRÜFUNG (Türsteher)
+$route = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+// Diese Routen dürfen ohne Login betreten werden (und natürlich CSS/Bilder)
+$publicRoutes = ['/login', '/authenticate'];
+
+// Prüfe, ob es sich um eine statische Datei (CSS/IMG/JS) handelt
+$isAsset = preg_match('/\.(?:png|jpg|jpeg|gif|css|js)$/', $route);
+
+// Wenn der Nutzer nicht eingeloggt ist, es keine public Route und kein Asset ist -> Kick!
+if (!isset($_SESSION['user_logged_in']) || $_SESSION['user_logged_in'] !== true) {
+    if (!$isAsset && !in_array($route, $publicRoutes)) {
+        header('Location: /login');
+        exit;
+    }
+}
 
 // --- Autoloading ---
 spl_autoload_register(function ($class) {
@@ -36,7 +50,9 @@ define('ASSET_PATH', $publicUrlPath);
 use App\Core\Router;
 
 $router = new Router();
-$router = new Router();
+$router->add('login', 'AuthController', 'login');
+$router->add('authenticate', 'AuthController', 'authenticate');
+$router->add('logout', 'AuthController', 'logout');
 $router->add('', 'HomeController', 'index');
 $router->add('insekten', 'CreatureController', 'insects');
 $router->add('fische', 'CreatureController', 'fish');
