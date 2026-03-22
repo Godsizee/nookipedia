@@ -7,7 +7,7 @@
     <div class="hero-flower-icon">
         <img src="<?= htmlspecialchars($flower->getImageUrl()) ?>" alt="Icon">
     </div>
-    <h1>Der ultimative <?= htmlspecialchars($flower->name) ?>n-Guide</h1>
+    <h1>Der ultimative <?= htmlspecialchars($flower->name) ?>-Guide</h1>
     <p>Von der einfachen Samentüte zur seltenen Pracht.</p>
 </div>
 
