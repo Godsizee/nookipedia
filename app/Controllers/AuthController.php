@@ -3,9 +3,23 @@
 namespace App\Controllers;
 
 class AuthController {
-    // Hardcodierte Credentials für den Single-User-Modus
-    private const ADMIN_USER = 'BundB';
-    private const ADMIN_PASS = '1arschmusik!'; 
+    
+    private $adminUser;
+    private $adminPass;
+
+    public function __construct() {
+        // Lade die geheimen Daten aus der .env Datei
+        $envPath = __DIR__ . '/../../.env';
+        
+        if (file_exists($envPath)) {
+            $env = parse_ini_file($envPath);
+            $this->adminUser = $env['ADMIN_USER'] ?? null;
+            $this->adminPass = $env['ADMIN_PASS'] ?? null;
+        } else {
+            // Sicherheits-Stopp, falls die .env Datei vergessen wurde
+            die("Sicherheitsfehler: Es wurde keine .env Datei gefunden!");
+        }
+    }
     
     public function login() {
         // Wenn bereits eingeloggt, direkt zur Startseite umleiten
@@ -38,8 +52,8 @@ class AuthController {
         $username = $_POST['username'] ?? '';
         $password = $_POST['password'] ?? '';
 
-        // Strikter Vergleich der Credentials
-        if ($username === self::ADMIN_USER && $password === self::ADMIN_PASS) {
+        // Strikter Vergleich der Credentials aus der .env Datei
+        if ($username === $this->adminUser && $password === $this->adminPass) {
             
             // Best Practice: Session-Fixation-Schutz durch neue ID!
             session_regenerate_id(true);
