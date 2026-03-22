@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Core\Database;
 use App\Models\Flower;
+use App\Models\FlowerCombination;
 use PDO;
 
 class FlowerRepository {
@@ -14,7 +15,7 @@ class FlowerRepository {
     }
 
     /**
-     * Holt alle Blumen alphabetisch sortiert
+     * Holt alle Blumen alphabetisch sortiert für die Übersichtsseite
      */
     public function getAll() {
         $stmt = $this->db->query("SELECT * FROM flowers ORDER BY name ASC");
@@ -26,5 +27,31 @@ class FlowerRepository {
         }
         
         return $flowers;
+    }
+
+    /**
+     * Holt eine einzelne Blume anhand ihrer ID (für die Detailseite)
+     */
+    public function findById($id) {
+        $stmt = $this->db->prepare("SELECT * FROM flowers WHERE id = :id");
+        $stmt->execute(['id' => $id]);
+        $row = $stmt->fetch();
+        
+        return $row ? new Flower($row) : null;
+    }
+
+    /**
+     * Holt alle Zuchtkombinationen einer bestimmten Blume
+     */
+    public function getCombinations($flowerId) {
+        $stmt = $this->db->prepare("SELECT * FROM flower_combinations WHERE flower_id = :id ORDER BY id ASC");
+        $stmt->execute(['id' => $flowerId]);
+        
+        $combinations = [];
+        foreach ($stmt->fetchAll() as $row) {
+            $combinations[] = new FlowerCombination($row);
+        }
+        
+        return $combinations;
     }
 }
