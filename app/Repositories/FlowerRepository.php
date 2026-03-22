@@ -54,4 +54,15 @@ class FlowerRepository {
         
         return $combinations;
     }
+
+    /**
+     * Holt alle erhältlichen Samen (Grundfarben) für eine Blume
+     */
+    public function getSeeds($flowerId) {
+        $stmt = $this->db->prepare("SELECT * FROM flower_seeds WHERE flower_id = :id ORDER BY id ASC");
+        $stmt->execute(['id' => $flowerId]);
+        
+        // Wir nutzen hier direkt FETCH_OBJ für ein schlankes Datenobjekt (SRP & KISS)
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
 }
