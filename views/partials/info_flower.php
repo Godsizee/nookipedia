@@ -22,7 +22,7 @@
     <div class="creature-grid-mini grid-3-cols">
         <?php if(!empty($flowers)): ?>
             <?php foreach ($flowers as $f): ?>
-                <a href="#flower-<?= $f->id ?>" 
+                <a href="/blume?id=<?= $f->id ?>" 
                    class="mini-card" 
                    data-id="<?= $f->id ?>"
                    title="<?= htmlspecialchars($f->name) ?>">

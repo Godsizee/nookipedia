@@ -1,0 +1,224 @@
+/**
+ * Flower Guide Styles
+ * SRP: Styling für die Detail- und Zuchtseiten der Blumen.
+ * Mobile-First
+ */
+
+.hero-flower-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1rem;
+    background: #ffffff;
+    border-radius: 50%;
+    padding: 10px;
+    box-shadow: 0 4px 15px rgba(248, 187, 208, 0.5);
+    border: 3px solid #f8bbd0;
+}
+
+.hero-flower-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.guide-section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.guide-intro {
+    background: var(--ac-surface);
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--ac-shadow);
+    margin-bottom: 2.5rem;
+    border-left: 6px solid #f8bbd0;
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+.guide-heading {
+    color: var(--ac-text);
+    font-weight: 900;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px dashed var(--ac-border);
+}
+
+.guide-card {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--ac-shadow);
+    margin-bottom: 1.5rem;
+}
+
+/* --- Breeding List --- */
+.breeding-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.breeding-card {
+    background: var(--ac-surface);
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+    display: flex;
+    flex-direction: column; /* Mobile: Untereinander */
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+    border: 2px solid transparent;
+    transition: transform 0.2s;
+}
+
+.breeding-card:hover {
+    transform: translateY(-4px);
+    border-color: #f8bbd0;
+}
+
+.breeding-parents {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+}
+
+.flower-entity {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.flower-entity img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+.flower-entity span {
+    font-weight: 800;
+    font-size: 0.85rem;
+    color: var(--ac-text);
+}
+
+.math-symbol {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #f8bbd0;
+}
+
+.breeding-result {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: var(--ac-bg);
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    width: 100%;
+}
+
+.result-entity img {
+    width: 80px;
+    height: 80px;
+}
+
+.result-color {
+    font-size: 1.1rem !important;
+    color: var(--ac-green) !important;
+}
+
+.probability-badge {
+    background: var(--ac-bell);
+    color: #fff;
+    padding: 0.2rem 0.8rem;
+    border-radius: 100px;
+    font-weight: 900;
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    box-shadow: 0 2px 4px rgba(242, 192, 70, 0.4);
+}
+
+.breeding-notes {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: var(--ac-text-muted);
+    font-style: italic;
+}
+
+/* --- Tips Grid --- */
+.tips-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Mobile: 1 Column */
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.tip-card {
+    background: var(--ac-surface);
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--ac-shadow);
+    border-top: 6px solid var(--ac-green);
+}
+
+.tip-card h3 {
+    margin-bottom: 1rem;
+    font-weight: 900;
+    color: var(--ac-green);
+}
+
+.tip-card p {
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+}
+
+.tip-card ul {
+    padding-left: 1.5rem;
+    font-size: 0.9rem;
+    color: var(--ac-text-muted);
+}
+
+.tip-card li { margin-bottom: 0.5rem; }
+
+/* --- Tablet & Desktop --- */
+@media (min-width: 768px) {
+    .breeding-card {
+        flex-direction: row; /* Desktop: Nebeneinander! */
+        justify-content: space-between;
+        text-align: left;
+        padding: 2rem;
+    }
+
+    .breeding-parents {
+        width: auto;
+    }
+
+    .math-symbol.equals {
+        margin: 0 2rem;
+    }
+
+    .breeding-result {
+        width: auto;
+        flex-direction: row;
+        gap: 2rem;
+        background: transparent;
+        padding: 0;
+    }
+
+    .breeding-notes {
+        margin-top: 0;
+        max-width: 200px;
+    }
+
+    .tips-grid {
+        grid-template-columns: repeat(3, 1fr); /* Desktop: 3 Columns */
+    }
+}
