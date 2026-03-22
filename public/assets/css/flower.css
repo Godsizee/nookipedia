@@ -1,0 +1,38 @@
+/**
+ * Flower Specific Styles
+ * SRP: Zuständig für das Styling der Blumenkarten und Farb-Badges
+ */
+
+.flower-color-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.color-badge {
+    padding: 3px 10px;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+/* Spezifische Blumenfarben aus ACNH */
+.color-rot { background-color: #e53935; }
+.color-gelb { background-color: #fdd835; color: #5c4e3f; text-shadow: none;}
+.color-weiß { background-color: #f5f5f5; color: #5c4e3f; text-shadow: none; border: 1px solid #e0e0e0;}
+.color-pink { background-color: #f06292; }
+.color-orange { background-color: #fb8c00; }
+.color-blau { background-color: #1e88e5; }
+.color-lila { background-color: #8e24aa; }
+.color-schwarz { background-color: #424242; }
+.color-grün { background-color: #43a047; }
+.color-gold { 
+    background: linear-gradient(135deg, #fbc02d, #f57f17); 
+    color: #fff;
+    border: 1px solid #f9a825;
+}
