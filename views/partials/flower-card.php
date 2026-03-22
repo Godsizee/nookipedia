@@ -1,10 +1,10 @@
 <article class="creature-card" id="flower-<?= $flower->id ?>">
     <div class="card-header">
         <div class="img-container" style="border-color: #f8bbd0;">
-            <img src="/assets/img/acnh/<?= htmlspecialchars($flower->image_path) ?>" 
-                 alt="<?= htmlspecialchars($flower->name) ?>"
-                 loading="lazy"
-                 onerror="this.src='/assets/img/acnh/koeder.png'">
+<img src="<?= htmlspecialchars($flower->getImageUrl()) ?>" 
+     alt="<?= htmlspecialchars($flower->name) ?>"
+     loading="lazy"
+     onerror="this.src='/assets/img/acnh/blumen/64px-Red_Roses_NH_Inv_Icon.png'">
         </div>
         
         <div class="title-price-wrap">

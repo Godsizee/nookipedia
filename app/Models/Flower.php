@@ -19,7 +19,6 @@ class Flower {
         $this->colors = $this->parsePostgresArray($data['colors'] ?? '{}');
     }
 
-    
     /**
      * Hilfsmethode um PostgreSQL {"Rot","Blau"} in PHP ['Rot', 'Blau'] zu wandeln
      */
@@ -32,5 +31,12 @@ class Flower {
         
         $cleaned = str_replace('"', '', $cleaned);
         return explode(',', $cleaned);
+    }
+
+    /**
+     * Sexy Helper: Gibt den vollen Pfad zum Bild zurück
+     */
+    public function getImageUrl() {
+        return "/assets/img/acnh/" . $this->image_path;
     }
 }
