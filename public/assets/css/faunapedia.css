@@ -95,13 +95,24 @@
 .creature-grid-mini {
     display: grid;
     gap: 8px;
+    width: 100%;
     grid-template-columns: repeat(4, 1fr); 
 }
 
+/* Tablet Ansicht */
 @media (min-width: 600px) {
     .grid-8-cols { grid-template-columns: repeat(8, 1fr); }
     .grid-5-cols { grid-template-columns: repeat(5, 1fr); }
+    .grid-3-cols { grid-template-columns: repeat(3, 1fr); }
     .creature-grid-mini { gap: 12px; }
+}
+
+/* PC Ansicht - Grid auf 50% verkleinern */
+@media (min-width: 1024px) {
+    .creature-grid-mini {
+        width: 50%;
+        margin: 0 auto; /* Zentriert das Grid mittig auf dem Bildschirm */
+    }
 }
 
 /* --- Circular Critter Items --- */
