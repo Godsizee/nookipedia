@@ -1,3 +1,3 @@
 ﻿<p>
-    <strong>Stiefmütterchen (engl. Pansies)</strong> bestechen durch ihre zweifarbigen Blütenblätter und sind ein Muss für jeden Garten. Während die Grundfarben einfach zu erhalten sind, erfordert die lila Variante eine präzise Planung und Geduld.
+    <strong>StiefmÃ¼tterchen (engl. Pansies)</strong> bestechen durch ihre zweifarbigen BlÃ¼tenblÃ¤tter und sind ein Muss fÃ¼r jeden Garten. WÃ¤hrend die Grundfarben einfach zu erhalten sind, erfordert die lila Variante eine prÃ¤zise Planung und Geduld.
 </p>

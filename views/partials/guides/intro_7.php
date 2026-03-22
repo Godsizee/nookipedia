@@ -1,3 +1,3 @@
 ﻿<p>
-    Die <strong>Rosenzucht</strong> gilt als die "Königsdisziplin" des Gärtnerns in ACNH. Während einfache Farben wie Rosa oder Orange schnell entstehen, erfordert die legendäre blaue Rose eine extrem präzise Planung über mehrere Generationen hinweg.
+    Die <strong>Rosenzucht</strong> gilt als die "KÃ¶nigsdisziplin" des GÃ¤rtnerns in ACNH. WÃ¤hrend einfache Farben wie Rosa oder Orange schnell entstehen, erfordert die legendÃ¤re blaue Rose eine extrem prÃ¤zise Planung Ã¼ber mehrere Generationen hinweg.
 </p>
