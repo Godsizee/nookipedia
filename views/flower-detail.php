@@ -20,11 +20,28 @@
         </p>
     </div>
 
-    <!-- Sektion: Samen -->
+<!-- Sektion: Samen -->
     <h2 class="guide-heading">🌱 1. Die Grundfarben (Samen)</h2>
     <div class="guide-card">
-        <p style="margin-bottom: 1rem;">Um eine <strong>saubere Zucht</strong> zu garantieren, solltest du immer mit frischen Samentüten von Nooks Laden oder Gerd beginnen. Wild gewachsene Blumen haben oft eine unbekannte Genetik!</p>
-        <p style="color: var(--ac-text-muted); font-size: 0.9rem;">Die standardmäßigen Grundfarben variieren je nach Blumenart. Arbeite ausschließlich mit diesen, wenn du gezielt kreuzen willst.</p>
+        <p style="margin-bottom: 1.5rem;">Um eine <strong>saubere Zucht</strong> zu garantieren, solltest du immer mit frischen Samentüten von Nooks Laden oder Gerd beginnen. Wild gewachsene Blumen haben oft eine unbekannte Genetik!</p>
+        
+        <div class="seeds-grid">
+            <?php if (!empty($seeds)): ?>
+                <?php foreach ($seeds as $seed): ?>
+                    <div class="seed-card">
+                        <img src="/assets/img/acnh/<?= htmlspecialchars($seed->image_path) ?>" alt="<?= htmlspecialchars($seed->color) ?> Samentüte">
+                        <div class="seed-info">
+                            <span class="color-badge color-<?= strtolower(htmlspecialchars($seed->color)) ?>" style="display: inline-block; width: fit-content;">
+                                <?= htmlspecialchars($seed->color) ?>
+                            </span>
+                            <span class="seed-source">🛒 <?= htmlspecialchars($seed->source) ?></span>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>Keine Samendaten gefunden.</p>
+            <?php endif; ?>
+        </div>
     </div>
 
     <!-- Sektion: Kreuzungen -->

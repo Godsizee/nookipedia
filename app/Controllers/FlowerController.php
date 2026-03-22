@@ -28,16 +28,17 @@ class FlowerController {
         require __DIR__ . '/../../views/flower-list.php';
     }
 
-    public function show() {
-        $id = $_GET['id'] ?? 1; // ID aus der URL (/blume?id=1)
+public function show() {
+        $id = $_GET['id'] ?? 1;
         $flower = $this->repo->findById($id);
         
         if (!$flower) {
-            header("Location: /blumen"); // Zurück zur Übersicht, falls ID ungültig
+            header("Location: /blumen");
             exit;
         }
 
         $combinations = $this->repo->getCombinations($id);
+        $seeds = $this->repo->getSeeds($id); // NEU: Die Samen laden!
         $title = $flower->name . ' Zucht-Guide';
         
         require __DIR__ . '/../../views/flower-detail.php';
