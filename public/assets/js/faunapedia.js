@@ -1,25 +1,21 @@
 /**
  * Faunapedia Native ES Module
- * SRP: Zuständig für das Frontend-Filtering des Critter-Grids.
- * Wird asynchron und isoliert geladen.
+ * SRP: Filtering & Smooth Scroll Navigation
  */
 
-// Exportiert die Hauptfunktion, falls wir sie später programmatisch triggern wollen
 export function initFaunapediaFilter() {
     const section = document.querySelector('.faunapedia-section');
     if (!section) return;
 
-    const category = section.dataset.category; // "insect", "fish" oder "sea"
+    const category = section.dataset.category; 
     const filterMonth = document.getElementById('filter-month');
     const filterNow = document.getElementById('filter-now');
     const btnClear = document.getElementById('clear-filters');
     const miniCards = document.querySelectorAll('.mini-card');
 
-    // LocalStorage Keys für Persistenz pro Kategorie
     const keyMonth = `nook_filter_${category}_month`;
     const keyNow = `nook_filter_${category}_now`;
 
-    // Persistierten Zustand laden
     if (filterMonth) filterMonth.checked = localStorage.getItem(keyMonth) === 'true';
     if (filterNow) filterNow.checked = localStorage.getItem(keyNow) === 'true';
 
@@ -28,7 +24,6 @@ export function initFaunapediaFilter() {
         const currentMonth = (date.getMonth() + 1).toString();
         const currentHour = date.getHours();
 
-        // Zustand speichern
         if (filterMonth) localStorage.setItem(keyMonth, filterMonth.checked);
         if (filterNow) localStorage.setItem(keyNow, filterNow.checked);
 
@@ -37,14 +32,14 @@ export function initFaunapediaFilter() {
             const months = card.dataset.months ? card.dataset.months.split(',') : [];
             const timeStr = card.dataset.time ? card.dataset.time.toLowerCase() : '';
 
-            // 1. Monats-Filter
+            // 1. Month Filter
             if (filterMonth && filterMonth.checked) {
                 if (months.length > 0 && !months.includes(currentMonth)) {
                     isVisible = false;
                 }
             }
 
-            // 2. Uhrzeit-Filter
+            // 2. Time Filter
             if (filterNow && filterNow.checked && isVisible) {
                 if (!timeStr.includes('immer') && !timeStr.includes('ganzjährig')) {
                     const hours = timeStr.match(/\d+/g);
@@ -53,24 +48,22 @@ export function initFaunapediaFilter() {
                         const end = parseInt(hours[1], 10);
 
                         if (start < end) {
-                            // Normale Zeitspanne, z.B. 8 - 17 Uhr
                             if (currentHour < start || currentHour >= end) isVisible = false;
                         } else {
-                            // Zeitspanne über Mitternacht, z.B. 17 - 8 Uhr
                             if (currentHour < start && currentHour >= end) isVisible = false;
                         }
                     }
                 }
             }
 
-            // Visuelles Feedback anwenden (Klasse für das gestrichelte "Uncaught"-Design)
+            // Grid Items ausblenden
             if (isVisible) {
                 card.classList.remove('faded');
             } else {
                 card.classList.add('faded');
             }
 
-            // Fallback: Blendet auch die großen Karten in der Liste darunter aus, falls vorhanden
+            // Große Creature-Cards ausblenden
             const mainCard = document.getElementById('creature-' + card.dataset.id);
             if (mainCard) {
                 mainCard.style.display = isVisible ? 'flex' : 'none';
@@ -78,7 +71,7 @@ export function initFaunapediaFilter() {
         });
     };
 
-    // Event Listener binden
+    // Events
     if (filterMonth) filterMonth.addEventListener('change', applyFilters);
     if (filterNow) filterNow.addEventListener('change', applyFilters);
     
@@ -90,12 +83,41 @@ export function initFaunapediaFilter() {
         });
     }
 
-    // Initiale Ausführung
+    // ✨ Fabulous Smooth Scrolling to Cards
+    miniCards.forEach(card => {
+        card.addEventListener('click', (e) => {
+            e.preventDefault(); // Verhindert den abrupten HTML-Sprung
+            
+            const targetId = card.getAttribute('href').substring(1);
+            const targetElement = document.getElementById(targetId);
+            
+            if (targetElement) {
+                // Offset berechnen (z.B. Platz für deinen Header lassen)
+                const headerOffset = 90;
+                const elementPosition = targetElement.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.scrollY - headerOffset;
+                
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: "smooth"
+                });
+                
+                // Sexy Highlight-Effekt der Zielkarte
+                targetElement.style.transition = "transform 0.4s ease, box-shadow 0.4s ease";
+                targetElement.style.transform = "scale(1.03)";
+                targetElement.style.boxShadow = "0 0 25px var(--ac-green)";
+                
+                setTimeout(() => {
+                    targetElement.style.transform = "";
+                    targetElement.style.boxShadow = "var(--ac-shadow)";
+                }, 1000);
+            }
+        });
+    });
+
     applyFilters();
 }
 
-// Durch Native ES Modules (type="module") können wir bedenkenlos auf DOMContentLoaded warten
-// oder es direkt ausführen, da das Skript ohnehin erst nach dem Parsing des HTMLs anläuft.
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initFaunapediaFilter);
 } else {

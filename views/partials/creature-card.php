@@ -1,4 +1,5 @@
-<article class="creature-card">
+<!-- Wir fügen hier die dynamische ID hinzu, damit der Link und der Filter ihr Ziel finden! -->
+<article class="creature-card" id="creature-<?= $creature->id ?>">
     <div class="img-container">
         <img src="/assets/img/acnh/<?= htmlspecialchars($creature->image_path) ?>" 
              alt="<?= htmlspecialchars($creature->name) ?>"
