@@ -18,6 +18,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
     gap: 12px;
+    align-items: stretch; /* Sorgt dafür, dass alle Karten einer Reihe gleich hoch sind */
 }
 
 .material-card {
@@ -26,10 +27,11 @@
     border-radius: var(--radius-sm, 12px);
     padding: 10px;
     display: flex;
-    align-items: center;
+    align-items: center; 
     gap: 10px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.04);
     transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    height: 100%; /* Füllt die Grid-Zelle komplett aus */
 }
 
 .material-card:hover {
@@ -60,26 +62,24 @@
 .material-details {
     display: flex;
     flex-direction: column;
-    gap: 3px;
-    overflow: hidden;
+    gap: 4px;
+    flex-grow: 1;
 }
 
 .material-name {
     font-weight: 900;
     font-size: 0.95rem;
     color: var(--ac-text);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    line-height: 1.2; /* Kompakte Zeilenhöhe bei Umbrüchen */
+    word-break: break-word; /* Erlaubt weiche Umbrüche, entfernt das Abschneiden */
 }
 
 .material-source {
     font-size: 0.75rem;
     color: var(--ac-text-muted);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     font-weight: 600;
+    line-height: 1.3;
+    word-break: break-word; /* Keine Punkte mehr, voller Text! */
 }
 
 .material-price {
@@ -90,6 +90,7 @@
     padding: 2px 6px;
     border-radius: 4px;
     width: fit-content;
+    margin-top: 2px;
 }
 
 /* Dark Mode Anpassungen */
