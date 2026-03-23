@@ -61,6 +61,8 @@ $router->add('blumen', 'FlowerController', 'index'); // Für die Übersicht
 $router->add('blume', 'FlowerController', 'show');   // WICHTIG: Für die Detailseite!
 $router->add('events', 'EventController', 'index');
 $router->add('materialien', 'MaterialController', 'index'); // NEU: Route für Materialien & Zutaten
+$router->add('bastelanleitungen', 'RecipeController', 'diy');
+$router->add('kochrezepte', 'RecipeController', 'cooking');
 
 // --- Route berechnen ---
 $route = $requestUri;

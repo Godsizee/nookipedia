@@ -1,0 +1,195 @@
+/**
+ * Recipes Specific Styles
+ * SRP: Styling für Bastelanleitungen und Kochrezepte
+ */
+
+.recipe-group {
+    border-color: #ffb74d; /* Warmes Orange für Crafting */
+}
+
+.recipe-group[open] .month-summary {
+    border-bottom-color: #f57c00;
+    background: #fff3e0;
+    color: #e65100;
+}
+
+.recipe-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Mobile: 1 Spalte */
+    gap: 16px;
+    align-items: stretch;
+}
+
+.recipe-card {
+    background: var(--ac-surface, #ffffff);
+    border: 2px solid var(--ac-border, #e8e3d3);
+    border-radius: var(--radius-md, 18px);
+    padding: 16px;
+    display: flex;
+    flex-direction: column; /* Mobile: Bild oben, Text drunter */
+    gap: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    height: 100%;
+}
+
+.recipe-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(245, 124, 0, 0.15);
+    border-color: #ffb74d;
+}
+
+.recipe-img {
+    background: var(--ac-bg, #f4f1e1);
+    width: 100%;
+    height: 120px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #ffcc80;
+}
+
+.recipe-img img {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.recipe-card:hover .recipe-img img {
+    transform: scale(1.15);
+}
+
+.recipe-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex-grow: 1;
+}
+
+.recipe-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.recipe-name {
+    font-weight: 900;
+    font-size: 1.15rem;
+    color: var(--ac-text);
+    line-height: 1.2;
+    word-break: break-word;
+}
+
+.badge-customizable {
+    background: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #c8e6c9;
+    padding: 3px 8px;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.recipe-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+}
+
+.recipe-source {
+    color: var(--ac-text-muted);
+    font-weight: 800;
+    background: var(--ac-bg);
+    padding: 3px 8px;
+    border-radius: 6px;
+}
+
+.recipe-price {
+    color: var(--ac-bell, #f2c046);
+    font-weight: 900;
+    background: var(--ac-bell-bg, #fdf3d1);
+    padding: 3px 8px;
+    border-radius: 6px;
+}
+
+.recipe-durability {
+    color: #0288d1;
+    font-weight: 800;
+    background: #e1f5fe;
+    padding: 3px 8px;
+    border-radius: 6px;
+}
+
+.recipe-materials {
+    background: #fff8e1;
+    border-left: 4px solid #ffb74d;
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: #5d4037;
+    margin-top: auto; /* Pusht die Zutaten ans Ende der Karte */
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+/* Tablet & Desktop */
+@media (min-width: 768px) {
+    .recipe-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .recipe-card {
+        flex-direction: row; /* Desktop: Bild links, Text rechts */
+        align-items: stretch;
+    }
+    
+    .recipe-img {
+        width: 100px;
+        height: auto;
+        min-height: 100px;
+        flex-shrink: 0;
+    }
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+    .recipe-group { border-color: #ef6c00; }
+    .recipe-group[open] .month-summary {
+        background: #e65100;
+        color: #fff3e0;
+        border-bottom-color: #ff9800;
+    }
+    .recipe-card { border-color: var(--ac-border); }
+    .recipe-card:hover {
+        border-color: #ff9800;
+        box-shadow: 0 8px 24px rgba(239, 108, 0, 0.2);
+    }
+    .recipe-img {
+        background: #3e2723;
+        border-color: #d84315;
+    }
+    .badge-customizable {
+        background: #1b5e20;
+        color: #c8e6c9;
+        border-color: #2e7d32;
+    }
+    .recipe-durability {
+        background: #01579b;
+        color: #e1f5fe;
+    }
+    .recipe-materials {
+        background: #3e2723;
+        color: #d7ccc8;
+        border-left-color: #e65100;
+    }
+}
