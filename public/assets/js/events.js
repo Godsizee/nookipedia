@@ -17,7 +17,7 @@ export function initEventFilters() {
         }
     });
 
-    const applyFilters = () => {
+const applyFilters = () => {
         // Zustand aller Checkboxen ermitteln
         const filters = {
             'tournament': document.getElementById('filter-tournament').checked,
@@ -30,19 +30,32 @@ export function initEventFilters() {
         eventCards.forEach(card => {
             const cardType = card.getAttribute('data-type');
             
-            // Wenn der jeweilige Typ in den Filtern true (checked) ist, anzeigen
             if (filters[cardType]) {
                 card.style.display = 'flex';
-                // Optional: Kleine Fade-In Animation
                 card.style.opacity = '1';
+                card.classList.remove('is-hidden');
             } else {
-                // Ausblenden, wenn Checkbox deaktiviert ist
                 card.style.display = 'none';
                 card.style.opacity = '0';
+                card.classList.add('is-hidden');
             }
         });
 
-        // Alle Zustände im LocalStorage speichern, damit die Auswahl beim Neuladen erhalten bleibt
+        // SMART FEATURE: Verstecke die ganze Monats-Überschrift (Collapsible), 
+        // wenn durch den Filter alle darin enthaltenen Events unsichtbar wurden!
+        document.querySelectorAll('.month-group').forEach(group => {
+            const allCards = group.querySelectorAll('.event-card');
+            const hiddenCards = group.querySelectorAll('.event-card.is-hidden');
+            
+            // Wenn alle Karten in diesem Monat die Klasse 'is-hidden' haben -> Monat ausblenden
+            if (allCards.length > 0 && allCards.length === hiddenCards.length) {
+                group.style.display = 'none';
+            } else {
+                group.style.display = 'block';
+            }
+        });
+
+        // Alle Zustände im LocalStorage speichern
         filterCheckboxes.forEach(checkbox => {
             localStorage.setItem(`nook_event_filter_${checkbox.id}`, checkbox.checked);
         });
