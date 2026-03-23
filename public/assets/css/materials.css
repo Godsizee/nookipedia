@@ -1,0 +1,121 @@
+/**
+ * Materials Specific Styles
+ * Dichtes Tile-Grid für hunderte Materialien
+ */
+
+.material-group {
+    border-color: #81d4fa; /* Hellblau für Crafting-Vibe */
+}
+
+.material-group[open] .month-summary {
+    border-bottom-color: #29b6f6;
+    background: #e1f5fe;
+    color: #0277bd;
+}
+
+/* --- Dichtes Grid --- */
+.material-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+}
+
+.material-card {
+    background: var(--ac-surface, #ffffff);
+    border: 2px solid var(--ac-border, #e8e3d3);
+    border-radius: var(--radius-sm, 12px);
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+
+.material-card:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 12px rgba(41, 182, 246, 0.2);
+    border-color: #29b6f6;
+    z-index: 2;
+}
+
+.material-img {
+    background: var(--ac-bg, #f4f1e1);
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.material-img img {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.15));
+}
+
+.material-details {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    overflow: hidden;
+}
+
+.material-name {
+    font-weight: 900;
+    font-size: 0.95rem;
+    color: var(--ac-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.material-source {
+    font-size: 0.75rem;
+    color: var(--ac-text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 600;
+}
+
+.material-price {
+    font-size: 0.75rem;
+    color: var(--ac-bell, #f2c046);
+    font-weight: 900;
+    background: var(--ac-bell-bg, #fdf3d1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    width: fit-content;
+}
+
+/* Dark Mode Anpassungen */
+@media (prefers-color-scheme: dark) {
+    .material-group { border-color: #0277bd; }
+    .material-group[open] .month-summary {
+        background: #01579b;
+        color: #e1f5fe;
+        border-bottom-color: #4fc3f7;
+    }
+    
+    .material-card {
+        border-color: var(--ac-border, #4d4943);
+    }
+    .material-card:hover {
+        border-color: #4fc3f7;
+        box-shadow: 0 6px 12px rgba(79, 195, 247, 0.15);
+    }
+    .material-img {
+        background: #2b2926;
+    }
+}
+
+@media (min-width: 600px) {
+    .material-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 16px;
+    }
+}
