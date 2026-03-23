@@ -35,13 +35,8 @@ include 'partials/header.php';
     </a>
 
         <a href="/bastelanleitungen" class="cat-card" style="border-color: rgba(255, 152, 0, 0.4);">
-        <i>🛠️</i>
-        <span>Bastelanleitungen</span>
-    </a>
-    
-    <a href="/kochrezepte" class="cat-card" style="border-color: rgba(211, 47, 47, 0.4);">
-        <i>🍳</i>
-        <span>Kochrezepte</span>
+        <i>🛠️🍳</i>
+        <span>Bastelanleitungen & Kochrezepte</span>
     </a>
     
 </div>
