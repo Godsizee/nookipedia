@@ -1,4 +1,5 @@
-<article class="creature-card event-card" id="event-<?= $event->id ?>">
+<!-- WICHTIG: data-type Attribut hinzugefügt für das JavaScript Filtering -->
+<article class="creature-card event-card" id="event-<?= $event->id ?>" data-type="<?= htmlspecialchars($event->event_type) ?>">
     <div class="card-header">
         <div class="img-container event-img-container">
             <img src="<?= htmlspecialchars($event->getImageUrl()) ?>" 
