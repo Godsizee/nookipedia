@@ -9,7 +9,7 @@ include 'partials/header.php';
     <p>Dein ultimativer und fabelhafter Begleiter für Animal Crossing: New Horizons.</p>
 </section>
 
-< class="category-selection">
+<div class="category-selection">
     <!-- Verzweigt zur Insekten-Seite, von wo aus auf Fische & Meerestiere navigiert werden kann -->
     <a href="/insekten" class="cat-card faunapaedie">
         <i>🦉</i>
