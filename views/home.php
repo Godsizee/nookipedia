@@ -28,6 +28,12 @@ include 'partials/header.php';
         <i>🎈</i>
         <span>Feiertage & Events</span>
     </a>
+
+        <a href="/materialien" class="cat-card" style="border-color: rgba(41, 182, 246, 0.4);">
+        <i>🪓</i>
+        <span>Materialien & Zutaten</span>
+    </a>
+    
 </div>
 
 <div style="margin-top: 40px; text-align: center;">

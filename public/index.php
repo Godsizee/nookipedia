@@ -57,10 +57,10 @@ $router->add('', 'HomeController', 'index');
 $router->add('insekten', 'CreatureController', 'insects');
 $router->add('fische', 'CreatureController', 'fish');
 $router->add('meerestiere', 'CreatureController', 'sea');
-$router->add('blumen', 'FlowerController', 'index');
 $router->add('blumen', 'FlowerController', 'index'); // Für die Übersicht
 $router->add('blume', 'FlowerController', 'show');   // WICHTIG: Für die Detailseite!
 $router->add('events', 'EventController', 'index');
+$router->add('materialien', 'MaterialController', 'index'); // NEU: Route für Materialien & Zutaten
 
 // --- Route berechnen ---
 $route = $requestUri;
