@@ -1,0 +1,84 @@
+/**
+ * Event Specific Styles
+ * SRP: Styling exklusiv für die Event-Karten
+ */
+
+.event-card {
+    border: 3px solid #ffcc80;
+    background: linear-gradient(to bottom right, #ffffff, #fffdf8);
+}
+
+.event-img-container {
+    border-color: #ff9800 !important;
+    background: #fff3e0 !important;
+    box-shadow: inset 0 2px 8px rgba(255, 152, 0, 0.1);
+}
+
+.event-info {
+    border-top-color: #ffcc80 !important;
+}
+
+.event-desc {
+    font-size: 0.95rem;
+    color: var(--ac-text-muted);
+    line-height: 1.5;
+    margin-top: 0.8rem;
+    padding: 0.8rem;
+    background: rgba(255, 204, 128, 0.15);
+    border-radius: var(--radius-sm);
+}
+
+/* Badges */
+.event-badge {
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: inline-block;
+    margin-top: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.badge-holiday {
+    background-color: #e91e63;
+    color: white;
+}
+
+.badge-tournament {
+    background-color: #2196f3;
+    color: white;
+}
+
+.badge-season {
+    background-color: #4caf50;
+    color: white;
+}
+
+.badge-event {
+    background-color: #ff9800;
+    color: white;
+}
+
+/* Dark Mode Anpassungen */
+@media (prefers-color-scheme: dark) {
+    .event-card {
+        border-color: #5d4037;
+        background: linear-gradient(to bottom right, var(--ac-surface), #3e2723);
+    }
+    
+    .event-img-container {
+        border-color: #ffb74d !important;
+        background: #4e342e !important;
+    }
+    
+    .event-info {
+        border-top-color: #5d4037 !important;
+    }
+    
+    .event-desc {
+        background: rgba(0, 0, 0, 0.2);
+        color: #d7ccc8;
+    }
+}

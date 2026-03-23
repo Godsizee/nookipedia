@@ -23,6 +23,13 @@ include 'partials/header.php';
     </a>
 </div>
 
+    <!-- NEU: Link für Feiertage & Events -->
+    <a href="/events" class="cat-card events">
+        <i>🎈</i>
+        <span>Feiertage & Events</span>
+    </a>
+</div>
+
 <div style="margin-top: 40px; text-align: center;">
     <p style="color: var(--ac-text-muted); font-size: 0.9rem;">
         Wähle eine Kategorie aus, um zu sehen, was du gerade auf deiner Insel entdecken kannst!

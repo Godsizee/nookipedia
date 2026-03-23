@@ -184,6 +184,7 @@ header .container {
 .cat-card.insects { border-color: rgba(89, 166, 131, 0.2); }
 .cat-card.fish { border-color: rgba(129, 212, 250, 0.2); }
 .cat-card.sea { border-color: rgba(206, 147, 216, 0.2); }
+.cat-card.events { border-color: rgba(255, 152, 0, 0.2); }
 
 /* --- 6. TAB NAVIGATION & INFO BOXES --- */
 .tab-nav {
