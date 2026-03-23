@@ -13,6 +13,7 @@ class Recipe {
     public $source;
     public $sell_price;
     public $image_path;
+    public $materials; // NEU: Speichert die verlinkten Materialien als Objekte
 
     public function __construct($data = []) {
         $this->id = $data['id'] ?? null;
@@ -26,6 +27,7 @@ class Recipe {
         $this->source = $data['source'] ?? '';
         $this->sell_price = $data['sell_price'] ?? '';
         $this->image_path = $data['image_path'] ?? 'diy/96px-DIY_Recipe_NH_Icon.png';
+        $this->materials = $data['materials'] ?? []; // Initialisierung als leeres Array
     }
 
     /**

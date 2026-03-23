@@ -130,6 +130,7 @@
     border-radius: 6px;
 }
 
+/* Fallback Text-Box */
 .recipe-materials {
     background: #fff8e1;
     border-left: 4px solid #ffb74d;
@@ -137,10 +138,57 @@
     border-radius: 6px;
     font-size: 0.9rem;
     color: #5d4037;
-    margin-top: auto; /* Pusht die Zutaten ans Ende der Karte */
+    margin-top: auto; 
     line-height: 1.4;
     word-break: break-word;
 }
+
+/* NEU: Interaktive Material Links */
+.recipe-materials-interactive {
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px dashed var(--ac-border);
+}
+
+.material-links-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 6px;
+}
+
+.material-link-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff8e1;
+    border: 1px solid #ffcc80;
+    padding: 4px 10px 4px 4px;
+    border-radius: 100px;
+    text-decoration: none;
+    color: #5d4037;
+    font-size: 0.85rem;
+    font-weight: 800;
+    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.material-link-badge img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    background: rgba(255,255,255,0.8);
+    border-radius: 50%;
+    padding: 2px;
+}
+
+.material-link-badge:hover {
+    background: #ffecb3;
+    border-color: #ffa000;
+    color: #e65100;
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(255, 152, 0, 0.2);
+}
+
 
 /* Tablet & Desktop */
 @media (min-width: 768px) {
@@ -191,5 +239,23 @@
         background: #3e2723;
         color: #d7ccc8;
         border-left-color: #e65100;
+    }
+    
+    /* Dark Mode: Interaktive Badges */
+    .recipe-materials-interactive {
+        border-top-color: #4d4943;
+    }
+    .material-link-badge {
+        background: #3e2723;
+        border-color: #d84315;
+        color: #e8e3d9;
+    }
+    .material-link-badge img {
+        background: rgba(0,0,0,0.3);
+    }
+    .material-link-badge:hover {
+        background: #4e342e;
+        border-color: #ff9800;
+        color: #ffb74d;
     }
 }

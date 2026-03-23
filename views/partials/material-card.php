@@ -1,4 +1,4 @@
-<div class="material-card">
+<div class="material-card" id="mat-<?= $material->id ?>">
     <div class="material-img">
         <img src="<?= htmlspecialchars($material->getImageUrl()) ?>" 
              alt="<?= htmlspecialchars($material->name) ?>"
