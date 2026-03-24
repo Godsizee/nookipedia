@@ -76,11 +76,11 @@
                         <div class="weather-container">
                             <?php if ($creature->weather === 'Sonne' || $creature->weather === 'Jedes'): ?>
                                 <!-- Darstellung um 25% verkleinert (24px -> 18px) -->
-                                <img src="/assets/img/acnh/sun.png" alt="Sonne" class="weather-icon" title="Bei Sonnenschein" style="width: 24px; height: 24px;">
+                                <img src="/assets/img/acnh/sun.png" alt="Sonne" class="weather-icon" title="Bei Sonnenschein" style="width: 32px; height: 32px;">
                             <?php endif; ?>
                             <?php if ($creature->weather === 'Regen' || $creature->weather === 'Jedes'): ?>
                                 <!-- Darstellung um 25% verkleinert (24px -> 18px) -->
-                                <img src="/assets/img/acnh/rain.png" alt="Regen" class="weather-icon" title="Bei Regen" style="width: 24px; height: 24px;">
+                                <img src="/assets/img/acnh/rain.png" alt="Regen" class="weather-icon" title="Bei Regen" style="width: 32px; height: 32px;">
                             <?php endif; ?>
                         </div>
                     </div>
