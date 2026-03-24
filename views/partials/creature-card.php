@@ -46,10 +46,12 @@
                             <div class="shadow-circle shadow-<?= $shadowClass ?>"></div>
                             <span style="text-transform: capitalize;"><?= htmlspecialchars($creature->shadow_image) ?></span>
                         <?php else: ?>
+                            <!-- Darstellung um 25% verkleinert (28px -> 21px) -->
                             <img src="/assets/img/acnh/<?= htmlspecialchars($creature->shadow_image) ?>" 
                                  alt="Schattengröße" 
                                  class="shadow-icon"
-                                 loading="lazy">
+                                 loading="lazy"
+                                 style="height: 21px; width: auto;">
                         <?php endif; ?>
                     </span>
                 </div>
@@ -73,10 +75,12 @@
                     <div class="info-value" style="flex: 1; display: flex; justify-content: flex-end;">
                         <div class="weather-container">
                             <?php if ($creature->weather === 'Sonne' || $creature->weather === 'Jedes'): ?>
-                                <img src="/assets/img/acnh/sun.png" alt="Sonne" class="weather-icon" title="Bei Sonnenschein">
+                                <!-- Darstellung um 25% verkleinert (24px -> 18px) -->
+                                <img src="/assets/img/acnh/sun.png" alt="Sonne" class="weather-icon" title="Bei Sonnenschein" style="width: 18px; height: 18px;">
                             <?php endif; ?>
                             <?php if ($creature->weather === 'Regen' || $creature->weather === 'Jedes'): ?>
-                                <img src="/assets/img/acnh/rain.png" alt="Regen" class="weather-icon" title="Bei Regen">
+                                <!-- Darstellung um 25% verkleinert (24px -> 18px) -->
+                                <img src="/assets/img/acnh/rain.png" alt="Regen" class="weather-icon" title="Bei Regen" style="width: 18px; height: 18px;">
                             <?php endif; ?>
                         </div>
                     </div>
