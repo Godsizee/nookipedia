@@ -23,7 +23,13 @@
             <?php if($recipe->source): ?>
                 <div class="meta-tag tag-source">
                     <img src="/assets/img/acnh/erhalten_von.png" alt="Quelle" class="meta-icon">
-                    <span class="meta-text"><?= htmlspecialchars($recipe->source) ?></span>
+                    <span class="meta-text">
+                        <?php 
+                            // Sucht nach Text in Klammern und wandelt ihn in einen Link um
+                            $sourceHtml = htmlspecialchars($recipe->source);
+                            echo preg_replace('/\((.*?)\)/', '(<a href="/nachbarn?perso=$1" class="personality-link">$1</a>)', $sourceHtml);
+                        ?>
+                    </span>
                 </div>
             <?php endif; ?>
             
@@ -36,7 +42,7 @@
             
             <?php if($recipe->durability): ?>
                 <div class="meta-tag tag-durability">
-                    <img src="/assets/img/acnh/haltbarkeit.png" alt="Haltbarkeit" class="meta-icon">
+                    <img src="/assets/img/acnh/haltbarkeoit.png" alt="Haltbarkeit" class="meta-icon">
                     <span class="meta-text">Haltbarkeit: <?= htmlspecialchars($recipe->durability) ?></span>
                 </div>
             <?php endif; ?>

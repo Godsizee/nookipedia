@@ -18,7 +18,7 @@
 .recipe-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1.25rem; /* Etwas kompakter auf Mobile */
+    gap: 1.25rem; /* Kompakt für Mobile */
     align-items: stretch;
 }
 
@@ -31,7 +31,7 @@
     box-shadow: 
         0 10px 25px -5px rgba(139, 90, 43, 0.08),
         0 4px 10px -3px rgba(139, 90, 43, 0.04),
-        inset 0 2px 0 rgba(255, 255, 255, 1); /* 3D Highlight oben */
+        inset 0 2px 0 rgba(255, 255, 255, 1);
     display: flex;
     flex-direction: column;
     gap: 1.2rem;
@@ -53,7 +53,7 @@
 .recipe-visual {
     position: relative;
     width: 100%;
-    height: 110px; /* Reduziert für Z Fold Frontdisplay */
+    height: 110px; /* Perfekt für das schmale Z Fold Display */
     background: radial-gradient(circle at 50% 0%, #fff8e1 0%, #ffe0b2 100%);
     border-radius: 14px;
     display: flex;
@@ -93,7 +93,7 @@
 
 .recipe-header {
     display: flex;
-    flex-direction: column; /* Stacked auf Mobile für mehr Platz */
+    flex-direction: column; 
     align-items: flex-start;
     gap: 8px;
 }
@@ -130,18 +130,18 @@
 
 .recipe-meta-tags {
     display: flex;
-    flex-direction: column; /* Z Fold Fix: Untereinander für maximale Lesbarkeit */
+    flex-direction: column; 
     gap: 8px;
 }
 
 .meta-tag {
     display: inline-flex;
-    align-items: center;
+    align-items: center; /* Zentriert Icon und Text vertikal */
     gap: 8px;
     padding: 6px 12px;
     border-radius: 12px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-    align-self: flex-start; /* Verhindert, dass sie die volle Breite einnehmen */
+    align-self: flex-start; 
     max-width: 100%;
 }
 
@@ -149,7 +149,7 @@
     width: 20px;
     height: 20px;
     object-fit: contain;
-    flex-shrink: 0; /* Z Fold Fix: Verhindert Quetschen des Icons */
+    flex-shrink: 0; /* WICHTIG: Verhindert das Quetschen des Icons auf dem Fold 6! */
     filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
 }
 
@@ -157,9 +157,20 @@
     font-weight: 800;
     font-size: 0.85rem;
     line-height: 1.3;
-    /* Z Fold Fix: Erlaubt sauberen Textumbruch ohne das Icon zu stören */
-    white-space: normal; 
+    white-space: normal; /* Erlaubt sauberen Textumbruch */
     word-break: break-word;
+    flex: 1; /* Nimmt den restlichen Platz ein */
+}
+
+/* --- Personality Link --- */
+.personality-link {
+    color: #e65100;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    transition: color 0.2s ease;
+}
+.personality-link:hover {
+    color: #ffb74d;
 }
 
 /* Spezifische Tag Farben */
@@ -186,7 +197,7 @@
     margin-top: auto;
     background: #fffdf7;
     border: 1px solid #f2e9d8;
-    border-top: 3px solid #ffb74d; /* Markanter Strich oben statt links auf Mobile */
+    border-top: 3px solid #ffb74d; 
     border-radius: 14px;
     padding: 1rem;
     box-shadow: inset 0 2px 8px rgba(139, 90, 43, 0.03);
@@ -203,7 +214,7 @@
 
 .materials-list {
     display: flex;
-    flex-direction: column; /* Z Fold Fix: Untereinander */
+    flex-direction: column; /* Untereinander auf Mobile */
     gap: 8px;
 }
 
@@ -241,12 +252,13 @@
 .material-pill-text {
     font-size: 0.85rem;
     line-height: 1.2;
+    flex: 1; /* Verhindert ebenfalls Quetschen auf Fold 6 */
 }
 
 .material-pill:hover {
     background: #fff8e1;
     border-color: #ffb74d;
-    transform: translateX(4px); /* Slide Animation statt Scale für Listen */
+    transform: translateX(4px);
     box-shadow: 0 4px 10px rgba(255, 152, 0, 0.15);
 }
 
@@ -257,6 +269,23 @@
     margin: 0;
 }
 
+/* =========================================
+   Galaxy Z Fold 6 (Front Display) Fixes
+   ========================================= */
+@media (max-width: 400px) {
+    .recipe-card-premium {
+        padding: 1rem; /* Etwas Platz sparen */
+        gap: 1rem;
+    }
+    
+    .meta-tag {
+        padding: 4px 10px;
+    }
+    
+    .meta-text {
+        font-size: 0.8rem; /* Kleinere Font-Size für extrem schmale Bildschirme */
+    }
+}
 
 /* =========================================
    Responsive Design (Tablet & Desktop)
@@ -308,7 +337,6 @@
         border-left: 4px solid #ffb74d;
     }
 }
-
 
 /* =========================================
    Dark Mode Excellence
@@ -369,6 +397,13 @@
         background: linear-gradient(135deg, #01579b, #0277bd);
         border-color: #0288d1;
         color: #e1f5fe;
+    }
+    
+    .personality-link {
+        color: #ffb74d;
+    }
+    .personality-link:hover {
+        color: #ffcc80;
     }
     
     /* Dark Materials Box */
