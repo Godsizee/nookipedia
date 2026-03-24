@@ -16,15 +16,24 @@
         
         <div class="recipe-meta">
             <?php if($recipe->source): ?>
-                <span class="recipe-source">📍 <?= htmlspecialchars($recipe->source) ?></span>
+                <span class="meta-badge recipe-source">
+                    <img src="/assets/img/acnh/erhalten_von.png" alt="Quelle" class="meta-icon">
+                    <?= htmlspecialchars($recipe->source) ?>
+                </span>
             <?php endif; ?>
             
             <?php if($recipe->sell_price): ?>
-                <span class="recipe-price">💰 <?= htmlspecialchars($recipe->sell_price) ?></span>
+                <span class="meta-badge recipe-price">
+                    <img src="/assets/img/acnh/64px-99k_Bells_NH_Inv_Icon.png" alt="Preis" class="meta-icon">
+                    <?= htmlspecialchars($recipe->sell_price) ?>
+                </span>
             <?php endif; ?>
             
             <?php if($recipe->durability): ?>
-                <span class="recipe-durability">🔨 Haltbarkeit: <?= htmlspecialchars($recipe->durability) ?></span>
+                <span class="meta-badge recipe-durability">
+                    <img src="/assets/img/acnh/haltbarkeoit.png" alt="Haltbarkeit" class="meta-icon">
+                    Haltbarkeit: <?= htmlspecialchars($recipe->durability) ?>
+                </span>
             <?php endif; ?>
         </div>
         
