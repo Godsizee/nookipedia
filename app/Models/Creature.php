@@ -14,7 +14,8 @@ class Creature {
     public $time_active;
     public $location;
     public $shadow_image;
-    public $speed; // NEU: Bewegungstempo (für Meerestiere)
+    public $speed; 
+    public $weather; // NEU: Wetterbedingung
 
     public function __construct($data = []) {
         $this->id = $data['id'] ?? null;
@@ -30,7 +31,8 @@ class Creature {
         $this->time_active = $data['time_active'] ?? '';
         $this->location = $data['location_name'] ?? null;
         $this->shadow_image = $data['shadow_image'] ?? null;
-        $this->speed = $data['speed'] ?? null; // NEU: Mapping der Geschwindigkeit
+        $this->speed = $data['speed'] ?? null;
+        $this->weather = $data['weather'] ?? null; // NEU: Mapping des Wetters
     }
 
     private function parsePostgresArray($pgArray) {

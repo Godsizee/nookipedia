@@ -14,13 +14,14 @@ class CreatureRepository {
     }
 
     public function getByCategory($category) {
-        // NEU: LEFT JOIN auf creature_speeds für die Meerestier-Bewegung
+        // LEFT JOIN auf creature_weathers für die Wetterbedingung
         $sql = "
-            SELECT c.*, cl.location_name, cs.shadow_image, csp.speed
+            SELECT c.*, cl.location_name, cs.shadow_image, csp.speed, cw.weather
             FROM creatures c
             LEFT JOIN creature_locations cl ON c.id = cl.creature_id
             LEFT JOIN creature_shadows cs ON c.id = cs.creature_id
             LEFT JOIN creature_speeds csp ON c.id = csp.creature_id
+            LEFT JOIN creature_weathers cw ON c.id = cw.creature_id
             WHERE c.category = :category 
             ORDER BY c.name ASC
         ";
@@ -39,11 +40,12 @@ class CreatureRepository {
 
     public function findById($id) {
         $sql = "
-            SELECT c.*, cl.location_name, cs.shadow_image, csp.speed
+            SELECT c.*, cl.location_name, cs.shadow_image, csp.speed, cw.weather
             FROM creatures c
             LEFT JOIN creature_locations cl ON c.id = cl.creature_id
             LEFT JOIN creature_shadows cs ON c.id = cs.creature_id
             LEFT JOIN creature_speeds csp ON c.id = csp.creature_id
+            LEFT JOIN creature_weathers cw ON c.id = cw.creature_id
             WHERE c.id = :id
         ";
         $stmt = $this->db->prepare($sql);

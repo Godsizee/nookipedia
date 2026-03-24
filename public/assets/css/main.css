@@ -433,6 +433,16 @@ header .container {
     box-shadow: inset 0 2px 4px rgba(255,255,255,0.5);
 }
 
+/* Wetter-Icon Styling */
+.weather-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    margin-left: 6px;
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1));
+    vertical-align: middle;
+}
+
 /* Monats-Grid Styles */
 .creature-card .month-grid-container {
     display: grid;

@@ -66,6 +66,21 @@
                     </span>
                 </div>
                 <?php endif; ?>
+
+                <!-- WETTER (Für Insekten) -->
+                <?php if (!empty($creature->weather)): ?>
+                <div class="info-row">
+                    <span class="info-label">⛅ Wetter:</span>
+                    <span class="info-value">
+                        <?php if ($creature->weather === 'Sonne' || $creature->weather === 'Jedes'): ?>
+                            <img src="/assets/img/acnh/sun.png" alt="Sonne" class="weather-icon" title="Bei Sonnenschein">
+                        <?php endif; ?>
+                        <?php if ($creature->weather === 'Regen' || $creature->weather === 'Jedes'): ?>
+                            <img src="/assets/img/acnh/rain.png" alt="Regen" class="weather-icon" title="Bei Regen">
+                        <?php endif; ?>
+                    </span>
+                </div>
+                <?php endif; ?>
             </div>
             
         </div>
