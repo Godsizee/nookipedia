@@ -68,10 +68,9 @@
                 <!-- WETTER (Für Insekten) -->
                 <?php if (!empty($creature->weather)): ?>
                 <div class="info-row">
-                    <!-- flex-shrink: 0 verhindert, dass das Wort "Wetter" bei Platzmangel verdrängt wird -->
-                    <span class="info-label" style="flex-shrink: 0;">Wetter:</span>
-                    <!-- info-value als div statt span, da wetter-container ein Block-Element (div) ist -->
-                    <div class="info-value">
+                    <!-- Wir nutzen div statt span und erzwingen Platz für das Wort Wetter -->
+                    <div class="info-label" style="flex-shrink: 0; min-width: 60px;">Wetter:</div>
+                    <div class="info-value" style="flex: 1; display: flex; justify-content: flex-end;">
                         <div class="weather-container">
                             <?php if ($creature->weather === 'Sonne' || $creature->weather === 'Jedes'): ?>
                                 <img src="/assets/img/acnh/sun.png" alt="Sonne" class="weather-icon" title="Bei Sonnenschein">
