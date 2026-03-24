@@ -2,6 +2,7 @@
 <article class="creature-card" id="creature-<?= $creature->id ?>">
     
     <div class="card-content-top">
+        <!-- Image: Immer fest oben links verankert -->
         <div class="img-container">
             <img src="/assets/img/acnh/<?= htmlspecialchars($creature->image_path) ?>" 
                  alt="<?= htmlspecialchars($creature->name) ?>"
@@ -40,7 +41,6 @@
                         <?php if ($creature->category === 'sea'): ?>
                             <!-- Schwarzer Kreis & Text für Meerestiere -->
                             <?php 
-                                // Sichere CSS-Klasse generieren (z.B. "sehr groß" -> "sehr-gross")
                                 $shadowClass = str_replace(' ', '-', strtolower(htmlspecialchars($creature->shadow_image))); 
                                 $shadowClass = str_replace('ß', 'ss', $shadowClass); 
                             ?>
@@ -93,7 +93,7 @@
     </div>
     <?php endif; ?>
 
-    <!-- Monats-Grid (12 Monate) im fabelhaften Nook-Design -->
+    <!-- Monats-Grid (Immer fest am unteren Rand der Karte verankert durch margin-top: auto) -->
     <div class="month-grid-container">
         <?php 
         $months = [
