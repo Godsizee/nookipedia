@@ -274,20 +274,19 @@ header .container {
     padding: 1.5rem;
     box-shadow: var(--ac-shadow);
     display: flex;
-    flex-direction: column; /* Sorgt dafür, dass Elemente untereinander gestapelt werden */
+    flex-direction: column;
     border: 2px solid transparent;
-    height: 100%; /* Macht alle Karten in der gleichen Zeile im Grid gleich hoch */
+    height: 100%;
 }
 
-/* Neues Card-Layout: Bild IMMER links, Details rechts daneben */
+/* Card Content Top */
 .creature-card .card-content-top {
     display: flex;
-    flex-direction: row; /* Zwingt Bild und Details nebeneinander */
-    align-items: flex-start; /* Verankert das Bild starr oben links */
+    flex-direction: row;
+    align-items: flex-start;
     gap: 1.2rem;
 }
 
-/* Anpassung auf sehr schmalen Bildschirmen */
 @media (max-width: 480px) {
     .creature-card .card-content-top {
         gap: 0.8rem;
@@ -322,8 +321,8 @@ header .container {
     justify-content: center;
     padding: 12px;
     border: 3px dashed var(--ac-border);
-    flex-shrink: 0; /* Verhindert, dass das Bild gestaucht wird */
-    margin: 0; /* Entfernt automatisches Zentrieren, Bild bleibt absolut links */
+    flex-shrink: 0;
+    margin: 0;
 }
 
 @media (max-width: 480px) {
@@ -361,7 +360,7 @@ header .container {
     text-shadow: 0 1px 2px rgba(0,0,0,0.05); 
 }
 
-/* Info Section */
+/* Info Section List */
 .creature-card .creature-info-list {
     display: flex;
     flex-direction: column;
@@ -388,7 +387,6 @@ header .container {
     font-weight: 800;
     display: flex;
     align-items: center;
-    gap: 6px;
 }
 
 .creature-card .info-value {
@@ -398,9 +396,10 @@ header .container {
     word-wrap: break-word;
     display: flex;
     align-items: center;
+    justify-content: flex-end;
 }
 
-/* Schatten-Icon Styling (Fische) */
+/* Shadow Styling */
 .shadow-icon {
     height: 28px;
     width: auto;
@@ -414,7 +413,6 @@ header .container {
     opacity: 0.8;
 }
 
-/* Schatten-Kreis Styling (Meerestiere) */
 .shadow-circle {
     background-color: var(--ac-text);
     border-radius: 50%;
@@ -436,17 +434,24 @@ header .container {
     box-shadow: inset 0 2px 4px rgba(255,255,255,0.5);
 }
 
-/* Wetter-Icon Styling */
+/* Weather Container & Icons */
+.weather-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 24px;
+    justify-content: flex-end;
+}
+
 .weather-icon {
     width: 24px;
     height: 24px;
+    flex-shrink: 0;
     object-fit: contain;
-    margin-left: 6px;
     filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1));
-    vertical-align: middle;
 }
 
-/* Catchphrase (Blathers' Style) */
+/* Catchphrase Box */
 .creature-card .catchphrase-box {
     margin-top: 1.5rem;
     margin-bottom: 0.5rem;
@@ -462,7 +467,6 @@ header .container {
     position: relative;
 }
 
-/* Kleines Sprechblasen-Dreieck für den Text */
 .creature-card .catchphrase-box::before {
     content: '';
     position: absolute;
@@ -473,12 +477,12 @@ header .container {
     border-bottom: 10px solid var(--ac-blue-light);
 }
 
-/* Monats-Grid Styles (Der Trick: margin-top: auto zwingt es an den Boden!) */
+/* Month Grid Styles */
 .creature-card .month-grid-container {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     gap: 6px;
-    margin-top: auto; /* Schiebt den Kalender immer nach GANZ UNTEN! */
+    margin-top: auto;
     background: var(--ac-bg);
     padding: 10px;
     border-radius: var(--radius-sm);
