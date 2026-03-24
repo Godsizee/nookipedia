@@ -18,7 +18,16 @@ class CreatureRepository {
      * @param string $category ('insect', 'fish', 'sea')
      */
     public function getByCategory($category) {
-        $stmt = $this->db->prepare("SELECT * FROM creatures WHERE category = :category ORDER BY name ASC");
+        // NEU: LEFT JOIN auf creature_locations UND creature_shadows
+        $sql = "
+            SELECT c.*, cl.location_name, cs.shadow_image
+            FROM creatures c
+            LEFT JOIN creature_locations cl ON c.id = cl.creature_id
+            LEFT JOIN creature_shadows cs ON c.id = cs.creature_id
+            WHERE c.category = :category 
+            ORDER BY c.name ASC
+        ";
+        $stmt = $this->db->prepare($sql);
         $stmt->execute(['category' => $category]);
         
         $results = $stmt->fetchAll();
@@ -35,7 +44,15 @@ class CreatureRepository {
      * Holt ein einzelnes Tier anhand der ID
      */
     public function findById($id) {
-        $stmt = $this->db->prepare("SELECT * FROM creatures WHERE id = :id");
+        // NEU: LEFT JOIN auf creature_locations UND creature_shadows
+        $sql = "
+            SELECT c.*, cl.location_name, cs.shadow_image
+            FROM creatures c
+            LEFT JOIN creature_locations cl ON c.id = cl.creature_id
+            LEFT JOIN creature_shadows cs ON c.id = cs.creature_id
+            WHERE c.id = :id
+        ";
+        $stmt = $this->db->prepare($sql);
         $stmt->execute(['id' => $id]);
         $row = $stmt->fetch();
         

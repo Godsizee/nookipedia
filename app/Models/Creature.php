@@ -12,6 +12,8 @@ class Creature {
     public $months_northern;
     public $months_southern;
     public $time_active;
+    public $location;
+    public $shadow_image; // NEU: Schatten-Bildpfad
 
     public function __construct($data = []) {
         $this->id = $data['id'] ?? null;
@@ -26,6 +28,8 @@ class Creature {
         $this->months_southern = $this->parsePostgresArray($data['months_southern'] ?? '{}');
         
         $this->time_active = $data['time_active'] ?? '';
+        $this->location = $data['location_name'] ?? 'Unbekannt';
+        $this->shadow_image = $data['shadow_image'] ?? null; // NEU: Mapping des Schattens
     }
 
     /**
@@ -70,5 +74,14 @@ class Creature {
         }, $this->months_northern);
 
         return implode(', ', $names);
+    }
+
+    /**
+     * Prüft ob das Tier in einem bestimmten Monat aktiv ist.
+     * Nimmt Logik aus der View, ganz nach SRP und KISS.
+     * @param int $monthNumber (1-12)
+     */
+    public function isActiveInMonth($monthNumber) {
+        return in_array((string)$monthNumber, $this->months_northern) || in_array((int)$monthNumber, $this->months_northern);
     }
 }
