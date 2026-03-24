@@ -10,7 +10,10 @@
         <div class="recipe-header">
             <span class="recipe-name"><?= htmlspecialchars($recipe->name) ?></span>
             <?php if($recipe->is_customizable): ?>
-                <span class="badge-customizable" title="Dieses Item kann umgestaltet (und so repariert) werden!">🎨 Umgestaltbar</span>
+                <span class="badge-customizable" title="Dieses Item kann umgestaltet (und so repariert) werden!">
+                    <img src="/assets/img/acnh/diy/umgestaltungsset.png" alt="Umgestaltbar" class="meta-icon">
+                    Umgestaltbar
+                </span>
             <?php endif; ?>
         </div>
         
@@ -31,7 +34,7 @@
             
             <?php if($recipe->durability): ?>
                 <span class="meta-badge recipe-durability">
-                    <img src="/assets/img/acnh/haltbarkeit.png" alt="Haltbarkeit" class="meta-icon">
+                    <img src="/assets/img/acnh/haltbarkeoit.png" alt="Haltbarkeit" class="meta-icon">
                     Haltbarkeit: <?= htmlspecialchars($recipe->durability) ?>
                 </span>
             <?php endif; ?>

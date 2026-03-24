@@ -110,13 +110,16 @@
     background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
     color: #2e7d32;
     border: 1px solid #a5d6a7;
-    padding: 6px 12px;
+    padding: 4px 10px; /* Leicht reduziert für Mobile */
     border-radius: 100px;
     font-size: 0.75rem;
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px; /* NEU: Abstand für das Icon */
     box-shadow: 0 2px 6px rgba(46, 125, 50, 0.15);
 }
 
