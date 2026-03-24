@@ -31,7 +31,7 @@
             
             <?php if($recipe->durability): ?>
                 <span class="meta-badge recipe-durability">
-                    <img src="/assets/img/acnh/haltbarkeoit.png" alt="Haltbarkeit" class="meta-icon">
+                    <img src="/assets/img/acnh/haltbarkeit.png" alt="Haltbarkeit" class="meta-icon">
                     Haltbarkeit: <?= htmlspecialchars($recipe->durability) ?>
                 </span>
             <?php endif; ?>
