@@ -13,17 +13,14 @@ class CreatureRepository {
         $this->db = Database::getInstance()->getConnection();
     }
 
-    /**
-     * Holt alle Tiere einer bestimmten Kategorie
-     * @param string $category ('insect', 'fish', 'sea')
-     */
     public function getByCategory($category) {
-        // NEU: LEFT JOIN auf creature_locations UND creature_shadows
+        // NEU: LEFT JOIN auf creature_speeds für die Meerestier-Bewegung
         $sql = "
-            SELECT c.*, cl.location_name, cs.shadow_image
+            SELECT c.*, cl.location_name, cs.shadow_image, csp.speed
             FROM creatures c
             LEFT JOIN creature_locations cl ON c.id = cl.creature_id
             LEFT JOIN creature_shadows cs ON c.id = cs.creature_id
+            LEFT JOIN creature_speeds csp ON c.id = csp.creature_id
             WHERE c.category = :category 
             ORDER BY c.name ASC
         ";
@@ -40,16 +37,13 @@ class CreatureRepository {
         return $creatures;
     }
 
-    /**
-     * Holt ein einzelnes Tier anhand der ID
-     */
     public function findById($id) {
-        // NEU: LEFT JOIN auf creature_locations UND creature_shadows
         $sql = "
-            SELECT c.*, cl.location_name, cs.shadow_image
+            SELECT c.*, cl.location_name, cs.shadow_image, csp.speed
             FROM creatures c
             LEFT JOIN creature_locations cl ON c.id = cl.creature_id
             LEFT JOIN creature_shadows cs ON c.id = cs.creature_id
+            LEFT JOIN creature_speeds csp ON c.id = csp.creature_id
             WHERE c.id = :id
         ";
         $stmt = $this->db->prepare($sql);

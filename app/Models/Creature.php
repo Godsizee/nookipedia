@@ -13,7 +13,8 @@ class Creature {
     public $months_southern;
     public $time_active;
     public $location;
-    public $shadow_image; // NEU: Schatten-Bildpfad
+    public $shadow_image;
+    public $speed; // NEU: Bewegungstempo (für Meerestiere)
 
     public function __construct($data = []) {
         $this->id = $data['id'] ?? null;
@@ -23,18 +24,15 @@ class Creature {
         $this->catchphrase = $data['catchphrase'] ?? '';
         $this->image_path = $data['image_path'] ?? 'placeholder.png';
         
-        // Postgres Arrays in PHP-Arrays umwandeln (falls sie als String kommen)
         $this->months_northern = $this->parsePostgresArray($data['months_northern'] ?? '{}');
         $this->months_southern = $this->parsePostgresArray($data['months_southern'] ?? '{}');
         
         $this->time_active = $data['time_active'] ?? '';
-        $this->location = $data['location_name'] ?? 'Unbekannt';
-        $this->shadow_image = $data['shadow_image'] ?? null; // NEU: Mapping des Schattens
+        $this->location = $data['location_name'] ?? null;
+        $this->shadow_image = $data['shadow_image'] ?? null;
+        $this->speed = $data['speed'] ?? null; // NEU: Mapping der Geschwindigkeit
     }
 
-    /**
-     * Hilfsmethode um PostgreSQL {1,2,3} in PHP [1,2,3] zu wandeln
-     */
     private function parsePostgresArray($pgArray) {
         if (is_array($pgArray)) return $pgArray;
         $cleaned = trim($pgArray, '{}');
@@ -42,23 +40,14 @@ class Creature {
         return explode(',', $cleaned);
     }
 
-    /**
-     * Sexy Helper: Gibt den vollen Pfad zum Bild zurück
-     */
     public function getImageUrl() {
         return "/assets/img/acnh/" . $this->image_path;
     }
 
-    /**
-     * Formatiert den Preis als "Sterni"-String
-     */
     public function getFormattedPrice() {
         return number_format($this->price, 0, ',', '.') . ' Sternis';
     }
 
-    /**
-     * Gibt die formatierten Monate als String zurück (z.B. "Jul, Aug")
-     */
     public function getFormattedMonths() {
         if (empty($this->months_northern)) return 'Keine Angabe';
         if (count($this->months_northern) === 12) return 'Ganzjährig';
@@ -76,11 +65,6 @@ class Creature {
         return implode(', ', $names);
     }
 
-    /**
-     * Prüft ob das Tier in einem bestimmten Monat aktiv ist.
-     * Nimmt Logik aus der View, ganz nach SRP und KISS.
-     * @param int $monthNumber (1-12)
-     */
     public function isActiveInMonth($monthNumber) {
         return in_array((string)$monthNumber, $this->months_northern) || in_array((int)$monthNumber, $this->months_northern);
     }
