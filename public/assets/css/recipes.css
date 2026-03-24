@@ -1,11 +1,11 @@
 /**
  * Recipes Specific Styles
  * SRP: Styling für Bastelanleitungen und Kochrezepte
- * Mobile-First Design
+ * Mobile-First Design - Fabulous Edition
  */
 
 .recipe-group {
-    border-color: #ffb74d; /* Warmes Orange für Crafting */
+    border-color: #ffb74d;
 }
 
 .recipe-group[open] .month-summary {
@@ -17,59 +17,75 @@
 .recipe-grid {
     display: grid;
     grid-template-columns: 1fr; /* Mobile-First: 1 Spalte */
-    gap: 1.5rem;
+    gap: 1.8rem;
     align-items: stretch;
 }
 
+/* --- Main Recipe Card (Premium Look) --- */
 .recipe-card {
-    background: var(--ac-surface, #ffffff);
+    background: linear-gradient(160deg, var(--ac-surface, #ffffff) 0%, #fffdf8 100%);
     border: 2px solid var(--ac-border, #e8e3d3);
-    border-radius: var(--radius-lg, 24px);
-    padding: 1.25rem;
+    border-radius: var(--radius-lg, 28px);
+    padding: 1.5rem;
     display: flex;
-    flex-direction: column; /* Mobile-First: Bild oben, Text drunter */
-    gap: 1.25rem;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.04);
-    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s, border-color 0.25s;
-    height: 100%;
+    flex-direction: column;
+    gap: 1.5rem;
+    /* Soft outside shadow + subtle white inner glow for 3D effect */
+    box-shadow: 0 8px 24px rgba(139, 90, 43, 0.05), inset 0 2px 0 rgba(255, 255, 255, 0.8);
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    z-index: 1;
+}
+
+.recipe-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 45px rgba(245, 124, 0, 0.12), inset 0 2px 0 rgba(255, 255, 255, 1);
+    border-color: #ffcc80;
+    z-index: 2;
+}
+
+/* --- Image Container (Glow & Presentation) --- */
+.recipe-img {
+    background: radial-gradient(circle at 30% 30%, #fff8e1 0%, #ffe0b2 100%);
+    width: 100%;
+    height: 160px;
+    border-radius: var(--radius-md, 20px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 3px 12px rgba(255, 152, 0, 0.15), 0 4px 10px rgba(0, 0, 0, 0.03);
     position: relative;
     overflow: hidden;
 }
 
-.recipe-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 30px rgba(245, 124, 0, 0.12);
-    border-color: #ffb74d;
-}
-
-.recipe-img {
-    background: var(--ac-bg, #f4f1e1);
-    width: 100%;
-    height: 140px;
-    border-radius: var(--radius-md, 16px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px dashed #ffcc80;
-    position: relative;
+/* Subtiler Glanz-Effekt über dem Bild-Container */
+.recipe-img::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 40%;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.6) 0%, rgba(255, 255, 255, 0) 100%);
+    pointer-events: none;
 }
 
 .recipe-img img {
-    width: 80px;
-    height: 80px;
+    width: 90px;
+    height: 90px;
     object-fit: contain;
-    filter: drop-shadow(0 6px 8px rgba(0,0,0,0.15));
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.15));
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    z-index: 2;
 }
 
 .recipe-card:hover .recipe-img img {
-    transform: scale(1.15) rotate(3deg);
+    transform: scale(1.18) rotate(4deg);
 }
 
+/* --- Text & Layout --- */
 .recipe-details {
     display: flex;
     flex-direction: column;
-    gap: 0.8rem;
+    gap: 1rem;
     flex-grow: 1;
 }
 
@@ -77,217 +93,242 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 10px;
+    gap: 12px;
     flex-wrap: wrap;
 }
 
 .recipe-name {
     font-weight: 900;
-    font-size: 1.2rem;
+    font-size: 1.35rem;
     color: var(--ac-text);
-    line-height: 1.3;
+    line-height: 1.25;
     word-break: break-word;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.03);
 }
 
 .badge-customizable {
-    background: #e8f5e9;
+    background: linear-gradient(135deg, #e8f5e9, #c8e6c9);
     color: #2e7d32;
-    border: 1px solid #c8e6c9;
-    padding: 4px 10px;
+    border: 1px solid #a5d6a7;
+    padding: 6px 12px;
     border-radius: 100px;
     font-size: 0.75rem;
     font-weight: 900;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     white-space: nowrap;
-    display: inline-flex;
-    align-items: center;
-    box-shadow: 0 2px 4px rgba(46, 125, 50, 0.1);
+    box-shadow: 0 2px 6px rgba(46, 125, 50, 0.15);
 }
 
+/* --- New Sexy Meta Badges --- */
 .recipe-meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    font-size: 0.85rem;
+    gap: 10px;
     margin-bottom: 0.5rem;
 }
 
-/* Gemeinsame Basis für alle neuen Icon-Badges */
 .meta-badge {
     display: inline-flex;
     align-items: center;
     gap: 6px;
     font-weight: 800;
-    padding: 4px 10px;
-    border-radius: 8px;
+    padding: 6px 12px;
+    border-radius: 12px;
     line-height: 1;
+    font-size: 0.85rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
+    cursor: default;
 }
 
-/* Größendefinition für die neuen AC-Icons */
+.meta-badge:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
 .meta-icon {
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     object-fit: contain;
-    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
 }
 
+/* Individuelle Badge-Stylings mit sanften Farbverläufen */
 .recipe-source {
-    background: var(--ac-bg);
-    color: var(--ac-text-muted);
-    border: 1px solid var(--ac-border);
+    background: linear-gradient(135deg, #ffffff, #f5f5f5);
+    color: #616161;
+    border: 1px solid #e0e0e0;
 }
 
 .recipe-price {
-    background: var(--ac-bell-bg, #fdf3d1);
-    color: var(--ac-bell, #f2c046);
-    border: 1px solid rgba(242, 192, 70, 0.3);
+    background: linear-gradient(135deg, #fffde7, #ffecb3);
+    color: #f57f17;
+    border: 1px solid #ffe082;
+    box-shadow: 0 2px 5px rgba(255, 193, 7, 0.15);
 }
 
 .recipe-durability {
-    background: #e1f5fe;
-    color: #0288d1;
-    border: 1px solid rgba(2, 136, 209, 0.2);
+    background: linear-gradient(135deg, #e1f5fe, #b3e5fc);
+    color: #0277bd;
+    border: 1px solid #81d4fa;
+    box-shadow: 0 2px 5px rgba(3, 169, 244, 0.15);
 }
 
-/* Fallback Text-Box */
+/* --- Materials / Zutaten Box (Inset Note Style) --- */
+.recipe-materials-interactive,
 .recipe-materials {
-    background: #fff8e1;
-    border-left: 4px solid #ffb74d;
-    padding: 12px 14px;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    color: #5d4037;
-    margin-top: auto; 
-    line-height: 1.5;
-    word-break: break-word;
-    box-shadow: inset 0 2px 4px rgba(255, 183, 77, 0.1);
-}
-
-/* Interaktive Material Links */
-.recipe-materials-interactive {
     margin-top: auto;
-    padding-top: 12px;
-    border-top: 2px dashed var(--ac-border);
+    background: #fffdf7;
+    border: 1px solid #f2e9d8;
+    border-left: 5px solid #ffb74d;
+    border-radius: 16px;
+    padding: 1.25rem;
+    box-shadow: inset 0 2px 8px rgba(139, 90, 43, 0.03);
 }
 
 .material-links-wrapper {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 8px;
+    gap: 10px;
+    margin-top: 10px;
 }
 
+/* Juicy Material Buttons */
 .material-link-badge {
     display: flex;
     align-items: center;
-    gap: 6px;
-    background: #fff8e1;
-    border: 1px solid #ffcc80;
-    padding: 4px 12px 4px 4px;
+    gap: 8px;
+    background: #ffffff;
+    border: 2px solid #ffedcc;
+    padding: 4px 14px 4px 6px;
     border-radius: 100px;
     text-decoration: none;
     color: #5d4037;
     font-size: 0.85rem;
     font-weight: 800;
-    transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 2px 6px rgba(255, 152, 0, 0.08);
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .material-link-badge img {
-    width: 24px;
-    height: 24px;
+    width: 26px;
+    height: 26px;
     object-fit: contain;
-    background: rgba(255,255,255,0.9);
+    background: rgba(255, 255, 255, 0.9);
     border-radius: 50%;
     padding: 3px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
 }
 
 .material-link-badge:hover {
-    background: #ffecb3;
-    border-color: #ffa000;
+    background: #fff4e0;
+    border-color: #ffb74d;
     color: #e65100;
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 4px 10px rgba(255, 152, 0, 0.2);
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 6px 15px rgba(255, 152, 0, 0.2);
 }
 
-/* Tablet & Desktop */
+/* --- Tablet & Desktop Layout --- */
 @media (min-width: 768px) {
     .recipe-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
     }
     
     .recipe-card {
         flex-direction: row; /* Desktop: Bild links, Text rechts */
         align-items: stretch;
-        padding: 1.5rem;
     }
     
     .recipe-img {
-        width: 120px;
+        width: 150px;
         height: auto;
-        min-height: 120px;
+        min-height: 150px;
         flex-shrink: 0;
     }
 }
 
-/* Dark Mode Integration */
+/* --- Dark Mode Excellence --- */
 @media (prefers-color-scheme: dark) {
     .recipe-group { border-color: #ef6c00; }
+    
     .recipe-group[open] .month-summary {
         background: #e65100;
         color: #fff3e0;
         border-bottom-color: #ff9800;
     }
+    
     .recipe-card { 
-        background: var(--ac-surface);
+        background: linear-gradient(160deg, var(--ac-surface) 0%, #302d28 100%);
         border-color: var(--ac-border); 
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
     }
+    
     .recipe-card:hover {
         border-color: #ff9800;
-        box-shadow: 0 12px 30px rgba(239, 108, 0, 0.25);
+        box-shadow: 0 16px 40px rgba(239, 108, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
+    
     .recipe-img {
-        background: rgba(0,0,0,0.2);
+        background: radial-gradient(circle at 30% 30%, #4e342e 0%, #3e2723 100%);
+        box-shadow: inset 0 3px 15px rgba(0, 0, 0, 0.6);
         border-color: #d84315;
     }
+    
+    .recipe-img::after {
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
+    }
+    
     .badge-customizable {
-        background: #1b5e20;
+        background: linear-gradient(135deg, #1b5e20, #2e7d32);
         color: #c8e6c9;
-        border-color: #2e7d32;
+        border-color: #4caf50;
     }
+    
+    /* Dark Badges */
     .recipe-source {
-        background: rgba(255,255,255,0.05);
-        color: var(--ac-text-muted);
+        background: linear-gradient(135deg, #424242, #212121);
+        color: #e0e0e0;
+        border-color: #616161;
     }
+    
     .recipe-price {
-        background: rgba(242, 192, 70, 0.15);
-        border-color: rgba(242, 192, 70, 0.3);
+        background: linear-gradient(135deg, #4a4022, #3e3315);
+        color: #f5cf66;
+        border-color: #6a5e30;
     }
+    
     .recipe-durability {
-        background: rgba(2, 136, 209, 0.15);
-        border-color: rgba(2, 136, 209, 0.3);
+        background: linear-gradient(135deg, #01579b, #0277bd);
+        color: #e1f5fe;
+        border-color: #0288d1;
     }
+    
+    /* Dark Materials Box */
+    .recipe-materials-interactive,
     .recipe-materials {
-        background: rgba(0,0,0,0.2);
+        background: #262420;
         color: #d7ccc8;
+        border-color: #383531;
         border-left-color: #e65100;
-        box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+        box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.4);
     }
-    .recipe-materials-interactive {
-        border-top-color: #4d4943;
-    }
+    
     .material-link-badge {
         background: #3e2723;
         border-color: #d84315;
         color: #e8e3d9;
     }
+    
     .material-link-badge img {
-        background: rgba(0,0,0,0.4);
+        background: rgba(0, 0, 0, 0.5);
     }
+    
     .material-link-badge:hover {
         background: #4e342e;
         border-color: #ff9800;
         color: #ffb74d;
+        box-shadow: 0 6px 15px rgba(239, 108, 0, 0.3);
     }
 }
