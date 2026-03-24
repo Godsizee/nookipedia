@@ -88,28 +88,33 @@
         </div>
     </div>
 
-    <!-- Catchphrase -->
-    <?php if (!empty($creature->catchphrase)): ?>
-    <div class="catchphrase-box">
-        "<?= htmlspecialchars($creature->catchphrase) ?>"
-    </div>
-    <?php endif; ?>
+    <!-- Gruppierung von Catchphrase und Kalender am unteren Rand -->
+    <div class="card-footer-group" style="margin-top: auto; display: flex; flex-direction: column; gap: 1rem;">
+        
+        <!-- Catchphrase -->
+        <?php if (!empty($creature->catchphrase)): ?>
+        <div class="catchphrase-box" style="margin-top: 1rem; margin-bottom: 0;">
+            "<?= htmlspecialchars($creature->catchphrase) ?>"
+        </div>
+        <?php endif; ?>
 
-    <!-- Kalender (Monats-Grid) -->
-    <div class="month-grid-container">
-        <?php 
-        $months = [
-            1 => 'Jan', 2 => 'Feb', 3 => 'Mär', 4 => 'Apr', 
-            5 => 'Mai', 6 => 'Jun', 7 => 'Jul', 8 => 'Aug', 
-            9 => 'Sep', 10 => 'Okt', 11 => 'Nov', 12 => 'Dez'
-        ];
-        foreach ($months as $num => $mName): 
-            $isActive = $creature->isActiveInMonth($num);
-        ?>
-            <div class="month-box <?= $isActive ? 'active' : 'inactive' ?>">
-                <?= $mName ?>
-            </div>
-        <?php endforeach; ?>
+        <!-- Kalender (Monats-Grid) -->
+        <div class="month-grid-container" style="margin-top: 0;">
+            <?php 
+            $months = [
+                1 => 'Jan', 2 => 'Feb', 3 => 'Mär', 4 => 'Apr', 
+                5 => 'Mai', 6 => 'Jun', 7 => 'Jul', 8 => 'Aug', 
+                9 => 'Sep', 10 => 'Okt', 11 => 'Nov', 12 => 'Dez'
+            ];
+            foreach ($months as $num => $mName): 
+                $isActive = $creature->isActiveInMonth($num);
+            ?>
+                <div class="month-box <?= $isActive ? 'active' : 'inactive' ?>">
+                    <?= $mName ?>
+                </div>
+            <?php endforeach; ?>
+        </div>
+        
     </div>
 
 </article>
