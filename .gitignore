@@ -1,6 +1,10 @@
-#Sensible Daten
+# Sensible Daten
 
 .env
+
+# Nookipedia Assets (Sämtliche Bilder im img-Ordner ignorieren)
+
+nookipedia/public/assets/img/
 
 # PHP Abhängigkeiten (falls später Composer genutzt wird)
 
@@ -16,11 +20,7 @@ Thumbs.db
 /public/assets/img/creatures/*
 !/public/assets/img/creatures/.gitkeep
 
-# Nookipedia Assets (Sämtliche Bilder im img-Ordner ignorieren)
-
-nookipedia/public/assets/img/
-
-#Datenbank-Dateien (Sämtliche SQL-Dateien ignorieren)
+# Datenbank-Dateien (Sämtliche SQL-Dateien ignorieren)
 
 *.sql
 
