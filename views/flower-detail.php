@@ -44,7 +44,7 @@
     </div>
 
     <!-- Sektion: Samen -->
-    <h2 class="guide-heading">🌱 1. Die Grundfarben (Samen)</h2>
+    <h2 class="guide-heading">1. Die Grundfarben (Samen)</h2>
     <div class="guide-card">
         <p style="margin-bottom: 1.5rem;">Um eine <strong>saubere Zucht</strong> zu garantieren, solltest du immer mit frischen Samentüten von Nooks Laden oder Gerd beginnen. Wild gewachsene Blumen haben oft eine unbekannte Genetik!</p>
         
@@ -68,7 +68,7 @@
     </div>
 
     <!-- Sektion: Kreuzungen -->
-    <h2 class="guide-heading">🧬 2. Zuchtkombinationen & Hybride</h2>
+    <h2 class="guide-heading">2. Zuchtkombinationen & Hybride</h2>
     <p style="margin-bottom: 1.5rem; color: var(--ac-text-muted);">Kreuzungen sind der Schlüssel. Pflanze zwei Elternblumen schachbrettartig oder nebeneinander und gieße sie täglich.</p>
 
     <div class="breeding-list">
@@ -101,7 +101,7 @@
     </div>
 
     <!-- Sektion: Profi-Tipps -->
-    <h2 class="guide-heading">🎓 3. Profi-Tipps für die Zucht</h2>
+    <h2 class="guide-heading">3. Profi-Tipps für die Zucht</h2>
     <div class="tips-grid">
         <!-- Modulares Laden der spezifischen Tipps -->
         <?php 
