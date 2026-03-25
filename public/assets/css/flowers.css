@@ -172,16 +172,16 @@
 }
 
 /* Offizielle Farb-Mappings für die Badges (Light Mode: Vollfarben) */
-.color-rotanemone, .color-rotchrysantheme, .color-rotcosmea, .color-rothyazinthe, .color-rotlilie, .color-liebesrose, .color-papageitulpe, .color-alpenveilchen { background-color: #e53935; }
-.color-orangeanemone, .color-orangecosmea, .color-orangehyazinthe, .color-feuerlilie, .color-sonnenrose, .color-flachlandtulpe, .color-stiefmütterchen { background-color: #fb8c00; }
-.color-gelbchrysantheme, .color-gelbcosmea, .color-gelbhyazinthe, .color-pyrenäenlilie, .color-bernsteinrose, .color-viridifloratulpe, .color-hornveilchen { background-color: #fdd835; color: #5c4e3f; text-shadow: none; }
-.color-weißanemone, .color-weißchrysantheme, .color-weißcosmea, .color-weißhyazinthe, .color-osterlilie, .color-unschuldsrose, .color-triumphtulpe, .color-pfingstveilchen, .color-maiglöckchen { background-color: #fdfbf7; color: #5c4e3f; text-shadow: none; border: 1px solid #e0e0e0; }
-.color-pinkanemone, .color-rosachrysantheme, .color-pinkcosmea, .color-rosahyazinthe, .color-türkenbundlilie, .color-pinkrose, .color-grengjer-tulpe { background-color: #f06292; }
-.color-purpuranemone, .color-lilachrysantheme, .color-purpurhyazinthe, .color-lilarose, .color-wildtulpe, .color-hainveilchen { background-color: #8e24aa; }
-.color-blauanemone, .color-blauhyazinthe, .color-blaurose, .color-duftveilchen { background-color: #1e88e5; }
-.color-schwarzcosmea, .color-dunkellilie, .color-schwarzrose, .color-römertulpe { background-color: #373331; }
-.color-grünchrysantheme { background-color: #43a047; }
-.color-goldrose { 
+.color-badge.color-rotanemone, .color-badge.color-rotchrysantheme, .color-badge.color-rotcosmea, .color-badge.color-rothyazinthe, .color-badge.color-rotlilie, .color-badge.color-liebesrose, .color-badge.color-papageitulpe, .color-badge.color-alpenveilchen { background-color: #e53935; }
+.color-badge.color-orangeanemone, .color-badge.color-orangecosmea, .color-badge.color-orangehyazinthe, .color-badge.color-feuerlilie, .color-badge.color-sonnenrose, .color-badge.color-flachlandtulpe, .color-badge.color-stiefmütterchen { background-color: #fb8c00; }
+.color-badge.color-gelbchrysantheme, .color-badge.color-gelbcosmea, .color-badge.color-gelbhyazinthe, .color-badge.color-pyrenäenlilie, .color-badge.color-bernsteinrose, .color-badge.color-viridifloratulpe, .color-badge.color-hornveilchen { background-color: #fdd835; color: #5c4e3f; text-shadow: none; }
+.color-badge.color-weißanemone, .color-badge.color-weißchrysantheme, .color-badge.color-weißcosmea, .color-badge.color-weißhyazinthe, .color-badge.color-osterlilie, .color-badge.color-unschuldsrose, .color-badge.color-triumphtulpe, .color-badge.color-pfingstveilchen, .color-badge.color-maiglöckchen { background-color: #fdfbf7; color: #5c4e3f; text-shadow: none; border: 1px solid #e0e0e0; }
+.color-badge.color-pinkanemone, .color-badge.color-rosachrysantheme, .color-badge.color-pinkcosmea, .color-badge.color-rosahyazinthe, .color-badge.color-türkenbundlilie, .color-badge.color-pinkrose, .color-badge.color-grengjer-tulpe { background-color: #f06292; }
+.color-badge.color-purpuranemone, .color-badge.color-lilachrysantheme, .color-badge.color-purpurhyazinthe, .color-badge.color-lilarose, .color-badge.color-wildtulpe, .color-badge.color-hainveilchen { background-color: #8e24aa; }
+.color-badge.color-blauanemone, .color-badge.color-blauhyazinthe, .color-badge.color-blaurose, .color-badge.color-duftveilchen { background-color: #1e88e5; }
+.color-badge.color-schwarzcosmea, .color-badge.color-dunkellilie, .color-badge.color-schwarzrose, .color-badge.color-römertulpe { background-color: #373331; }
+.color-badge.color-grünchrysantheme { background-color: #43a047; }
+.color-badge.color-goldrose { 
     background: linear-gradient(135deg, #fbc02d, #f57f17); 
     color: #fff;
     border: 1px solid #f9a825;
@@ -392,34 +392,34 @@
         text-shadow: none; /* Im Darkmode keine unsauberen Text-Schatten */
     }
 
-    .color-rotanemone, .color-rotchrysantheme, .color-rotcosmea, .color-rothyazinthe, .color-rotlilie, .color-liebesrose, .color-papageitulpe, .color-alpenveilchen { 
+    .color-badge.color-rotanemone, .color-badge.color-rotchrysantheme, .color-badge.color-rotcosmea, .color-badge.color-rothyazinthe, .color-badge.color-rotlilie, .color-badge.color-liebesrose, .color-badge.color-papageitulpe, .color-badge.color-alpenveilchen { 
         background-color: rgba(229, 57, 53, 0.15); color: #ff8a80; border: 1px solid rgba(229, 57, 53, 0.3); 
     }
-    .color-orangeanemone, .color-orangecosmea, .color-orangehyazinthe, .color-feuerlilie, .color-sonnenrose, .color-flachlandtulpe, .color-stiefmütterchen { 
+    .color-badge.color-orangeanemone, .color-badge.color-orangecosmea, .color-badge.color-orangehyazinthe, .color-badge.color-feuerlilie, .color-badge.color-sonnenrose, .color-badge.color-flachlandtulpe, .color-badge.color-stiefmütterchen { 
         background-color: rgba(251, 140, 0, 0.15); color: #ffcc80; border: 1px solid rgba(251, 140, 0, 0.3); 
     }
-    .color-gelbchrysantheme, .color-gelbcosmea, .color-gelbhyazinthe, .color-pyrenäenlilie, .color-bernsteinrose, .color-viridifloratulpe, .color-hornveilchen { 
+    .color-badge.color-gelbchrysantheme, .color-badge.color-gelbcosmea, .color-badge.color-gelbhyazinthe, .color-badge.color-pyrenäenlilie, .color-badge.color-bernsteinrose, .color-badge.color-viridifloratulpe, .color-badge.color-hornveilchen { 
         background-color: rgba(253, 216, 53, 0.15); color: #fff59d; border: 1px solid rgba(253, 216, 53, 0.3); 
     }
-    .color-weißanemone, .color-weißchrysantheme, .color-weißcosmea, .color-weißhyazinthe, .color-osterlilie, .color-unschuldsrose, .color-triumphtulpe, .color-pfingstveilchen, .color-maiglöckchen { 
+    .color-badge.color-weißanemone, .color-badge.color-weißchrysantheme, .color-badge.color-weißcosmea, .color-badge.color-weißhyazinthe, .color-badge.color-osterlilie, .color-badge.color-unschuldsrose, .color-badge.color-triumphtulpe, .color-badge.color-pfingstveilchen, .color-badge.color-maiglöckchen { 
         background-color: rgba(255, 255, 255, 0.08); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.2); 
     }
-    .color-pinkanemone, .color-rosachrysantheme, .color-pinkcosmea, .color-rosahyazinthe, .color-türkenbundlilie, .color-pinkrose, .color-grengjer-tulpe { 
+    .color-badge.color-pinkanemone, .color-badge.color-rosachrysantheme, .color-badge.color-pinkcosmea, .color-badge.color-rosahyazinthe, .color-badge.color-türkenbundlilie, .color-badge.color-pinkrose, .color-badge.color-grengjer-tulpe { 
         background-color: rgba(240, 98, 146, 0.15); color: #f8bbd0; border: 1px solid rgba(240, 98, 146, 0.3); 
     }
-    .color-purpuranemone, .color-lilachrysantheme, .color-purpurhyazinthe, .color-lilarose, .color-wildtulpe, .color-hainveilchen { 
+    .color-badge.color-purpuranemone, .color-badge.color-lilachrysantheme, .color-badge.color-purpurhyazinthe, .color-badge.color-lilarose, .color-badge.color-wildtulpe, .color-badge.color-hainveilchen { 
         background-color: rgba(142, 36, 170, 0.2); color: #e1bee7; border: 1px solid rgba(142, 36, 170, 0.4); 
     }
-    .color-blauanemone, .color-blauhyazinthe, .color-blaurose, .color-duftveilchen { 
+    .color-badge.color-blauanemone, .color-badge.color-blauhyazinthe, .color-badge.color-blaurose, .color-badge.color-duftveilchen { 
         background-color: rgba(30, 136, 229, 0.15); color: #bbdefb; border: 1px solid rgba(30, 136, 229, 0.3); 
     }
-    .color-schwarzcosmea, .color-dunkellilie, .color-schwarzrose, .color-römertulpe { 
+    .color-badge.color-schwarzcosmea, .color-badge.color-dunkellilie, .color-badge.color-schwarzrose, .color-badge.color-römertulpe { 
         background-color: rgba(0, 0, 0, 0.5); color: #cfd8dc; border: 1px solid rgba(255, 255, 255, 0.15); 
     }
-    .color-grünchrysantheme { 
+    .color-badge.color-grünchrysantheme { 
         background-color: rgba(67, 160, 71, 0.15); color: #c8e6c9; border: 1px solid rgba(67, 160, 71, 0.3); 
     }
-    .color-goldrose { 
+    .color-badge.color-goldrose { 
         background: rgba(245, 127, 23, 0.15); color: #ffe082; border: 1px solid rgba(245, 127, 23, 0.4); 
     }
 
