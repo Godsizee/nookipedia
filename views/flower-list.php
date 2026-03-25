@@ -1,19 +1,20 @@
 <?php include 'partials/header.php'; ?>
 
 <div class="hero">
+    <div style="font-size: 4rem; margin-bottom: 10px; filter: drop-shadow(0 4px 10px rgba(248, 187, 208, 0.4));">💐</div>
     <h1><?= htmlspecialchars($title) ?></h1>
-    <p>Verwandle deine Insel in ein florales Paradies.</p>
+    <p>Verwandle deine Insel in ein fabelhaftes florales Paradies.</p>
 </div>
 
 <!-- Modulares Einbinden der Info-Texte (SRP) -->
 <?php if (isset($infoTemplate) && file_exists(__DIR__ . '/' . $infoTemplate)): ?>
-    <div class="info-box">
+    <div class="info-box" style="border-left-color: #f8bbd0; background: transparent; padding: 0; box-shadow: none;">
         <?php include $infoTemplate; ?>
     </div>
 <?php endif; ?>
 
 <!-- ✨ TL;DR Cheat Sheet Accordion ✨ -->
-<div style="max-width: 1000px; margin: 0 auto 3rem auto; padding: 0 1rem;">
+<div style="max-width: 1000px; margin: 0 auto 3rem auto;">
     <details class="ac-details">
         <summary class="ac-summary">
             <span class="summary-icon">🗺️</span>
@@ -21,7 +22,7 @@
             <span class="summary-chevron">▼</span>
         </summary>
         <div class="details-content">
-            <p style="margin-bottom: 1rem; color: var(--ac-text-muted); font-size: 0.95rem;">
+            <p style="margin-bottom: 1.5rem; color: var(--ac-text-muted); font-size: 0.95rem; font-weight: 600;">
                 Klicke auf das Bild oder zoome heran, um die platzsparendsten Layouts und Kreuzungen für alle Blumenarten zu sehen!
             </p>
             <a href="/assets/img/acnh/flowers/TLDR/BlumenZuchtleitfaden.png" target="_blank" title="Bild in voller Größe öffnen">
@@ -33,7 +34,8 @@
     </details>
 </div>
 
-<div class="creature-grid">
+<!-- Premium Blumen Grid -->
+<div class="creature-grid" style="gap: 2rem;">
     <?php if (empty($flowers)): ?>
         <div style="grid-column: 1/-1; text-align: center; padding: 50px;">
             <p style="font-size: 1.5rem;">🥀 Hier blüht aktuell noch nichts...</p>
