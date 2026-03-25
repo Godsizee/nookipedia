@@ -182,7 +182,7 @@
 }
 
 .probability-badge {
-    background: var(--ac-text);
+    background: var(--ac-bell-bg);
     color: #5c4e3f;
     padding: 0.2rem 0.8rem;
     border-radius: 100px;
