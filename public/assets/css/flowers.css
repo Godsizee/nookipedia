@@ -83,6 +83,7 @@
     flex-direction: column;
     align-items: center;
     gap: 0.6rem;
+    flex-grow: 1; /* Lässt den Header-Bereich wachsen, um leeren Platz zu füllen */
 }
 
 .flower-title {
@@ -126,6 +127,11 @@
     margin: 0;
     padding-bottom: 1rem;
     border-bottom: 2px dashed rgba(248, 187, 208, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    flex-grow: 1; /* Verteilt den Platz gleichmäßig */
+    width: 100%;
 }
 
 
@@ -133,7 +139,7 @@
    2. FARB-BADGES (Pills - Light Mode)
    ========================================================================== */
 .flower-color-section {
-    margin-top: auto;
+    margin-top: auto; /* Drückt die Badges immer strikt an den unteren Rand */
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -281,35 +287,33 @@
    ========================================================================== */
 @media (min-width: 768px) {
     .flower-card-premium {
-        flex-direction: row; /* Horizontal layout auf großen Screens! */
-        align-items: center;
+        /* Fix: row-Layout entfernt! Es bleibt auch auf Desktop eine vertikale "column", 
+           damit die Karten perfekt und unverzerrt in das 3-Spalten-Grid passen. */
         padding: 2rem;
-        gap: 2rem;
+        gap: 1.5rem;
     }
 
     .flower-visual-wrapper {
         width: 120px;
         height: 120px;
-        margin: 0; /* Left align inside flex */
+        margin: 0 auto;
     }
 
     .flower-header-info {
-        align-items: flex-start;
-        text-align: left;
-        flex: 1;
+        align-items: center;
+        text-align: center;
     }
 
     .flower-desc {
-        text-align: left;
-        border-bottom: none;
-        border-right: 2px dashed rgba(248, 187, 208, 0.5);
-        padding-bottom: 0;
-        padding-right: 1.5rem;
+        text-align: center;
+        border-bottom: 2px dashed rgba(248, 187, 208, 0.5); /* Bleibt unten als Trenner */
+        border-right: none;
+        padding-bottom: 1.5rem;
+        padding-right: 0;
     }
 
     .flower-color-section {
-        min-width: 200px;
-        margin-top: 0; /* Reset */
+        min-width: 100%;
     }
 }
 
