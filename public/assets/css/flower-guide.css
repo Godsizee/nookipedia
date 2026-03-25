@@ -8,7 +8,7 @@
     width: 80px;
     height: 80px;
     margin: 0 auto 1rem;
-    background: #ffffff;
+    background: var(--ac-surface);
     border-radius: 50%;
     padding: 10px;
     box-shadow: 0 4px 15px rgba(248, 187, 208, 0.5);
@@ -48,7 +48,7 @@
 }
 
 .guide-card {
-    background: #fff;
+    background: var(--ac-surface);
     padding: 1.5rem;
     border-radius: var(--radius-lg);
     box-shadow: var(--ac-shadow);
@@ -79,7 +79,7 @@
     transform: translateY(-3px);
     border-style: solid;
     border-color: var(--ac-green);
-    background: #ffffff;
+    background: var(--ac-surface);
 }
 
 .seed-card img {
@@ -183,7 +183,7 @@
 
 .probability-badge {
     background: var(--ac-bell);
-    color: #fff;
+    color: #5c4e3f;
     padding: 0.2rem 0.8rem;
     border-radius: 100px;
     font-weight: 900;
@@ -199,7 +199,7 @@
     font-style: italic;
 }
 
-/* --- Tips Grid (NEW: Smart Layout mit :has() Selektor) --- */
+/* --- Tips Grid --- */
 .tips-grid {
     display: grid;
     gap: 1.5rem;
@@ -310,20 +310,16 @@
         margin-top: 0;
         max-width: 200px;
     }
-        /* Standard-Verhalten: 3 Spalten (perfekt für 3 Tipps, z.B. bei Anemonen) */
+        
     .tips-grid {
         grid-template-columns: repeat(3, 1fr);
     }
 
-    /* ✨ MAGIC FIX: Wenn das Grid exakt 4 Karten hat (wie bei Rosen, Cosmeen, Chrysanthemen), mache ein perfektes 2x2 Raster daraus! */
     .tips-grid:has(> .tip-card:nth-child(4):last-child) {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    /* ✨ MAGIC FIX 2: Wenn das Grid exakt 2 Karten hat (wie bei den Maiglöckchen), mache ebenfalls ein 2er Raster daraus, damit sie nicht wie 3 angeordnet werden! */
     .tips-grid:has(> .tip-card:nth-child(2):last-child) {
         grid-template-columns: repeat(2, 1fr);
     }
 }
-
-

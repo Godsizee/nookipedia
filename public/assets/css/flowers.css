@@ -1,327 +1,464 @@
 /**
- * Flower Guide Styles
- * SRP: Styling für die Detail- und Zuchtseiten der Blumen.
- * Mobile-First
+ * Nookipedia-Next: Premium Flower Styles
+ * SRP: Exklusives Styling für die florale Übersichtsseite und Blumenkarten.
+ * Design: Fabulous, Sexy, Mobile-First
  */
 
-.hero-flower-icon {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto 1rem;
-    background: var(--ac-surface);
-    border-radius: 50%;
-    padding: 10px;
-    box-shadow: 0 4px 15px rgba(248, 187, 208, 0.5);
-    border: 3px solid #f8bbd0;
-}
-
-.hero-flower-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-.guide-section {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 0 1rem;
-}
-
-.guide-intro {
-    background: var(--ac-surface);
+/* ==========================================================================
+   1. PREMIUM FLOWER CARDS
+   ========================================================================== */
+.flower-card-premium {
+    background: linear-gradient(145deg, #ffffff 0%, #fffafc 100%);
+    border: 2px solid rgba(248, 187, 208, 0.4);
+    border-radius: 28px;
     padding: 1.5rem;
-    border-radius: var(--radius-md);
-    box-shadow: var(--ac-shadow);
-    margin-bottom: 2.5rem;
-    border-left: 6px solid #f8bbd0;
-    font-size: 1.05rem;
-    line-height: 1.6;
-}
-
-.guide-heading {
-    color: var(--ac-text);
-    font-weight: 900;
-    margin-top: 3rem;
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px dashed var(--ac-border);
-}
-
-.guide-card {
-    background: var(--ac-surface);
-    padding: 1.5rem;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--ac-shadow);
-    margin-bottom: 1.5rem;
-}
-
-/* --- Seeds Grid --- */
-.seeds-grid {
+    box-shadow: 
+        0 12px 32px -8px rgba(233, 30, 99, 0.08),
+        inset 0 2px 0 #ffffff;
     display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-top: 1rem;
+    flex-direction: column;
+    gap: 1.25rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    text-decoration: none;
+    color: inherit;
+    outline: none;
+    height: 100%;
 }
 
-.seed-card {
-    background: var(--ac-bg);
-    border: 2px dashed #f8bbd0;
-    border-radius: var(--radius-md);
-    padding: 1rem;
+.flower-card-premium:hover,
+.flower-card-premium:focus-visible {
+    transform: translateY(-6px);
+    border-color: #f48fb1;
+    box-shadow: 
+        0 20px 40px -8px rgba(233, 30, 99, 0.15),
+        0 8px 16px -4px rgba(233, 30, 99, 0.1),
+        inset 0 2px 0 #ffffff;
+}
+
+/* Der leuchtende Hintergrund hinter dem Blumen-Icon */
+.flower-visual-wrapper {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
     display: flex;
     align-items: center;
-    gap: 1rem;
-    flex: 1 1 200px;
-    transition: transform 0.2s, border-color 0.2s;
+    justify-content: center;
+    border-radius: 50%;
+    background: radial-gradient(circle at top left, #fff0f5 0%, #fce4ec 100%);
+    box-shadow: 
+        inset 0 4px 10px rgba(244, 143, 177, 0.2),
+        0 8px 16px rgba(244, 143, 177, 0.15);
+    flex-shrink: 0;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.seed-card:hover {
-    transform: translateY(-3px);
-    border-style: solid;
-    border-color: var(--ac-green);
-    background: var(--ac-surface);
+.flower-card-premium:hover .flower-visual-wrapper {
+    transform: scale(1.08);
+    box-shadow: 
+        inset 0 4px 10px rgba(244, 143, 177, 0.3),
+        0 12px 24px rgba(244, 143, 177, 0.25);
 }
 
-.seed-card img {
-    width: 48px;
-    height: 48px;
+/* Das Blumenbild selbst */
+.flower-visual-wrapper img {
+    width: 75%;
+    height: 75%;
     object-fit: contain;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.15));
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 2;
 }
 
-.seed-info {
+.flower-card-premium:hover .flower-visual-wrapper img {
+    transform: translateY(-4px) rotate(5deg) scale(1.1);
+}
+
+/* Kopfbereich der Karte (Titel & Button) */
+.flower-header-info {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.flower-title {
+    font-weight: 900;
+    font-size: 1.4rem;
+    color: var(--ac-text);
+    line-height: 1.2;
+    margin: 0;
+    letter-spacing: -0.3px;
+}
+
+/* Sexy "Zucht-Guide" Badge */
+.guide-badge {
+    background: linear-gradient(135deg, var(--ac-green), #4a8f6e);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    padding: 4px 14px;
+    border-radius: 100px;
+    box-shadow: 0 4px 12px rgba(89, 166, 131, 0.3);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.3s ease;
+}
+
+.flower-card-premium:hover .guide-badge {
+    background: linear-gradient(135deg, #68c79f, var(--ac-green));
+    box-shadow: 0 6px 16px rgba(89, 166, 131, 0.4);
+    transform: scale(1.05);
+}
+
+/* Fluff-Text auf der Karte */
+.flower-desc {
+    font-size: 0.9rem;
+    color: var(--ac-text-muted);
+    line-height: 1.4;
+    text-align: center;
+    margin: 0;
+    padding-bottom: 1rem;
+    border-bottom: 2px dashed rgba(248, 187, 208, 0.5);
+}
+
+
+/* ==========================================================================
+   2. FARB-BADGES (Pills - Light Mode)
+   ========================================================================== */
+.flower-color-section {
+    margin-top: auto;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
 
-.seed-source {
-    font-size: 0.85rem;
-    color: var(--ac-text-muted);
-    font-weight: 800;
-}
-
-/* --- Breeding List --- */
-.breeding-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-}
-
-.breeding-card {
-    background: var(--ac-surface);
-    padding: 1.5rem;
-    border-radius: var(--radius-lg);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.04);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.flower-color-label {
+    font-size: 0.75rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #d81b60; /* Sattes Pink */
     text-align: center;
-    gap: 1rem;
-    border: 2px solid transparent;
+}
+
+.flower-color-badges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+}
+
+.color-badge {
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.15);
     transition: transform 0.2s;
 }
 
-.breeding-card:hover {
-    transform: translateY(-4px);
-    border-color: #f8bbd0;
+.flower-card-premium:hover .color-badge {
+    transform: translateY(-2px);
 }
 
-.breeding-parents {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    width: 100%;
+/* Offizielle Farb-Mappings für die Badges (Light Mode: Vollfarben) */
+.color-badge.color-rotanemone, .color-badge.color-rotchrysantheme, .color-badge.color-rotcosmea, .color-badge.color-rothyazinthe, .color-badge.color-rotlilie, .color-badge.color-liebesrose, .color-badge.color-papageitulpe, .color-badge.color-alpenveilchen { background-color: #e53935; }
+.color-badge.color-orangeanemone, .color-badge.color-orangecosmea, .color-badge.color-orangehyazinthe, .color-badge.color-feuerlilie, .color-badge.color-sonnenrose, .color-badge.color-flachlandtulpe, .color-badge.color-stiefmütterchen { background-color: #fb8c00; }
+.color-badge.color-gelbchrysantheme, .color-badge.color-gelbcosmea, .color-badge.color-gelbhyazinthe, .color-badge.color-pyrenäenlilie, .color-badge.color-bernsteinrose, .color-badge.color-viridifloratulpe, .color-badge.color-hornveilchen { background-color: #fdd835; color: #5c4e3f; text-shadow: none; }
+.color-badge.color-weißanemone, .color-badge.color-weißchrysantheme, .color-badge.color-weißcosmea, .color-badge.color-weißhyazinthe, .color-badge.color-osterlilie, .color-badge.color-unschuldsrose, .color-badge.color-triumphtulpe, .color-badge.color-pfingstveilchen, .color-badge.color-maiglöckchen { background-color: #fdfbf7; color: #5c4e3f; text-shadow: none; border: 1px solid #e0e0e0; }
+.color-badge.color-pinkanemone, .color-badge.color-rosachrysantheme, .color-badge.color-pinkcosmea, .color-badge.color-rosahyazinthe, .color-badge.color-türkenbundlilie, .color-badge.color-pinkrose, .color-badge.color-grengjer-tulpe { background-color: #f06292; }
+.color-badge.color-purpuranemone, .color-badge.color-lilachrysantheme, .color-badge.color-purpurhyazinthe, .color-badge.color-lilarose, .color-badge.color-wildtulpe, .color-badge.color-hainveilchen { background-color: #8e24aa; }
+.color-badge.color-blauanemone, .color-badge.color-blauhyazinthe, .color-badge.color-blaurose, .color-badge.color-duftveilchen { background-color: #1e88e5; }
+.color-badge.color-schwarzcosmea, .color-badge.color-dunkellilie, .color-badge.color-schwarzrose, .color-badge.color-römertulpe { background-color: #373331; }
+.color-badge.color-grünchrysantheme { background-color: #43a047; }
+.color-badge.color-goldrose { 
+    background: linear-gradient(135deg, #fbc02d, #f57f17); 
+    color: #fff;
+    border: 1px solid #f9a825;
 }
 
-.flower-entity {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-}
 
-.flower-entity img {
-    width: 60px;
-    height: 60px;
-    object-fit: contain;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-}
-
-.flower-entity span {
-    font-weight: 800;
-    font-size: 0.85rem;
-    color: var(--ac-text);
-}
-
-.math-symbol {
-    font-size: 2rem;
-    font-weight: 900;
-    color: #f8bbd0;
-}
-
-.breeding-result {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: var(--ac-bg);
-    padding: 1.5rem;
-    border-radius: var(--radius-md);
-    width: 100%;
-}
-
-.result-entity img {
-    width: 80px;
-    height: 80px;
-}
-
-.result-color {
-    font-size: 1.1rem !important;
-    color: var(--ac-green) !important;
-}
-
-.probability-badge {
-    background: var(--ac-bell);
-    color: #5c4e3f; /* Geändert für exzellente Lesbarkeit auf Gelb in Light- und Dark-Mode */
-    padding: 0.2rem 0.8rem;
-    border-radius: 100px;
-    font-weight: 900;
-    font-size: 0.8rem;
-    margin-top: 0.5rem;
-    box-shadow: 0 2px 4px rgba(242, 192, 70, 0.4);
-}
-
-.breeding-notes {
-    margin-top: 1rem;
-    font-size: 0.9rem;
-    color: var(--ac-text-muted);
-    font-style: italic;
-}
-
-/* --- Tips Grid (NEW: Smart Layout mit :has() Selektor) --- */
-.tips-grid {
-    display: grid;
-    gap: 1.5rem;
-    align-items: stretch;
+/* ==========================================================================
+   3. TL;DR CHEAT SHEET ACCORDION
+   ========================================================================== */
+.ac-details {
+    background: #ffffff;
+    border-radius: var(--radius-lg, 28px);
+    box-shadow: 0 12px 32px rgba(244, 143, 177, 0.15);
+    overflow: hidden;
+    border: 4px solid #f8bbd0;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     margin-bottom: 3rem;
-    
-    /* Mobile-First: Immer 1 Spalte untereinander */
-    grid-template-columns: 1fr;
 }
 
-.tip-card {
-    background: var(--ac-surface);
-    padding: 1.5rem;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--ac-shadow);
-    border-top: 6px solid var(--ac-green);
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    justify-content: flex-start;
+.ac-details:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(244, 143, 177, 0.25);
+    border-color: #f48fb1;
 }
 
-.tip-card h3 {
+.ac-summary {
     display: flex;
     align-items: center;
-    gap: 10px;
-    font-size: 1.15rem;
-    line-height: 1.3;
-    border-bottom: 2px dashed var(--ac-border);
-    padding-bottom: 0.8rem;
-    margin-bottom: 1rem;
+    padding: 1.5rem 2rem;
+    cursor: pointer;
+    background: linear-gradient(to right, #fff0f5, #ffffff);
     font-weight: 900;
-    color: var(--ac-green);
+    color: #d81b60;
+    font-size: 1.25rem;
+    list-style: none;
+    user-select: none;
 }
 
-.tip-icon {
-    font-size: 1.5rem;
-    background: var(--ac-bg);
-    padding: 6px;
+.ac-summary::-webkit-details-marker { display: none; }
+
+.summary-icon {
+    font-size: 2rem;
+    margin-right: 1.2rem;
+    filter: drop-shadow(0 2px 4px rgba(216, 27, 96, 0.2));
+}
+
+.summary-text { flex: 1; line-height: 1.3; }
+
+.summary-chevron {
+    font-size: 1.2rem;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    background: #ffffff;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-    display: inline-flex;
+    display: flex;
     align-items: center;
     justify-content: center;
-    width: 42px;
-    height: 42px;
+    box-shadow: 0 4px 10px rgba(216, 27, 96, 0.15);
+    flex-shrink: 0;
+    color: #d81b60;
 }
 
-.tip-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+.ac-details[open] .summary-chevron {
+    transform: rotate(180deg);
+    background: #d81b60;
+    color: #ffffff;
 }
 
-.tip-content p {
-    font-size: 0.95rem;
-    margin-bottom: 0;
+.ac-details[open] .ac-summary {
+    border-bottom: 3px dashed #f8bbd0;
 }
 
-.tip-highlight {
-    background: var(--ac-bg);
-    padding: 0.8rem;
-    border-radius: var(--radius-sm);
-    margin-top: 0.8rem;
-    font-size: 0.9rem;
-    color: var(--ac-text);
+.details-content {
+    padding: 2rem;
+    background: #ffffff;
+    text-align: center;
 }
 
-.tip-content ul {
-    background: var(--ac-bg);
-    padding: 1rem 1rem 1rem 2.2rem;
-    border-radius: var(--radius-sm);
-    margin-top: 0.8rem;
-    font-size: 0.9rem;
-    color: var(--ac-text-muted);
+.details-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 16px;
+    border: 3px solid #ffebee;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.tip-content li { margin-bottom: 0.4rem; }
-.tip-content li:last-child { margin-bottom: 0; }
+.details-content img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 12px 32px rgba(216, 27, 96, 0.15);
+}
 
 
-/* --- Tablet & Desktop --- */
+/* ==========================================================================
+   4. DESKTOP / TABLET ADAPTIONS
+   ========================================================================== */
 @media (min-width: 768px) {
-    .breeding-card {
-        flex-direction: row; 
-        justify-content: space-between;
-        text-align: left;
+    .flower-card-premium {
+        flex-direction: row; /* Horizontal layout auf großen Screens! */
+        align-items: center;
         padding: 2rem;
-    }
-
-    .breeding-parents {
-        width: auto;
-    }
-
-    .math-symbol.equals {
-        margin: 0 2rem;
-    }
-
-    .breeding-result {
-        width: auto;
-        flex-direction: row;
         gap: 2rem;
-        background: transparent;
-        padding: 0;
     }
 
-    .breeding-notes {
-        margin-top: 0;
-        max-width: 200px;
-    }
-        /* Standard-Verhalten: 3 Spalten (perfekt für 3 Tipps, z.B. bei Anemonen) */
-    .tips-grid {
-        grid-template-columns: repeat(3, 1fr);
+    .flower-visual-wrapper {
+        width: 120px;
+        height: 120px;
+        margin: 0; /* Left align inside flex */
     }
 
-    /* ✨ MAGIC FIX: Wenn das Grid exakt 4 Karten hat (wie bei Rosen, Cosmeen, Chrysanthemen), mache ein perfektes 2x2 Raster daraus! */
-    .tips-grid:has(> .tip-card:nth-child(4):last-child) {
-        grid-template-columns: repeat(2, 1fr);
+    .flower-header-info {
+        align-items: flex-start;
+        text-align: left;
+        flex: 1;
     }
 
-    /* ✨ MAGIC FIX 2: Wenn das Grid exakt 2 Karten hat (wie bei den Maiglöckchen), mache ebenfalls ein 2er Raster daraus, damit sie nicht wie 3 angeordnet werden! */
-    .tips-grid:has(> .tip-card:nth-child(2):last-child) {
-        grid-template-columns: repeat(2, 1fr);
+    .flower-desc {
+        text-align: left;
+        border-bottom: none;
+        border-right: 2px dashed rgba(248, 187, 208, 0.5);
+        padding-bottom: 0;
+        padding-right: 1.5rem;
+    }
+
+    .flower-color-section {
+        min-width: 200px;
+        margin-top: 0; /* Reset */
+    }
+}
+
+
+/* ==========================================================================
+   5. MIDNIGHT GARDEN (DARK MODE)
+   ========================================================================== */
+@media (prefers-color-scheme: dark) {
+    
+    /* Header/Hero Section Styling Overrides für Blumen im Darkmode */
+    .faunapedia-section[data-category="flowers"] {
+        background-color: #2b1d24 !important; /* Sehr dunkles, edles Brombeer */
+        background-image: radial-gradient(rgba(244, 143, 177, 0.1) 2px, transparent 2px) !important;
+        border-color: #4a2b39 !important;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+    }
+    
+    .faunapedia-header[style*="border-left-color: #ff69b4;"] {
+        border-left-color: #f48fb1 !important;
+        background: rgba(244, 143, 177, 0.05) !important;
+    }
+
+    /* Premium Karten im Dark Mode */
+    .flower-card-premium {
+        background: linear-gradient(145deg, var(--ac-surface), #261b20);
+        border-color: #4a2b39;
+        box-shadow: 
+            0 12px 32px -8px rgba(0, 0, 0, 0.5),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    .flower-card-premium:hover,
+    .flower-card-premium:focus-visible {
+        border-color: #f48fb1;
+        box-shadow: 
+            0 20px 40px -8px rgba(0, 0, 0, 0.6),
+            0 0 20px rgba(244, 143, 177, 0.15),
+            inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .flower-visual-wrapper {
+        background: radial-gradient(circle at top left, #38252d 0%, #201419 100%);
+        box-shadow: 
+            inset 0 4px 10px rgba(0, 0, 0, 0.4),
+            0 8px 16px rgba(0, 0, 0, 0.3);
+    }
+
+    .flower-card-premium:hover .flower-visual-wrapper {
+        box-shadow: 
+            inset 0 4px 10px rgba(244, 143, 177, 0.1),
+            0 12px 24px rgba(0, 0, 0, 0.5);
+    }
+
+    .flower-desc {
+        border-color: rgba(248, 187, 208, 0.15);
+    }
+
+    /* Zucht-Guide Badge (Lesbarer im Dunklen) */
+    .guide-badge {
+        background: linear-gradient(135deg, #1b5e20, #2e7d32);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        color: #ffffff;
+    }
+
+    .flower-card-premium:hover .guide-badge {
+        background: linear-gradient(135deg, #2e7d32, #388e3c);
+        box-shadow: 0 6px 16px rgba(76, 175, 80, 0.3);
+        color: #ffffff;
+    }
+
+    .flower-color-label {
+        color: #f48fb1;
+    }
+
+    /* ============================================================
+       Farb-Badges im Dark Mode: Weg von knalligen Vollton-Farben!
+       Lösung: Getönte Pillen mit leuchtender Schrift für perfekten Kontrast.
+       ============================================================ */
+    .color-badge {
+        text-shadow: none; /* Im Darkmode keine unsauberen Text-Schatten */
+    }
+
+    .color-badge.color-rotanemone, .color-badge.color-rotchrysantheme, .color-badge.color-rotcosmea, .color-badge.color-rothyazinthe, .color-badge.color-rotlilie, .color-badge.color-liebesrose, .color-badge.color-papageitulpe, .color-badge.color-alpenveilchen { 
+        background-color: rgba(229, 57, 53, 0.15); color: #ff8a80; border: 1px solid rgba(229, 57, 53, 0.3); 
+    }
+    .color-badge.color-orangeanemone, .color-badge.color-orangecosmea, .color-badge.color-orangehyazinthe, .color-badge.color-feuerlilie, .color-badge.color-sonnenrose, .color-badge.color-flachlandtulpe, .color-badge.color-stiefmütterchen { 
+        background-color: rgba(251, 140, 0, 0.15); color: #ffcc80; border: 1px solid rgba(251, 140, 0, 0.3); 
+    }
+    .color-badge.color-gelbchrysantheme, .color-badge.color-gelbcosmea, .color-badge.color-gelbhyazinthe, .color-badge.color-pyrenäenlilie, .color-badge.color-bernsteinrose, .color-badge.color-viridifloratulpe, .color-badge.color-hornveilchen { 
+        background-color: rgba(253, 216, 53, 0.15); color: #fff59d; border: 1px solid rgba(253, 216, 53, 0.3); 
+    }
+    .color-badge.color-weißanemone, .color-badge.color-weißchrysantheme, .color-badge.color-weißcosmea, .color-badge.color-weißhyazinthe, .color-badge.color-osterlilie, .color-badge.color-unschuldsrose, .color-badge.color-triumphtulpe, .color-badge.color-pfingstveilchen, .color-badge.color-maiglöckchen { 
+        background-color: rgba(255, 255, 255, 0.08); color: #ffffff; border: 1px solid rgba(255, 255, 255, 0.2); 
+    }
+    .color-badge.color-pinkanemone, .color-badge.color-rosachrysantheme, .color-badge.color-pinkcosmea, .color-badge.color-rosahyazinthe, .color-badge.color-türkenbundlilie, .color-badge.color-pinkrose, .color-badge.color-grengjer-tulpe { 
+        background-color: rgba(240, 98, 146, 0.15); color: #f8bbd0; border: 1px solid rgba(240, 98, 146, 0.3); 
+    }
+    .color-badge.color-purpuranemone, .color-badge.color-lilachrysantheme, .color-badge.color-purpurhyazinthe, .color-badge.color-lilarose, .color-badge.color-wildtulpe, .color-badge.color-hainveilchen { 
+        background-color: rgba(142, 36, 170, 0.2); color: #e1bee7; border: 1px solid rgba(142, 36, 170, 0.4); 
+    }
+    .color-badge.color-blauanemone, .color-badge.color-blauhyazinthe, .color-badge.color-blaurose, .color-badge.color-duftveilchen { 
+        background-color: rgba(30, 136, 229, 0.15); color: #bbdefb; border: 1px solid rgba(30, 136, 229, 0.3); 
+    }
+    .color-badge.color-schwarzcosmea, .color-badge.color-dunkellilie, .color-badge.color-schwarzrose, .color-badge.color-römertulpe { 
+        background-color: rgba(0, 0, 0, 0.5); color: #cfd8dc; border: 1px solid rgba(255, 255, 255, 0.15); 
+    }
+    .color-badge.color-grünchrysantheme { 
+        background-color: rgba(67, 160, 71, 0.15); color: #c8e6c9; border: 1px solid rgba(67, 160, 71, 0.3); 
+    }
+    .color-badge.color-goldrose { 
+        background: rgba(245, 127, 23, 0.15); color: #ffe082; border: 1px solid rgba(245, 127, 23, 0.4); 
+    }
+
+    /* TL;DR Accordion Dark Mode */
+    .ac-details {
+        background: var(--ac-surface);
+        border-color: #4a2b39;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+    }
+
+    .ac-details:hover {
+        border-color: #f48fb1;
+    }
+
+    .ac-summary {
+        background: linear-gradient(to right, #2b1d24, var(--ac-surface));
+        color: #f48fb1;
+    }
+
+    .summary-chevron {
+        background: #38252d;
+        color: #f48fb1;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .ac-details[open] .summary-chevron {
+        background: #f48fb1;
+        color: #2b1d24;
+    }
+
+    .ac-details[open] .ac-summary {
+        border-bottom-color: #4a2b39;
+    }
+
+    .details-content {
+        background: var(--ac-surface);
+    }
+
+    .details-content img {
+        border-color: #38252d;
     }
 }
