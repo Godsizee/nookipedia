@@ -1,11 +1,11 @@
 # Sensible Daten
 
-.env
+#.env
 *.ps1
 /code_parts
 # Nookipedia Assets (Sämtliche Bilder im img-Ordner ignorieren)
 
-nookipedia/public/assets/img/
+#nookipedia/public/assets/img/
 
 # PHP Abhängigkeiten (falls später Composer genutzt wird)
 

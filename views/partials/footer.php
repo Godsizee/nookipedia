@@ -12,18 +12,14 @@
 
     <!-- Fabulous Theme Switcher & Interaction Logic -->
     <script>
-        const body = document.body;
+        const root = document.documentElement;
         const toggleBtn = document.getElementById('theme-toggle');
 
-        // Initial Theme Check
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        body.setAttribute('data-theme', savedTheme);
-
         toggleBtn.addEventListener('click', () => {
-            const currentTheme = body.getAttribute('data-theme');
+            const currentTheme = root.getAttribute('data-theme');
             const newTheme = currentTheme === 'light' ? 'dark' : 'light';
             
-            body.setAttribute('data-theme', newTheme);
+            root.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
             
             // Kleine Feedback-Animation
