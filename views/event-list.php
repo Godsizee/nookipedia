@@ -36,8 +36,8 @@ $monthNames = [
         if (!empty($eventsByMonth[$m])): 
             $hasEvents = true;
     ?>
-        <!-- Native, Mobile-First Collapsible (Akkordeon) ohne extra JS-Klick-Listener -->
-        <details class="month-group" id="month-group-<?= $m ?>" open>
+        <!-- Native, Mobile-First Collapsible (Akkordeon) ohne 'open' Attribut für eingeklappten Start -->
+        <details class="month-group" id="month-group-<?= $m ?>">
             <summary class="month-summary">
                 <span class="month-title">
                     <span class="month-icon"><?= $monthNames[$m]['icon'] ?></span>

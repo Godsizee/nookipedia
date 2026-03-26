@@ -20,8 +20,8 @@
         </div>
     <?php else: ?>
         <?php foreach ($groupedRecipes as $catName => $recipes): ?>
-            <!-- Collapsible für jede Rezept-Kategorie -->
-            <details class="month-group recipe-group" open>
+            <!-- Collapsible für jede Rezept-Kategorie (ohne 'open' Attribut für eingeklappten Zustand) -->
+            <details class="month-group recipe-group">
                 <summary class="month-summary">
                     <span class="month-title">
                         <?= htmlspecialchars($catName) ?>

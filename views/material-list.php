@@ -22,8 +22,8 @@ $categoryConfig = [
     <?php foreach ($categoryConfig as $catKey => $config): ?>
         <?php if (!empty($groupedMaterials[$catKey])): ?>
             
-            <!-- Collapsible für jede Material-Kategorie -->
-            <details class="month-group material-group" open>
+            <!-- Collapsible für jede Material-Kategorie (ohne 'open' Attribut für eingeklappten Zustand) -->
+            <details class="month-group material-group">
                 <summary class="month-summary">
                     <span class="month-title">
                         <?= $config['name'] ?>
