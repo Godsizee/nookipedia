@@ -159,7 +159,7 @@
     line-height: 1.2;
     display: block;
     width: 100%;
-    word-break: break-word; /* Sorgt bei langen Namen für einen sauberen zentrierten Umbruch */
+    /* word-break entfernt: Wörter werden nicht mehr mittendrin abgetrennt */
 }
 
 .math-symbol {
@@ -181,21 +181,17 @@
     width: 100%;
 }
 
-.result-entity img {
-    /* FIX: Geerbt von .flower-entity img für 100% einheitliche Größen (vorher 80px) */
-}
-
 .result-color {
     font-size: 1.1rem !important;
     color: var(--ac-green) !important;
     text-align: center;
     display: block;
     width: 100%;
-    word-break: break-word;
+    /* word-break entfernt */
 }
 
 .probability-badge {
-    background: var(--ac-text);
+    background: var(--ac-bell);
     color: #5c4e3f;
     padding: 0.2rem 0.8rem;
     border-radius: 100px;
@@ -334,5 +330,17 @@
 
     .tips-grid:has(> .tip-card:nth-child(2):last-child) {
         grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ==========================================================================
+   DARK MODE ADAPTIONS
+   ========================================================================== */
+@media (prefers-color-scheme: dark) {
+    .probability-badge {
+        background: var(--ac-bg);
+        color: var(--ac-bell);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        border: 1px solid var(--ac-border);
     }
 }
