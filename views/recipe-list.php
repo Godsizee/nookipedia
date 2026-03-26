@@ -6,8 +6,14 @@
 </div>
 
 <nav class="tab-nav">
-    <a href="/bastelanleitungen" class="tab-item <?= $category === 'diy' ? 'active' : '' ?>">🛠️ Bastelanleitungen</a>
-    <a href="/kochrezepte" class="tab-item <?= $category === 'cooking' ? 'active' : '' ?>">🍳 Kochrezepte</a>
+    <a href="/bastelanleitungen" class="tab-item <?= $category === 'diy' ? 'active' : '' ?>">
+        <img src="/assets/img/acnh/diy/96px-DIY_Recipe_NH_Icon.png" alt="DIY" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 6px; margin-top: -3px;"> 
+        Bastelanleitungen
+    </a>
+    <a href="/kochrezepte" class="tab-item <?= $category === 'cooking' ? 'active' : '' ?>">
+        <img src="/assets/img/acnh/diy/96px-Cooking_Recipe_NH_Icon.png" alt="Kochen" style="width: 20px; height: 20px; vertical-align: middle; margin-right: 6px; margin-top: -3px;"> 
+        Kochrezepte
+    </a>
 </nav>
 
 <link rel="stylesheet" href="/assets/css/events.css"> <!-- Wir recyclen das Collapsible CSS -->
