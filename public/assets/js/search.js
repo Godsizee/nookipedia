@@ -21,6 +21,15 @@ export function initSpotlightSearch() {
 
     if (!triggerBtn || !overlay) return;
 
+    // Hilfsfunktion für den BasePath (DRY-Prinzip)
+    const getBasePath = () => {
+        const publicIndex = window.location.pathname.indexOf('/public');
+        if (publicIndex !== -1) {
+            return window.location.pathname.substring(0, publicIndex + 7);
+        }
+        return '';
+    };
+
     // --- Sichtbarkeits-Logik ---
     const openSearch = () => {
         overlay.classList.remove('spotlight-hidden');
@@ -62,6 +71,18 @@ export function initSpotlightSearch() {
         }
     });
 
+    // --- NEU: Enter-Taste im Suchfeld für die komplette Ergebnisseite ---
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const query = input.value.trim();
+            if (query.length >= 2) {
+                const basePath = getBasePath();
+                window.location.href = `${basePath}/suche?q=${encodeURIComponent(query)}`;
+            }
+        }
+    });
+
     // --- Intelligente API Fetch Logik ---
     const performSearch = async (query) => {
         if (query.length < 2) {
@@ -73,20 +94,14 @@ export function initSpotlightSearch() {
 
         try {
             // Sichere Basis-URL Ermittlung (verhindert den "//api/search" CORS-Bug)
-            let basePath = '';
-            const publicIndex = window.location.pathname.indexOf('/public');
-            if (publicIndex !== -1) {
-                // Wir befinden uns lokal im Unterordner (z.B. /files/nookipedia/public)
-                basePath = window.location.pathname.substring(0, publicIndex + 7);
-            }
-            
+            const basePath = getBasePath();
             const url = `${basePath}/api/search?q=${encodeURIComponent(query)}`;
             
             const response = await fetch(url);
             if (!response.ok) throw new Error('Netzwerk-Fehler');
             
             const data = await response.json();
-            renderResults(data.results);
+            renderResults(data.results, query); // Query mitgeben für den "Alle Ergebnisse"-Button
             
         } catch (error) {
             console.error('Search Error:', error);
@@ -95,7 +110,7 @@ export function initSpotlightSearch() {
     };
 
     // --- DOM Rendering (XSS Sicher durch document.createElement) ---
-    const renderResults = (items) => {
+    const renderResults = (items, originalQuery) => {
         resultsContainer.innerHTML = ''; // Leeren
 
         if (!items || items.length === 0) {
@@ -151,6 +166,27 @@ export function initSpotlightSearch() {
             
             fragment.appendChild(a);
         });
+
+        // --- NEU: "Alle Ergebnisse anzeigen" Button am Ende der Liste ---
+        const showAllLink = document.createElement('a');
+        const basePath = getBasePath();
+        showAllLink.href = `${basePath}/suche?q=${encodeURIComponent(originalQuery)}`;
+        showAllLink.className = 'search-result-item';
+        // Ein bisschen Styling, damit er sich abhebt
+        showAllLink.style.justifyContent = 'center';
+        showAllLink.style.marginTop = '0.5rem';
+        showAllLink.style.borderTop = '2px dashed var(--ac-border)';
+        showAllLink.style.paddingTop = '1rem';
+        showAllLink.style.borderRadius = '0 0 var(--radius-sm) var(--radius-sm)';
+        
+        const showAllText = document.createElement('span');
+        showAllText.className = 'search-result-title';
+        showAllText.style.color = 'var(--ac-green)';
+        showAllText.textContent = `🔍 Alle Ergebnisse für "${originalQuery}" anzeigen`;
+        
+        showAllLink.appendChild(showAllText);
+        showAllLink.addEventListener('click', closeSearch);
+        fragment.appendChild(showAllLink);
 
         resultsContainer.appendChild(fragment);
     };
