@@ -140,11 +140,13 @@
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
+    width: 100px; /* FIX: Feste Breite erzwingt absolute horizontale Konsistenz */
+    flex-shrink: 0;
 }
 
 .flower-entity img {
-    width: 60px;
-    height: 60px;
+    width: 70px; /* FIX: Alle Blumen-Icons auf exakt dieselbe Größe setzen */
+    height: 70px;
     object-fit: contain;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
 }
@@ -153,12 +155,17 @@
     font-weight: 800;
     font-size: 0.85rem;
     color: var(--ac-text);
+    text-align: center;
+    line-height: 1.2;
 }
 
 .math-symbol {
     font-size: 2rem;
     font-weight: 900;
     color: #f8bbd0;
+    width: 40px; /* FIX: Feste Breite für das Symbol, damit es sich nicht verschiebt */
+    text-align: center;
+    flex-shrink: 0;
 }
 
 .breeding-result {
@@ -172,8 +179,7 @@
 }
 
 .result-entity img {
-    width: 80px;
-    height: 80px;
+    /* FIX: Geerbt von .flower-entity img für 100% einheitliche Größen (vorher 80px) */
 }
 
 .result-color {
@@ -182,7 +188,7 @@
 }
 
 .probability-badge {
-    background: var(--ac-bell-bg);
+    background: var(--ac-text);
     color: #5c4e3f;
     padding: 0.2rem 0.8rem;
     border-radius: 100px;
@@ -285,22 +291,25 @@
 @media (min-width: 768px) {
     .breeding-card {
         flex-direction: row; 
-        justify-content: space-between;
+        justify-content: flex-start; /* FIX: Linksbündig für eine konsistente, gerade Linie */
         text-align: left;
         padding: 2rem;
     }
 
     .breeding-parents {
         width: auto;
+        flex-shrink: 0; /* FIX: Verhindert das Stauchen der Eltern-Blumen */
     }
 
     .math-symbol.equals {
-        margin: 0 2rem;
+        margin: 0 1rem;
+        flex-shrink: 0;
     }
 
     .breeding-result {
-        width: auto;
+        width: 100%;
         flex-direction: row;
+        justify-content: flex-start; /* FIX: Ergebnis linksbündig aufbauen */
         gap: 2rem;
         background: transparent;
         padding: 0;
@@ -308,13 +317,10 @@
 
     .breeding-notes {
         margin-top: 0;
-        max-width: 200px;
+        max-width: none;
+        flex-grow: 1; /* FIX: Text füllt nun den restlichen leeren Raum auf */
     }
-        
-    .tips-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
+        /* Standard-Verhalten: 3 Spalten (perfekt für 3 Tipps, z.B. bei Anemonen) */
     .tips-grid:has(> .tip-card:nth-child(4):last-child) {
         grid-template-columns: repeat(2, 1fr);
     }
