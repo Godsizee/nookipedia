@@ -108,15 +108,15 @@
     gap: 1.5rem;
 }
 
+/* Mobile Base Card */
 .breeding-card {
     background: var(--ac-surface);
-    padding: 1.5rem;
+    padding: 1.25rem 1rem; /* Kompaktes Padding für Mobile */
     border-radius: var(--radius-lg);
     box-shadow: 0 8px 24px rgba(0,0,0,0.04);
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center;
     gap: 1rem;
     border: 2px solid transparent;
     transition: transform 0.2s;
@@ -127,11 +127,14 @@
     border-color: #f8bbd0;
 }
 
-.breeding-parents {
+/* Die neue, flüssige Formel-Ansicht [Eltern] + [Eltern] = [Ergebnis] */
+.breeding-formula {
     display: flex;
-    align-items: flex-start; /* FIX: Hält die Bilder stur auf einer geraden Linie, auch wenn Text umbricht */
+    flex-direction: row;
+    flex-wrap: wrap; /* Bricht elegant um, wenn der Platz auf winzigen Displays nicht reicht */
+    align-items: flex-start;
     justify-content: center;
-    gap: 1rem;
+    gap: 1rem 0.5rem; /* Vertikaler und Horizontaler Abstand */
     width: 100%;
 }
 
@@ -140,13 +143,14 @@
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
-    width: 100px; /* FIX: Feste Breite erzwingt absolute horizontale Konsistenz */
+    width: 75px; /* Mobile optimierte Basis-Breite */
+    min-width: min-content; /* Verhindert, dass Container schmaler werden als ihr Inhalt! */
     flex-shrink: 0;
 }
 
 .flower-entity img {
-    width: 70px; /* FIX: Alle Blumen-Icons auf exakt dieselbe Größe setzen */
-    height: 70px;
+    width: 55px; /* Mobile optimiert */
+    height: 55px;
     object-fit: contain;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
     display: block;
@@ -155,38 +159,37 @@
 
 .flower-entity span {
     font-weight: 800;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     color: var(--ac-text);
-    text-align: center; /* FIX: Zentriert den Pflanzennamen perfekt unter dem Bild */
+    text-align: center;
     line-height: 1.2;
     display: block;
     width: 100%;
+    
+    /* Anti-Wortriss-Maßnahmen */
+    word-break: normal;
+    overflow-wrap: normal;
+    hyphens: none; 
 }
 
 .math-symbol {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 900;
     color: #f8bbd0;
-    width: 40px; /* FIX: Feste Breite für das Symbol, damit es sich nicht verschiebt */
-    height: 70px; /* FIX: Höhe genau an das 70px Bild anpassen */
+    width: 20px; /* Mobile optimiert */
+    height: 55px; /* Symmetrisch zur mobilen Bildhöhe */
     display: flex;
-    align-items: center; /* Zentriert das + und = vertikal passend zur Bild-Mitte */
+    align-items: center;
     justify-content: center;
     flex-shrink: 0;
 }
 
-.breeding-result {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: var(--ac-bg);
-    padding: 1.5rem;
-    border-radius: var(--radius-md);
-    width: 100%;
+.result-entity {
+    position: relative;
 }
 
 .result-color {
-    font-size: 1.1rem !important;
+    font-size: 0.95rem !important;
     color: var(--ac-green) !important;
     text-align: center;
     display: block;
@@ -196,19 +199,26 @@
 .probability-badge {
     background: var(--ac-bell);
     color: #5c4e3f;
-    padding: 0.2rem 0.8rem;
+    padding: 0.2rem 0.6rem;
     border-radius: 100px;
     font-weight: 900;
-    font-size: 0.8rem;
-    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    margin-top: 0.3rem;
     box-shadow: 0 2px 4px rgba(242, 192, 70, 0.4);
+    white-space: nowrap; /* Verhindert Umbrüche in Prozentangaben */
 }
 
+/* Notizen auf Mobile als kompakte Highlight-Box unter der Formel */
 .breeding-notes {
-    margin-top: 1rem;
-    font-size: 0.9rem;
+    width: 100%;
+    text-align: center;
+    font-size: 0.85rem;
     color: var(--ac-text-muted);
     font-style: italic;
+    background: var(--ac-bg);
+    padding: 0.8rem;
+    border-radius: var(--radius-sm);
+    margin: 0;
 }
 
 /* --- Tips Grid --- */
@@ -217,8 +227,6 @@
     gap: 1.5rem;
     align-items: stretch;
     margin-bottom: 3rem;
-    
-    /* Mobile-First: Immer 1 Spalte untereinander */
     grid-template-columns: 1fr;
 }
 
@@ -293,45 +301,59 @@
 .tip-content li:last-child { margin-bottom: 0; }
 
 
-/* --- Tablet & Desktop --- */
+/* --- Tablet & Desktop Adaptionen --- */
 @media (min-width: 768px) {
     .breeding-card {
         flex-direction: row; 
         justify-content: flex-start;
-        align-items: flex-start; /* FIX: Hält die Karte auf Linie mit den Bildern */
-        text-align: left;
+        align-items: center; /* Zentriert Desktop-Elemente schön auf der Y-Achse */
         padding: 2rem;
     }
 
-    .breeding-parents {
+    .breeding-formula {
         width: auto;
-        flex-shrink: 0;
+        flex-wrap: nowrap; /* Auf dem Desktop alles zwingend in eine Reihe */
+        gap: 1rem; /* Wieder mehr Platz auf großen Screens */
     }
 
-    .math-symbol.equals {
-        margin: 0 1rem;
-        flex-shrink: 0;
+    .flower-entity {
+        width: 100px; /* Restore Desktop Größe */
     }
 
-    .breeding-result {
-        width: 100%;
-        flex-direction: row;
-        justify-content: flex-start;
-        align-items: flex-start; /* FIX: Zieht das Resultat mit den Eltern auf dieselbe Höhe */
-        gap: 2rem;
+    .flower-entity img {
+        width: 70px;
+        height: 70px;
+    }
+
+    .flower-entity span {
+        font-size: 0.85rem;
+    }
+
+    .math-symbol {
+        font-size: 2rem;
+        width: 40px;
+        height: 70px;
+    }
+
+    .result-color {
+        font-size: 1.1rem !important;
+    }
+
+    .probability-badge {
+        font-size: 0.8rem;
+        padding: 0.2rem 0.8rem;
+    }
+
+    /* Auf dem Desktop wandern die Notizen rechtsbündig an den Rand */
+    .breeding-notes {
         background: transparent;
         padding: 0;
+        padding-left: 2rem; /* Sichert Abstand zum Resultat */
+        text-align: right;
+        flex-grow: 1; /* Füllt den freien horizontalen Raum auf */
+        font-size: 0.9rem;
     }
 
-    .breeding-notes {
-        margin-top: 0;
-        max-width: none;
-        flex-grow: 1; 
-        text-align: right; /* FIX: Text ist nun wie gewünscht rechtsbündig! */
-        padding-left: 2rem; /* FIX: Sorgt für genügend Abstand zum Resultats-Bild */
-        align-self: center; /* Hält den Notiztext elegant in der vertikalen Mitte */
-    }
-        /* Standard-Verhalten: 3 Spalten (perfekt für 3 Tipps, z.B. bei Anemonen) */
     .tips-grid:has(> .tip-card:nth-child(4):last-child) {
         grid-template-columns: repeat(2, 1fr);
     }

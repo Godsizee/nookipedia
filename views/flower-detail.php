@@ -74,28 +74,33 @@
     <div class="breeding-list">
         <?php foreach ($combinations as $combo): ?>
             <div class="breeding-card">
-                <div class="breeding-parents">
+                <!-- FORMEL-WRAPPER: Verbindet Eltern und Ergebnis zu einer flüssigen Gleichung -->
+                <div class="breeding-formula">
                     <div class="flower-entity">
                         <img src="<?= htmlspecialchars($combo->getImageUrl($combo->parent1_image)) ?>" alt="Elternteil 1">
                         <span><?= htmlspecialchars($combo->parent1_color) ?></span>
                     </div>
+                    
                     <div class="math-symbol">+</div>
+                    
                     <div class="flower-entity">
                         <img src="<?= htmlspecialchars($combo->getImageUrl($combo->parent2_image)) ?>" alt="Elternteil 2">
                         <span><?= htmlspecialchars($combo->parent2_color) ?></span>
                     </div>
-                </div>
-                
-                <div class="math-symbol equals">=</div>
-                
-                <div class="breeding-result">
+                    
+                    <div class="math-symbol equals">=</div>
+                    
                     <div class="flower-entity result-entity">
                         <img src="<?= htmlspecialchars($combo->getImageUrl($combo->child_image)) ?>" alt="Ergebnis">
                         <span class="result-color"><?= htmlspecialchars($combo->child_color) ?></span>
                         <span class="probability-badge"><?= htmlspecialchars($combo->probability) ?></span>
                     </div>
-                    <p class="breeding-notes"><?= htmlspecialchars($combo->notes) ?></p>
                 </div>
+                
+                <!-- NOTIZEN: Sauber von der Formel getrennt -->
+                <?php if (!empty(trim($combo->notes))): ?>
+                    <p class="breeding-notes"><?= htmlspecialchars($combo->notes) ?></p>
+                <?php endif; ?>
             </div>
         <?php endforeach; ?>
     </div>
