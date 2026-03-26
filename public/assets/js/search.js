@@ -72,8 +72,14 @@ export function initSpotlightSearch() {
         resultsContainer.innerHTML = '<div class="spotlight-empty-state">Lade Daten von Nook Inc. 📡...</div>';
 
         try {
-            // Relative URL nutzt automatisch den korrekten Pfad, auch in Unterordnern
-            const basePath = window.location.pathname.substring(0, window.location.pathname.indexOf('/public') + 7).replace('/public', '');
+            // Sichere Basis-URL Ermittlung (verhindert den "//api/search" CORS-Bug)
+            let basePath = '';
+            const publicIndex = window.location.pathname.indexOf('/public');
+            if (publicIndex !== -1) {
+                // Wir befinden uns lokal im Unterordner (z.B. /files/nookipedia/public)
+                basePath = window.location.pathname.substring(0, publicIndex + 7);
+            }
+            
             const url = `${basePath}/api/search?q=${encodeURIComponent(query)}`;
             
             const response = await fetch(url);
