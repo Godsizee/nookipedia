@@ -13,7 +13,7 @@ class SearchController {
     }
 
     /**
-     * API-Endpunkt für die Live-Suche
+     * API-Endpunkt für die Live-Suche (Spotlight)
      * Route: /api/search?q=...
      */
     public function api() {
@@ -24,13 +24,12 @@ class SearchController {
         $query = trim($_GET['q'] ?? '');
 
         if (mb_strlen($query) < 2) {
-            // Erst ab 2 Zeichen suchen, um die DB zu schonen
             echo json_encode(['results' => [], 'message' => 'Bitte mindestens 2 Zeichen eingeben.']);
             exit;
         }
 
-        // Repository aufrufen (SRP)
-        $results = $this->searchRepo->searchAll($query);
+        // Repository aufrufen (SRP) - true = limitierte Live-Suche
+        $results = $this->searchRepo->searchAll($query, true);
 
         // Intelligente Rückgabe
         echo json_encode([
@@ -38,5 +37,23 @@ class SearchController {
             'count' => count($results)
         ]);
         exit;
+    }
+
+    /**
+     * HTML-Endpunkt für die volle Suchergebnisseite
+     * Route: /suche?q=...
+     */
+    public function index() {
+        $query = trim($_GET['q'] ?? '');
+        $title = "Suche";
+        
+        $results = [];
+        if (mb_strlen($query) >= 2) {
+            // false = kein Limit für die volle Suchergebnisseite (OCP)
+            $results = $this->searchRepo->searchAll($query, false);
+        }
+        
+        // Render View (Trennung Logik/View)
+        require __DIR__ . '/../../views/search-results.php';
     }
 }
