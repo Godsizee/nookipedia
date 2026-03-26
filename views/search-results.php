@@ -4,7 +4,7 @@
     <div style="font-size: 4rem; margin-bottom: 10px; filter: drop-shadow(0 4px 10px rgba(89, 166, 131, 0.4));">🔍</div>
     <h1>Suchergebnisse</h1>
     
-    <!-- UX-Boost: Direktes Suchfeld auf der Ergebnisseite -->
+    <!-- UX-Boost: Direktes Suchfeld auf der Ergebnisseite (behält die letzte Suchanfrage bei) -->
     <form action="/suche" method="GET" class="page-search-form">
         <div class="page-search-wrapper">
             <input type="text" name="q" value="<?= htmlspecialchars($_GET['q'] ?? '') ?>" placeholder="Suche anpassen..." autocomplete="off" spellcheck="false" required>
@@ -12,22 +12,24 @@
         </div>
     </form>
 
-    <?php if (mb_strlen($_GET['q'] ?? '') > 0): ?>
+    <?php if (mb_strlen($_GET['q'] ?? '') >= 2): ?>
         <p style="font-size: 1.1rem;">Wir haben <strong><?= count($results) ?> passende Einträge</strong> für "<?= htmlspecialchars($_GET['q'] ?? '') ?>" gefunden.</p>
+    <?php elseif (mb_strlen($_GET['q'] ?? '') > 0): ?>
+        <p style="font-size: 1.1rem; color: #d81b60;">Bitte gib mindestens 2 Zeichen ein, damit wir suchen können.</p>
     <?php else: ?>
-        <p style="font-size: 1.1rem;">Bitte gib einen Suchbegriff ein.</p>
+        <p style="font-size: 1.1rem;">Was möchtest du auf der Insel finden?</p>
     <?php endif; ?>
 </div>
 
 <section class="search-results-page">
-    <?php if (empty($results)): ?>
+    <?php if (empty($results) && mb_strlen($_GET['q'] ?? '') >= 2): ?>
         <div style="text-align: center; padding: 40px 20px; background: var(--ac-surface); border-radius: var(--radius-lg); box-shadow: var(--ac-shadow); border: 2px dashed var(--ac-border);">
             <div style="font-size: 4rem; margin-bottom: 1rem;">🦝</div>
             <p style="font-size: 1.3rem; color: var(--ac-text); font-weight: 800; margin-bottom: 0.5rem;">Oh weh! Resetti hat nichts gefunden.</p>
             <p style="color: var(--ac-text-muted); margin-bottom: 1.5rem;">Versuche es mit einem anderen Begriff oder überprüfe die Schreibweise.</p>
             <a href="/" class="btn-clear" style="display: inline-block; text-decoration: none; padding: 0.6rem 1.5rem;">Zurück zum Dorfplatz</a>
         </div>
-    <?php else: ?>
+    <?php elseif (!empty($results)): ?>
         <!-- Mobile-First Grid Layout -->
         <div class="search-page-grid">
             <?php foreach ($results as $res): ?>
