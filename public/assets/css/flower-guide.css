@@ -157,6 +157,9 @@
     color: var(--ac-text);
     text-align: center;
     line-height: 1.2;
+    display: block;
+    width: 100%;
+    word-break: break-word; /* Sorgt bei langen Namen für einen sauberen zentrierten Umbruch */
 }
 
 .math-symbol {
@@ -185,6 +188,10 @@
 .result-color {
     font-size: 1.1rem !important;
     color: var(--ac-green) !important;
+    text-align: center;
+    display: block;
+    width: 100%;
+    word-break: break-word;
 }
 
 .probability-badge {
