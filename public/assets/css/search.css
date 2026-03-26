@@ -120,97 +120,103 @@
     color: #d81b60;
 }
 
-/* Ergebnisliste */
-.spotlight-results {
-    padding: 1rem;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
+/* ==========================================================================
+   SUCHERGEBNIS-SEITE (Full Page)
+   ========================================================================== */
+
+.search-results-page {
+    margin-bottom: 4rem;
 }
 
-/* Custom Scrollbar für Results */
-.spotlight-results::-webkit-scrollbar { width: 8px; }
-.spotlight-results::-webkit-scrollbar-track { background: transparent; }
-.spotlight-results::-webkit-scrollbar-thumb { background: var(--ac-border); border-radius: 10px; }
-
-/* Status-Meldungen (Leer/Laden) */
-.spotlight-empty-state {
-    padding: 3rem 1rem;
-    text-align: center;
-    color: var(--ac-text-muted);
-    font-size: 1.1rem;
-    font-weight: 700;
+.search-page-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
 }
 
-/* Einzelnes Ergebnis-Item */
-.search-result-item {
+@media (min-width: 768px) {
+    .search-page-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+.search-page-card {
+    background: var(--ac-surface);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
     display: flex;
     align-items: center;
-    gap: 1rem;
-    padding: 0.8rem 1rem;
-    border-radius: var(--radius-sm);
+    gap: 1.25rem;
     text-decoration: none;
     color: var(--ac-text);
-    transition: background 0.2s, transform 0.1s;
+    box-shadow: var(--ac-shadow);
     border: 2px solid transparent;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
 }
 
-.search-result-item:hover, .search-result-item:focus {
-    background: var(--ac-green-light);
+.search-page-card:hover, .search-page-card:focus {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(89, 166, 131, 0.15);
     border-color: var(--ac-green);
-    transform: translateX(4px);
     outline: none;
 }
 
-.search-result-img {
-    width: 48px;
-    height: 48px;
+.search-page-img {
+    width: 64px;
+    height: 64px;
     background: var(--ac-bg);
     border-radius: 50%;
-    padding: 6px;
-    display: flex; align-items: center; justify-content: center;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
-}
-.search-result-img img {
-    width: 100%; height: 100%;
-    object-fit: contain;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
 }
 
-.search-result-info {
+.search-page-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+.search-page-info {
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
+    gap: 0.3rem;
     overflow: hidden;
 }
 
-.search-result-title {
+.search-page-title {
     font-weight: 900;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+    margin: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.search-result-subtitle {
-    font-size: 0.85rem;
+.search-page-subtitle {
+    font-size: 0.9rem;
     color: var(--ac-text-muted);
     font-weight: 600;
 }
 
-.search-result-badge {
-    background: var(--ac-bg);
-    color: var(--ac-text-muted);
-    padding: 4px 10px;
+.search-page-badge {
+    background: var(--ac-green-light);
+    color: var(--ac-green);
+    padding: 6px 14px;
     border-radius: 100px;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
     font-weight: 900;
     white-space: nowrap;
-    border: 1px solid var(--ac-border);
+    border: 1px solid rgba(89, 166, 131, 0.2);
 }
 
-/* Darkmode Adaptions (Greift automatisch auf Variablen zurück, aber feinschliff hier) */
+/* Darkmode Adaptions */
 @media (prefers-color-scheme: dark) {
     .spotlight-modal {
         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
@@ -222,5 +228,9 @@
     #spotlight-close:hover {
         background: #d81b60;
         color: #fff;
+    }
+    .search-page-badge {
+        background: rgba(104, 199, 159, 0.15);
+        border-color: rgba(104, 199, 159, 0.3);
     }
 }

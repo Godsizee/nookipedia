@@ -80,12 +80,13 @@ $router->add('meerestiere', 'CreatureController', 'sea');
 $router->add('blumen', 'FlowerController', 'index'); // Für die Übersicht
 $router->add('blume', 'FlowerController', 'show');   // WICHTIG: Für die Detailseite!
 $router->add('events', 'EventController', 'index');
-$router->add('materialien', 'MaterialController', 'index'); // NEU: Route für Materialien & Zutaten
+$router->add('materialien', 'MaterialController', 'index'); 
 $router->add('bastelanleitungen', 'RecipeController', 'diy');
 $router->add('kochrezepte', 'RecipeController', 'cooking');
 
-// --- NEU: Live-Search API Endpunkt ---
-$router->add('api/search', 'SearchController', 'api');
+// --- NEU: Such-Routen ---
+$router->add('api/search', 'SearchController', 'api'); // JSON-Endpunkt für Spotlight
+$router->add('suche', 'SearchController', 'index');    // HTML-Ergebnisseite für Enter-Druck
 
 // --- Route berechnen ---
 $route = $requestUri;

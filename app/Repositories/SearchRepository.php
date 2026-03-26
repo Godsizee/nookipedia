@@ -16,14 +16,19 @@ class SearchRepository {
      * Durchsucht alle relevanten Entitäten und normalisiert die Ausgabe für die UI.
      * Zukunftssicher (OCP): Leicht erweiterbar um neue Tabellen.
      */
-    public function searchAll($term) {
+    public function searchAll($term, $isLive = true) {
         $results = [];
         
         // ILIKE = Case-insensitive Suche in PostgreSQL
         $searchTerm = '%' . $term . '%';
         
+        // Limits nur setzen, wenn es ein Live-Search API-Call ist
+        $limit5 = $isLive ? " LIMIT 5" : "";
+        $limit4 = $isLive ? " LIMIT 4" : "";
+        $limit3 = $isLive ? " LIMIT 3" : "";
+        
         // 1. KREATUREN (Insekten, Fische, Meerestiere)
-        $stmt = $this->db->prepare("SELECT id, name, category, image_path, price FROM creatures WHERE name ILIKE :term LIMIT 5");
+        $stmt = $this->db->prepare("SELECT id, name, category, image_path, price FROM creatures WHERE name ILIKE :term" . $limit5);
         $stmt->execute(['term' => $searchTerm]);
         foreach ($stmt->fetchAll() as $row) {
             $url = '';
@@ -36,35 +41,35 @@ class SearchRepository {
         }
 
         // 2. BLUMEN
-        $stmt = $this->db->prepare("SELECT id, name, image_path FROM flowers WHERE name ILIKE :term LIMIT 3");
+        $stmt = $this->db->prepare("SELECT id, name, image_path FROM flowers WHERE name ILIKE :term" . $limit3);
         $stmt->execute(['term' => $searchTerm]);
         foreach ($stmt->fetchAll() as $row) {
             $results[] = $this->formatResult($row['name'], 'Pflanzenwelt', '/blume?id='.$row['id'], 'acnh/' . $row['image_path'], '🌷 Blume');
         }
 
         // 3. MATERIALIEN
-        $stmt = $this->db->prepare("SELECT id, name, image_path, sell_price FROM materials WHERE name ILIKE :term LIMIT 4");
+        $stmt = $this->db->prepare("SELECT id, name, image_path, sell_price FROM materials WHERE name ILIKE :term" . $limit4);
         $stmt->execute(['term' => $searchTerm]);
         foreach ($stmt->fetchAll() as $row) {
             $results[] = $this->formatResult($row['name'], $row['sell_price'], '/materialien#mat-'.$row['id'], 'acnh/materials/' . $row['image_path'], '🪵 Material');
         }
 
         // 4. REZEPTE (DIY)
-        $stmt = $this->db->prepare("SELECT id, name, image_path, category FROM diy_recipes WHERE name ILIKE :term LIMIT 3");
+        $stmt = $this->db->prepare("SELECT id, name, image_path, category FROM diy_recipes WHERE name ILIKE :term" . $limit3);
         $stmt->execute(['term' => $searchTerm]);
         foreach ($stmt->fetchAll() as $row) {
             $results[] = $this->formatResult($row['name'], $row['category'], '/bastelanleitungen', 'acnh/' . $row['image_path'], '🔨 DIY');
         }
 
         // 5. REZEPTE (Kochen)
-        $stmt = $this->db->prepare("SELECT id, name, image_path, category FROM cooking_recipes WHERE name ILIKE :term LIMIT 3");
+        $stmt = $this->db->prepare("SELECT id, name, image_path, category FROM cooking_recipes WHERE name ILIKE :term" . $limit3);
         $stmt->execute(['term' => $searchTerm]);
         foreach ($stmt->fetchAll() as $row) {
             $results[] = $this->formatResult($row['name'], $row['category'], '/kochrezepte', 'acnh/' . $row['image_path'], '🍳 Kochen');
         }
 
         // 6. EVENTS
-        $stmt = $this->db->prepare("SELECT id, name, image_path, date_description FROM events WHERE name ILIKE :term LIMIT 3");
+        $stmt = $this->db->prepare("SELECT id, name, image_path, date_description FROM events WHERE name ILIKE :term" . $limit3);
         $stmt->execute(['term' => $searchTerm]);
         foreach ($stmt->fetchAll() as $row) {
             $results[] = $this->formatResult($row['name'], $row['date_description'], '/events#event-'.$row['id'], 'acnh/events/' . $row['image_path'], '🎉 Event');
