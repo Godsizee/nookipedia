@@ -2,6 +2,25 @@
 // 1. ZUERST SESSION STARTEN!
 session_start();
 
+// --- PERFORMANCE: .env zentral EINMALIG laden ---
+$envPath = __DIR__ . '/../../.env';
+if (file_exists($envPath)) {
+    $lines = file($envPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        $line = trim($line);
+        // Ignoriere Kommentare
+        if (strpos($line, '#') === 0 || strpos($line, ';') === 0) continue;
+        
+        // Schlüssel und Wert trennen und global im RAM speichern
+        if (strpos($line, '=') !== false) {
+            list($key, $value) = explode('=', $line, 2);
+            $key = trim($key);
+            $value = trim($value, " \t\n\r\0\x0B\"'"); 
+            $_ENV[$key] = $value; 
+        }
+    }
+}
+
 // 2. GLOBALE LOGIN-PRÜFUNG (Türsteher)
 $route = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 

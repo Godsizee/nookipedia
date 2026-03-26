@@ -1,24 +1,39 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    # Alle Anfragen an den public-Ordner weiterleiten
-    RewriteRule ^$ public/ [L]
-    RewriteRule (.*) public/$1 [L]
+    
+    # Verhindern, dass man Verzeichnisse auflistet
+    Options -Indexes
+
+    # Wenn die Datei oder das Verzeichnis nicht existiert, leite an index.php weiter
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
 
+# --- PERFORMANCE OPTIMIERUNGEN ---
+
+# 1. GZIP-Komprimierung aktivieren (spart bis zu 70% Bandbreite bei Textdateien)
 <IfModule mod_deflate.c>
-    # Komprimiere HTML, CSS, JavaScript und Fonts
-    AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json font/woff2
+    AddOutputFilterByType DEFLATE text/plain text/html text/xml text/css application/xml application/xhtml+xml application/rss+xml application/javascript application/x-javascript image/svg+xml application/json
 </IfModule>
 
+# 2. Browser-Caching (Teilt dem Browser mit, statische Dateien lokal zu speichern)
 <IfModule mod_expires.c>
     ExpiresActive On
-    # Bilder für 1 Monat im Browser-Cache speichern
-    ExpiresByType image/jpeg "access plus 1 month"
-    ExpiresByType image/png "access plus 1 month"
-    ExpiresByType image/webp "access plus 1 month"
-    ExpiresByType image/svg+xml "access plus 1 month"
     
-    # CSS & JS für 1 Woche speichern
-    ExpiresByType text/css "access plus 1 week"
-    ExpiresByType application/javascript "access plus 1 week"
+    # Bilder für 1 Jahr cachen
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    
+    # CSS & JavaScript für 1 Monat cachen
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType application/x-javascript "access plus 1 month"
+    
+    # Schriften cachen
+    ExpiresByType font/woff2 "access plus 1 year"
 </IfModule>
