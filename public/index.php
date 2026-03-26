@@ -84,6 +84,9 @@ $router->add('materialien', 'MaterialController', 'index'); // NEU: Route für M
 $router->add('bastelanleitungen', 'RecipeController', 'diy');
 $router->add('kochrezepte', 'RecipeController', 'cooking');
 
+// --- NEU: Live-Search API Endpunkt ---
+$router->add('api/search', 'SearchController', 'api');
+
 // --- Route berechnen ---
 $route = $requestUri;
 // 1. Query String entfernen
