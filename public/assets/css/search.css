@@ -20,6 +20,12 @@
 }
 .icon-btn:active { transform: scale(0.85); }
 
+/* NEU: Barrierefreier Fokus für Tastatur-Nutzer */
+.icon-btn:focus-visible {
+    outline: 3px solid var(--ac-green);
+    outline-offset: 2px;
+}
+
 /* ==========================================================================
    SPOTLIGHT OVERLAY (Cmd+K / Search Icon)
    ========================================================================== */
@@ -117,9 +123,15 @@
     display: flex; align-items: center; justify-content: center;
     transition: background 0.2s, color 0.2s;
 }
-#spotlight-close:hover {
+#spotlight-close:hover,
+#spotlight-close:focus-visible {
     background: #ffebee;
     color: #d81b60;
+    outline: none;
+}
+#spotlight-close:focus-visible {
+    outline: 2px solid #d81b60;
+    outline-offset: 2px;
 }
 
 /* Ergebnisliste im Spotlight */
@@ -154,13 +166,19 @@
     color: var(--ac-text);
     transition: background 0.2s, transform 0.1s;
     border: 2px solid transparent;
+    outline: none; /* Fallback, wird von focus-visible überschrieben */
 }
 
 .search-result-item:hover, .search-result-item:focus {
     background: var(--ac-green-light);
     border-color: var(--ac-green);
     transform: translateX(4px);
-    outline: none;
+}
+
+/* NEU: Klarer, sichtbarer Rand für Tastatur-Fokus */
+.search-result-item:focus-visible {
+    outline: 3px solid var(--ac-green);
+    outline-offset: 2px;
 }
 
 .search-result-img {

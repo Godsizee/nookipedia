@@ -466,3 +466,121 @@
         border-color: #38252d;
     }
 }
+
+/* ==========================================================================
+   6. PREMIUM HEADER & INFO BOXES (Refactored from Inline-Styles)
+   ========================================================================== */
+
+.flower-header-premium {
+    border-left-color: #ff69b4;
+    background: var(--ac-surface);
+    padding: 2rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--ac-shadow);
+    margin-bottom: 2rem;
+}
+
+.flower-intro-heading {
+    color: #d81b60;
+    font-size: 1.6rem;
+    font-weight: 900;
+    margin-bottom: 1rem;
+}
+
+.flower-intro-text {
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+.flower-tips-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.flower-tip-box {
+    padding: 1rem 1.5rem;
+    border-radius: 16px;
+    border: 1px solid transparent;
+}
+
+.flower-tip-box.pink {
+    background: rgba(248, 187, 208, 0.15);
+    border-color: rgba(248, 187, 208, 0.3);
+}
+
+.flower-tip-box.pink .flower-tip-title {
+    color: #d81b60;
+}
+
+.flower-tip-box.gold {
+    background: rgba(242, 192, 70, 0.15);
+    border-color: rgba(242, 192, 70, 0.3);
+}
+
+.flower-tip-box.gold .flower-tip-title {
+    color: #d39e00;
+}
+
+.flower-tip-title {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-weight: bold;
+}
+
+.quick-nav-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 3px dotted rgba(248, 187, 208, 0.5);
+}
+
+.quick-nav-header h3 {
+    font-weight: 900;
+    color: var(--ac-text);
+    margin: 0;
+}
+
+.quick-nav-header p {
+    font-size: 0.9rem;
+    color: var(--ac-text-muted);
+    margin-top: 0.3rem;
+}
+
+.flower-mini-card-inner {
+    border-radius: 20px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .flower-header-premium {
+        background: var(--ac-surface) !important;
+        border-left-color: #f48fb1 !important;
+    }
+    
+    .flower-intro-heading {
+        color: #f48fb1;
+    }
+    
+    .flower-tip-box.pink {
+        background: rgba(244, 143, 177, 0.1);
+        border-color: rgba(244, 143, 177, 0.2);
+    }
+    
+    .flower-tip-box.pink .flower-tip-title {
+        color: #f48fb1;
+    }
+    
+    .flower-tip-box.gold {
+        background: rgba(245, 207, 102, 0.1);
+        border-color: rgba(245, 207, 102, 0.2);
+    }
+    
+    .flower-tip-box.gold .flower-tip-title {
+        color: #f5cf66;
+    }
+    
+    .quick-nav-header {
+        border-bottom-color: rgba(244, 143, 177, 0.2);
+    }
+}
