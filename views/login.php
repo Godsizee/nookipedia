@@ -21,7 +21,7 @@
             </div>
         <?php endif; ?>
 
-        <form action="/authenticate" method="POST">
+        <form action="/authenticate" method="POST" id="login-form">
             <!-- WICHTIG: Das unsichtbare Sicherheits-Token -->
             <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken) ?>">
             
@@ -35,9 +35,29 @@
                 <input type="password" id="password" name="password" required placeholder="••••••••">
             </div>
             
-            <button type="submit" class="btn-login">✈️ Abflug zur Insel</button>
+            <button type="submit" class="btn-login" id="login-btn">
+                <span class="spinner" id="login-spinner"></span>
+                <span class="btn-text" id="login-text">✈️ Abflug zur Insel</span>
+            </button>
         </form>
     </div>
 
+    <!-- Smartes Form-Handling -->
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function() {
+            const btn = document.getElementById('login-btn');
+            const text = document.getElementById('login-text');
+            
+            // UI sofort auf "Laden" setzen
+            btn.classList.add('is-loading');
+            
+            // Wir nutzen pointer-events: none statt btn.disabled = true.
+            // Warum? Manche Browser brechen den Submit-Vorgang ab, wenn der Submit-Button im gleichen Event disabled wird.
+            btn.style.pointerEvents = 'none'; 
+            
+            // Text austauschen
+            text.textContent = 'Flug wird gebucht...';
+        });
+    </script>
 </body>
 </html>
