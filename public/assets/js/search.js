@@ -83,27 +83,40 @@ export function initSpotlightSearch() {
         }
     });
 
-    // --- Intelligente API Fetch Logik ---
+    // --- Intelligente API Fetch Logik mit AbortController ---
+    let currentAbortController = null;
+
     const performSearch = async (query) => {
         if (query.length < 2) {
             resultsContainer.innerHTML = '<div class="spotlight-empty-state">Tippe mindestens 2 Zeichen...</div>';
             return;
         }
 
+        // Bricht einen evtl. noch laufenden Request ab, da wir jetzt was Neues suchen!
+        if (currentAbortController) {
+            currentAbortController.abort();
+        }
+        currentAbortController = new AbortController();
+
         resultsContainer.innerHTML = '<div class="spotlight-empty-state">Lade Daten von Nook Inc. 📡...</div>';
 
         try {
-            // Sichere Basis-URL Ermittlung (verhindert den "//api/search" CORS-Bug)
             const basePath = getBasePath();
             const url = `${basePath}/api/search?q=${encodeURIComponent(query)}`;
             
-            const response = await fetch(url);
+            // Reiche das Signal an den Fetch-Call weiter
+            const response = await fetch(url, { signal: currentAbortController.signal });
             if (!response.ok) throw new Error('Netzwerk-Fehler');
             
             const data = await response.json();
-            renderResults(data.results, query); // Query mitgeben für den "Alle Ergebnisse"-Button
+            renderResults(data.results, query); 
             
         } catch (error) {
+            // Wenn der Fehler durch unseren eigenen Abbruch generiert wurde, ignorieren wir ihn völlig
+            if (error.name === 'AbortError') {
+                console.log('Veralteter Search-Request abgebrochen.');
+                return;
+            }
             console.error('Search Error:', error);
             resultsContainer.innerHTML = '<div class="spotlight-empty-state" style="color: #d81b60;">Fehler bei der Nook-Verbindung!</div>';
         }
@@ -167,7 +180,7 @@ export function initSpotlightSearch() {
             fragment.appendChild(a);
         });
 
-        // --- NEU: "Alle Ergebnisse anzeigen" Button am Ende der Liste ---
+        // --- "Alle Ergebnisse anzeigen" Button am Ende der Liste ---
         const showAllLink = document.createElement('a');
         const basePath = getBasePath();
         showAllLink.href = `${basePath}/suche?q=${encodeURIComponent(originalQuery)}`;

@@ -2,12 +2,19 @@
 
 namespace App\Controllers;
 
-class AuthController {
+use App\Core\Controller;
+
+class AuthController extends Controller {
+    
+    // WICHTIG: Überschreibt die Basis-Logik, damit man die Login-Seite ohne Login sehen kann!
+    protected $requireAuth = false;
     
     private $adminUser;
     private $adminPass;
 
     public function __construct() {
+        parent::__construct(); // Ruft den Konstruktor der Basisklasse (Session-Start) auf
+        
         // PERFORMANCE FIX: Greift direkt auf das RAM (Superglobal) zu, keine Festplatten-Zugriffe mehr!
         $this->adminUser = $_ENV['ADMIN_USER'] ?? null;
         $this->adminPass = $_ENV['ADMIN_PASS'] ?? null;

@@ -22,22 +22,8 @@ if (file_exists($envPath)) {
     }
 }
 
-// 2. GLOBALE LOGIN-PRÜFUNG (Türsteher)
-$route = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-
-// Diese Routen dürfen ohne Login betreten werden (und natürlich CSS/Bilder)
-$publicRoutes = ['/login', '/authenticate'];
-
-// Prüfe, ob es sich um eine statische Datei (CSS/IMG/JS) handelt
-$isAsset = preg_match('/\.(?:png|jpg|jpeg|gif|css|js)$/', $route);
-
-// Wenn der Nutzer nicht eingeloggt ist, es keine public Route und kein Asset ist -> Kick!
-if (!isset($_SESSION['user_logged_in']) || $_SESSION['user_logged_in'] !== true) {
-    if (!$isAsset && !in_array($route, $publicRoutes)) {
-        header('Location: /login');
-        exit;
-    }
-}
+// ACHTUNG: Die globale Login-Prüfung wurde hier entfernt! (Schritt 1.C)
+// Sie liegt jetzt gekapselt und sauber im Basis-Controller (app/Core/Controller.php)
 
 // --- Autoloading ---
 spl_autoload_register(function ($class) {
