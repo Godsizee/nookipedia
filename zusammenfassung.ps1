@@ -8,7 +8,7 @@ $OutputDirectory = Join-Path $SourceDirectory "code_parts" # Erstellt einen Ordn
 $ExcludeDirectoryPattern = "libs|node_modules"
 
 # Dateitypen, die verarbeitet werden sollen
-$FileTypesToProcess = "*.php", "*.html", "*.css", "*.js", "*.json", ".htaccess"
+$FileTypesToProcess = "*.php", "*.html", "*.css", "*.js", "*.json", ".htaccess",".sql",".env",".gitignore","Dockerfile"
 $BytesPerPart = 400000 # Anzahl der Bytes (Zeichen) pro Ausgabedatei
 
 # --- Globale Fehlerbehandlung (Trap) ---

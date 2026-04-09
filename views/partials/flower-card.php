@@ -1,5 +1,6 @@
 <!-- Premium Horizontal/Vertical Card -->
-<a href="/blume?id=<?= $flower->id ?>" class="flower-card-premium" id="flower-<?= $flower->id ?>">
+<!-- CLEAN URL: Wir verlinken nun auf /blume/1 statt /blume?id=1 -->
+<a href="/blume/<?= $flower->id ?>" class="flower-card-premium" id="flower-<?= $flower->id ?>">
     
     <!-- 1. The Visual (Floating Image) -->
     <div class="flower-visual-wrapper">

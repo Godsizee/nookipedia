@@ -1,6 +1,4 @@
 # Sensible Daten
-
-.env
 *.ps1
 /code_parts
 # Nookipedia Assets (Sämtliche Bilder im img-Ordner ignorieren)

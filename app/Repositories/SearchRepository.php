@@ -40,11 +40,11 @@ class SearchRepository {
             $results[] = $this->formatResult($row['name'], $row['price'] . ' Sternis', $url, 'acnh/' . $row['image_path'], $badge);
         }
 
-        // 2. BLUMEN
+        // 2. BLUMEN (Auf Clean URLs umgestellt)
         $stmt = $this->db->prepare("SELECT id, name, image_path FROM flowers WHERE name ILIKE :term" . $limit3);
         $stmt->execute(['term' => $searchTerm]);
         foreach ($stmt->fetchAll() as $row) {
-            $results[] = $this->formatResult($row['name'], 'Pflanzenwelt', '/blume?id='.$row['id'], 'acnh/' . $row['image_path'], '🌷 Blume');
+            $results[] = $this->formatResult($row['name'], 'Pflanzenwelt', '/blume/'.$row['id'], 'acnh/' . $row['image_path'], '🌷 Blume');
         }
 
         // 3. MATERIALIEN

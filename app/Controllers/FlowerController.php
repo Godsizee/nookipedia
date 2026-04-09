@@ -28,8 +28,8 @@ class FlowerController {
         require __DIR__ . '/../../views/flower-list.php';
     }
 
-public function show() {
-        $id = $_GET['id'] ?? 1;
+    // Die ID wird nun elegant direkt vom Router injiziert (kein $_GET['id'] mehr nötig)
+    public function show($id = 1) {
         $flower = $this->repo->findById($id);
         
         if (!$flower) {
@@ -38,7 +38,7 @@ public function show() {
         }
 
         $combinations = $this->repo->getCombinations($id);
-        $seeds = $this->repo->getSeeds($id); // NEU: Die Samen laden!
+        $seeds = $this->repo->getSeeds($id);
         $title = $flower->name . ' Zucht-Guide';
         
         require __DIR__ . '/../../views/flower-detail.php';
