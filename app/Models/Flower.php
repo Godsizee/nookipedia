@@ -25,12 +25,11 @@ class Flower {
     private function parsePostgresArray($pgArray) {
         if (is_array($pgArray)) return $pgArray;
         
-        // Entferne die geschweiften Klammern und Anführungszeichen
         $cleaned = trim($pgArray, '{}');
         if ($cleaned === '') return [];
         
-        $cleaned = str_replace('"', '', $cleaned);
-        return explode(',', $cleaned);
+        // ROBUSTHEITS-FIX: str_getcsv() anstelle von manuellem str_replace und explode
+        return str_getcsv($cleaned, ',', '"');
     }
 
     /**

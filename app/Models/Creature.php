@@ -39,7 +39,9 @@ class Creature {
         if (is_array($pgArray)) return $pgArray;
         $cleaned = trim($pgArray, '{}');
         if ($cleaned === '') return [];
-        return explode(',', $cleaned);
+        
+        // ROBUSTHEITS-FIX: str_getcsv() respektiert gekapselte Kommas in PostgreSQL-Arrays
+        return str_getcsv($cleaned, ',', '"');
     }
 
     public function getImageUrl() {
