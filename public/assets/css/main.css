@@ -114,6 +114,11 @@ header .container {
     transform: scale(0.85);
 }
 
+#theme-toggle:focus-visible {
+    outline: 3px solid var(--ac-green);
+    outline-offset: 2px;
+}
+
 /* --- 4. HERO SECTION --- */
 .hero {
     padding: 2.5rem 0 1.5rem;
@@ -136,10 +141,10 @@ header .container {
 }
 
 /* --- 5. CATEGORY SELECTION (HOME) --- */
-/* MOBILE FIRST: 1 Spalte, voller Fokus auf Lesbarkeit */
+/* STRICT MOBILE FIRST: 1 Spalte untereinander */
 .category-selection {
     display: grid;
-    grid-template-columns: 1fr; /* Zwingt alles auf Mobile in 1 Spalte untereinander */
+    grid-template-columns: 1fr;
     gap: 1.25rem;
     margin-top: 2rem;
 }
@@ -155,7 +160,7 @@ header .container {
     box-shadow: var(--ac-shadow);
     border: 2px solid transparent;
     transition: transform 0.2s, border-color 0.2s;
-    height: 100%; /* Wichtig für Grid, damit alle Karten gleich hoch sind */
+    height: 100%;
 }
 
 .cat-card i {
@@ -168,7 +173,7 @@ header .container {
     justify-content: center;
     border-radius: var(--radius-md);
     font-style: normal;
-    flex-shrink: 0; /* WICHTIG: Verhindert, dass das Icon auf kleinen Screens gequetscht wird */
+    flex-shrink: 0; 
 }
 
 .cat-card span {
@@ -181,11 +186,27 @@ header .container {
 .cat-card:active {
     transform: scale(0.98);
 }
+.cat-card:focus-visible {
+    outline: 3px solid var(--ac-green);
+    outline-offset: 2px;
+}
 
 /* Specific Card Colors */
 .cat-card.faunapaedie { border-color: rgba(139, 90, 43, 0.2); }
 .cat-card.flowers { border-color: rgba(255, 105, 180, 0.2); }
 .cat-card.events { border-color: rgba(255, 152, 0, 0.2); }
+
+/* NEU: Museum Card auf dem Home-Screen */
+.cat-card.cat-card-museum {
+    border-color: rgba(212, 175, 55, 0.4);
+    background: linear-gradient(135deg, var(--ac-surface) 40%, #fffdf5 100%);
+}
+
+[data-theme='dark'] .cat-card.cat-card-museum {
+    border-color: rgba(212, 175, 55, 0.4);
+    /* Ein edler, dunkler Gold-Gradient für den Darkmode statt des grellen Weiß */
+    background: linear-gradient(135deg, var(--ac-surface) 40%, #423822 100%);
+}
 
 /* --- 6. TAB NAVIGATION & INFO BOXES --- */
 .tab-nav {
@@ -221,6 +242,11 @@ header .container {
     background: var(--ac-green);
     color: #ffffff;
     box-shadow: 0 4px 12px rgba(89, 166, 131, 0.3);
+}
+
+.tab-item:focus-visible {
+    outline: 3px solid var(--ac-green);
+    outline-offset: 2px;
 }
 
 /* Info Box (Fluff Texts) */
@@ -262,10 +288,11 @@ header .container {
     font-weight: 600;
 }
 
-/* --- 7. CREATURE CARDS (MOBILE FIRST, REDESIGNED & CONSISTENT) --- */
+/* --- 7. CREATURE CARDS (MOBILE FIRST) --- */
+/* Auf Mobile in 1 Spalte */
 .creature-grid {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr;
     gap: 1.5rem;
 }
 
@@ -441,7 +468,6 @@ header .container {
     gap: 8px;
     min-height: 24px;
     justify-content: flex-end;
-    /* Feste Breite für Konsistenz: 24px + 8px + 24px */
     min-width: 56px; 
 }
 
@@ -521,13 +547,13 @@ header .container {
     color: var(--ac-text-muted);
 }
 
-/* --- 8. TABLET & DESKTOP ENHANCEMENTS (Responsive) --- */
+/* --- 8. TABLET & DESKTOP ENHANCEMENTS (Responsive Breakpoints) --- */
 @media (min-width: 650px) {
     .container {
         max-width: 600px;
     }
     
-    /* TABLET: 2 Spalten. Karten werden leicht umstrukturiert für eine quadratischere Form */
+    /* TABLET: 2 Spalten für Startseiten-Karten */
     .category-selection {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -544,7 +570,7 @@ header .container {
         max-width: 1100px;
     }
 
-    /* DESKTOP: 3 Spalten. Perfekt für unsere 6 Hauptkategorien (2 Reihen á 3) */
+    /* DESKTOP: 3 Spalten für Startseite */
     .category-selection {
         grid-template-columns: repeat(3, 1fr);
         gap: 1.5rem;
@@ -555,8 +581,8 @@ header .container {
         box-shadow: 0 16px 40px rgba(92, 78, 63, 0.15);
     }
 
+    /* DESKTOP: 2 Spalten für Kreaturen */
     .creature-grid {
-        display: grid;
         grid-template-columns: repeat(2, 1fr);
         gap: 2rem;
     }
@@ -573,12 +599,7 @@ header .container {
 }
 
 @media (min-width: 1200px) {
-    .creature-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-@media (min-width: 1200px) {
+    /* WIDESCREEN: 3 Spalten für Kreaturen */
     .creature-grid {
         grid-template-columns: repeat(3, 1fr);
     }
@@ -609,8 +630,18 @@ header .container {
     text-decoration: none;
     display: inline-block;
     transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    background: var(--ac-green);
+    color: #fff;
+    border-radius: 100px;
+    font-weight: 800;
 }
 
-.btn-back:hover {
+.btn-back:hover, .btn-back:focus-visible {
     transform: scale(1.05);
+    background: #4a8f6e;
+    outline: none;
+}
+.btn-back:focus-visible {
+    outline: 3px solid var(--ac-green);
+    outline-offset: 2px;
 }

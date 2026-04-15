@@ -11,8 +11,8 @@ include 'partials/header.php';
 
 <div class="category-selection">
     
-    <a href="/museum" class="cat-card" style="border-color: rgba(212, 175, 55, 0.4); background: linear-gradient(135deg, var(--ac-surface), #fffdf5);">
-        <i style="background: #fcf8e8; box-shadow: inset 0 2px 4px rgba(212, 175, 55, 0.2);">
+    <a href="/museum" class="cat-card cat-card-museum">
+        <i>
             <span style="font-size: 2.2rem; line-height: 1; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));">🏛️</span>
         </i>
         <span>Das Museum</span>
