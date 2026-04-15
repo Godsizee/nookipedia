@@ -23,11 +23,15 @@ class MuseumController extends Controller {
     /**
      * Die Museums-Eingangshalle (Hub)
      */
-    public function index() {
-        $title = 'Eugen\'s Museum';
-        require __DIR__ . '/../../views/museum/museum-hub.php';
-    }
+// In app/Controllers/MuseumController.php
 
+public function index() {
+    $npcRepo = new \App\Repositories\NpcRepository();
+    $museumNpcs = $npcRepo->getMuseumNpcs(); // Holt Eugen, Kofi, Reiner aus DB
+    
+    $title = 'Eugen\'s Museum';
+    require __DIR__ . '/../../views/museum/museum-hub.php';
+}
     /**
      * Fossilien-Abteilung
      */
@@ -101,27 +105,19 @@ class MuseumController extends Controller {
         require __DIR__ . '/../../views/museum/museum-sea.php';
     }
 
-    /**
-     * NPC: Eugen Profil
+/**
+     * Dynamische NPC-Profilseite
      */
-    public function npcEugen() {
-        $title = 'Eugen (Blathers)';
-        require __DIR__ . '/../../views/museum/npc-eugen.php';
-    }
+    public function npcProfile($name) {
+        $npcRepo = new \App\Repositories\NpcRepository();
+        $npc = $npcRepo->findByName($name);
 
-    /**
-     * NPC: Kofi Profil
-     */
-    public function npcKofi() {
-        $title = 'Kofi (Brewster)';
-        require __DIR__ . '/../../views/museum/npc-kofi.php';
-    }
+        if (!$npc) {
+            header("Location: /museum");
+            exit;
+        }
 
-    /**
-     * NPC: Reiner Profil
-     */
-    public function npcReiner() {
-        $title = 'Reiner (Redd)';
-        require __DIR__ . '/../../views/museum/npc-reiner.php';
+        $title = $npc->name . ' - Profil';
+        require __DIR__ . '/../../views/museum/npc-profile.php';
     }
 }

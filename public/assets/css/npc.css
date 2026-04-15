@@ -1,0 +1,94 @@
+/**
+ * Nookipedia-Next: NPC Profile Styles
+ * Modularer Aufbau für Charakter-Detailseiten
+ */
+
+.profile-content {
+    max-width: 800px;
+    margin: 2rem auto;
+    background: var(--ac-surface);
+    padding: 2.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--ac-shadow);
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--ac-text);
+}
+
+.profile-content h3 {
+    color: var(--ac-green);
+    font-size: 1.5rem;
+    margin: 2rem 0 1rem;
+    font-weight: 900;
+    border-bottom: 2px solid var(--ac-green-light);
+    padding-bottom: 0.5rem;
+}
+
+.profile-content p {
+    margin-bottom: 1.2rem;
+}
+
+.ac-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 1.5rem;
+}
+
+.ac-list li {
+    position: relative;
+    padding-left: 1.8rem;
+    margin-bottom: 0.8rem;
+}
+
+.ac-list li::before {
+    content: '🍃';
+    position: absolute;
+    left: 0;
+    top: 2px;
+    font-size: 0.9rem;
+}
+
+.fun-fact-box {
+    background: var(--ac-blue-light);
+    padding: 1.2rem;
+    border-left: 4px solid var(--ac-green);
+    border-radius: 0 var(--radius-md) var(--radius-md) 0;
+    margin: 1.5rem 0;
+    font-style: italic;
+}
+
+/* NPC-spezifische Header-Styles */
+.npc-hero {
+    /* Standard-Hintergrund (z.B. für Eugen) */
+    background: linear-gradient(to bottom, #2c4a3d 0%, #1a2e25 100%);
+}
+
+.npc-hero img {
+    width: 100px; 
+    height: 100px; 
+    border-radius: 50%; 
+    background: #f8f4e6; 
+    padding: 6px; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    margin-bottom: 1rem;
+}
+
+/* Individuelle Verläufe via Klassen */
+.npc-hero.npc-reiner {
+    background: linear-gradient(to bottom, #1a2e25 0%, #000000 100%);
+    border-color: #3d6b56;
+}
+.npc-hero.npc-reiner h1 { color: #f5cf66; }
+
+.npc-hero.npc-kofi {
+    background: linear-gradient(to bottom, #3e2723 0%, #1b0000 100%);
+    border-color: #8d6e63;
+}
+.npc-hero.npc-kofi h1 { color: #d7ccc8; }
+
+/* Desktop-Anpassung */
+@media (min-width: 650px) {
+    .profile-content {
+        padding: 3rem;
+    }
+}

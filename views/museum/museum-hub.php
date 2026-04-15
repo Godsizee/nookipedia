@@ -7,32 +7,21 @@
     
     <div class="museum-intro-box">
         <p>
-            Das Museum (博物館, hakubutsukan) ist ein Gebäude, das in allen Animal Crossing-Spielen (außer Animal Forest) zu finden ist. Es ist eine faszinierende Einrichtung zur Sammlung und Ausstellung von <strong>Insekten, Fischen, Meerestieren, Fossilien, Gemälden und Skulpturen</strong>.
+            Das Museum ist ein Gebäude, das in allen Animal Crossing-Spielen (außer Animal Forest) zu finden ist. Es ist eine faszinierende Einrichtung zur Sammlung und Ausstellung von <strong>Insekten, Fischen, Meerestieren, Fossilien, Gemälden und Skulpturen</strong>.
         </p>
         <p>
             Kuratiert wird das Museum von Eugen (Blathers), einer Eule, die stets treu in der Eingangshalle wacht.
         </p>
     </div>
 
-    <div class="museum-npc-grid">
-        <a href="/museum/npc/eugen" class="npc-card">
-            <img src="/assets/img/acnh/museum/Eugen.png" alt="Eugen">
-            <strong class="npc-name">Eugen</strong>
-            <span class="npc-role">Museumsdirektor</span>
+<div class="museum-npc-grid">
+    <?php foreach ($museumNpcs as $npc): ?>
+        <a href="/museum/npc/<?= strtolower($npc->name) ?>" class="npc-card">
+            <img src="<?= $npc->getImageUrl() ?>" alt="<?= $npc->name ?>">
+            <strong class="npc-name"><?= $npc->name ?></strong>
+            <span class="npc-role"><?= $npc->role ?></span>
         </a>
-        
-        <a href="/museum/npc/kofi" class="npc-card">
-            <img src="/assets/img/acnh/museum/Kofi.png" alt="Kofi">
-            <strong class="npc-name">Kofi</strong>
-            <span class="npc-role">Barista im Taubenschlag</span>
-        </a>
-
-        <a href="/museum/npc/reiner" class="npc-card">
-            <img src="/assets/img/acnh/museum/Reiner.png" alt="Reiner">
-            <strong class="npc-name">Reiner</strong>
-            <span class="npc-role">Kunsthändler</span>
-        </a>
-    </div>
+    <?php endforeach; ?>
 </div>
 
 <?php include __DIR__ . '/../partials/info_museum.php'; ?>

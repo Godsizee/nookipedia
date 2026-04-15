@@ -64,7 +64,7 @@ $router->add('insekten', 'CreatureController', 'insects');
 $router->add('fische', 'CreatureController', 'fish');
 $router->add('meerestiere', 'CreatureController', 'sea');
 $router->add('blumen', 'FlowerController', 'index'); 
-$router->add('blume/{id}', 'FlowerController', 'show');    // CLEAN URL: Dynamischer Parameter {id}
+$router->add('blume/{id}', 'FlowerController', 'show');  
 
 // --- NEU: Das Museum ---
 $router->add('museum', 'MuseumController', 'index');
@@ -77,6 +77,7 @@ $router->add('museum/kunstwerke/{id}', 'MuseumController', 'artDetail');
 $router->add('museum/insekten', 'MuseumController', 'insects');
 $router->add('museum/fische', 'MuseumController', 'fish');
 $router->add('museum/meerestiere', 'MuseumController', 'sea');
+$router->add('museum/npc/{name}', 'MuseumController', 'npcProfile');
 
 $router->add('events', 'EventController', 'index');
 $router->add('materialien', 'MaterialController', 'index'); 
@@ -84,8 +85,8 @@ $router->add('bastelanleitungen', 'RecipeController', 'diy');
 $router->add('kochrezepte', 'RecipeController', 'cooking');
 
 // --- NEU: Such-Routen ---
-$router->add('api/search', 'SearchController', 'api'); // JSON-Endpunkt für Spotlight
-$router->add('suche', 'SearchController', 'index');    // HTML-Ergebnisseite für Enter-Druck
+$router->add('api/search', 'SearchController', 'api'); 
+$router->add('suche', 'SearchController', 'index');   
 
 // --- Route berechnen ---
 $route = $requestUri;
