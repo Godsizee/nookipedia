@@ -196,7 +196,7 @@ header .container {
 .cat-card.flowers { border-color: rgba(255, 105, 180, 0.2); }
 .cat-card.events { border-color: rgba(255, 152, 0, 0.2); }
 
-/* NEU: Museum Card auf dem Home-Screen */
+/* Museum Card auf dem Home-Screen */
 .cat-card.cat-card-museum {
     border-color: rgba(212, 175, 55, 0.4);
     background: linear-gradient(135deg, var(--ac-surface) 40%, #fffdf5 100%);
@@ -204,8 +204,7 @@ header .container {
 
 [data-theme='dark'] .cat-card.cat-card-museum {
     border-color: rgba(212, 175, 55, 0.4);
-    /* Ein edler, dunkler Gold-Gradient für den Darkmode statt des grellen Weiß */
-    background: linear-gradient(135deg, var(--ac-surface) 40%, #423822 100%);
+    background: var(--ac-surface);
 }
 
 /* --- 6. TAB NAVIGATION & INFO BOXES --- */
