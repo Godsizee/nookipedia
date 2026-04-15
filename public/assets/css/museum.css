@@ -1,0 +1,262 @@
+/**
+ * Nookipedia-Next: Museum Styles
+ * Design: Edles Museum-Ambiente, inspiriert von der ACNH Eingangshalle
+ * SRP: Saubere Trennung von Struktur und Design
+ */
+
+/* ==========================================================================
+   1. MUSEUM HUB (Eingangshalle)
+   ========================================================================== */
+.museum-hero {
+    background: linear-gradient(to bottom, 
+        #f8f4e6 0%, #f8f4e6 30%, 
+        #3e241a 30%, #2d1b13 35%, 
+        #8b151a 35%, #5a0e11 100%
+    );
+    padding: 3rem 1rem 4rem 1rem;
+    border-radius: var(--radius-lg);
+    text-align: center;
+    margin-bottom: 3rem;
+    box-shadow: 0 16px 32px rgba(45, 27, 19, 0.4);
+    border: 4px solid #d4af37;
+    position: relative;
+    overflow: hidden;
+}
+
+.museum-hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; width: 100%; height: 12px;
+    background: linear-gradient(90deg, #b8860b, #ffd700, #fff8e1, #ffd700, #b8860b);
+    border-top: 3px solid #2a1610;
+    box-shadow: 0 -4px 10px rgba(0,0,0,0.6);
+}
+
+.museum-hero-icon {
+    font-size: 4.5rem;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+    margin-bottom: -10px;
+}
+
+.museum-hero h1 {
+    color: #2d1b13;
+    font-weight: 900;
+    margin-top: 0;
+    font-size: 2.2rem;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.8);
+}
+
+.museum-intro-box {
+    max-width: 750px;
+    margin: 2rem auto 0;
+    text-align: left;
+    background: rgba(27, 42, 33, 0.85);
+    padding: 1.5rem 2rem;
+    border-radius: var(--radius-md);
+    border-left: 4px solid #d4af37;
+    color: #e0f2ea;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    backdrop-filter: blur(8px);
+}
+
+.museum-intro-box p {
+    margin-bottom: 0.8rem;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: #e0f2ea;
+}
+.museum-intro-box p:last-child { margin-bottom: 0; }
+
+.museum-npc-grid { display: flex; justify-content: center; gap: 1.5rem; margin-top: 2.5rem; }
+
+.npc-card {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 223, 186, 0.3);
+    border-radius: var(--radius-md);
+    padding: 1rem 2rem;
+    backdrop-filter: blur(4px);
+    display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    transition: transform 0.2s ease, background 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+.npc-card:hover { transform: translateY(-3px); background: rgba(255, 255, 255, 0.15); }
+.npc-card img {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: #f8f4e6; padding: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+.npc-name { color: #f5cf66; font-size: 1.1rem; }
+.npc-role { font-size: 0.85rem; color: #e0f2ea; }
+
+.museum-section-header { text-align: center; margin-bottom: 2rem; }
+.museum-section-header h2 { color: var(--ac-text); font-weight: 900; font-size: 1.6rem; }
+.museum-section-header p { color: var(--ac-text-muted); margin-top: 0.3rem; }
+
+.museum-categories {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+.cat-card-art { border-color: rgba(184, 134, 11, 0.4); background: linear-gradient(to right, var(--ac-surface), #fffdf7); }
+.cat-card-fossil { border-color: rgba(141, 110, 99, 0.4); background: linear-gradient(to right, var(--ac-surface), #faf9f8); }
+.cat-card-insect { border-color: rgba(89, 166, 131, 0.4); background: linear-gradient(to right, var(--ac-surface), #f2f9f5); }
+.cat-card-fish { border-color: rgba(41, 182, 246, 0.4); background: linear-gradient(to right, var(--ac-surface), #f0f9ff); }
+.cat-card-sea { border-color: rgba(156, 39, 176, 0.4); background: linear-gradient(to right, var(--ac-surface), #faf0ff); }
+
+.cat-card-text { display: flex; flex-direction: column; }
+.cat-card-title { font-weight: 900; font-size: 1.3rem; color: var(--ac-text); }
+.cat-card-subtitle { font-size: 0.85rem; color: var(--ac-text-muted); font-weight: 700; }
+
+.museum-empty-state { text-align: center; padding: 50px; }
+.museum-empty-state p { font-size: 1.5rem; }
+
+
+/* ==========================================================================
+   2. FOSSILIEN (Keller)
+   ========================================================================== */
+.fossil-hero { background: radial-gradient(circle at center, #5d4037 0%, #3e2723 100%); border-color: #8d6e63; padding-top: 2rem; }
+.fossil-hero h1 { color: #f5cf66; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+.fossil-hero-icon { font-size: 4rem; }
+.fossil-hero-subtitle { margin-top: 0.5rem; color: #d7ccc8; }
+
+.fossil-group { border-color: #8d6e63; }
+.fossil-summary { color: #5d4037; }
+.fossil-grid { background: var(--ac-bg); }
+.fossil-card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; }
+
+.fossil-card {
+    background: var(--ac-surface); border: 2px solid #d7ccc8; border-radius: var(--radius-md);
+    padding: 1rem; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0.8rem;
+    box-shadow: var(--ac-shadow); transition: transform 0.2s;
+}
+.fossil-card:hover { transform: translateY(-4px); border-color: #8d6e63; }
+.fossil-img-wrap { width: 80px; height: 80px; background: #efebe9; border-radius: 50%; display: flex; align-items: center; justify-content: center; padding: 10px; }
+.fossil-img-wrap img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2)); }
+.fossil-name { font-size: 0.95rem; }
+.fossil-price { background: #efebe9; color: #5d4037; font-size: 0.8rem; padding: 2px 8px; border-radius: 100px; }
+
+
+/* ==========================================================================
+   3. KUNSTGALERIE (Obergeschoss)
+   ========================================================================== */
+.art-hero { background: radial-gradient(circle at center, #6a1b1a 0%, #3e0c0c 100%); border-color: #8e2a29; padding-top: 2rem; }
+.art-hero h1 { color: #f5cf66; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+.art-hero-icon { font-size: 4rem; }
+.art-hero-subtitle { margin-top: 0.5rem; color: #ffcdd2; }
+
+.art-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 2rem; padding: 1rem 0; }
+.art-card {
+    background: #fff; padding: 1rem; border-radius: 4px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15), inset 0 0 0 1px rgba(0,0,0,0.1);
+    display: flex; flex-direction: column; gap: 1rem; text-decoration: none; color: var(--ac-text);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border: 8px solid #d4af37; border-image: linear-gradient(45deg, #b8860b, #ffd700, #b8860b, #ffd700) 1;
+}
+.art-card:hover, .art-card:focus-visible { transform: scale(1.03) translateY(-5px); outline: none; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+
+.art-img-container {
+    width: 100%; aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center;
+    background: #fdfbf7; overflow: hidden; position: relative; box-shadow: inset 0 4px 10px rgba(0,0,0,0.08);
+}
+.art-img-container img { max-width: 90%; max-height: 90%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
+.art-info { text-align: center; }
+.art-title { font-weight: 900; font-size: 1.1rem; margin-bottom: 0.3rem; }
+.art-artist { font-size: 0.85rem; color: var(--ac-text-muted); font-style: italic; }
+
+.art-badge-fake { display: inline-block; margin-top: 0.5rem; font-size: 0.75rem; font-weight: bold; color: #d81b60; background: #ffebee; padding: 2px 8px; border-radius: 100px; }
+.art-badge-real { display: inline-block; margin-top: 0.5rem; font-size: 0.75rem; font-weight: bold; color: #2e7d32; background: #e8f5e9; padding: 2px 8px; border-radius: 100px; }
+
+
+/* ==========================================================================
+   4. ECHT VS. FÄLSCHUNG TOGGLE
+   ========================================================================== */
+.art-detail-wrapper { max-width: 800px; margin: 0 auto; background: var(--ac-surface); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--ac-shadow); }
+.art-author-subtitle { opacity: 0.7; }
+.art-back-link { text-align: center; margin-top: 2rem; }
+.art-back-link a { text-decoration: none; }
+
+.compare-container {
+    position: relative; width: 100%; max-width: 500px; margin: 0 auto 2rem; aspect-ratio: 1 / 1;
+    background: #fdfbf7; border: 12px solid #d4af37; border-image: linear-gradient(45deg, #b8860b, #ffd700, #b8860b, #ffd700) 1;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.2), inset 0 10px 20px rgba(0,0,0,0.1);
+    display: flex; align-items: center; justify-content: center;
+}
+.compare-img {
+    position: absolute; max-width: 90%; max-height: 90%; object-fit: contain;
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.4));
+}
+.img-real { opacity: 1; transform: scale(1); }
+.img-fake { opacity: 0; transform: scale(0.95); }
+.is-showing-fake .img-real { opacity: 0; transform: scale(1.05); pointer-events: none; }
+.is-showing-fake .img-fake { opacity: 1; transform: scale(1); }
+
+.toggle-btn-wrap { text-align: center; margin-bottom: 2rem; }
+.btn-toggle-art {
+    background: var(--ac-green); color: white; border: none; padding: 1rem 2rem; font-size: 1.2rem; font-weight: 900;
+    border-radius: 100px; cursor: pointer; box-shadow: 0 8px 20px rgba(89,166,131,0.4);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); display: inline-flex; align-items: center; gap: 10px;
+}
+.btn-toggle-art:hover, .btn-toggle-art:focus-visible { transform: scale(1.05) translateY(-2px); background: #4a8f6e; outline: none; }
+.btn-toggle-art:focus-visible { outline: 3px solid var(--ac-green); outline-offset: 3px; }
+.is-showing-fake .btn-toggle-art { background: #d81b60; box-shadow: 0 8px 20px rgba(216, 27, 96, 0.4); }
+.is-showing-fake .btn-toggle-art:hover { background: #c2185b; }
+
+.fake-warning {
+    display: none; background: #ffebee; border-left: 6px solid #d81b60; padding: 1.5rem;
+    border-radius: var(--radius-sm); margin-top: 1.5rem; color: #880e4f; font-size: 1.05rem; animation: slideDown 0.4s ease;
+}
+.fake-warning h4 { color: #d81b60; font-weight: 900; margin-bottom: 0.5rem; font-size: 1.2rem; }
+.is-showing-fake .fake-warning { display: block; }
+
+@keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+.always-real-msg {
+    text-align: center; background: #e8f5e9; color: #2e7d32; padding: 1rem; border-radius: 100px;
+    font-weight: 900; font-size: 1.1rem; margin-bottom: 2rem; border: 2px dashed #81c784;
+}
+
+/* ==========================================================================
+   5. INSEKTEN, FISCHE & MEERESTIERE IM MUSEUM
+   ========================================================================== */
+.hero-insects { background: linear-gradient(to bottom, #1b3b22 0%, #0d2112 60%, #8b151a 100%); }
+.hero-insects-subtitle { color: #e0f2ea; }
+.section-insects { background: #15261b; border-color: #2c4a3d; box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
+.section-insects .filter-controls { border-bottom-color: #2c4a3d; }
+.section-insects .ac-checkbox { color: #e0f2ea; }
+.section-insects .checkmark { background: #0d2112; border-color: #3d6b56; }
+.section-insects .btn-clear { background: #0d2112; color: #e0f2ea; border-color: #3d6b56; }
+.section-insects .mini-card-inner { background: #0d2112; border-color: #2c4a3d; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+
+.hero-fish { background: linear-gradient(to bottom, #0d47a1 0%, #011d4a 60%, #8b151a 100%); border-color: #4fc3f7; }
+.hero-fish h1 { color: #e1f5fe; }
+.hero-fish-subtitle { color: #b3e5fc; }
+.section-fish { background: #011436; border-color: #023e8a; box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
+.section-fish .filter-controls { border-bottom-color: #023e8a; }
+.section-fish .ac-checkbox { color: #e1f5fe; }
+.section-fish .checkmark { background: #011d4a; border-color: #0277bd; }
+.section-fish .btn-clear { background: #011d4a; color: #e1f5fe; border-color: #0277bd; }
+.section-fish .mini-card-inner { background: #011d4a; border-color: #023e8a; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+
+.hero-sea { background: linear-gradient(to bottom, #4a148c 0%, #200542 60%, #8b151a 100%); border-color: #ce93d8; }
+.hero-sea h1 { color: #f3e5f5; }
+.hero-sea-subtitle { color: #e1bee7; }
+.section-sea { background: #14022e; border-color: #3a1078; box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
+.section-sea .filter-controls { border-bottom-color: #3a1078; }
+.section-sea .ac-checkbox { color: #f3e5f5; }
+.section-sea .checkmark { background: #200542; border-color: #6a1b9a; }
+.section-sea .btn-clear { background: #200542; color: #f3e5f5; border-color: #6a1b9a; }
+.section-sea .mini-card-inner { background: #200542; border-color: #3a1078; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+
+/* Dark Mode Overrides (falls notwendig) */
+@media (prefers-color-scheme: dark) {
+    .museum-hero {
+        background: linear-gradient(to bottom, #2a2824 0%, #2a2824 30%, #1f1410 30%, #150d0a 35%, #5a0b0f 35%, #3a0507 100%);
+        border-color: #aa8822;
+    }
+    .museum-hero h1 { color: #f8f4e6; text-shadow: 0 2px 4px #000; }
+    .art-card { background: #2b2926; }
+    .art-img-container, .compare-container { background: #1c1a18; }
+    .art-detail-wrapper { background: var(--ac-surface); }
+    .fake-warning { background: rgba(216, 27, 96, 0.1); color: #f8bbd0; }
+    .always-real-msg { background: rgba(76, 175, 80, 0.1); color: #a5d6a7; border-color: #4caf50; }
+}

@@ -65,6 +65,16 @@ $router->add('fische', 'CreatureController', 'fish');
 $router->add('meerestiere', 'CreatureController', 'sea');
 $router->add('blumen', 'FlowerController', 'index'); 
 $router->add('blume/{id}', 'FlowerController', 'show');    // CLEAN URL: Dynamischer Parameter {id}
+
+// --- NEU: Das Museum ---
+$router->add('museum', 'MuseumController', 'index');
+$router->add('museum/fossilien', 'MuseumController', 'fossils');
+$router->add('museum/kunstwerke', 'MuseumController', 'artworks');
+$router->add('museum/kunstwerke/{id}', 'MuseumController', 'artDetail');
+$router->add('museum/insekten', 'MuseumController', 'insects');
+$router->add('museum/fische', 'MuseumController', 'fish');
+$router->add('museum/meerestiere', 'MuseumController', 'sea');
+
 $router->add('events', 'EventController', 'index');
 $router->add('materialien', 'MaterialController', 'index'); 
 $router->add('bastelanleitungen', 'RecipeController', 'diy');
