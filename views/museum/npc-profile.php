@@ -21,13 +21,11 @@
         <?= $npc->description ?>
     </div>
     
-    <div style="text-align: center; margin-top: 3rem;">
-        <a href="/museum" class="btn-clear" style="text-decoration: none; padding: 12px 24px;">← Zurück zum Museum</a>
-    </div>
-</div>
 <div style="text-align: center; margin-top: 3rem;">
         <a href="/museum" class="btn-museum-back">← Zurück zum Museum</a>
     </div>
+</div>
+
 
 
 <?php include __DIR__ . '/../partials/footer.php'; ?>
