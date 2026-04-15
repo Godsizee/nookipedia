@@ -20,7 +20,8 @@ class Fossil {
     }
 
     public function getImageUrl() {
-        return "/assets/img/acnh/" . $this->image_path;
+        // NEU: Setzt automatisch den museum/ Pfad davor
+        return "/assets/img/acnh/museum/" . $this->image_path;
     }
 
     public function getFormattedPrice() {

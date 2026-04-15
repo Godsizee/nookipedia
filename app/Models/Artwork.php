@@ -24,12 +24,14 @@ class Artwork {
     }
 
     public function getRealImageUrl() {
-        return "/assets/img/acnh/" . $this->image_real;
+        // NEU: Setzt automatisch den museum/ Pfad davor
+        return "/assets/img/acnh/museum/" . $this->image_real;
     }
 
     public function getFakeImageUrl() {
         if (!$this->image_fake) return null;
-        return "/assets/img/acnh/" . $this->image_fake;
+        // NEU: Setzt automatisch den museum/ Pfad davor
+        return "/assets/img/acnh/museum/" . $this->image_fake;
     }
 
     public function hasFake() {

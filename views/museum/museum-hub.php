@@ -12,9 +12,15 @@
 
     <div class="museum-npc-grid">
         <div class="npc-card">
-            <img src="/assets/img/acnh/placeholder.png" alt="Eugen">
+            <img src="/assets/img/acnh/museum/Eugen.png" alt="Eugen" onerror="this.src='/assets/img/acnh/placeholder.png'">
             <strong class="npc-name">Eugen</strong>
             <span class="npc-role">Museumsdirektor</span>
+        </div>
+        
+        <div class="npc-card">
+            <img src="/assets/img/acnh/museum/Kofi.png" alt="Kofi" onerror="this.src='/assets/img/acnh/placeholder.png'">
+            <strong class="npc-name">Kofi</strong>
+            <span class="npc-role">Barista im Taubenschlag</span>
         </div>
     </div>
 </div>
