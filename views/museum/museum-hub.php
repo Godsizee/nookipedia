@@ -15,14 +15,16 @@
     </div>
 
 <div class="museum-npc-grid">
-    <?php foreach ($museumNpcs as $npc): ?>
-        <a href="/museum/npc/<?= strtolower($npc->name) ?>" class="npc-card">
-            <img src="<?= $npc->getImageUrl() ?>" alt="<?= $npc->name ?>">
-            <strong class="npc-name"><?= $npc->name ?></strong>
-            <span class="npc-role"><?= $npc->role ?></span>
-        </a>
-    <?php endforeach; ?>
-</div>
+        <?php foreach ($museumNpcs as $npc): ?>
+            <a href="/museum/npc/<?= strtolower($npc->name) ?>" class="npc-card">
+                <img src="<?= $npc->getImageUrl() ?>" alt="<?= $npc->name ?>" onerror="this.src='/assets/img/acnh/placeholder.png'">
+                <div class="npc-info">
+                    <strong class="npc-name"><?= $npc->name ?></strong>
+                    <span class="npc-role"><?= $npc->role ?></span>
+                </div>
+            </a>
+        <?php endforeach; ?>
+    </div>
 
 <?php include __DIR__ . '/../partials/info_museum.php'; ?>
 

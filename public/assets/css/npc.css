@@ -92,3 +92,42 @@
         padding: 3rem;
     }
 }
+
+/* ==========================================================================
+   BUTTON: Zurück zum Museum
+   ========================================================================== */
+.btn-museum-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #2c4a3d 0%, #1a2e25 100%);
+    color: #f5cf66; /* Edles Gold */
+    padding: 14px 32px;
+    border-radius: 100px;
+    font-weight: 900;
+    font-size: 1.1rem;
+    text-decoration: none !important;
+    border: 2px solid #d4af37;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-museum-back:hover, .btn-museum-back:focus-visible {
+    transform: translateY(-4px) scale(1.02);
+    background: linear-gradient(135deg, #3d6b56 0%, #2c4a3d 100%);
+    color: #fff;
+    box-shadow: 0 12px 30px rgba(212, 175, 55, 0.3); /* Goldener Glow */
+    outline: none;
+}
+
+[data-theme='dark'] .btn-museum-back {
+    background: linear-gradient(135deg, #1a1a1a 0%, #050505 100%);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+}
+
+[data-theme='dark'] .btn-museum-back:hover {
+    background: linear-gradient(135deg, #2a2a2a 0%, #111111 100%);
+    box-shadow: 0 12px 30px rgba(212, 175, 55, 0.2);
+}
