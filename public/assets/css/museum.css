@@ -1,7 +1,7 @@
 /**
  * Nookipedia-Next: Museum Styles
  * Design: Edles Museum-Ambiente, inspiriert von der ACNH Eingangshalle
- * SRP: Saubere Trennung von Struktur und Design
+ * Prinzip: STRIKT MOBILE FIRST
  */
 
 /* ==========================================================================
@@ -13,12 +13,12 @@
         #3e241a 30%, #2d1b13 35%, 
         #8b151a 35%, #5a0e11 100%
     );
-    padding: 3rem 1rem 4rem 1rem;
+    padding: 2.5rem 1rem 3.5rem 1rem; /* Etwas kompakter auf Mobile */
     border-radius: var(--radius-lg);
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
     box-shadow: 0 16px 32px rgba(45, 27, 19, 0.4);
-    border: 4px solid #d4af37;
+    border: 3px solid #d4af37; /* Dünnerer Rahmen auf Mobile */
     position: relative;
     overflow: hidden;
 }
@@ -26,32 +26,31 @@
 .museum-hero::after {
     content: '';
     position: absolute;
-    bottom: 0; left: 0; width: 100%; height: 12px;
+    bottom: 0; left: 0; width: 100%; height: 8px; /* Dünnere Leiste auf Mobile */
     background: linear-gradient(90deg, #b8860b, #ffd700, #fff8e1, #ffd700, #b8860b);
-    border-top: 3px solid #2a1610;
+    border-top: 2px solid #2a1610;
     box-shadow: 0 -4px 10px rgba(0,0,0,0.6);
 }
 
 .museum-hero-icon {
-    font-size: 4.5rem;
+    font-size: 3.5rem; /* Kleiner auf Mobile */
     filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
-    margin-bottom: -10px;
+    margin-bottom: -5px;
 }
 
 .museum-hero h1 {
     color: #2d1b13;
     font-weight: 900;
     margin-top: 0;
-    font-size: 2.2rem;
+    font-size: 1.8rem; /* Kleiner auf Mobile */
     text-shadow: 0 1px 0 rgba(255,255,255,0.8);
 }
 
 .museum-intro-box {
-    max-width: 750px;
-    margin: 2rem auto 0;
+    margin: 1.5rem auto 0;
     text-align: left;
     background: rgba(27, 42, 33, 0.85);
-    padding: 1.5rem 2rem;
+    padding: 1.25rem 1.5rem; /* Kompaktes Padding für Handys */
     border-radius: var(--radius-md);
     border-left: 4px solid #d4af37;
     color: #e0f2ea;
@@ -61,42 +60,52 @@
 
 .museum-intro-box p {
     margin-bottom: 0.8rem;
-    font-size: 1.05rem;
-    line-height: 1.6;
+    font-size: 0.95rem; /* Mobile Typografie */
+    line-height: 1.5;
     color: #e0f2ea;
 }
 .museum-intro-box p:last-child { margin-bottom: 0; }
 
-.museum-npc-grid { display: flex; justify-content: center; gap: 1.5rem; margin-top: 2.5rem; }
+/* Auf Mobile brechen wir die NPCs bei Platzmangel um */
+.museum-npc-grid { 
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+    gap: 1rem; 
+    margin-top: 2rem; 
+}
 
 .npc-card {
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 223, 186, 0.3);
     border-radius: var(--radius-md);
-    padding: 1rem 2rem;
+    padding: 1rem 1.5rem;
     backdrop-filter: blur(4px);
     display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
     transition: transform 0.2s ease, background 0.2s ease;
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    flex: 1 1 120px; /* Flexibel auf Handys */
 }
 .npc-card:hover { transform: translateY(-3px); background: rgba(255, 255, 255, 0.15); }
 .npc-card img {
-    width: 72px; height: 72px; border-radius: 50%;
-    background: #f8f4e6; padding: 6px; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    width: 56px; height: 56px; border-radius: 50%;
+    background: #f8f4e6; padding: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
 }
-.npc-name { color: #f5cf66; font-size: 1.1rem; }
-.npc-role { font-size: 0.85rem; color: #e0f2ea; }
+.npc-name { color: #f5cf66; font-size: 1rem; }
+.npc-role { font-size: 0.8rem; color: #e0f2ea; text-align: center; }
 
-.museum-section-header { text-align: center; margin-bottom: 2rem; }
-.museum-section-header h2 { color: var(--ac-text); font-weight: 900; font-size: 1.6rem; }
-.museum-section-header p { color: var(--ac-text-muted); margin-top: 0.3rem; }
+.museum-section-header { text-align: center; margin-bottom: 1.5rem; }
+.museum-section-header h2 { color: var(--ac-text); font-weight: 900; font-size: 1.4rem; }
+.museum-section-header p { color: var(--ac-text-muted); margin-top: 0.3rem; font-size: 0.9rem;}
 
+/* STRICT MOBILE FIRST: 1 Spalte für die Kategorien */
 .museum-categories {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 3rem;
+    grid-template-columns: 1fr; 
+    gap: 1rem;
+    margin-bottom: 2rem;
 }
+
 .cat-card-art { border-color: rgba(184, 134, 11, 0.4); background: linear-gradient(to right, var(--ac-surface), #fffdf7); }
 .cat-card-fossil { border-color: rgba(141, 110, 99, 0.4); background: linear-gradient(to right, var(--ac-surface), #faf9f8); }
 .cat-card-insect { border-color: rgba(89, 166, 131, 0.4); background: linear-gradient(to right, var(--ac-surface), #f2f9f5); }
@@ -104,115 +113,126 @@
 .cat-card-sea { border-color: rgba(156, 39, 176, 0.4); background: linear-gradient(to right, var(--ac-surface), #faf0ff); }
 
 .cat-card-text { display: flex; flex-direction: column; }
-.cat-card-title { font-weight: 900; font-size: 1.3rem; color: var(--ac-text); }
-.cat-card-subtitle { font-size: 0.85rem; color: var(--ac-text-muted); font-weight: 700; }
+.cat-card-title { font-weight: 900; font-size: 1.2rem; color: var(--ac-text); }
+.cat-card-subtitle { font-size: 0.8rem; color: var(--ac-text-muted); font-weight: 700; }
 
-.museum-empty-state { text-align: center; padding: 50px; }
-.museum-empty-state p { font-size: 1.5rem; }
+.museum-empty-state { text-align: center; padding: 40px 20px; }
+.museum-empty-state p { font-size: 1.2rem; color: var(--ac-text-muted); }
 
 
 /* ==========================================================================
    2. FOSSILIEN (Keller)
    ========================================================================== */
-.fossil-hero { background: radial-gradient(circle at center, #5d4037 0%, #3e2723 100%); border-color: #8d6e63; padding-top: 2rem; }
+.fossil-hero { background: radial-gradient(circle at center, #5d4037 0%, #3e2723 100%); border-color: #8d6e63; }
 .fossil-hero h1 { color: #f5cf66; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-.fossil-hero-icon { font-size: 4rem; }
-.fossil-hero-subtitle { margin-top: 0.5rem; color: #d7ccc8; }
+.fossil-hero-icon { font-size: 3.5rem; margin-bottom: 0; }
+.fossil-hero-subtitle { margin-top: 0.5rem; color: #d7ccc8; font-size: 0.95rem; }
 
 .fossil-group { border-color: #8d6e63; }
-.fossil-summary { color: #5d4037; }
-.fossil-grid { background: var(--ac-bg); }
-.fossil-card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; }
+.fossil-summary { color: #5d4037; font-size: 1.1rem; padding: 1rem; }
+.fossil-grid { background: var(--ac-bg); padding: 1rem; }
+
+/* STRICT MOBILE FIRST: Fossilien-Karten in 2 schlanken Spalten auf dem Handy, da sie klein sind */
+.fossil-card-grid { 
+    display: grid; 
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 0.8rem; 
+}
 
 .fossil-card {
     background: var(--ac-surface); border: 2px solid #d7ccc8; border-radius: var(--radius-md);
-    padding: 1rem; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0.8rem;
+    padding: 0.8rem; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 0.5rem;
     box-shadow: var(--ac-shadow); transition: transform 0.2s;
 }
 .fossil-card:hover { transform: translateY(-4px); border-color: #8d6e63; }
-.fossil-img-wrap { width: 80px; height: 80px; background: #efebe9; border-radius: 50%; display: flex; align-items: center; justify-content: center; padding: 10px; }
-.fossil-img-wrap img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2)); }
-.fossil-name { font-size: 0.95rem; }
-.fossil-price { background: #efebe9; color: #5d4037; font-size: 0.8rem; padding: 2px 8px; border-radius: 100px; }
+.fossil-img-wrap { width: 60px; height: 60px; background: #efebe9; border-radius: 50%; display: flex; align-items: center; justify-content: center; padding: 8px; }
+.fossil-img-wrap img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
+.fossil-name { font-size: 0.85rem; line-height: 1.2; }
+.fossil-price { background: #efebe9; color: #5d4037; font-size: 0.75rem; padding: 2px 6px; border-radius: 100px; }
 
 
 /* ==========================================================================
    3. KUNSTGALERIE (Obergeschoss)
    ========================================================================== */
-.art-hero { background: radial-gradient(circle at center, #6a1b1a 0%, #3e0c0c 100%); border-color: #8e2a29; padding-top: 2rem; }
+.art-hero { background: radial-gradient(circle at center, #6a1b1a 0%, #3e0c0c 100%); border-color: #8e2a29; }
 .art-hero h1 { color: #f5cf66; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-.art-hero-icon { font-size: 4rem; }
-.art-hero-subtitle { margin-top: 0.5rem; color: #ffcdd2; }
+.art-hero-icon { font-size: 3.5rem; margin-bottom: 0; }
+.art-hero-subtitle { margin-top: 0.5rem; color: #ffcdd2; font-size: 0.95rem; }
 
-.art-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 2rem; padding: 1rem 0; }
+/* STRICT MOBILE FIRST: 1 Gemälde pro Zeile auf dem Handy, damit Details erkennbar bleiben */
+.art-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; padding: 1rem 0; }
+
 .art-card {
     background: #fff; padding: 1rem; border-radius: 4px;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.15), inset 0 0 0 1px rgba(0,0,0,0.1);
-    display: flex; flex-direction: column; gap: 1rem; text-decoration: none; color: var(--ac-text);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.1), inset 0 0 0 1px rgba(0,0,0,0.1);
+    display: flex; flex-direction: column; gap: 0.8rem; text-decoration: none; color: var(--ac-text);
     transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    border: 8px solid #d4af37; border-image: linear-gradient(45deg, #b8860b, #ffd700, #b8860b, #ffd700) 1;
+    border: 6px solid #d4af37; border-image: linear-gradient(45deg, #b8860b, #ffd700, #b8860b, #ffd700) 1;
 }
-.art-card:hover, .art-card:focus-visible { transform: scale(1.03) translateY(-5px); outline: none; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+.art-card:hover, .art-card:focus-visible { transform: scale(1.02) translateY(-3px); outline: none; box-shadow: 0 15px 30px rgba(0,0,0,0.2); }
 
 .art-img-container {
     width: 100%; aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center;
-    background: #fdfbf7; overflow: hidden; position: relative; box-shadow: inset 0 4px 10px rgba(0,0,0,0.08);
+    background: #fdfbf7; overflow: hidden; position: relative; box-shadow: inset 0 2px 8px rgba(0,0,0,0.08);
 }
-.art-img-container img { max-width: 90%; max-height: 90%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)); }
+.art-img-container img { max-width: 90%; max-height: 90%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2)); }
 .art-info { text-align: center; }
-.art-title { font-weight: 900; font-size: 1.1rem; margin-bottom: 0.3rem; }
-.art-artist { font-size: 0.85rem; color: var(--ac-text-muted); font-style: italic; }
+.art-title { font-weight: 900; font-size: 1.05rem; margin-bottom: 0.2rem; }
+.art-artist { font-size: 0.8rem; color: var(--ac-text-muted); font-style: italic; }
 
-.art-badge-fake { display: inline-block; margin-top: 0.5rem; font-size: 0.75rem; font-weight: bold; color: #d81b60; background: #ffebee; padding: 2px 8px; border-radius: 100px; }
-.art-badge-real { display: inline-block; margin-top: 0.5rem; font-size: 0.75rem; font-weight: bold; color: #2e7d32; background: #e8f5e9; padding: 2px 8px; border-radius: 100px; }
+.art-badge-fake { display: inline-block; margin-top: 0.5rem; font-size: 0.7rem; font-weight: bold; color: #d81b60; background: #ffebee; padding: 2px 8px; border-radius: 100px; }
+.art-badge-real { display: inline-block; margin-top: 0.5rem; font-size: 0.7rem; font-weight: bold; color: #2e7d32; background: #e8f5e9; padding: 2px 8px; border-radius: 100px; }
 
 
 /* ==========================================================================
-   4. ECHT VS. FÄLSCHUNG TOGGLE
+   4. ECHT VS. FÄLSCHUNG TOGGLE (Detailseite)
    ========================================================================== */
-.art-detail-wrapper { max-width: 800px; margin: 0 auto; background: var(--ac-surface); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--ac-shadow); }
-.art-author-subtitle { opacity: 0.7; }
+.art-detail-wrapper { 
+    max-width: 800px; margin: 0 auto; background: var(--ac-surface); 
+    border-radius: var(--radius-lg); padding: 1.25rem; box-shadow: var(--ac-shadow); 
+}
+.art-author-subtitle { opacity: 0.7; font-size: 0.9rem; display: block; margin-top: 4px; }
 .art-back-link { text-align: center; margin-top: 2rem; }
 .art-back-link a { text-decoration: none; }
 
 .compare-container {
-    position: relative; width: 100%; max-width: 500px; margin: 0 auto 2rem; aspect-ratio: 1 / 1;
-    background: #fdfbf7; border: 12px solid #d4af37; border-image: linear-gradient(45deg, #b8860b, #ffd700, #b8860b, #ffd700) 1;
-    box-shadow: 0 25px 50px rgba(0,0,0,0.2), inset 0 10px 20px rgba(0,0,0,0.1);
+    position: relative; width: 100%; max-width: 500px; margin: 0 auto 1.5rem; aspect-ratio: 1 / 1;
+    background: #fdfbf7; border: 8px solid #d4af37; border-image: linear-gradient(45deg, #b8860b, #ffd700, #b8860b, #ffd700) 1;
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15), inset 0 5px 15px rgba(0,0,0,0.08);
     display: flex; align-items: center; justify-content: center;
 }
 .compare-img {
     position: absolute; max-width: 90%; max-height: 90%; object-fit: contain;
-    transition: opacity 0.5s ease-in-out, transform 0.5s ease; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.4));
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease; filter: drop-shadow(0 6px 10px rgba(0,0,0,0.3));
 }
 .img-real { opacity: 1; transform: scale(1); }
 .img-fake { opacity: 0; transform: scale(0.95); }
 .is-showing-fake .img-real { opacity: 0; transform: scale(1.05); pointer-events: none; }
 .is-showing-fake .img-fake { opacity: 1; transform: scale(1); }
 
-.toggle-btn-wrap { text-align: center; margin-bottom: 2rem; }
+.toggle-btn-wrap { text-align: center; margin-bottom: 1.5rem; }
 .btn-toggle-art {
-    background: var(--ac-green); color: white; border: none; padding: 1rem 2rem; font-size: 1.2rem; font-weight: 900;
-    border-radius: 100px; cursor: pointer; box-shadow: 0 8px 20px rgba(89,166,131,0.4);
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); display: inline-flex; align-items: center; gap: 10px;
+    background: var(--ac-green); color: white; border: none; padding: 0.8rem 1.5rem; font-size: 1rem; font-weight: 900;
+    border-radius: 100px; cursor: pointer; box-shadow: 0 6px 15px rgba(89,166,131,0.3);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); display: inline-flex; align-items: center; gap: 8px; width: 100%; justify-content: center;
 }
-.btn-toggle-art:hover, .btn-toggle-art:focus-visible { transform: scale(1.05) translateY(-2px); background: #4a8f6e; outline: none; }
+.btn-toggle-art:hover, .btn-toggle-art:focus-visible { transform: scale(1.02) translateY(-2px); background: #4a8f6e; outline: none; }
 .btn-toggle-art:focus-visible { outline: 3px solid var(--ac-green); outline-offset: 3px; }
-.is-showing-fake .btn-toggle-art { background: #d81b60; box-shadow: 0 8px 20px rgba(216, 27, 96, 0.4); }
+.is-showing-fake .btn-toggle-art { background: #d81b60; box-shadow: 0 6px 15px rgba(216, 27, 96, 0.3); }
 .is-showing-fake .btn-toggle-art:hover { background: #c2185b; }
 
 .fake-warning {
-    display: none; background: #ffebee; border-left: 6px solid #d81b60; padding: 1.5rem;
-    border-radius: var(--radius-sm); margin-top: 1.5rem; color: #880e4f; font-size: 1.05rem; animation: slideDown 0.4s ease;
+    display: none; background: #ffebee; border-left: 4px solid #d81b60; padding: 1rem;
+    border-radius: var(--radius-sm); margin-top: 1rem; color: #880e4f; font-size: 0.95rem; animation: slideDown 0.4s ease;
 }
-.fake-warning h4 { color: #d81b60; font-weight: 900; margin-bottom: 0.5rem; font-size: 1.2rem; }
+.fake-warning h4 { color: #d81b60; font-weight: 900; margin-bottom: 0.4rem; font-size: 1.05rem; }
 .is-showing-fake .fake-warning { display: block; }
 
 @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
 .always-real-msg {
-    text-align: center; background: #e8f5e9; color: #2e7d32; padding: 1rem; border-radius: 100px;
-    font-weight: 900; font-size: 1.1rem; margin-bottom: 2rem; border: 2px dashed #81c784;
+    text-align: center; background: #e8f5e9; color: #2e7d32; padding: 1rem; border-radius: 16px;
+    font-weight: 800; font-size: 0.95rem; margin-bottom: 1.5rem; border: 2px dashed #81c784;
 }
 
 /* ==========================================================================
@@ -247,16 +267,81 @@
 .section-sea .btn-clear { background: #200542; color: #f3e5f5; border-color: #6a1b9a; }
 .section-sea .mini-card-inner { background: #200542; border-color: #3a1078; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
 
-/* Dark Mode Overrides (falls notwendig) */
+
+/* ==========================================================================
+   6. RESPONSIVE ENHANCEMENTS (Tablet & Desktop)
+   ========================================================================== */
+@media (min-width: 650px) {
+    .museum-hero {
+        padding: 4rem 2rem 5rem 2rem;
+        border-width: 5px;
+    }
+    .museum-hero::after { height: 12px; }
+    .museum-hero-icon { font-size: 4.5rem; }
+    .museum-hero h1 { font-size: 2.2rem; }
+    
+    .museum-intro-box { padding: 1.5rem 2rem; }
+    .museum-intro-box p { font-size: 1.05rem; }
+    
+    .npc-card { flex-direction: row; gap: 1.5rem; text-align: left; align-items: center; padding: 1rem 2rem; flex: 0 1 auto; }
+    .npc-card img { width: 72px; height: 72px; }
+    
+    .museum-section-header h2 { font-size: 1.8rem; }
+    .museum-section-header p { font-size: 1rem; }
+    
+    /* TABLET: 2 Spalten für Ausstellungsräume */
+    .museum-categories { grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    .cat-card-title { font-size: 1.3rem; }
+    
+    /* TABLET: Fossilien etwas größer */
+    .fossil-card-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 1.2rem; }
+    .fossil-img-wrap { width: 80px; height: 80px; padding: 12px; }
+    .fossil-name { font-size: 1rem; }
+    
+    /* TABLET: Kunst in 2 Spalten */
+    .art-grid { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+    
+    /* TABLET: Detail-Button nicht mehr 100% Breite */
+    .btn-toggle-art { width: auto; padding: 1rem 2.5rem; font-size: 1.2rem; }
+    .art-detail-wrapper { padding: 2.5rem; }
+    .compare-container { border-width: 12px; }
+}
+
+@media (min-width: 900px) {
+    /* DESKTOP: 3 Spalten für Ausstellungsräume */
+    .museum-categories { grid-template-columns: repeat(3, 1fr); }
+    
+    /* DESKTOP: Fossilien optimal verteilt */
+    .fossil-card-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 1.5rem; }
+    
+    /* DESKTOP: Kunst in flexiblen Spalten */
+    .art-grid { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); }
+}
+
+/* ==========================================================================
+   7. DARK MODE OVERRIDES
+   ========================================================================== */
 @media (prefers-color-scheme: dark) {
     .museum-hero {
-        background: linear-gradient(to bottom, #2a2824 0%, #2a2824 30%, #1f1410 30%, #150d0a 35%, #5a0b0f 35%, #3a0507 100%);
+        background: linear-gradient(to bottom, 
+            #2a2824 0%, #2a2824 30%, 
+            #1f1410 30%, #150d0a 35%, 
+            #5a0b0f 35%, #3a0507 100%
+        );
         border-color: #aa8822;
     }
     .museum-hero h1 { color: #f8f4e6; text-shadow: 0 2px 4px #000; }
-    .art-card { background: #2b2926; }
-    .art-img-container, .compare-container { background: #1c1a18; }
+    .museum-intro-box { background: rgba(15, 25, 20, 0.9); border-color: #aa8822; }
+    .museum-intro-box p { color: #d0e5dc; }
+    
+    .art-card { background: #2b2926; border-color: #aa8822; }
+    .art-img-container, .compare-container { background: #1c1a18; border-color: #aa8822; }
     .art-detail-wrapper { background: var(--ac-surface); }
     .fake-warning { background: rgba(216, 27, 96, 0.1); color: #f8bbd0; }
     .always-real-msg { background: rgba(76, 175, 80, 0.1); color: #a5d6a7; border-color: #4caf50; }
+    
+    .fossil-card { background: #383531; border-color: #4d4943; }
+    .fossil-card:hover { border-color: #8d6e63; }
+    .fossil-img-wrap { background: #2b2926; }
+    .fossil-price { background: #2b2926; color: #d7ccc8; }
 }
