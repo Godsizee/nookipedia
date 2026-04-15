@@ -100,4 +100,28 @@ class MuseumController extends Controller {
         $creatures = $this->creatureRepo->getByCategory('sea');
         require __DIR__ . '/../../views/museum/museum-sea.php';
     }
+
+    /**
+     * NPC: Eugen Profil
+     */
+    public function npcEugen() {
+        $title = 'Eugen (Blathers)';
+        require __DIR__ . '/../../views/museum/npc-eugen.php';
+    }
+
+    /**
+     * NPC: Kofi Profil
+     */
+    public function npcKofi() {
+        $title = 'Kofi (Brewster)';
+        require __DIR__ . '/../../views/museum/npc-kofi.php';
+    }
+
+    /**
+     * NPC: Reiner Profil
+     */
+    public function npcReiner() {
+        $title = 'Reiner (Redd)';
+        require __DIR__ . '/../../views/museum/npc-reiner.php';
+    }
 }

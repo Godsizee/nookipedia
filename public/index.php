@@ -68,6 +68,9 @@ $router->add('blume/{id}', 'FlowerController', 'show');    // CLEAN URL: Dynamis
 
 // --- NEU: Das Museum ---
 $router->add('museum', 'MuseumController', 'index');
+$router->add('museum/npc/eugen', 'MuseumController', 'npcEugen');
+$router->add('museum/npc/kofi', 'MuseumController', 'npcKofi');
+$router->add('museum/npc/reiner', 'MuseumController', 'npcReiner');
 $router->add('museum/fossilien', 'MuseumController', 'fossils');
 $router->add('museum/kunstwerke', 'MuseumController', 'artworks');
 $router->add('museum/kunstwerke/{id}', 'MuseumController', 'artDetail');
