@@ -8,12 +8,11 @@
     <p class="hero-insects-subtitle">Erkunde das friedliche Schmetterlingshaus und die feuchtwarmen Käfer-Gehege.</p>
 </div>
 
-<!-- INFO: Die Filter-Controls wurden hier absichtlich entfernt, da im Museum alles ganzjährig steht -->
 <div class="section-insects">
     <div class="creature-grid-mini grid-8-cols">
         <?php if(!empty($creatures)): ?>
             <?php foreach ($creatures as $c): ?>
-                <a href="/insekten#creature-<?= $c->id ?>" 
+                <a href="/tier/<?= $c->id ?>" 
                    class="mini-card" data-id="<?= $c->id ?>" 
                    title="Details zu: <?= htmlspecialchars($c->name) ?>">
                     <div class="mini-card-inner">

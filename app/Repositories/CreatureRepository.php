@@ -7,13 +7,20 @@ use App\Models\Creature;
 use PDO;
 
 class CreatureRepository {
-    private $db;
+    
+    // SAUBERE ARCHITEKTUR: Auch hier typisieren wir die Datenbankverbindung
+    private PDO $db;
 
     public function __construct() {
         $this->db = Database::getInstance()->getConnection();
     }
 
-    public function getByCategory($category) {
+    /**
+     * Holt alle Kreaturen einer bestimmten Kategorie.
+     * * @param string $category
+     * @return Creature[] Ein Array von Creature-Objekten
+     */
+    public function getByCategory(string $category): array {
         // LEFT JOIN auf creature_weathers für die Wetterbedingung
         $sql = "
             SELECT c.*, cl.location_name, cs.shadow_image, csp.speed, cw.weather
@@ -38,7 +45,12 @@ class CreatureRepository {
         return $creatures;
     }
 
-    public function findById($id) {
+    /**
+     * Findet eine Kreatur anhand ihrer ID.
+     * * @param int|string $id
+     * @return Creature|null Gibt das Objekt zurück oder null, falls nicht gefunden
+     */
+    public function findById($id): ?Creature {
         $sql = "
             SELECT c.*, cl.location_name, cs.shadow_image, csp.speed, cw.weather
             FROM creatures c

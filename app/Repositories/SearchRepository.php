@@ -59,9 +59,10 @@ class SearchRepository {
             switch ($row['source']) {
                 case 'creature':
                     $subtitle .= ' Sternis'; // Nur bei Kreaturen hängen wir "Sternis" an den numerischen Preis an
-                    if ($row['category'] === 'insect') { $url = '/insekten#creature-'.$row['id']; $badge = '🦋 Insekt'; }
-                    elseif ($row['category'] === 'fish') { $url = '/fische#creature-'.$row['id']; $badge = '🐟 Fisch'; }
-                    elseif ($row['category'] === 'sea') { $url = '/meerestiere#creature-'.$row['id']; $badge = '🐙 Meerestier'; }
+                    $url = '/tier/'.$row['id']; // Sauberer Link auf die Detailseite (KISS)
+                    if ($row['category'] === 'insect') { $badge = '🦋 Insekt'; }
+                    elseif ($row['category'] === 'fish') { $badge = '🐟 Fisch'; }
+                    elseif ($row['category'] === 'sea') { $badge = '🐙 Meerestier'; }
                     break;
                 case 'flower':
                     $url = '/blume/'.$row['id']; // Clean URL aus Schritt 1.A!

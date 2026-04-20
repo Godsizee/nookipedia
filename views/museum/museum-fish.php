@@ -12,7 +12,7 @@
     <div class="creature-grid-mini grid-8-cols">
         <?php if(!empty($creatures)): ?>
             <?php foreach ($creatures as $c): ?>
-                <a href="/fische#creature-<?= $c->id ?>" 
+                <a href="/tier/<?= $c->id ?>" 
                    class="mini-card" data-id="<?= $c->id ?>" 
                    title="Details zu: <?= htmlspecialchars($c->name) ?>">
                     <div class="mini-card-inner">

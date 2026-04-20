@@ -6,7 +6,9 @@ use App\Repositories\CreatureRepository;
 
 class CreatureController {
     
-    private $creatureRepo;
+    // SAUBERE ARCHITEKTUR: Strenge Typisierung der Eigenschaft. 
+    // So kennt die IDE alle Methoden und deren Rückgabetypen.
+    private CreatureRepository $creatureRepo;
 
     public function __construct() {
         // Repository initialisieren, damit wir auf die Datenbank zugreifen können
