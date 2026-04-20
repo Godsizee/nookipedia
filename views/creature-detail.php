@@ -9,24 +9,23 @@ if ($creature->category === 'fish') {
     $catName = 'Fisch';
     $backLink = '/fische';
     $icon = '🐟';
-    $gradient = 'radial-gradient(circle at top, #0277bd 0%, #011d4a 100%)';
+    $gradient = 'linear-gradient(135deg, #0277bd 0%, #011d4a 100%)';
 } elseif ($creature->category === 'insect') {
     $catName = 'Insekt';
     $backLink = '/insekten';
     $icon = '🦋';
-    $gradient = 'radial-gradient(circle at top, #2e7d32 0%, #0d2112 100%)';
+    $gradient = 'linear-gradient(135deg, #2e7d32 0%, #0d2112 100%)';
 } elseif ($creature->category === 'sea') {
     $catName = 'Meerestier';
     $backLink = '/meerestiere';
     $icon = '🐙';
-    $gradient = 'radial-gradient(circle at top, #6a1b9a 0%, #200542 100%)';
+    $gradient = 'linear-gradient(135deg, #6a1b9a 0%, #200542 100%)';
 }
 
 include 'partials/header.php'; 
 ?>
 <link rel="stylesheet" href="/assets/css/creature-detail.css">
 
-<!-- Hero Bereich -->
 <div class="detail-hero" style="background: <?= $gradient ?>;">
     <div class="detail-icon-wrap">
         <img src="<?= htmlspecialchars($creature->getImageUrl()) ?>" alt="<?= htmlspecialchars($creature->name) ?>" onerror="this.src='/assets/img/acnh/koeder.png'">
@@ -35,100 +34,116 @@ include 'partials/header.php';
     <div class="detail-subtitle"><?= $icon ?> <?= $catName ?></div>
 </div>
 
-<!-- Hauptinhalt -->
 <div class="detail-content-card">
     
-    <!-- Floskel-Box (z.B. "Ein Schmetterling! Flatterhaft!") -->
     <?php if(!empty($creature->catchphrase)): ?>
-        <div class="catchphrase-box" style="margin-top: 0; margin-bottom: 2rem; font-size: 1.1rem; padding: 1.5rem;">
-            „<?= htmlspecialchars($creature->catchphrase) ?>“
+        <div class="detail-quote">
+            <?= htmlspecialchars($creature->catchphrase) ?>
         </div>
     <?php endif; ?>
 
     <div class="detail-grid">
-        <!-- Linke Spalte: Basisdaten -->
-        <div class="detail-info-box">
-            <h3>📋 Basisdaten</h3>
-            <div class="creature-info-list">
-                <div class="info-row">
-                    <span class="info-label">Verkaufspreis</span>
-                    <span class="info-value price-tag" style="font-size: 1rem; padding: 4px 12px;">💰 <?= htmlspecialchars($creature->getFormattedPrice()) ?></span>
+        
+        <div>
+            <h3 class="section-heading">📋 Insel-Akte</h3>
+            <div class="data-list">
+                
+                <div class="data-row">
+                    <div class="data-icon icon-price">💰</div>
+                    <div class="data-content">
+                        <span class="data-label">Verkaufspreis</span>
+                        <span class="data-value"><?= htmlspecialchars($creature->getFormattedPrice()) ?></span>
+                    </div>
                 </div>
                 
-                <!-- Nutzt location_name aus deinem JOIN -->
-                <div class="info-row">
-                    <span class="info-label">Fundort</span>
-                    <span class="info-value">📍 <?= htmlspecialchars($creature->location_name ?? $creature->location ?? 'Unbekannt') ?></span>
+                <div class="data-row">
+                    <div class="data-icon icon-location">📍</div>
+                    <div class="data-content">
+                        <span class="data-label">Fundort</span>
+                        <span class="data-value"><?= htmlspecialchars($creature->location_name ?? $creature->location ?? 'Unbekannt') ?></span>
+                    </div>
                 </div>
                 
-                <div class="info-row">
-                    <span class="info-label">Uhrzeit</span>
-                    <span class="info-value">⌚ <?= htmlspecialchars(implode(', ', $creature->time_array ?? [])) ?: 'Immer' ?></span>
+                <div class="data-row">
+                    <div class="data-icon icon-time">⌚</div>
+                    <div class="data-content">
+                        <span class="data-label">Uhrzeit</span>
+                        <span class="data-value">
+                            <?= htmlspecialchars(implode(', ', $creature->time_array ?? [$creature->time_active])) ?: 'Ganzjährig' ?>
+                        </span>
+                    </div>
                 </div>
                 
-                <!-- Nutzt shadow_image aus deinem JOIN -->
                 <?php if ($creature->category === 'fish' || $creature->category === 'sea'): ?>
-                <div class="info-row">
-                    <span class="info-label">Schatten</span>
-                    <span class="info-value">
-                        <?php 
-                        $shadowVal = $creature->shadow_image ?? $creature->shadow ?? '';
-                        if ($shadowVal): 
-                        ?>
-                            <span class="shadow-circle shadow-<?= strtolower(str_replace(' ', '-', $shadowVal)) ?>"></span>
-                        <?php endif; ?>
-                        <?= htmlspecialchars($shadowVal ?: 'N/A') ?>
-                    </span>
+                <div class="data-row">
+                    <div class="data-icon icon-shadow">👤</div>
+                    <div class="data-content">
+                        <span class="data-label">Schatten</span>
+                        <span class="data-value" style="display: flex; align-items: center; gap: 8px;">
+                            <?php 
+                            $shadowVal = $creature->shadow_image ?? $creature->shadow ?? '';
+                            if ($shadowVal): 
+                            ?>
+                                <span class="shadow-circle shadow-<?= strtolower(str_replace(' ', '-', $shadowVal)) ?>"></span>
+                            <?php endif; ?>
+                            <?= htmlspecialchars($shadowVal ?: 'N/A') ?>
+                        </span>
+                    </div>
                 </div>
                 <?php endif; ?>
 
-                <!-- NEU: Nutzt speed aus deinem JOIN (Relevant für Meerestiere) -->
                 <?php if (!empty($creature->speed)): ?>
-                <div class="info-row">
-                    <span class="info-label">Geschwindigkeit</span>
-                    <span class="info-value">💨 <?= htmlspecialchars($creature->speed) ?></span>
+                <div class="data-row">
+                    <div class="data-icon icon-speed">💨</div>
+                    <div class="data-content">
+                        <span class="data-label">Geschwindigkeit</span>
+                        <span class="data-value"><?= htmlspecialchars($creature->speed) ?></span>
+                    </div>
                 </div>
                 <?php endif; ?>
 
-                <!-- Nutzt weather aus deinem JOIN -->
                 <?php if (!empty($creature->weather) && strtolower($creature->weather) !== 'beliebig'): ?>
-                <div class="info-row">
-                    <span class="info-label">Wetter</span>
-                    <span class="info-value">🌧️ <?= htmlspecialchars($creature->weather) ?></span>
+                <div class="data-row">
+                    <div class="data-icon icon-weather">
+                        <?= (strpos(strtolower($creature->weather), 'regen') !== false) ? '🌧️' : '☀️' ?>
+                    </div>
+                    <div class="data-content">
+                        <span class="data-label">Wetter-Bedingung</span>
+                        <span class="data-value"><?= htmlspecialchars($creature->weather) ?></span>
+                    </div>
                 </div>
                 <?php endif; ?>
+
             </div>
         </div>
 
-        <!-- Rechte Spalte: Saisonale Daten -->
-        <div class="detail-info-box">
-            <h3>📅 Aktivität (Nordhalbkugel)</h3>
+        <div>
+            <h3 class="section-heading">📅 Saison-Planer <span style="font-size:0.8rem; color:var(--ac-text-muted); font-weight:700;">(Nord)</span></h3>
             <?php
                 $allMonths = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
-                // Stelle sicher, dass months_northern ein Array ist. Falls es als String aus der DB kommt (z.B. JSON), muss es im Model decodiert werden.
                 $activeMonths = $creature->months_northern ?? []; 
             ?>
-            <div class="month-grid-xl">
+            <div class="month-grid-premium">
                 <?php foreach($allMonths as $index => $monthName): 
                     $monthNum = $index + 1;
                     $isActive = is_array($activeMonths) && in_array($monthNum, $activeMonths);
                     $cssClass = $isActive ? 'active' : 'inactive';
                 ?>
-                    <div class="month-box-xl <?= $cssClass ?>"><?= $monthName ?></div>
+                    <div class="month-pill <?= $cssClass ?>"><?= $monthName ?></div>
                 <?php endforeach; ?>
             </div>
             
             <?php if (is_array($activeMonths) && count($activeMonths) === 12): ?>
-                <p style="text-align: center; margin-top: 1rem; color: var(--ac-green); font-weight: 800;">
-                    ✅ Ist das ganze Jahr über fangbar!
-                </p>
+                <div style="margin-top: 1.5rem; padding: 1rem; background: var(--ac-green-light); color: var(--ac-green); border-radius: var(--radius-sm); text-align: center; font-weight: 800;">
+                    ✅ Dieses Tier ist ganzjährig auf deiner Insel zu finden!
+                </div>
             <?php endif; ?>
         </div>
+        
     </div>
 
-    <!-- Zurück-Button -->
-    <div style="text-align: center; margin-top: 3rem;">
-        <a href="<?= $backLink ?>" class="btn-museum-back" style="border-color: var(--ac-green);">
+    <div style="text-align: center; margin-top: 3.5rem;">
+        <a href="<?= $backLink ?>" class="btn-museum-back" style="border-color: var(--ac-green); box-shadow: 0 8px 20px rgba(89, 166, 131, 0.25);">
             ← Zurück zur <?= $catName ?>-Übersicht
         </a>
     </div>
