@@ -1,25 +1,29 @@
 <?php 
-// Bestimme Kategorie-Namen, Farbe und Zurück-Link
+// Bestimme Kategorie-Details und grammatikalisch korrekte Button-Label
 $catName = '';
 $backLink = '/';
 $icon = '';
 $gradient = 'linear-gradient(to bottom, #2c4a3d 0%, #1a2e25 100%)';
+$btnLabel = 'Übersicht';
 
 if ($creature->category === 'fish') {
     $catName = 'Fisch';
     $backLink = '/fische';
     $icon = '🐟';
     $gradient = 'linear-gradient(135deg, #0277bd 0%, #011d4a 100%)';
+    $btnLabel = 'Fische-Übersicht';
 } elseif ($creature->category === 'insect') {
     $catName = 'Insekt';
     $backLink = '/insekten';
     $icon = '🦋';
     $gradient = 'linear-gradient(135deg, #2e7d32 0%, #0d2112 100%)';
+    $btnLabel = 'Insekten-Übersicht';
 } elseif ($creature->category === 'sea') {
     $catName = 'Meerestier';
     $backLink = '/meerestiere';
     $icon = '🐙';
     $gradient = 'linear-gradient(135deg, #6a1b9a 0%, #200542 100%)';
+    $btnLabel = 'Meerestiere-Übersicht';
 }
 
 include 'partials/header.php'; 
@@ -135,16 +139,17 @@ include 'partials/header.php';
             
             <?php if (is_array($activeMonths) && count($activeMonths) === 12): ?>
                 <div style="margin-top: 1.5rem; padding: 1rem; background: var(--ac-green-light); color: var(--ac-green); border-radius: var(--radius-sm); text-align: center; font-weight: 800;">
-                    ✅ Dieses Tier ist ganzjährig auf deiner Insel zu finden!
+                    ✅ Ganzjährig fangbar!
                 </div>
             <?php endif; ?>
         </div>
         
     </div>
 
-    <div style="text-align: center; margin-top: 3.5rem;">
-        <a href="<?= $backLink ?>" class="btn-museum-back" style="border-color: var(--ac-green); box-shadow: 0 8px 20px rgba(89, 166, 131, 0.25);">
-            ← Zurück zur <?= $catName ?>-Übersicht
+    <div class="detail-actions">
+        <a href="<?= $backLink ?>" class="btn-detail-back">
+            <span class="btn-icon">←</span>
+            <span class="btn-text">Zurück zur <?= $btnLabel ?></span>
         </a>
     </div>
 </div>

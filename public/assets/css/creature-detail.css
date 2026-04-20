@@ -99,17 +99,11 @@
     position: relative;
     background: var(--ac-surface);
     border-radius: var(--radius-lg);
-    padding: 2rem 1.25rem;
+    padding: 2.5rem 1.25rem;
     max-width: 850px;
     margin: 0 auto 3rem;
     box-shadow: 0 12px 40px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06);
     z-index: 10;
-}
-
-.detail-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
 }
 
 /* Catchphrase als elegantes Zitat */
@@ -119,16 +113,23 @@
     font-style: italic;
     font-weight: 700;
     color: var(--ac-text-muted);
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
     padding: 0 1rem;
     position: relative;
 }
+
 .detail-quote::before, .detail-quote::after {
     content: '"';
     color: var(--ac-green-light);
     font-size: 2rem;
     line-height: 0;
     vertical-align: bottom;
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
 }
 
 /* Sektions-Überschriften */
@@ -144,7 +145,7 @@
 }
 
 /* ==========================================================================
-   3. NATIVE APP DATA LIST (Ersätzt die gestrichelten Boxen)
+   3. NATIVE APP DATA LIST (Insel-Akte)
    ========================================================================== */
 .data-list {
     background: var(--ac-bg);
@@ -210,7 +211,7 @@
 }
 
 /* ==========================================================================
-   4. PREMIUM MONTH GRID
+   4. PREMIUM MONTH GRID (Saison-Planer)
    ========================================================================== */
 .month-grid-premium {
     display: grid;
@@ -246,7 +247,54 @@
 }
 
 /* ==========================================================================
-   5. DESKTOP ADAPTIONS
+   5. BACK BUTTON STYLING (Premium Primary Action)
+   ========================================================================== */
+.detail-actions {
+    margin-top: 3.5rem;
+    text-align: center;
+}
+
+.btn-detail-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 1rem 2rem;
+    background: var(--ac-surface);
+    color: var(--ac-text);
+    text-decoration: none !important;
+    font-weight: 900;
+    font-size: 1.05rem;
+    border-radius: 100px;
+    border: 3px solid var(--ac-green-light);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn-detail-back .btn-icon {
+    font-size: 1.4rem;
+    transition: transform 0.3s ease;
+}
+
+.btn-detail-back:hover {
+    transform: translateY(-4px) scale(1.02);
+    border-color: var(--ac-green);
+    background: var(--ac-green-light);
+    color: var(--ac-green);
+    box-shadow: 0 12px 25px rgba(89, 166, 131, 0.2);
+}
+
+.btn-detail-back:hover .btn-icon {
+    transform: translateX(-5px);
+}
+
+.btn-detail-back:active {
+    transform: translateY(1px) scale(0.98);
+}
+
+
+/* ==========================================================================
+   6. DESKTOP ADAPTIONS
    ========================================================================== */
 @media (min-width: 768px) {
     .detail-hero {
@@ -267,10 +315,14 @@
     .month-grid-premium { 
         grid-template-columns: repeat(3, 1fr); 
     }
+
+    .btn-detail-back {
+        min-width: 300px; /* Auf großen Bildschirmen eine stattliche Breite */
+    }
 }
 
 /* ==========================================================================
-   6. DARK MODE OVERRIDES
+   7. DARK MODE OVERRIDES
    ========================================================================== */
 @media (prefers-color-scheme: dark) {
     .detail-content-card { 
@@ -280,14 +332,29 @@
     
     .data-list { background: rgba(0,0,0,0.2); }
     .data-row { border-bottom-color: rgba(255,255,255,0.05); }
+    
     .month-grid-premium { background: rgba(0,0,0,0.2); }
-    .month-pill.inactive { background: rgba(255,255,255,0.05); }
+    .month-pill.inactive { background: rgba(255,255,255,0.05); color: var(--ac-text-muted); opacity: 0.8; }
     
     /* Icon Hintergründe im Darkmode dimmen */
-    .icon-price { background: rgba(211, 158, 0, 0.2); color: #f5cf66; }
-    .icon-location { background: rgba(2, 119, 189, 0.2); color: #4fc3f7; }
-    .icon-time { background: rgba(123, 31, 162, 0.2); color: #ce93d8; }
+    .icon-price { background: rgba(211, 158, 0, 0.15); color: #f5cf66; }
+    .icon-location { background: rgba(2, 119, 189, 0.15); color: #4fc3f7; }
+    .icon-time { background: rgba(123, 31, 162, 0.15); color: #ce93d8; }
     .icon-shadow { background: rgba(255, 255, 255, 0.1); color: #e0e0e0; }
-    .icon-speed { background: rgba(46, 125, 50, 0.2); color: #81c784; }
-    .icon-weather { background: rgba(230, 81, 0, 0.2); color: #ffb74d; }
+    .icon-speed { background: rgba(46, 125, 50, 0.15); color: #81c784; }
+    .icon-weather { background: rgba(230, 81, 0, 0.15); color: #ffb74d; }
+
+    /* Back Button Dark Mode Fix */
+    .btn-detail-back {
+        background: var(--ac-bg);
+        border-color: var(--ac-border);
+        color: var(--ac-text);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    .btn-detail-back:hover {
+        border-color: var(--ac-green);
+        background: rgba(89, 166, 131, 0.1);
+        color: var(--ac-green);
+    }
 }
