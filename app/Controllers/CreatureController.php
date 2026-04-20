@@ -14,30 +14,37 @@ class CreatureController {
     }
 
     /**
-     * Übersicht: Fische
+     * Übersicht: Insekten
      */
-    public function fische() {
-        $creatures = $this->creatureRepo->findByCategory('fish');
-        $title = 'Fische';
-        require __DIR__ . '/../../views/faunapedia-fish.php';
+    public function insects() {
+        $title = 'Insekten';
+        $category = 'insect';
+        // Definiere das spezifische Fluff-Text Partial (OCP & SRP)
+        $infoTemplate = 'partials/info_insect.php';
+        $creatures = $this->creatureRepo->getByCategory('insect');
+        require __DIR__ . '/../../views/creature-list.php';
     }
 
     /**
-     * Übersicht: Insekten
+     * Übersicht: Fische
      */
-    public function insekten() {
-        $creatures = $this->creatureRepo->findByCategory('insect');
-        $title = 'Insekten';
-        require __DIR__ . '/../../views/faunapedia-insects.php';
+    public function fish() {
+        $title = 'Fische';
+        $category = 'fish';
+        $infoTemplate = 'partials/info_fish.php';
+        $creatures = $this->creatureRepo->getByCategory('fish');
+        require __DIR__ . '/../../views/creature-list.php';
     }
 
     /**
      * Übersicht: Meerestiere
      */
-    public function meerestiere() {
-        $creatures = $this->creatureRepo->findByCategory('sea');
+    public function sea() {
         $title = 'Meerestiere';
-        require __DIR__ . '/../../views/faunapedia-sea.php';
+        $category = 'sea';
+        $infoTemplate = 'partials/info_sea.php';
+        $creatures = $this->creatureRepo->getByCategory('sea');
+        require __DIR__ . '/../../views/creature-list.php';
     }
 
     /**
