@@ -63,6 +63,7 @@ $router->add('', 'HomeController', 'index');
 $router->add('insekten', 'CreatureController', 'insects');
 $router->add('fische', 'CreatureController', 'fish');
 $router->add('meerestiere', 'CreatureController', 'sea');
+$router->add('tier/{id}', 'CreatureController', 'show');
 $router->add('blumen', 'FlowerController', 'index'); 
 $router->add('blume/{id}', 'FlowerController', 'show');  
 

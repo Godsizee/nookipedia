@@ -1,0 +1,143 @@
+/**
+ * Nookipedia-Next: Creature Detail Page
+ * Design: Edles, hochauflösendes Lexikon-Layout (Mobile First)
+ */
+
+.detail-hero {
+    position: relative;
+    padding: 3rem 1rem 4rem;
+    text-align: center;
+    border-radius: var(--radius-lg);
+    margin-bottom: -3rem; /* Zieht die Karte darüber */
+    background: radial-gradient(circle at top, var(--ac-green) 0%, #2c4a3d 100%);
+    color: #fff;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+/* Subtiles Muster im Hintergrund */
+.detail-hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.1) 2px, transparent 2px);
+    background-size: 20px 20px;
+    opacity: 0.3;
+}
+
+.detail-icon-wrap {
+    position: relative;
+    width: 150px;
+    height: 150px;
+    margin: 0 auto 1.5rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    border: 4px solid rgba(255,255,255,0.3);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    z-index: 2;
+}
+
+.detail-icon-wrap img {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 12px rgba(0,0,0,0.4));
+    transition: transform 0.3s ease;
+}
+
+.detail-icon-wrap:hover img {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.detail-title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    position: relative;
+    z-index: 2;
+}
+
+.detail-subtitle {
+    font-size: 1.1rem;
+    font-weight: 700;
+    opacity: 0.9;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 2;
+}
+
+/* Die Hauptkarte mit den Daten */
+.detail-content-card {
+    position: relative;
+    background: var(--ac-surface);
+    border-radius: var(--radius-lg);
+    padding: 2.5rem 1.5rem;
+    max-width: 800px;
+    margin: 0 auto 2rem;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    z-index: 10;
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+.detail-info-box {
+    background: var(--ac-bg);
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    border: 2px dashed var(--ac-border);
+}
+
+.detail-info-box h3 {
+    color: var(--ac-green);
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Monatstabelle XL */
+.month-grid-xl {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.month-box-xl {
+    text-align: center;
+    padding: 10px 5px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+.month-box-xl.active {
+    background: var(--ac-green);
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(89, 166, 131, 0.3);
+}
+.month-box-xl.inactive {
+    background: rgba(0,0,0,0.05);
+    color: var(--ac-text-muted);
+}
+
+/* Desktop Anpassung */
+@media (min-width: 650px) {
+    .detail-grid { grid-template-columns: 1fr 1fr; }
+    .detail-content-card { padding: 3rem; }
+    .month-grid-xl { grid-template-columns: repeat(6, 1fr); }
+}
+
+[data-theme='dark'] .detail-info-box { background: rgba(0,0,0,0.2); }
+[data-theme='dark'] .month-box-xl.inactive { background: rgba(255,255,255,0.05); }

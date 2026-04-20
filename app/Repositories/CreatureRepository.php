@@ -54,4 +54,5 @@ class CreatureRepository {
         
         return $row ? new Creature($row) : null;
     }
+    
 }
