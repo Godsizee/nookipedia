@@ -14,8 +14,8 @@ class NpcRepository {
     }
 
     public function getMuseumNpcs() {
-        // Wir holen Eugen, Kofi und Reiner anhand ihrer Namen oder Rollen
-        $sql = "SELECT * FROM npcs WHERE name IN ('Eugen', 'Kofi', 'Reiner') ORDER BY id ASC";
+        // Wir holen Eugen, Kofi und Reiner anhand ihrer Namen aus der neuen Tabelle
+        $sql = "SELECT * FROM special_npcs WHERE name_de IN ('Eugen', 'Kofi', 'Reiner') ORDER BY id ASC";
         $stmt = $this->db->query($sql);
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -27,11 +27,10 @@ class NpcRepository {
     }
 
     public function findByName($name) {
-        $sql = "SELECT * FROM npcs WHERE LOWER(name) = LOWER(:name) LIMIT 1";
+        $sql = "SELECT * FROM special_npcs WHERE LOWER(name_de) = LOWER(:name) LIMIT 1";
         $stmt = $this->db->prepare($sql);
         $stmt->execute(['name' => $name]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         
         return $row ? new Npc($row) : null;
     }
-}

@@ -6,7 +6,6 @@ class Npc {
     public $id;
     public $name;
     public $name_en;
-    public $type;
     public $role;
     public $species;
     public $gender;
@@ -16,9 +15,8 @@ class Npc {
 
     public function __construct($data = []) {
         $this->id = $data['id'] ?? null;
-        $this->name = $data['name'] ?? '';
+        $this->name = $data['name_de'] ?? '';
         $this->name_en = $data['name_en'] ?? '';
-        $this->type = $data['type'] ?? 'special';
         $this->role = $data['role'] ?? '';
         $this->species = $data['species'] ?? '';
         $this->gender = $data['gender'] ?? '';
