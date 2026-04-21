@@ -33,4 +33,4 @@ class NpcRepository {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         
         return $row ? new Npc($row) : null;
-    }
+    }}
