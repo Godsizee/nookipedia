@@ -1,24 +1,31 @@
-# Wir nutzen PHP 8.2 mit Apache als Basis
-FROM php:8.2-apache
+# ==========================================
+# STUFE 1: Build-Umgebung (Node.js)
+# ==========================================
+FROM node:22-alpine AS builder
 
-# 1. System-Abhängigkeiten für PostgreSQL installieren
-RUN apt-get update && apt-get install -y \
-    libpq-dev \
-    && docker-php-ext-install pdo pdo_pgsql
+WORKDIR /app
 
-# 2. Apache Rewrite Module aktivieren (wichtig für unser Routing)
-RUN a2enmod rewrite
+# Abhängigkeiten installieren (Cache-optimiert)
+COPY package*.json ./
+RUN npm install
 
-# 3. DocumentRoot auf /public umstellen (Sicherheit!)
-ENV APACHE_DOCUMENT_ROOT /var/www/html/public
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf
-RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
-
-# 4. Arbeitsverzeichnis setzen
-WORKDIR /var/www/html
-
-# 5. Dateien kopieren
+# Quellcode kopieren und SSG Build ausführen
 COPY . .
+RUN npm run build
 
-# 6. Berechtigungen setzen (optional, falls Bilder-Uploads geplant sind)
-RUN chown -R www-data:www-data /var/www/html
+# ==========================================
+# STUFE 2: Production Webserver (Nginx)
+# ==========================================
+FROM nginx:alpine
+
+# Eigene Nginx-Konfiguration für Astro View Transitions & PWA (SPA Fallback)
+RUN rm -rf /usr/share/nginx/html/*
+
+# Kopiere die gebauten Astro-Dateien aus Stufe 1 in das Nginx-Verzeichnis
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Exponiere Port 80 für den Coolify Proxy
+EXPOSE 80
+
+# Nginx im Vordergrund starten
+CMD ["nginx", "-g", "daemon off;"]
