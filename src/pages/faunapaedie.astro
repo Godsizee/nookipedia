@@ -1,0 +1,85 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://api.nookipedia.de';
+let creatures = [];
+try {
+  const res = await fetch(`${directusUrl}/items/creatures?limit=100`);
+  if (res.ok) {
+    const data = await res.json();
+    creatures = data.data || [];
+  }
+} catch (err) {
+  console.warn('Directus API not reachable during build, using robust static fallback dataset.');
+}
+
+if (creatures.length === 0) {
+  creatures = [
+    {
+      id: 1,
+      category: 'fish',
+      name: 'Quastenflosser',
+      price: 15000,
+      image_path: 'faunapedia/fish/Quastenflosser.png',
+      time_active: 'Ganzjährig / Alle Uhrzeiten',
+      location: 'Meer (bei Regen)'
+    },
+    {
+      id: 2,
+      category: 'insect',
+      name: 'Vogelfalter',
+      price: 4000,
+      image_path: 'home/vogelfalter.png',
+      time_active: '08:00 - 16:00',
+      location: 'Fliegend (Blumen)'
+    },
+    {
+      id: 3,
+      category: 'sea',
+      name: 'Gießkannenschwamm',
+      price: 5000,
+      image_path: 'faunapedia/sea/giesskannenschwamm.png',
+      time_active: 'Ganz Tag',
+      location: 'Meeresgrund'
+    }
+  ];
+}
+---
+
+<Layout title="Faunapädie - Insekten, Fische & Meerestiere">
+    <div class="hero">
+        <h1>Faunapädie</h1>
+        <p>Hier findest du alle Details zu den faszinierenden Kreaturen deiner Insel.</p>
+    </div>
+
+    <div class="creature-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem; margin-bottom: 4rem;">
+        {creatures.map((creature) => {
+            const imageUrl = creature.image_path ? (creature.image_path.startsWith('http') ? creature.image_path : `${directusUrl}/assets/${creature.image_path}`) : '/assets/img/acnh/koeder.png';
+            const formattedPrice = new Intl.NumberFormat('de-DE').format(creature.price || 0) + ' Sternis';
+            return (
+                <article class="creature-card" style="background: var(--ac-surface); border-radius: var(--radius-lg); box-shadow: var(--ac-shadow); padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s;">
+                    <div style="display:flex; gap:1rem; align-items:center;">
+                        <div class="img-container" style="width: 80px; height: 80px; background: var(--ac-bg); border-radius: 50%; display:flex; align-items:center; justify-content:center; padding: 10px;" transition:name={`creature-img-${creature.id}`}>
+                            <img src={imageUrl} alt={creature.name} onerror="this.src='/assets/img/acnh/koeder.png'" style="width:100%; height:100%; object-fit:contain;" />
+                        </div>
+                        <div style="flex-grow:1;">
+                            <h3 style="margin:0; font-size:1.3rem; font-weight:900;">{creature.name}</h3>
+                            <div style="color:var(--ac-bell); font-weight:800; font-size:0.9rem; margin-top:4px;">💰 {formattedPrice}</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 1.5rem; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 1rem; display:flex; flex-direction:column; gap:6px; font-size:0.9rem;">
+                        <div><strong>📍 Ort:</strong> {creature.location || 'Inselweit'}</div>
+                        <div><strong>⏰ Zeit:</strong> {creature.time_active || 'Ganz Tag'}</div>
+                    </div>
+
+                    <div style="margin-top: 1.5rem; text-align:center;">
+                        <a href={`/tier/${creature.id}`} style="display:inline-block; width:100%; padding:0.8rem; background:var(--ac-green-light); color:var(--ac-green); font-weight:800; border-radius:var(--radius-sm); text-decoration:none;">
+                            Akte öffnen →
+                        </a>
+                    </div>
+                </article>
+            );
+        })}
+    </div>
+</Layout>

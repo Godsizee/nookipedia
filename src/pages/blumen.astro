@@ -1,0 +1,68 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://api.nookipedia.de';
+let flowers = [];
+try {
+  const res = await fetch(`${directusUrl}/items/flowers?limit=50`);
+  if (res.ok) {
+    const data = await res.json();
+    flowers = data.data || [];
+  }
+} catch (err) {
+  console.warn('Directus API not reachable during build, using robust static fallback dataset.');
+}
+
+if (flowers.length === 0) {
+  flowers = [
+    {
+      id: 1,
+      name: 'Rose',
+      description: 'Die Königin der Blumen. Bekannt für ihre exklusiven goldenen und blauen Hybride.',
+      image_path: 'home/Red_Cosmos_NL_Icon.png'
+    },
+    {
+      id: 2,
+      name: 'Tulpe',
+      description: 'Eine klassische Frühlingsblume in leuchtenden Farben.',
+      image_path: 'home/Red_Cosmos_NL_Icon.png'
+    }
+  ];
+}
+---
+
+<Layout title="Blumen & Pflanzenwelt - Zucht-Guides">
+    <div class="hero">
+        <h1>Pflanzenwelt & Zucht</h1>
+        <p>Erfahre alles über Genetik, Farbkreuzungen und seltene Hybride auf deiner Insel.</p>
+    </div>
+
+    <div class="flower-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; margin-top: 2rem; margin-bottom: 4rem;">
+        {flowers.map((flower) => {
+            const imageUrl = flower.image_path ? (flower.image_path.startsWith('http') ? flower.image_path : `${directusUrl}/assets/${flower.image_path}`) : '/assets/img/acnh/koeder.png';
+            return (
+                <article class="flower-card" style="background: var(--ac-surface); border-radius: var(--radius-lg); box-shadow: var(--ac-shadow); padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div style="display:flex; gap:1rem; align-items:center;">
+                        <div class="img-container" style="width: 70px; height: 70px; background: var(--ac-bg); border-radius: 50%; display:flex; align-items:center; justify-content:center; padding: 10px;" transition:name={`flower-img-${flower.id}`}>
+                            <img src={imageUrl} alt={flower.name} onerror="this.src='🌷'" style="width:100%; height:100%; object-fit:contain;" />
+                        </div>
+                        <div>
+                            <h3 style="margin:0; font-size:1.4rem; font-weight:900;">{flower.name}</h3>
+                            <span style="color:var(--ac-green); font-weight:800; font-size:0.85rem;">Zucht-Guide</span>
+                        </div>
+                    </div>
+
+                    <p style="color: var(--ac-text-muted); font-size: 0.95rem; margin: 1rem 0 1.5rem;">
+                        {flower.description || `Der komplette Guide zur Zucht und Genetik der ${flower.name}.`}
+                    </p>
+
+                    <div style="text-align:center;">
+                        <a href={`/blumen/${flower.id}`} style="display:inline-block; width:100%; padding:0.8rem; background:var(--ac-green); color:white; font-weight:800; border-radius:var(--radius-sm); text-decoration:none;">
+                            Guide öffnen →
+                        </a>
+                    </div>
+                </article>
+            );
+        })}
+    </div>
+</Layout>

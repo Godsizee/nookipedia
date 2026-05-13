@@ -1,0 +1,76 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://api.nookipedia.de';
+let recipes = [];
+try {
+  const res = await fetch(`${directusUrl}/items/recipes?limit=100`);
+  if (res.ok) {
+    const data = await res.json();
+    recipes = data.data || [];
+  }
+} catch (err) {
+  console.warn('Directus API not reachable during build, using robust static fallback dataset.');
+}
+
+if (recipes.length === 0) {
+  recipes = [
+    {
+      id: 1,
+      name: 'Goldschaufel',
+      is_customizable: true,
+      source: 'Gulliver (nach 30 Rettungen)',
+      sell_price: '10.000 Sternis',
+      durability: '250 Nutzungen',
+      image_path: 'diy/tools/Goldschaufel.png'
+    },
+    {
+      id: 2,
+      name: 'Kirschmarmelade',
+      is_customizable: false,
+      source: 'Bewohner (Kochen)',
+      sell_price: '300 Sternis',
+      image_path: 'diy/cooking/Kirschmarmelade.png'
+    }
+  ];
+}
+---
+
+<Layout title="Bastelanleitungen & Kochrezepte - Nookipedia">
+    <div class="hero" style="background: linear-gradient(135deg, #ffa726 0%, #fb8c00 100%);">
+        <h1>Bastelanleitungen & Kochrezepte</h1>
+        <p>Lass deiner Kreativität freien Lauf an der Werkbank und am Herd!</p>
+    </div>
+
+    <div class="recipe-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; max-width:1000px; margin: 2rem auto 4rem;">
+        {recipes.map((recipe) => {
+            const imageUrl = recipe.image_path ? (recipe.image_path.startsWith('http') ? recipe.image_path : `${directusUrl}/assets/${recipe.image_path}`) : '/assets/img/acnh/koeder.png';
+            return (
+                <article class="recipe-card-premium" style="background: var(--ac-surface); border-radius: var(--radius-lg); box-shadow: var(--ac-shadow); padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between; border: 2px solid transparent; transition: transform 0.2s;">
+                    <div style="display:flex; gap:1rem; align-items:center;">
+                        <div class="visual-glow" style="width: 80px; height: 80px; background: var(--ac-bg); border-radius: 20px; display:flex; align-items:center; justify-content:center; padding: 10px;" transition:name={`recipe-img-${recipe.id}`}>
+                            <img src={imageUrl} alt={recipe.name} onerror="this.src='🍳'" style="width:100%; height:100%; object-fit:contain;" />
+                        </div>
+                        <div>
+                            <h3 style="margin:0 0 6px; font-size:1.3rem; font-weight:900;">{recipe.name}</h3>
+                            {recipe.is_customizable && (
+                                <span style="background:var(--ac-green-light); color:var(--ac-green); font-weight:800; font-size:0.75rem; padding:2px 8px; border-radius:100px;">🎨 Umgestaltbar</span>
+                            )}
+                        </div>
+                    </div>
+
+                    <div style="margin: 1.5rem 0; border-top: 1px solid rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.05); padding: 1rem 0; display:flex; flex-direction:column; gap:6px; font-size:0.9rem;">
+                        {recipe.source && <div><strong>📍 Quelle:</strong> {recipe.source}</div>}
+                        {recipe.sell_price && <div><strong>💰 Wert:</strong> {recipe.sell_price}</div>}
+                    </div>
+
+                    <div style="text-align:center;">
+                        <a href={`/items/${recipe.id}`} style="display:inline-block; width:100%; padding:0.8rem; background:var(--ac-green); color:white; font-weight:800; border-radius:var(--radius-sm); text-decoration:none;">
+                            Anleitung ansehen →
+                        </a>
+                    </div>
+                </article>
+            );
+        })}
+    </div>
+</Layout>

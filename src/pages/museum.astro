@@ -1,0 +1,66 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Das Museum">
+    <div class="museum-hero" style="background: linear-gradient(to bottom, #f8f4e6 0%, #f8f4e6 30%, #3e241a 30%, #2d1b13 35%, #8b151a 35%, #5a0e11 100%); padding: 3rem 1rem 4rem; border-radius: var(--radius-lg); text-align: center; margin-bottom: 2rem; border: 3px solid #d4af37;">
+        <div class="museum-hero-icon" style="font-size: 3.5rem;">🏛️</div>
+        <h1 style="color: #f8f4e6; font-weight: 900; margin-top: 10px;">Das Museum</h1>
+        
+        <div class="museum-intro-box" style="margin: 1.5rem auto 0; max-width: 700px; text-align: left; background: rgba(27, 42, 33, 0.85); padding: 1.5rem; border-radius: var(--radius-md); border-left: 4px solid #d4af37; color: #e0f2ea;">
+            <p style="margin-bottom: 0.8rem; line-height: 1.6;">
+                Das Museum ist eine faszinierende Einrichtung zur Sammlung und Ausstellung von <strong>Insekten, Fischen, Meerestieren, Fossilien und Kunstwerken</strong> auf deiner Insel.
+            </p>
+            <p style="margin: 0; line-height: 1.6;">
+                Kuratiert wird das Museum von Eugen (Blathers), einer Eule, die stets treu in der Eingangshalle wacht.
+            </p>
+        </div>
+    </div>
+
+    <div class="museum-section-header" style="text-align: center; margin-bottom: 2rem;">
+        <h2 style="font-weight: 900; font-size: 1.8rem; margin:0;">Die Ausstellungsräume</h2>
+        <p style="color: var(--ac-text-muted); margin-top: 0.5rem;">Wähle einen Museumsflügel aus, um die Sammlungen zu betrachten.</p>
+    </div>
+
+    <div class="museum-categories" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 4rem;">
+        <a href="/faunapaedie" class="cat-card" style="display:flex; align-items:center; gap:1rem; padding:1.5rem; background:var(--ac-surface); border-radius:var(--radius-lg); border-left:6px solid #2e7d32; box-shadow:var(--ac-shadow);">
+            <span style="font-size:2.5rem;">🦋</span>
+            <div>
+                <strong style="font-size:1.2rem; display:block;">Insektenabteilung</strong>
+                <span style="font-size:0.85rem; color:var(--ac-text-muted);">⬅️ Westflügel</span>
+            </div>
+        </a>
+
+        <a href="/faunapaedie" class="cat-card" style="display:flex; align-items:center; gap:1rem; padding:1.5rem; background:var(--ac-surface); border-radius:var(--radius-lg); border-left:6px solid #0277bd; box-shadow:var(--ac-shadow);">
+            <span style="font-size:2.5rem;">🐟</span>
+            <div>
+                <strong style="font-size:1.2rem; display:block;">Aquarium: Fische</strong>
+                <span style="font-size:0.85rem; color:var(--ac-text-muted);">➡️ Ostflügel</span>
+            </div>
+        </a>
+
+        <a href="/faunapaedie" class="cat-card" style="display:flex; align-items:center; gap:1rem; padding:1.5rem; background:var(--ac-surface); border-radius:var(--radius-lg); border-left:6px solid #6a1b9a; box-shadow:var(--ac-shadow);">
+            <span style="font-size:2.5rem;">🐙</span>
+            <div>
+                <strong style="font-size:1.2rem; display:block;">Aquarium: Meerestiere</strong>
+                <span style="font-size:0.85rem; color:var(--ac-text-muted);">➡️ Ostflügel</span>
+            </div>
+        </a>
+
+        <a href="/materialien" class="cat-card" style="display:flex; align-items:center; gap:1rem; padding:1.5rem; background:var(--ac-surface); border-radius:var(--radius-lg); border-left:6px solid #8d6e63; box-shadow:var(--ac-shadow);">
+            <span style="font-size:2.5rem;">🦴</span>
+            <div>
+                <strong style="font-size:1.2rem; display:block;">Fossilienausstellung</strong>
+                <span style="font-size:0.85rem; color:var(--ac-text-muted);">⬇️ Untergeschoss</span>
+            </div>
+        </a>
+
+        <a href="/items" class="cat-card" style="display:flex; align-items:center; gap:1rem; padding:1.5rem; background:var(--ac-surface); border-radius:var(--radius-lg); border-left:6px solid #b8860b; box-shadow:var(--ac-shadow);">
+            <span style="font-size:2.5rem;">🖼️</span>
+            <div>
+                <strong style="font-size:1.2rem; display:block;">Kunstgalerie</strong>
+                <span style="font-size:0.85rem; color:var(--ac-text-muted);">⬆️ Obergeschoss</span>
+            </div>
+        </a>
+    </div>
+</Layout>
