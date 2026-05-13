@@ -1,52 +1,43 @@
 version: '3.8'
-
 services:
   directus:
-    image: directus/directus:10.10.0
+    image: 'directus/directus:10.10.0'
     container_name: nookipedia_directus
     restart: always
     ports:
-      - "8055:8055"
+      - '8055:8055'
     environment:
-      # General Security (In Coolify as variables or defaults)
-      KEY: "nookipedia-secret-encryption-key-random"
-      SECRET: "nookipedia-secret-token-key-random"
-      
-      # Database Connection (Verbindet sich direkt mit dem bestehenden Container 'postgres_db' in Coolify)
-      DB_CLIENT: "pg"
-      DB_HOST: "${DB_HOST:-postgres_db}"
-      DB_PORT: "${DB_PORT:-5432}"
-      DB_DATABASE: "${DB_DATABASE:-nookipedia_db}"
-      DB_USER: "${DB_USER:-n8n_user}"
-      DB_PASSWORD: "${DB_PASSWORD:-!!ArschMusik11}"
-      
-      # Redis Cache Configuration für blitzschnelle API-Antworten
-      CACHE_ENABLED: "true"
-      CACHE_STORE: "redis"
-      CACHE_REDIS: "redis://cache:6379"
-      
-      # Directus Admin Login
-      ADMIN_EMAIL: "${ADMIN_EMAIL:-admin@nookipedia.de}"
-      ADMIN_PASSWORD: "${ADMIN_PASSWORD:-1arschmusik!}"
-      
-      # Public URL (Wichtig für absolute Bild- und Datei-URLs im Astro SSG Build)
-      PUBLIC_URL: "${PUBLIC_URL:-https://api.nookipedia.de}"
+      KEY: nookipedia-secret-encryption-key-random
+      SECRET: nookipedia-secret-token-key-random
+      DB_CLIENT: pg
+      DB_HOST: '172.19.0.4'
+      DB_PORT: '5432'
+      DB_DATABASE: 'nookipedia_db'
+      DB_USER: 'n8n_user'
+      DB_PASSWORD: '!!ArschMusik11'
+      CACHE_ENABLED: 'true'
+      CACHE_STORE: redis
+      CACHE_REDIS: 'redis://cache:6379'
+      ADMIN_EMAIL: 'admin@nookipedia.de'
+      ADMIN_PASSWORD: '1arschmusik!'
+      PUBLIC_URL: 'https://directus.2.godsize.info'
     depends_on:
       - cache
     networks:
+      - coolify
       - nookipedia_net
-
   cache:
-    image: redis:7-alpine
+    image: 'redis:7-alpine'
     container_name: nookipedia_redis
     restart: always
     expose:
-      - "6379"
+      - '6379'
     networks:
       - nookipedia_net
 
-# Netzwerk-Konfiguration für die Kommunikation zwischen den Containern
 networks:
+  coolify:
+    external: true
   nookipedia_net:
     name: nookipedia_net
     driver: bridge
