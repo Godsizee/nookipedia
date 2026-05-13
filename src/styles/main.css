@@ -1,0 +1,712 @@
+/**
+ * Nookipedia-Next Main Styles
+ * Design: ACNH Authentic, Mobile-First, Highly Polished
+ */
+
+/* --- 1. THEME & VARIABLES (Mobile First) --- */
+:root {
+    /* Authentic ACNH Palette - Light Mode */
+    --ac-bg: #f4f1e1;          /* Soft cream background */
+    --ac-surface: #ffffff;     /* Pure white cards */
+    --ac-text: #5c4e3f;        /* Warm brown text */
+    --ac-text-muted: #968a7c;  /* Softer brown for details */
+    --ac-green: #59a683;       /* Nook leaf green */
+    --ac-green-light: #e0f2ea; /* Soft green background */
+    --ac-bell: #f2c046;        /* Bell coin gold */
+    --ac-bell-bg: #fdf3d1;     /* Soft yellow background */
+    --ac-blue-light: #e6f4f1;  /* Catchphrase background */
+    --ac-shadow: 0 12px 32px rgba(92, 78, 63, 0.08);
+    --ac-border: #e8e3d3;      /* Subtle dividers */
+    
+    /* Layout */
+    --radius-lg: 28px;
+    --radius-md: 18px;
+    --radius-sm: 12px;
+    --nav-height: 70px;
+}
+
+[data-theme='dark'] {
+    /* Authentic ACNH Palette - Dark Mode */
+    --ac-bg: #2b2926;
+    --ac-surface: #383531;
+    --ac-text: #e8e3d9;
+    --ac-text-muted: #a69f95;
+    --ac-green: #68c79f;
+    --ac-green-light: #2c4a3d;
+    --ac-bell: #f5cf66;
+    --ac-bell-bg: #4a4022;
+    --ac-blue-light: #2d3f3f;
+    --ac-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
+    --ac-border: #4d4943;
+}
+
+/* --- 2. BASE & RESET --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    /* Use rounded, friendly fonts if available, fallback to sans-serif */
+    font-family: 'Nunito', 'Quicksand', 'Inter', system-ui, sans-serif;
+    background-color: var(--ac-bg);
+    color: var(--ac-text);
+    line-height: 1.5;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    overflow-x: hidden;
+    padding-bottom: 40px;
+}
+
+.container {
+    width: 100%;
+    padding: 0 1.25rem; /* 20px padding for mobile */
+    margin: 0 auto;
+}
+
+/* --- 3. HEADER & NAVIGATION --- */
+header {
+    height: var(--nav-height);
+    background: var(--ac-surface);
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    border-bottom: 2px solid var(--ac-green-light);
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-weight: 900;
+    font-size: 1.4rem;
+    color: var(--ac-green);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    letter-spacing: -0.5px;
+}
+
+#theme-toggle {
+    background: var(--ac-green-light);
+    color: var(--ac-green);
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+#theme-toggle:active {
+    transform: scale(0.85);
+}
+
+#theme-toggle:focus-visible {
+    outline: 3px solid var(--ac-green);
+    outline-offset: 2px;
+}
+
+/* --- 4. HERO SECTION --- */
+.hero {
+    padding: 2.5rem 0 1.5rem;
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--ac-text);
+    margin-bottom: 0.5rem;
+    line-height: 1.1;
+}
+
+.hero p {
+    color: var(--ac-text-muted);
+    font-size: 1.05rem;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+/* --- 5. CATEGORY SELECTION (HOME) --- */
+/* STRICT MOBILE FIRST: 1 Spalte untereinander */
+.category-selection {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    margin-top: 2rem;
+}
+
+.cat-card {
+    background: var(--ac-surface);
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    box-shadow: var(--ac-shadow);
+    border: 2px solid transparent;
+    transition: transform 0.2s, border-color 0.2s;
+    height: 100%;
+}
+
+.cat-card i {
+    font-size: 2.5rem;
+    background: var(--ac-bg);
+    width: 70px;
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    font-style: normal;
+    flex-shrink: 0; 
+}
+
+.cat-card span {
+    font-weight: 900;
+    font-size: 1.2rem;
+    color: var(--ac-text);
+    line-height: 1.2;
+}
+
+.cat-card:active {
+    transform: scale(0.98);
+}
+.cat-card:focus-visible {
+    outline: 3px solid var(--ac-green);
+    outline-offset: 2px;
+}
+
+/* Specific Card Colors */
+.cat-card.faunapaedie { border-color: rgba(139, 90, 43, 0.2); }
+.cat-card.flowers { border-color: rgba(255, 105, 180, 0.2); }
+.cat-card.events { border-color: rgba(255, 152, 0, 0.2); }
+
+/* Museum Card auf dem Home-Screen */
+.cat-card.cat-card-museum {
+    border-color: rgba(212, 175, 55, 0.4);
+    background: linear-gradient(135deg, var(--ac-surface) 40%, #fffdf5 100%);
+}
+
+[data-theme='dark'] .cat-card.cat-card-museum {
+    border-color: rgba(212, 175, 55, 0.4);
+    background: var(--ac-surface);
+}
+
+/* --- 6. TAB NAVIGATION & INFO BOXES --- */
+.tab-nav {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    background: var(--ac-surface);
+    border-radius: 100px;
+    margin: 1.5rem 0 1.5rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.tab-nav::-webkit-scrollbar { display: none; }
+
+.tab-item {
+    flex: 1 0 auto;
+    text-align: center;
+    padding: 0.8rem 1.2rem;
+    text-decoration: none;
+    color: var(--ac-text-muted);
+    font-weight: 800;
+    font-size: 0.95rem;
+    border-radius: 100px;
+    scroll-snap-align: start;
+    transition: all 0.2s;
+}
+
+.tab-item.active {
+    background: var(--ac-green);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(89, 166, 131, 0.3);
+}
+
+.tab-item:focus-visible {
+    outline: 3px solid var(--ac-green);
+    outline-offset: 2px;
+}
+
+/* Info Box (Fluff Texts) */
+.info-box {
+    background: var(--ac-surface);
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--ac-shadow);
+    margin-bottom: 2rem;
+    border-left: 6px solid var(--ac-green);
+    line-height: 1.6;
+    color: var(--ac-text);
+}
+
+.info-box h2 {
+    color: var(--ac-green);
+    font-size: 1.3rem;
+    margin-bottom: 0.75rem;
+    font-weight: 900;
+}
+
+.info-box p {
+    margin-bottom: 0.8rem;
+    font-size: 0.95rem;
+}
+
+.info-box p:last-child {
+    margin-bottom: 0;
+}
+
+.info-box strong {
+    color: var(--ac-text);
+    font-weight: 800;
+}
+
+.info-box em {
+    font-style: italic;
+    color: var(--ac-green);
+    font-weight: 600;
+}
+
+/* --- 7. CREATURE CARDS (MOBILE FIRST) --- */
+/* Auf Mobile in 1 Spalte */
+.creature-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+.creature-card {
+    background: var(--ac-surface);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--ac-shadow);
+    display: flex;
+    flex-direction: column;
+    border: 2px solid transparent;
+    height: 100%;
+}
+
+/* Card Content Top */
+.creature-card .card-content-top {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 1.2rem;
+}
+
+@media (max-width: 480px) {
+    .creature-card .card-content-top {
+        gap: 0.8rem;
+    }
+}
+
+.creature-card .details-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+
+.creature-card .card-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    border-bottom: 2px dashed var(--ac-border);
+    padding-bottom: 0.8rem;
+}
+
+.creature-card .img-container {
+    background: var(--ac-bg);
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+    border: 3px dashed var(--ac-border);
+    flex-shrink: 0;
+    margin: 0;
+}
+
+@media (max-width: 480px) {
+    .creature-card .img-container {
+        width: 80px;
+        height: 80px;
+        padding: 8px;
+    }
+}
+
+.creature-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+}
+
+.creature-card .name {
+    font-weight: 900;
+    font-size: 1.25rem;
+    color: var(--ac-text);
+    line-height: 1.1;
+}
+
+.creature-card .price-tag {
+    background: var(--ac-bell-bg);
+    color: var(--ac-bell);
+    padding: 0.35rem 0.8rem;
+    border-radius: 100px;
+    font-weight: 900;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.05); 
+}
+
+/* Info Section List */
+.creature-card .creature-info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    font-size: 0.95rem;
+}
+
+.creature-card .info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px dotted var(--ac-border);
+}
+
+.creature-card .info-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.creature-card .info-label {
+    color: var(--ac-text-muted);
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+}
+
+.creature-card .info-value {
+    color: var(--ac-text);
+    font-weight: 800;
+    text-align: right;
+    word-wrap: break-word;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+/* Shadow Styling */
+.shadow-icon {
+    height: 28px;
+    width: auto;
+    vertical-align: middle;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
+    opacity: 0.85;
+}
+
+[data-theme='dark'] .shadow-icon {
+    filter: brightness(0) invert(1) drop-shadow(0 1px 2px rgba(0,0,0,0.5));
+    opacity: 0.8;
+}
+
+.shadow-circle {
+    background-color: var(--ac-text);
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 8px;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+    opacity: 0.8;
+}
+
+.shadow-winzig { width: 10px; height: 10px; }
+.shadow-klein { width: 14px; height: 14px; }
+.shadow-mittel { width: 18px; height: 18px; }
+.shadow-gross { width: 22px; height: 22px; }
+.shadow-sehr-gross { width: 26px; height: 26px; }
+
+[data-theme='dark'] .shadow-circle {
+    background-color: #ffffff;
+    box-shadow: inset 0 2px 4px rgba(255,255,255,0.5);
+}
+
+.weather-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 24px;
+    justify-content: flex-end;
+    min-width: 56px; 
+}
+
+.weather-icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 3px rgba(0,0,0,0.1));
+}
+
+/* Catchphrase Box */
+.creature-card .catchphrase-box {
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+    padding: 1.25rem;
+    background: var(--ac-blue-light);
+    border-radius: var(--radius-md);
+    font-size: 0.95rem;
+    font-style: italic;
+    font-weight: 600;
+    color: var(--ac-text-muted);
+    text-align: center;
+    line-height: 1.5;
+    position: relative;
+}
+
+.creature-card .catchphrase-box::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: 20px;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid var(--ac-blue-light);
+}
+
+/* Month Grid Styles */
+.creature-card .month-grid-container {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 6px;
+    margin-top: auto;
+    background: var(--ac-bg);
+    padding: 10px;
+    border-radius: var(--radius-sm);
+    border: 2px solid var(--ac-border);
+}
+
+.creature-card .month-box {
+    text-align: center;
+    padding: 6px 0;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    transition: all 0.2s;
+}
+
+.creature-card .month-box.active {
+    background: var(--ac-green);
+    color: #ffffff;
+    box-shadow: 0 2px 4px rgba(89, 166, 131, 0.3);
+}
+
+.creature-card .month-box.inactive {
+    background: rgba(0,0,0,0.05);
+    color: var(--ac-text-muted);
+}
+
+[data-theme='dark'] .creature-card .month-grid-container {
+    background: var(--ac-bg);
+}
+
+[data-theme='dark'] .creature-card .month-box.inactive {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--ac-text-muted);
+}
+
+/* --- 8. TABLET & DESKTOP ENHANCEMENTS (Responsive Breakpoints) --- */
+@media (min-width: 650px) {
+    .container {
+        max-width: 600px;
+    }
+    
+    /* TABLET: 2 Spalten für Startseiten-Karten */
+    .category-selection {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .cat-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 2rem 1.5rem;
+    }
+}
+
+@media (min-width: 900px) {
+    .container {
+        max-width: 1100px;
+    }
+
+    /* DESKTOP: 3 Spalten für Startseite */
+    .category-selection {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+
+    .cat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 16px 40px rgba(92, 78, 63, 0.15);
+    }
+
+    /* DESKTOP: 2 Spalten für Kreaturen */
+    .creature-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+
+    .creature-card {
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .creature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 16px 40px rgba(92, 78, 63, 0.12);
+        border-color: var(--ac-green-light);
+    }
+}
+
+@media (min-width: 1200px) {
+    /* WIDESCREEN: 3 Spalten für Kreaturen */
+    .creature-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* --- 9. ERROR PAGES --- */
+.error-hero {
+    padding: 100px 0;
+}
+
+.error-icon {
+    font-size: 5rem;
+    margin-bottom: 20px;
+    animation: wobble 3s ease-in-out infinite;
+}
+
+@keyframes wobble {
+    0%, 100% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
+}
+
+.error-actions {
+    margin-top: 40px;
+}
+
+.btn-back {
+    padding: 15px 30px;
+    text-decoration: none;
+    display: inline-block;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    background: var(--ac-green);
+    color: #fff;
+    border-radius: 100px;
+    font-weight: 800;
+}
+
+.btn-back:hover, .btn-back:focus-visible {
+    transform: scale(1.05);
+    background: #4a8f6e;
+    outline: none;
+}
+.btn-back:focus-visible {
+    outline: 3px solid var(--ac-green);
+    outline-offset: 2px;
+}
+
+/* --- 10. FLOATING BOTTOM TAB BAR (PWA / Mobile Ergonomie) --- */
+.bottom-tab-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: calc(65px + env(safe-area-inset-bottom, 0px));
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid var(--ac-border);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    z-index: 9999;
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.04);
+}
+
+[data-theme='dark'] .bottom-tab-bar {
+    background: rgba(56, 53, 49, 0.85);
+    border-top: 1px solid var(--ac-border);
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.2);
+}
+
+.bottom-tab-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--ac-text-muted);
+    text-decoration: none;
+    font-size: 0.75rem;
+    font-weight: 800;
+    gap: 4px;
+    width: 60px;
+    height: 100%;
+    transition: color 0.2s, transform 0.2s;
+}
+
+.bottom-tab-item i {
+    font-size: 1.4rem;
+    font-style: normal;
+}
+
+.bottom-tab-item.active {
+    color: var(--ac-green);
+}
+
+.bottom-tab-item:active {
+    transform: scale(0.9);
+}
+
+/* Hide header navigation elements on small screens to prioritize bottom bar */
+@media (max-width: 650px) {
+    body {
+        padding-bottom: calc(85px + env(safe-area-inset-bottom, 0px)) !important;
+    }
+}
+
+@media (min-width: 651px) {
+    .bottom-tab-bar {
+        display: none;
+    }
+}

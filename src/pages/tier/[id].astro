@@ -1,0 +1,539 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://api.nookipedia.de';
+  let creatures = [];
+  try {
+    const res = await fetch(`${directusUrl}/items/creatures?limit=1000`);
+    if (res.ok) {
+      const data = await res.json();
+      creatures = data.data || [];
+    }
+  } catch (err) {
+    console.warn('Directus API not reachable during build, using robust static fallback dataset.');
+  }
+
+  if (creatures.length === 0) {
+    creatures = [
+      {
+        id: 1,
+        category: 'fish',
+        name: 'Quastenflosser',
+        price: 15000,
+        catchphrase: 'Ein Quastenflosser! Manche halten ihn für ein lebendes Fossil!',
+        image_path: 'faunapedia/fish/Quastenflosser.png',
+        months_northern: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        time_active: 'Ganzjährig / Alle Uhrzeiten',
+        location_name: 'Meer (bei Regen)',
+        shadow_image: 'groß',
+        weather: 'Regen'
+      },
+      {
+        id: 2,
+        category: 'insect',
+        name: 'Vogelfalter',
+        price: 4000,
+        catchphrase: 'Einen Vogelfalter gefangen! Er flattert so wunderschön!',
+        image_path: 'home/vogelfalter.png',
+        months_northern: [4, 5, 6, 7, 8, 9],
+        time_active: '08:00 - 16:00',
+        location_name: 'Fliegend (Blumen)',
+        weather: 'Schön'
+      },
+      {
+        id: 3,
+        category: 'sea',
+        name: 'Gießkannenschwamm',
+        price: 5000,
+        catchphrase: 'Einen Gießkannenschwamm gefunden! Sieht aus wie eine Gießkanne!',
+        image_path: 'faunapedia/sea/giesskannenschwamm.png',
+        months_northern: [10, 11, 12, 1, 2],
+        time_active: 'Ganz Tag',
+        location_name: 'Meeresgrund',
+        shadow_image: 'groß',
+        speed: 'Sehr langsam'
+      }
+    ];
+  }
+
+  return creatures.map((creature) => {
+    return {
+      params: { id: creature.id.toString() },
+      props: { creature },
+    };
+  });
+}
+
+const { creature } = Astro.props;
+const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://api.nookipedia.de';
+
+let catName = 'Kreatur';
+let backLink = '/faunapaedie';
+let catIcon = '🐾';
+let gradient = 'linear-gradient(to bottom, #2c4a3d 0%, #1a2e25 100%)';
+let btnLabel = 'Faunapädie';
+
+if (creature.category === 'fish') {
+    catName = 'Fisch';
+    backLink = '/faunapaedie';
+    catIcon = '🐟';
+    gradient = 'linear-gradient(135deg, #0277bd 0%, #011d4a 100%)';
+    btnLabel = 'Fische-Übersicht';
+} else if (creature.category === 'insect') {
+    catName = 'Insekt';
+    backLink = '/faunapaedie';
+    catIcon = '🦋';
+    gradient = 'linear-gradient(135deg, #2e7d32 0%, #0d2112 100%)';
+    btnLabel = 'Insekten-Übersicht';
+} else if (creature.category === 'sea') {
+    catName = 'Meerestier';
+    backLink = '/faunapaedie';
+    catIcon = '🐙';
+    gradient = 'linear-gradient(135deg, #6a1b9a 0%, #200542 100%)';
+    btnLabel = 'Meerestiere-Übersicht';
+}
+
+const imageUrl = creature.image_path ? (creature.image_path.startsWith('http') ? creature.image_path : `${directusUrl}/assets/${creature.image_path}`) : '/assets/img/acnh/koeder.png';
+const formattedPrice = new Intl.NumberFormat('de-DE').format(creature.price || 0) + ' Sternis';
+const allMonths = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
+const activeMonths = creature.months_northern || [];
+---
+
+<Layout title={`${creature.name} - ${catName}`}>
+    <div class="detail-hero" style={`background: ${gradient};`}>
+        <div class="detail-icon-wrap" transition:name={`creature-img-${creature.id}`}>
+            <img src={imageUrl} alt={creature.name} onerror="this.src='/assets/img/acnh/koeder.png'" />
+        </div>
+        <h1 class="detail-title">{creature.name}</h1>
+        <div class="detail-subtitle"><span>{catIcon}</span> {catName}</div>
+    </div>
+
+    <div class="detail-content-card">
+        {creature.catchphrase && (
+            <div class="detail-quote">
+                {creature.catchphrase}
+            </div>
+        )}
+
+        <div class="detail-grid">
+            <div>
+                <h3 class="section-heading">📋 Insel-Akte</h3>
+                <div class="data-list">
+                    <div class="data-row">
+                        <div class="data-icon icon-price">💰</div>
+                        <div class="data-content">
+                            <span class="data-label">Verkaufspreis</span>
+                            <span class="data-value">{formattedPrice}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="data-row">
+                        <div class="data-icon icon-location">📍</div>
+                        <div class="data-content">
+                            <span class="data-label">Fundort</span>
+                            <span class="data-value">{creature.location_name || 'Unbekannt'}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="data-row">
+                        <div class="data-icon icon-time">⏰</div>
+                        <div class="data-content">
+                            <span class="data-label">Uhrzeit</span>
+                            <span class="data-value">{creature.time_active || 'Ganzjährig'}</span>
+                        </div>
+                    </div>
+
+                    {(creature.category === 'fish' || creature.category === 'sea') && (
+                        <div class="data-row">
+                            <div class="data-icon icon-shadow">👤</div>
+                            <div class="data-content">
+                                <span class="data-label">Schatten</span>
+                                <span class="data-value" style="display: flex; align-items: center; gap: 8px;">
+                                    {creature.shadow_image && (
+                                        <span class={`shadow-circle shadow-${creature.shadow_image.toLowerCase().replace(' ', '-')}`}></span>
+                                    )}
+                                    {creature.shadow_image || 'N/A'}
+                                </span>
+                            </div>
+                        </div>
+                    )}
+
+                    {creature.speed && (
+                        <div class="data-row">
+                            <div class="data-icon icon-speed">💨</div>
+                            <div class="data-content">
+                                <span class="data-label">Geschwindigkeit</span>
+                                <span class="data-value">{creature.speed}</span>
+                            </div>
+                        </div>
+                    )}
+
+                    {creature.weather && (
+                        <div class="data-row">
+                            <div class="data-icon icon-weather">🌦️</div>
+                            <div class="data-content">
+                                <span class="data-label">Wetter-Bedingung</span>
+                                <span class="data-value">{creature.weather}</span>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </div>
+
+            <div>
+                <h3 class="section-heading">📅 Saison-Planer <span style="font-size:0.8rem; color:var(--ac-text-muted); font-weight:700;">(Nord)</span></h3>
+                <div class="month-grid-premium">
+                    {allMonths.map((monthName, index) => {
+                        const monthNum = index + 1;
+                        const isActive = Array.isArray(activeMonths) && activeMonths.includes(monthNum);
+                        const cssClass = isActive ? 'active' : 'inactive';
+                        return (
+                            <div class={`month-pill ${cssClass}`}>{monthName}</div>
+                        );
+                    })}
+                </div>
+                
+                {Array.isArray(activeMonths) && activeMonths.length === 12 && (
+                    <div style="margin-top: 1.5rem; padding: 1rem; background: var(--ac-green-light); color: var(--ac-green); border-radius: var(--radius-sm); text-align: center; font-weight: 800;">
+                        ✅ Ganzjährig fangbar!
+                    </div>
+                )}
+            </div>
+        </div>
+
+        <div class="detail-actions">
+            <a href={backLink} class="btn-detail-back">
+                <span class="btn-icon">←</span>
+                <span class="btn-text">Zurück zur {btnLabel}</span>
+            </a>
+        </div>
+    </div>
+</Layout>
+
+<style>
+.detail-hero {
+    position: relative;
+    margin: -2.5rem -1.25rem 0; 
+    padding: 3.5rem 1.5rem 5rem;
+    text-align: center;
+    border-radius: 0 0 40px 40px;
+    color: #fff;
+    overflow: hidden;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    margin-bottom: -3.5rem; 
+    z-index: 1;
+}
+
+.detail-hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: radial-gradient(rgba(255,255,255,0.15) 2px, transparent 2px);
+    background-size: 24px 24px;
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.detail-icon-wrap {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    margin: 0 auto 1.5rem;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    border: 3px solid rgba(255,255,255,0.4);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.25), inset 0 4px 10px rgba(255,255,255,0.3);
+    z-index: 2;
+    animation: floatIcon 4s ease-in-out infinite;
+}
+
+@keyframes floatIcon {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+.detail-icon-wrap img {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 16px rgba(0,0,0,0.4));
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.detail-icon-wrap:hover img {
+    transform: scale(1.15) rotate(5deg);
+}
+
+.detail-title {
+    font-size: 2.4rem;
+    font-weight: 900;
+    margin-bottom: 0.4rem;
+    letter-spacing: -0.5px;
+    text-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    position: relative;
+    z-index: 2;
+    line-height: 1.1;
+}
+
+.detail-subtitle {
+    font-size: 1rem;
+    font-weight: 800;
+    opacity: 0.9;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    position: relative;
+    z-index: 2;
+    display: inline-block;
+    background: rgba(0,0,0,0.2);
+    padding: 4px 16px;
+    border-radius: 100px;
+}
+
+.detail-content-card {
+    position: relative;
+    background: var(--ac-surface);
+    border-radius: var(--radius-lg);
+    padding: 2.5rem 1.25rem;
+    max-width: 850px;
+    margin: 0 auto 3rem;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06);
+    z-index: 10;
+}
+
+.detail-quote {
+    text-align: center;
+    font-size: 1.15rem;
+    font-style: italic;
+    font-weight: 700;
+    color: var(--ac-text-muted);
+    margin-bottom: 2.5rem;
+    padding: 0 1rem;
+    position: relative;
+}
+
+.detail-quote::before, .detail-quote::after {
+    content: '"';
+    color: var(--ac-green-light);
+    font-size: 2rem;
+    line-height: 0;
+    vertical-align: bottom;
+}
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+}
+
+.section-heading {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: var(--ac-text);
+    margin-bottom: 1.2rem;
+    padding-left: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.data-list {
+    background: var(--ac-bg);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.data-row {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.2rem;
+    gap: 1rem;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+}
+
+.data-row:last-child {
+    border-bottom: none;
+}
+
+.data-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    box-shadow: inset 0 2px 4px rgba(255,255,255,0.4), 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.icon-price { background: #fff5c2; color: #d39e00; }
+.icon-location { background: #e3f2fd; color: #0277bd; }
+.icon-time { background: #f3e5f5; color: #7b1fa2; }
+.icon-shadow { background: #e0e0e0; color: #424242; }
+.icon-speed { background: #e8f5e9; color: #2e7d32; }
+.icon-weather { background: #fff3e0; color: #e65100; }
+
+.data-content {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.data-label {
+    font-size: 0.8rem;
+    font-weight: 800;
+    color: var(--ac-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+}
+
+.data-value {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--ac-text);
+    line-height: 1.3;
+}
+
+.month-grid-premium {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    background: var(--ac-bg);
+    padding: 1.25rem;
+    border-radius: var(--radius-md);
+}
+
+.month-pill {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.8rem 0;
+    border-radius: 14px;
+    font-size: 0.9rem;
+    font-weight: 800;
+    transition: all 0.3s ease;
+}
+
+.month-pill.active {
+    background: var(--ac-green);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(89, 166, 131, 0.4);
+    transform: translateY(-2px);
+}
+
+.month-pill.inactive {
+    background: rgba(0,0,0,0.03);
+    color: var(--ac-text-muted);
+    opacity: 0.6;
+}
+
+.detail-actions {
+    margin-top: 3.5rem;
+    text-align: center;
+}
+
+.btn-detail-back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 1rem 2rem;
+    background: var(--ac-surface);
+    color: var(--ac-text);
+    text-decoration: none !important;
+    font-weight: 900;
+    font-size: 1.05rem;
+    border-radius: 100px;
+    border: 3px solid var(--ac-green-light);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.btn-detail-back .btn-icon {
+    font-size: 1.4rem;
+    transition: transform 0.3s ease;
+}
+
+.btn-detail-back:hover {
+    transform: translateY(-4px) scale(1.02);
+    border-color: var(--ac-green);
+    background: var(--ac-green-light);
+    color: var(--ac-green);
+    box-shadow: 0 12px 25px rgba(89, 166, 131, 0.2);
+}
+
+.btn-detail-back:hover .btn-icon {
+    transform: translateX(-5px);
+}
+
+.btn-detail-back:active {
+    transform: translateY(1px) scale(0.98);
+}
+
+@media (min-width: 768px) {
+    .detail-hero {
+        margin: 0 0 -4rem 0; 
+        border-radius: var(--radius-lg);
+        padding: 4rem 2rem 6.5rem;
+    }
+    
+    .detail-content-card {
+        padding: 3rem;
+    }
+    
+    .detail-grid { 
+        grid-template-columns: 1fr 1fr; 
+        align-items: start;
+    }
+    
+    .month-grid-premium { 
+        grid-template-columns: repeat(3, 1fr); 
+    }
+
+    .btn-detail-back {
+        min-width: 300px; 
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .detail-content-card { 
+        background: var(--ac-surface); 
+        box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+    }
+    
+    .data-list { background: rgba(0,0,0,0.2); }
+    .data-row { border-bottom-color: rgba(255,255,255,0.05); }
+    
+    .month-grid-premium { background: rgba(0,0,0,0.2); }
+    .month-pill.inactive { background: rgba(255,255,255,0.05); color: var(--ac-text-muted); opacity: 0.8; }
+    
+    .icon-price { background: rgba(211, 158, 0, 0.15); color: #f5cf66; }
+    .icon-location { background: rgba(2, 119, 189, 0.15); color: #4fc3f7; }
+    .icon-time { background: rgba(123, 31, 162, 0.15); color: #ce93d8; }
+    .icon-shadow { background: rgba(255, 255, 255, 0.1); color: #e0e0e0; }
+    .icon-speed { background: rgba(46, 125, 50, 0.15); color: #81c784; }
+    .icon-weather { background: rgba(230, 81, 0, 0.15); color: #ffb74d; }
+
+    .btn-detail-back {
+        background: var(--ac-bg);
+        border-color: var(--ac-border);
+        color: var(--ac-text);
+        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    .btn-detail-back:hover {
+        border-color: var(--ac-green);
+        background: rgba(89, 166, 131, 0.1);
+        color: var(--ac-green);
+    }
+}
+</style>

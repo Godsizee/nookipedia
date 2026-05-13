@@ -1,0 +1,460 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://api.nookipedia.de';
+  let flowers = [];
+  try {
+    const res = await fetch(`${directusUrl}/items/flowers?limit=100`);
+    if (res.ok) {
+      const data = await res.json();
+      flowers = data.data || [];
+    }
+  } catch (err) {
+    console.warn('Directus API not reachable during build, using robust static fallback dataset.');
+  }
+
+  if (flowers.length === 0) {
+    flowers = [
+      {
+        id: 1,
+        name: 'Rose',
+        description: 'Die Königin der Blumen. Bekannt für ihre exklusiven goldenen und blauen Hybride.',
+        image_path: 'home/Red_Cosmos_NL_Icon.png',
+        colors: ['Rot', 'Weiß', 'Gelb', 'Rosa', 'Orange', 'Lila', 'Schwarz', 'Blau', 'Gold'],
+        seeds: [
+          { color: 'Rot', source: 'Nooks Laden', image_path: 'home/Red_Cosmos_NL_Icon.png' },
+          { color: 'Weiß', source: 'Nooks Laden', image_path: 'home/Red_Cosmos_NL_Icon.png' },
+          { color: 'Gelb', source: 'Nooks Laden', image_path: 'home/Red_Cosmos_NL_Icon.png' }
+        ],
+        combinations: [
+          { parent1_color: 'Rot', parent1_image: 'home/Red_Cosmos_NL_Icon.png', parent2_color: 'Rot', parent2_image: 'home/Red_Cosmos_NL_Icon.png', child_color: 'Schwarz', child_image: 'home/Red_Cosmos_NL_Icon.png', probability: '25%', notes: 'Gieße mit der Goldgießkanne für Goldrosen!' },
+          { parent1_color: 'Weiß', parent1_image: 'home/Red_Cosmos_NL_Icon.png', parent2_color: 'Weiß', parent2_image: 'home/Red_Cosmos_NL_Icon.png', child_color: 'Lila', child_image: 'home/Red_Cosmos_NL_Icon.png', probability: '25%', notes: 'Wichtiger Zwischenschritt für blaue Rosen.' }
+        ]
+      },
+      {
+        id: 2,
+        name: 'Tulpe',
+        description: 'Eine klassische Frühlingsblume in leuchtenden Farben.',
+        image_path: 'home/Red_Cosmos_NL_Icon.png',
+        colors: ['Rot', 'Weiß', 'Gelb', 'Rosa', 'Orange', 'Lila', 'Schwarz'],
+        seeds: [
+          { color: 'Rot', source: 'Gerd / Nooks Laden', image_path: 'home/Red_Cosmos_NL_Icon.png' },
+          { color: 'Weiß', source: 'Gerd / Nooks Laden', image_path: 'home/Red_Cosmos_NL_Icon.png' }
+        ],
+        combinations: [
+          { parent1_color: 'Rot', parent1_image: 'home/Red_Cosmos_NL_Icon.png', parent2_color: 'Gelb', parent2_image: 'home/Red_Cosmos_NL_Icon.png', child_color: 'Orange', child_image: 'home/Red_Cosmos_NL_Icon.png', probability: '50%', notes: 'Sehr pflegeleicht.' }
+        ]
+      }
+    ];
+  }
+
+  return flowers.map((flower) => {
+    return {
+      params: { id: flower.id.toString() },
+      props: { flower },
+    };
+  });
+}
+
+const { flower } = Astro.props;
+const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://api.nookipedia.de';
+
+const pluralNames = {
+    'Anemone': 'Anemonen',
+    'Alpenveilchen': 'Alpenveilchen',
+    'Chrysantheme': 'Chrysanthemen',
+    'Cosmea': 'Cosmeen',
+    'Hyazinthe': 'Hyazinthen',
+    'Lilie': 'Lilien',
+    'Rose': 'Rosen',
+    'Tulpe': 'Tulpen',
+    'Maiglöckchen': 'Maiglöckchen'
+};
+
+const guideName = pluralNames[flower.name] || flower.name + 'n';
+const imageUrl = flower.image_path ? (flower.image_path.startsWith('http') ? flower.image_path : `${directusUrl}/assets/${flower.image_path}`) : '/assets/img/acnh/koeder.png';
+const seeds = flower.seeds || [];
+const combinations = flower.combinations || [];
+---
+
+<Layout title={`Der ultimative ${guideName}-Guide`}>
+    <div class="hero">
+        <div class="hero-flower-icon" transition:name={`flower-img-${flower.id}`}>
+            <img src={imageUrl} alt={flower.name} onerror="this.src='🌷'" />
+        </div>
+        <h1>Der ultimative {guideName}-Guide</h1>
+        <p>Von der einfachen Samentüte zur seltenen Pracht.</p>
+    </div>
+
+    <section class="guide-section">
+        <div class="guide-intro">
+            <p>{flower.description || `Willkommen beim Zucht-Guide für die ${flower.name}. Erfahre alles über Genetik und Kreuzungschancen.`}</p>
+        </div>
+
+        <h2 class="guide-heading">1. Die Grundfarben (Samen)</h2>
+        <div class="guide-card">
+            <p style="margin-bottom: 1.5rem;">Um eine <strong>saubere Zucht</strong> zu garantieren, solltest du immer mit frischen Samentüten von Nooks Laden oder Gerd beginnen. Wild gewachsene Blumen haben oft eine unbekannte Genetik!</p>
+            
+            <div class="seeds-grid">
+                {seeds.length > 0 ? (
+                    seeds.map((seed) => (
+                        <div class="seed-card">
+                            <img src={`/assets/img/acnh/${seed.image_path}`} alt={seed.color} onerror="this.src='🌱'" />
+                            <div class="seed-info">
+                                <span class={`color-badge color-${seed.color.toLowerCase()}`} style="display: inline-block; font-weight:800; color:var(--ac-green);">
+                                    {seed.color}
+                                </span>
+                                <span class="seed-source">🛒 {seed.source}</span>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <p>Keine Samendaten gefunden.</p>
+                )}
+            </div>
+        </div>
+
+        <h2 class="guide-heading">2. Zuchtkombinationen & Hybride</h2>
+        <p style="margin-bottom: 1.5rem; color: var(--ac-text-muted);">Kreuzungen sind der Schlüssel. Pflanze zwei Elternblumen schachbrettartig oder nebeneinander und gieße sie täglich.</p>
+
+        <div class="breeding-list">
+            {combinations.map((combo) => (
+                <div class="breeding-card">
+                    <div class="breeding-formula">
+                        <div class="flower-entity">
+                            <img src={`/assets/img/acnh/${combo.parent1_image}`} alt={combo.parent1_color} onerror="this.src='🌸'" />
+                            <span>{combo.parent1_color}</span>
+                        </div>
+                        
+                        <div class="math-symbol">+</div>
+                        
+                        <div class="flower-entity">
+                            <img src={`/assets/img/acnh/${combo.parent2_image}`} alt={combo.parent2_color} onerror="this.src='🌸'" />
+                            <span>{combo.parent2_color}</span>
+                        </div>
+                        
+                        <div class="math-symbol equals">=</div>
+                        
+                        <div class="flower-entity result-entity">
+                            <img src={`/assets/img/acnh/${combo.child_image}`} alt={combo.child_color} onerror="this.src='🌺'" />
+                            <span class="result-color">{combo.child_color}</span>
+                            <span class="probability-badge">{combo.probability}</span>
+                        </div>
+                    </div>
+                    
+                    {combo.notes && (
+                        <p class="breeding-notes">{combo.notes}</p>
+                    )}
+                </div>
+            ))}
+        </div>
+
+        <h2 class="guide-heading">3. Profi-Tipps für die Zucht</h2>
+        <div class="tips-grid">
+            <div class="tip-card">
+                <h3><span>💧</span> Tägliches Gießen</h3>
+                <div class="tip-content">
+                    <p>Gieße deine Blumen jeden Tag! Noch besser: Lade Freunde auf deine Insel ein, damit sie deine Blumen gießen. Das steigert die Kreuzungswahrscheinlichkeit drastisch!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</Layout>
+
+<style>
+.hero-flower-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1rem;
+    background: var(--ac-surface);
+    border-radius: 50%;
+    padding: 10px;
+    box-shadow: 0 4px 15px rgba(248, 187, 208, 0.5);
+    border: 3px solid #f8bbd0;
+}
+
+.hero-flower-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.guide-section {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.guide-intro {
+    background: var(--ac-surface);
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    box-shadow: var(--ac-shadow);
+    margin-bottom: 2.5rem;
+    border-left: 6px solid #f8bbd0;
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+.guide-heading {
+    color: var(--ac-text);
+    font-weight: 900;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px dashed var(--ac-border);
+}
+
+.guide-card {
+    background: var(--ac-surface);
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--ac-shadow);
+    margin-bottom: 1.5rem;
+}
+
+.seeds-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.seed-card {
+    background: var(--ac-bg);
+    border: 2px dashed #f8bbd0;
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1 1 200px;
+    transition: transform 0.2s, border-color 0.2s;
+}
+
+.seed-card:hover {
+    transform: translateY(-3px);
+    border-style: solid;
+    border-color: var(--ac-green);
+    background: var(--ac-surface);
+}
+
+.seed-card img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+}
+
+.seed-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.seed-source {
+    font-size: 0.85rem;
+    color: var(--ac-text-muted);
+    font-weight: 800;
+}
+
+.breeding-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.breeding-card {
+    background: var(--ac-surface);
+    padding: 1.25rem 1rem; 
+    border-radius: var(--radius-lg);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    border: 2px solid transparent;
+    transition: transform 0.2s;
+}
+
+.breeding-card:hover {
+    transform: translateY(-4px);
+    border-color: #f8bbd0;
+}
+
+.breeding-formula {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap; 
+    align-items: flex-start;
+    justify-content: center;
+    gap: 1rem 0.5rem; 
+    width: 100%;
+}
+
+.flower-entity {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    width: 75px; 
+    min-width: min-content; 
+    flex-shrink: 0;
+}
+
+.flower-entity img {
+    width: 55px; 
+    height: 55px;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    display: block;
+    margin: 0 auto;
+}
+
+.flower-entity span {
+    font-weight: 800;
+    font-size: 0.8rem;
+    color: var(--ac-text);
+    text-align: center;
+    line-height: 1.2;
+    display: block;
+    width: 100%;
+    word-break: normal;
+    overflow-wrap: normal;
+    hyphens: none; 
+}
+
+.math-symbol {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #f8bbd0;
+    width: 20px; 
+    height: 55px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.result-entity {
+    position: relative;
+}
+
+.result-color {
+    font-size: 0.95rem !important;
+    color: var(--ac-green) !important;
+    text-align: center;
+    display: block;
+    width: 100%;
+}
+
+.probability-badge {
+    background: var(--ac-bell);
+    color: #5c4e3f;
+    padding: 0.2rem 0.6rem;
+    border-radius: 100px;
+    font-weight: 900;
+    font-size: 0.75rem;
+    margin-top: 0.3rem;
+    box-shadow: 0 2px 4px rgba(242, 192, 70, 0.4);
+    white-space: nowrap; 
+}
+
+.breeding-notes {
+    width: 100%;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--ac-text-muted);
+    font-style: italic;
+    background: var(--ac-bg);
+    padding: 0.8rem;
+    border-radius: var(--radius-sm);
+    margin: 0;
+}
+
+.tips-grid {
+    display: grid;
+    gap: 1.5rem;
+    align-items: stretch;
+    margin-bottom: 3rem;
+    grid-template-columns: 1fr;
+}
+
+.tip-card {
+    background: var(--ac-surface);
+    padding: 1.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--ac-shadow);
+    border-top: 6px solid var(--ac-green);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: flex-start;
+}
+
+.tip-card h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.15rem;
+    line-height: 1.3;
+    border-bottom: 2px dashed var(--ac-border);
+    padding-bottom: 0.8rem;
+    margin-bottom: 1rem;
+    font-weight: 900;
+    color: var(--ac-green);
+}
+
+.tip-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.tip-content p {
+    font-size: 0.95rem;
+    margin-bottom: 0;
+}
+
+@media (min-width: 768px) {
+    .breeding-card {
+        flex-direction: row; 
+        justify-content: flex-start;
+        align-items: center; 
+        padding: 2rem;
+    }
+
+    .breeding-formula {
+        width: auto;
+        flex-wrap: nowrap; 
+        gap: 1rem; 
+    }
+
+    .flower-entity { width: 100px; }
+    .flower-entity img { width: 70px; height: 70px; }
+    .flower-entity span { font-size: 0.85rem; }
+
+    .math-symbol { font-size: 2rem; width: 40px; height: 70px; }
+    .result-color { font-size: 1.1rem !important; }
+    .probability-badge { font-size: 0.8rem; padding: 0.2rem 0.8rem; }
+
+    .breeding-notes {
+        background: transparent;
+        padding: 0;
+        padding-left: 2rem; 
+        text-align: right;
+        flex-grow: 1; 
+        font-size: 0.9rem;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .probability-badge {
+        background: var(--ac-bg);
+        color: var(--ac-bell);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        border: 1px solid var(--ac-border);
+    }
+}
+</style>

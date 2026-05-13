@@ -1,18 +1,51 @@
-﻿version: '3.8'
+version: '3.8'
 
 services:
-  nookipedia-app:
-    build: .
-    container_name: nookipedia_live
+  directus:
+    image: directus/directus:10.10.0
+    container_name: nookipedia_directus
     restart: always
-    # Wir brauchen keine "ports" Sektion mehr, da NPM den Container 
-    # intern über das Netzwerk auf Port 80 erreicht.
+    ports:
+      - "8055:8055"
     environment:
-      - APP_ENV=production
+      # General Security (In Coolify as variables or defaults)
+      KEY: "nookipedia-secret-encryption-key-random"
+      SECRET: "nookipedia-secret-token-key-random"
+      
+      # Database Connection (Reads Postgres)
+      DB_CLIENT: "pg"
+      DB_HOST: "${DB_HOST:-postgres}"
+      DB_PORT: "${DB_PORT:-5432}"
+      DB_DATABASE: "${DB_DATABASE:-nookipedia_db}"
+      DB_USER: "${DB_USER:-n8n_user}"
+      DB_PASSWORD: "${DB_PASSWORD:-!!ArschMusik11}"
+      
+      # Redis Cache Configuration
+      CACHE_ENABLED: "true"
+      CACHE_STORE: "redis"
+      CACHE_REDIS: "redis://cache:6379"
+      
+      # Directus Admin User
+      ADMIN_EMAIL: "${ADMIN_EMAIL:-admin@nookipedia.de}"
+      ADMIN_PASSWORD: "${ADMIN_PASSWORD:-1arschmusik!}"
+      
+      # Public URL (for absolute image/file URLs)
+      PUBLIC_URL: "${PUBLIC_URL:-https://api.nookipedia.de}"
+    depends_on:
+      - cache
     networks:
-      - npm_net
+      - nookipedia_net
+
+  cache:
+    image: redis:7-alpine
+    container_name: nookipedia_redis
+    restart: always
+    expose:
+      - "6379"
+    networks:
+      - nookipedia_net
 
 networks:
-  npm_net:
-    name: nginx-proxy-manager_default
-    external: true
+  nookipedia_net:
+    name: nookipedia_net
+    driver: bridge

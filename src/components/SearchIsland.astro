@@ -1,0 +1,202 @@
+---
+// SearchIsland.astro - Client Island for Nookipedia Spotlight Search
+---
+<div id="spotlight-overlay" class="spotlight-hidden">
+    <div class="spotlight-backdrop"></div>
+    <div class="spotlight-modal">
+        <div class="spotlight-input-wrapper">
+            <span class="spotlight-search-icon">🔍</span>
+            <input type="text" id="spotlight-input" placeholder="Suche nach Insekten, Rezepten, Blumen..." autocomplete="off" spellcheck="false" />
+            <button id="spotlight-close" title="Schließen (ESC)">✖</button>
+        </div>
+        
+        <div class="spotlight-results" id="spotlight-results">
+            <div class="spotlight-empty-state">
+                Tippe, um die Nook-Datenbank zu durchsuchen...
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function debounce(func, delay) {
+    let timeoutId;
+    return function (...args) {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => func.apply(this, args), delay);
+    };
+}
+
+function initSpotlightSearch() {
+    const triggerBtn = document.getElementById('search-trigger');
+    const overlay = document.getElementById('spotlight-overlay');
+    const closeBtn = document.getElementById('spotlight-close');
+    const input = document.getElementById('spotlight-input');
+    const resultsContainer = document.getElementById('spotlight-results');
+
+    if (!triggerBtn || !overlay || triggerBtn.dataset.initialized) return;
+    triggerBtn.dataset.initialized = 'true';
+
+    const openSearch = () => {
+        overlay.classList.remove('spotlight-hidden');
+        input.value = '';
+        resultsContainer.innerHTML = '<div class="spotlight-empty-state">Tippe, um die Nook-Datenbank zu durchsuchen...</div>';
+        setTimeout(() => input.focus(), 100);
+        document.body.style.overflow = 'hidden';
+    };
+
+    const closeSearch = () => {
+        overlay.classList.add('spotlight-hidden');
+        input.blur();
+        document.body.style.overflow = ''; 
+    };
+
+    triggerBtn.addEventListener('click', openSearch);
+    closeBtn.addEventListener('click', closeSearch);
+
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay || e.target.classList.contains('spotlight-backdrop')) {
+            closeSearch();
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && !overlay.classList.contains('spotlight-hidden')) {
+            closeSearch();
+        }
+        if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+            e.preventDefault();
+            if (overlay.classList.contains('spotlight-hidden')) {
+                openSearch();
+            } else {
+                closeSearch();
+            }
+        }
+    });
+
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            const query = input.value.trim();
+            if (query.length >= 2) {
+                window.location.href = `/suche?q=${encodeURIComponent(query)}`;
+            }
+        }
+    });
+
+    let currentAbortController = null;
+
+    const performSearch = async (query) => {
+        if (query.length < 2) {
+            resultsContainer.innerHTML = '<div class="spotlight-empty-state">Tippe mindestens 2 Zeichen...</div>';
+            return;
+        }
+
+        if (currentAbortController) {
+            currentAbortController.abort();
+        }
+        currentAbortController = new AbortController();
+
+        resultsContainer.innerHTML = '<div class="spotlight-empty-state">Lade Daten von Nook Inc. 📡...</div>';
+
+        try {
+            const directusUrl = 'https://api.nookipedia.de';
+            const apiUrl = `${directusUrl}/items/creatures?filter[name][_icontains]=${encodeURIComponent(query)}&limit=5`;
+            const response = await fetch(apiUrl, { signal: currentAbortController.signal });
+            if (!response.ok) throw new Error('Netzwerk-Fehler');
+            
+            const data = await response.json();
+            
+            const items = (data.data || []).map(item => ({
+                url: `/tier/${item.id}`,
+                image: item.image_path ? `${directusUrl}/assets/${item.image_path}` : '/assets/img/acnh/koeder.png',
+                title: item.name,
+                subtitle: `${item.price || 0} Sternis`,
+                type: item.category === 'insect' ? 'Insekt' : item.category === 'fish' ? 'Fisch' : 'Meerestier'
+            }));
+
+            renderResults(items, query); 
+            
+        } catch (error) {
+            if (error.name === 'AbortError') return;
+            console.error('Search Error:', error);
+            resultsContainer.innerHTML = '<div class="spotlight-empty-state" style="color: #d81b60;">Fehler bei der Nook-Verbindung!</div>';
+        }
+    };
+
+    const renderResults = (items, originalQuery) => {
+        resultsContainer.innerHTML = ''; 
+
+        if (!items || items.length === 0) {
+            resultsContainer.innerHTML = '<div class="spotlight-empty-state">Keine passenden Einträge gefunden. 🦝</div>';
+            return;
+        }
+
+        const fragment = document.createDocumentFragment();
+
+        items.forEach(item => {
+            const a = document.createElement('a');
+            a.href = item.url;
+            a.className = 'search-result-item';
+            a.addEventListener('click', closeSearch);
+
+            const imgBox = document.createElement('div');
+            imgBox.className = 'search-result-img';
+            const img = document.createElement('img');
+            img.src = item.image;
+            img.alt = item.title;
+            img.onerror = () => { img.src = '/assets/img/acnh/koeder.png'; };
+            imgBox.appendChild(img);
+
+            const infoBox = document.createElement('div');
+            infoBox.className = 'search-result-info';
+            
+            const titleSpan = document.createElement('span');
+            titleSpan.className = 'search-result-title';
+            titleSpan.textContent = item.title; 
+            
+            const subtitleSpan = document.createElement('span');
+            subtitleSpan.className = 'search-result-subtitle';
+            subtitleSpan.textContent = item.subtitle;
+            
+            infoBox.appendChild(titleSpan);
+            infoBox.appendChild(subtitleSpan);
+
+            const badgeSpan = document.createElement('span');
+            badgeSpan.className = 'search-result-badge';
+            badgeSpan.textContent = item.type;
+
+            a.appendChild(imgBox);
+            a.appendChild(infoBox);
+            a.appendChild(badgeSpan);
+            
+            fragment.appendChild(a);
+        });
+
+        const showAllLink = document.createElement('a');
+        showAllLink.href = `/suche?q=${encodeURIComponent(originalQuery)}`;
+        showAllLink.className = 'search-result-item';
+        showAllLink.style.justifyContent = 'center';
+        showAllLink.style.marginTop = '0.5rem';
+        showAllLink.style.borderTop = '2px dashed var(--ac-border)';
+        showAllLink.style.paddingTop = '1rem';
+        showAllLink.style.borderRadius = '0 0 var(--radius-sm) var(--radius-sm)';
+        
+        const showAllText = document.createElement('span');
+        showAllText.className = 'search-result-title';
+        showAllText.style.color = 'var(--ac-green)';
+        showAllText.textContent = `🔍 Alle Ergebnisse für "${originalQuery}" anzeigen`;
+        
+        showAllLink.appendChild(showAllText);
+        showAllLink.addEventListener('click', closeSearch);
+        fragment.appendChild(showAllLink);
+
+        resultsContainer.appendChild(fragment);
+    };
+
+    const debouncedSearch = debounce((e) => performSearch(e.target.value.trim()), 300);
+    input.addEventListener('input', debouncedSearch);
+}
+
+document.addEventListener('astro:page-load', initSpotlightSearch);
+</script>
