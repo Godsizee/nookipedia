@@ -5,9 +5,8 @@ services:
     container_name: nookipedia_directus
     restart: always
     ports:
-      - '8055:80'
+      - '8055:8055'
     environment:
-      PORT: '80'
       KEY: nookipedia-secret-encryption-key-random
       SECRET: nookipedia-secret-token-key-random
       DB_CLIENT: pg
