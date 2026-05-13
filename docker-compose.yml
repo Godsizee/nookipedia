@@ -10,7 +10,7 @@ services:
       KEY: nookipedia-secret-encryption-key-random
       SECRET: nookipedia-secret-token-key-random
       DB_CLIENT: pg
-      DB_HOST: '172.19.0.4'
+      DB_HOST: 'postgres_db'
       DB_PORT: '5432'
       DB_DATABASE: 'nookipedia_db'
       DB_USER: 'n8n_user'
