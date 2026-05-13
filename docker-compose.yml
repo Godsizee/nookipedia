@@ -6,6 +6,8 @@ services:
     restart: always
     ports:
       - '8055:8055'
+    labels:
+      - 'traefik.http.services.directus.loadbalancer.server.port=8055'
     environment:
       KEY: nookipedia-secret-encryption-key-random
       SECRET: nookipedia-secret-token-key-random
