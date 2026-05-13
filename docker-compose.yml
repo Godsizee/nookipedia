@@ -12,24 +12,24 @@ services:
       KEY: "nookipedia-secret-encryption-key-random"
       SECRET: "nookipedia-secret-token-key-random"
       
-      # Database Connection (Reads Postgres)
+      # Database Connection (Verbindet sich direkt mit dem bestehenden Container 'postgres_db' in Coolify)
       DB_CLIENT: "pg"
-      DB_HOST: "${DB_HOST:-postgres}"
+      DB_HOST: "${DB_HOST:-postgres_db}"
       DB_PORT: "${DB_PORT:-5432}"
       DB_DATABASE: "${DB_DATABASE:-nookipedia_db}"
       DB_USER: "${DB_USER:-n8n_user}"
       DB_PASSWORD: "${DB_PASSWORD:-!!ArschMusik11}"
       
-      # Redis Cache Configuration
+      # Redis Cache Configuration für blitzschnelle API-Antworten
       CACHE_ENABLED: "true"
       CACHE_STORE: "redis"
       CACHE_REDIS: "redis://cache:6379"
       
-      # Directus Admin User
+      # Directus Admin Login
       ADMIN_EMAIL: "${ADMIN_EMAIL:-admin@nookipedia.de}"
       ADMIN_PASSWORD: "${ADMIN_PASSWORD:-1arschmusik!}"
       
-      # Public URL (for absolute image/file URLs)
+      # Public URL (Wichtig für absolute Bild- und Datei-URLs im Astro SSG Build)
       PUBLIC_URL: "${PUBLIC_URL:-https://api.nookipedia.de}"
     depends_on:
       - cache
@@ -45,6 +45,7 @@ services:
     networks:
       - nookipedia_net
 
+# Netzwerk-Konfiguration für die Kommunikation zwischen den Containern
 networks:
   nookipedia_net:
     name: nookipedia_net
