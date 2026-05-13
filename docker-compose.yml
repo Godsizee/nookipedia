@@ -14,7 +14,7 @@ services:
       DB_PORT: '5432'
       DB_DATABASE: 'nookipedia'
       DB_USER: 'directus'
-      DB_PASSWORD: 'directus_secure_pw_123!'
+      DB_PASSWORD: '$$p$$!F~;b:or$$`0G&''YQZn+*70TW/S}yJ@BSNpTG}MS'
       CACHE_ENABLED: 'true'
       CACHE_STORE: redis
       CACHE_REDIS: 'redis://cache:6379'
@@ -36,7 +36,7 @@ services:
     environment:
       POSTGRES_DB: 'nookipedia'
       POSTGRES_USER: 'directus'
-      POSTGRES_PASSWORD: 'directus_secure_pw_123!'
+      POSTGRES_PASSWORD: '$$p$$!F~;b:or$$`0G&''YQZn+*70TW/S}yJ@BSNpTG}MS'
     volumes:
       - nookipedia_db_data:/var/lib/postgresql/data
       - ./db-init:/docker-entrypoint-initdb.d
