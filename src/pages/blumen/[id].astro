@@ -2,7 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 
 export async function getStaticPaths() {
-  const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://api.nookipedia.de';
+  const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
   let flowers = [];
   try {
     const res = await fetch(`${directusUrl}/items/flowers?limit=100`);
@@ -58,7 +58,7 @@ export async function getStaticPaths() {
 }
 
 const { flower } = Astro.props;
-const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://api.nookipedia.de';
+const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
 
 const pluralNames = {
     'Anemone': 'Anemonen',

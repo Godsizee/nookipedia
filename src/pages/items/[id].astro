@@ -2,7 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 
 export async function getStaticPaths() {
-  const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://api.nookipedia.de';
+  const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
   let recipes = [];
   try {
     const res = await fetch(`${directusUrl}/items/recipes?limit=500`);
@@ -52,7 +52,7 @@ export async function getStaticPaths() {
 }
 
 const { recipe } = Astro.props;
-const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://api.nookipedia.de';
+const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
 const imageUrl = recipe.image_path ? (recipe.image_path.startsWith('http') ? recipe.image_path : `${directusUrl}/assets/${recipe.image_path}`) : '/assets/img/acnh/koeder.png';
 const materials = recipe.materials || [];
 ---

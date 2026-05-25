@@ -100,7 +100,7 @@ function initSpotlightSearch() {
         resultsContainer.innerHTML = '<div class="spotlight-empty-state">Lade Daten von Nook Inc. 📡...</div>';
 
         try {
-            const directusUrl = 'https://api.nookipedia.de';
+            const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
             const apiUrl = `${directusUrl}/items/creatures?filter[name][_icontains]=${encodeURIComponent(query)}&limit=5`;
             const response = await fetch(apiUrl, { signal: currentAbortController.signal });
             if (!response.ok) throw new Error('Netzwerk-Fehler');

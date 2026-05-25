@@ -18,7 +18,7 @@ export default defineConfig({
         maximumFileSizeToCacheInBytes: 15 * 1024 * 1024, // 15MB
         runtimeCaching: [
           {
-            urlPattern: /^https:\/\/api\.nookipedia\.de\/assets\/.*/i,
+            urlPattern: /^https:\/\/backend-nookipedia\.2\.godsize\.info\/assets\/.*/i,
             handler: 'CacheFirst',
             options: {
               cacheName: 'nookipedia-directus-images',
