@@ -94,7 +94,19 @@ if (creature.category === 'fish') {
     btnLabel = 'Meerestiere-Übersicht';
 }
 
-const imageUrl = creature.image_path ? (creature.image_path.startsWith('http') ? creature.image_path : `${directusUrl}/assets/${creature.image_path}`) : '/assets/img/acnh/koeder.png';
+const getImageUrl = (path) => {
+  if (!path) return '/assets/img/acnh/koeder.png';
+  if (path.startsWith('http')) return path;
+  if (path.includes('/') || path.includes('.')) {
+    let clean = path.startsWith('/') ? path.slice(1) : path;
+    if (clean.startsWith('assets/')) clean = clean.slice(7);
+    if (clean.startsWith('img/acnh/')) clean = clean.slice(9);
+    return `/assets/img/acnh/${clean}`;
+  }
+  return `${directusUrl}/assets/${path}`;
+};
+
+const imageUrl = getImageUrl(creature.image_path);
 const formattedPrice = new Intl.NumberFormat('de-DE').format(creature.price || 0) + ' Sternis';
 const allMonths = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
 const activeMonths = creature.months_northern || [];

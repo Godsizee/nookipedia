@@ -54,6 +54,17 @@ if (recipes.length === 0) {
     }
   ];
 }
+const getImageUrl = (path) => {
+  if (!path) return '/assets/img/acnh/koeder.png';
+  if (path.startsWith('http')) return path;
+  if (path.includes('/') || path.includes('.')) {
+    let clean = path.startsWith('/') ? path.slice(1) : path;
+    if (clean.startsWith('assets/')) clean = clean.slice(7);
+    if (clean.startsWith('img/acnh/')) clean = clean.slice(9);
+    return `/assets/img/acnh/${clean}`;
+  }
+  return `${directusUrl}/assets/${path}`;
+};
 ---
 
 <Layout title="Bastelanleitungen & Kochrezepte - Nookipedia">
@@ -64,7 +75,7 @@ if (recipes.length === 0) {
 
     <div class="recipe-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; max-width:1000px; margin: 2rem auto 4rem;">
         {recipes.map((recipe) => {
-            const imageUrl = recipe.image_path ? (recipe.image_path.startsWith('http') ? recipe.image_path : `${directusUrl}/assets/${recipe.image_path}`) : '/assets/img/acnh/koeder.png';
+            const imageUrl = getImageUrl(recipe.image_path);
             return (
                 <article class="recipe-card-premium" style="background: var(--ac-surface); border-radius: var(--radius-lg); box-shadow: var(--ac-shadow); padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between; border: 2px solid transparent; transition: transform 0.2s;">
                     <div style="display:flex; gap:1rem; align-items:center;">

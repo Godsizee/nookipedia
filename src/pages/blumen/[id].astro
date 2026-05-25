@@ -74,7 +74,19 @@ const pluralNames = {
 };
 
 const guideName = pluralNames[flower.name] || flower.name + 'n';
-const imageUrl = flower.image_path ? (flower.image_path.startsWith('http') ? flower.image_path : `${directusUrl}/assets/${flower.image_path}`) : '/assets/img/acnh/koeder.png';
+const getImageUrl = (path) => {
+  if (!path) return '/assets/img/acnh/koeder.png';
+  if (path.startsWith('http')) return path;
+  if (path.includes('/') || path.includes('.')) {
+    let clean = path.startsWith('/') ? path.slice(1) : path;
+    if (clean.startsWith('assets/')) clean = clean.slice(7);
+    if (clean.startsWith('img/acnh/')) clean = clean.slice(9);
+    return `/assets/img/acnh/${clean}`;
+  }
+  return `${directusUrl}/assets/${path}`;
+};
+
+const imageUrl = getImageUrl(flower.image_path);
 const seeds = flower.seeds || [];
 const combinations = flower.combinations || [];
 
@@ -118,7 +130,7 @@ const matchingGuide = allGuides.find(g => g.data.flowerId === Number(flower.id))
                 {seeds.length > 0 ? (
                     seeds.map((seed) => (
                         <div class="seed-card">
-                            <img src={`/assets/img/acnh/${seed.image_path}`} alt={seed.color} onerror="this.src='/assets/img/acnh/placeholder.png'" />
+                            <img src={getImageUrl(seed.image_path)} alt={seed.color} onerror="this.src='/assets/img/acnh/placeholder.png'" />
                             <div class="seed-info">
                                 <span class={`color-badge color-${seed.color.toLowerCase()}`} style="display: inline-block; font-weight:800; color:var(--ac-green);">
                                     {seed.color}
@@ -141,21 +153,21 @@ const matchingGuide = allGuides.find(g => g.data.flowerId === Number(flower.id))
                 <div class="breeding-card">
                     <div class="breeding-formula">
                         <div class="flower-entity">
-                            <img src={`/assets/img/acnh/${combo.parent1_image}`} alt={combo.parent1_color} onerror="this.src='/assets/img/acnh/placeholder.png'" />
+                            <img src={getImageUrl(combo.parent1_image)} alt={combo.parent1_color} onerror="this.src='/assets/img/acnh/placeholder.png'" />
                             <span>{combo.parent1_color}</span>
                         </div>
                         
                         <div class="math-symbol">+</div>
                         
                         <div class="flower-entity">
-                            <img src={`/assets/img/acnh/${combo.parent2_image}`} alt={combo.parent2_color} onerror="this.src='/assets/img/acnh/placeholder.png'" />
+                            <img src={getImageUrl(combo.parent2_image)} alt={combo.parent2_color} onerror="this.src='/assets/img/acnh/placeholder.png'" />
                             <span>{combo.parent2_color}</span>
                         </div>
                         
                         <div class="math-symbol equals">=</div>
                         
                         <div class="flower-entity result-entity">
-                            <img src={`/assets/img/acnh/${combo.child_image}`} alt={combo.child_color} onerror="this.src='/assets/img/acnh/placeholder.png'" />
+                            <img src={getImageUrl(combo.child_image)} alt={combo.child_color} onerror="this.src='/assets/img/acnh/placeholder.png'" />
                             <span class="result-color">{combo.child_color}</span>
                             <span class="probability-badge">{combo.probability}</span>
                         </div>

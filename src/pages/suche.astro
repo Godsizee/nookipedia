@@ -34,6 +34,18 @@ import Layout from '../layouts/Layout.astro';
     <script>
         const directusUrl = 'https://backend-nookipedia.2.godsize.info';
 
+        const getImageUrl = (path) => {
+            if (!path) return '/assets/img/acnh/koeder.png';
+            if (path.startsWith('http')) return path;
+            if (path.includes('/') || path.includes('.')) {
+                let clean = path.startsWith('/') ? path.slice(1) : path;
+                if (clean.startsWith('assets/')) clean = clean.slice(7);
+                if (clean.startsWith('img/acnh/')) clean = clean.slice(9);
+                return `/assets/img/acnh/${clean}`;
+            }
+            return `${directusUrl}/assets/${path}`;
+        };
+
         // Static fallback search database
         const staticFallbackDB = [
             { title: 'Rose', subtitle: 'Zuchtblume', type: 'Flora', url: '/blumen/1', image: '/assets/img/acnh/flowers/Rose.png' },
@@ -113,7 +125,7 @@ import Layout from '../layouts/Layout.astro';
                         subtitle: `${c.price || 0} Sternis`,
                         type: c.category === 'insect' ? 'Insekt' : c.category === 'fish' ? 'Fisch' : 'Meerestier',
                         url: `/tier/${c.id}/`,
-                        image: c.image_path ? `${directusUrl}/assets/${c.image_path}` : '/assets/img/acnh/koeder.png'
+                        image: getImageUrl(c.image_path)
                     });
                 });
 
@@ -123,7 +135,7 @@ import Layout from '../layouts/Layout.astro';
                         subtitle: 'Zuchtblume',
                         type: 'Flora',
                         url: `/blumen/${f.id}/`,
-                        image: f.image_path ? `${directusUrl}/assets/${f.image_path}` : '/assets/img/acnh/koeder.png'
+                        image: getImageUrl(f.image_path)
                     });
                 });
 
@@ -133,7 +145,7 @@ import Layout from '../layouts/Layout.astro';
                         subtitle: d.source || 'Bastelanleitung',
                         type: 'Rezept',
                         url: '/items/',
-                        image: d.image_path ? `${directusUrl}/assets/${d.image_path}` : '/assets/img/acnh/koeder.png'
+                        image: getImageUrl(d.image_path)
                     });
                 });
 
@@ -143,7 +155,7 @@ import Layout from '../layouts/Layout.astro';
                         subtitle: ck.source || 'Kochrezept',
                         type: 'Rezept',
                         url: '/items/',
-                        image: ck.image_path ? `${directusUrl}/assets/${ck.image_path}` : '/assets/img/acnh/koeder.png'
+                        image: getImageUrl(ck.image_path)
                     });
                 });
 
@@ -153,7 +165,7 @@ import Layout from '../layouts/Layout.astro';
                         subtitle: `Kunstwerk von ${art.artist}`,
                         type: 'Kunst',
                         url: `/museum/kunst/${art.id}`,
-                        image: art.image_real ? (art.image_real.startsWith('http') ? art.image_real : `/assets/img/acnh/museum/${art.image_real}`) : '/assets/img/acnh/placeholder.png'
+                        image: getImageUrl(art.image_real)
                     });
                 });
 
@@ -163,7 +175,7 @@ import Layout from '../layouts/Layout.astro';
                         subtitle: `Dino-Fossil`,
                         type: 'Fossil',
                         url: `/museum/fossilien`,
-                        image: f.image_path ? (f.image_path.startsWith('http') ? f.image_path : `/assets/img/acnh/museum/${f.image_path}`) : '/assets/img/acnh/koeder.png'
+                        image: getImageUrl(f.image_path)
                     });
                 });
 
