@@ -1,0 +1,197 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const allGuides = await getCollection('guides');
+  return allGuides.map((guide) => ({
+    params: { slug: guide.slug },
+    props: { guide },
+  }));
+}
+
+const { guide } = Astro.props;
+const { Content } = await guide.render();
+---
+
+<Layout title={guide.data.title}>
+    <div class="guide-header">
+        <a href="/guides" class="btn-back-link">← Zurück zu allen Guides</a>
+        <div class="header-icon">{guide.data.icon || '🍃'}</div>
+        <h1>{guide.data.title}</h1>
+        <p class="subtitle">{guide.data.description}</p>
+    </div>
+
+    <article class="guide-container">
+        <div class="markdown-content">
+            <Content />
+        </div>
+        
+        <div class="guide-footer-actions">
+            <a href={`/blumen/${guide.data.flowerId}`} class="btn-flower-link">
+                🌸 Zuchtdaten für {guide.data.flowerName} ansehen
+            </a>
+        </div>
+    </article>
+</Layout>
+
+<style is:global>
+/* We use is:global here to style the markdown components rendered by <Content /> */
+.markdown-content h2 {
+    color: var(--ac-green) !important;
+    font-size: 1.4rem !important;
+    font-weight: 900 !important;
+    margin-top: 2.5rem !important;
+    margin-bottom: 1.25rem !important;
+    border-bottom: 2px dashed var(--ac-border) !important;
+    padding-bottom: 0.5rem !important;
+}
+
+.markdown-content h3 {
+    color: var(--ac-text) !important;
+    font-size: 1.15rem !important;
+    font-weight: 900 !important;
+    margin-top: 1.75rem !important;
+    margin-bottom: 0.75rem !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.markdown-content p {
+    font-size: 1.05rem !important;
+    line-height: 1.6 !important;
+    margin-bottom: 1.25rem !important;
+    color: var(--ac-text) !important;
+}
+
+.markdown-content ul, .markdown-content ol {
+    margin-bottom: 1.5rem !important;
+    padding-left: 1.5rem !important;
+}
+
+.markdown-content li {
+    font-size: 1.02rem !important;
+    line-height: 1.5 !important;
+    margin-bottom: 0.5rem !important;
+    color: var(--ac-text) !important;
+}
+
+.markdown-content strong {
+    font-weight: 800 !important;
+    color: var(--ac-green) !important;
+}
+
+.markdown-content blockquote {
+    background: var(--ac-blue-light) !important;
+    border-left: 6px solid var(--ac-green) !important;
+    padding: 1rem 1.25rem !important;
+    border-radius: var(--radius-md) !important;
+    margin: 1.5rem 0 !important;
+    font-style: italic !important;
+}
+
+.markdown-content blockquote p {
+    margin: 0 !important;
+    color: var(--ac-text-muted) !important;
+}
+</style>
+
+<style>
+.guide-header {
+    text-align: center;
+    padding: 2rem 0 1rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.btn-back-link {
+    display: inline-block;
+    color: var(--ac-green);
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 0.95rem;
+    margin-bottom: 1.5rem;
+    transition: transform 0.2s;
+}
+
+.btn-back-link:hover {
+    transform: translateX(-4px);
+}
+
+.header-icon {
+    font-size: 3.5rem;
+    background: var(--ac-surface);
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+    box-shadow: var(--ac-shadow);
+    border: 3px solid var(--ac-green-light);
+}
+
+.guide-header h1 {
+    font-size: 2rem;
+    font-weight: 900;
+    line-height: 1.2;
+    margin-bottom: 0.5rem;
+}
+
+.subtitle {
+    color: var(--ac-text-muted);
+    font-size: 1.1rem;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.guide-container {
+    max-width: 800px;
+    margin: 1.5rem auto 4rem;
+    background: var(--ac-surface);
+    padding: 2rem 1.5rem;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--ac-shadow);
+    border: 2px solid var(--ac-border);
+}
+
+@media (min-width: 768px) {
+    .guide-container {
+        padding: 3rem;
+    }
+    .guide-header h1 {
+        font-size: 2.5rem;
+    }
+}
+
+.guide-footer-actions {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px dashed var(--ac-border);
+    display: flex;
+    justify-content: center;
+}
+
+.btn-flower-link {
+    background: var(--ac-green);
+    color: #ffffff;
+    padding: 0.8rem 1.8rem;
+    border-radius: 100px;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 1rem;
+    box-shadow: 0 4px 12px rgba(89, 166, 131, 0.3);
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.btn-flower-link:hover {
+    transform: translateY(-2px);
+    background: #4a8f6e;
+}
+
+.btn-flower-link:active {
+    transform: translateY(0);
+}
+</style>

@@ -1,0 +1,123 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const allGuides = await getCollection('guides');
+---
+
+<Layout title="Zucht-Guides Übersicht">
+    <div class="hero">
+        <div class="hero-leaf">🍃</div>
+        <h1>Nookipedia Zucht-Guides</h1>
+        <p>Erfahre, wie du seltene Hybride züchtest, deinen Ertrag maximierst und deine Insel mit perfekten Maiglöckchen schmückst.</p>
+    </div>
+
+    <section class="guides-section">
+        <div class="guides-grid">
+            {allGuides.map((guide) => (
+                <a href={`/guides/${guide.slug}`} class="guide-card">
+                    <div class="card-icon">{guide.data.icon || '🍃'}</div>
+                    <div class="card-body">
+                        <h2>{guide.data.title}</h2>
+                        <p>{guide.data.description}</p>
+                        <span class="read-more">Guide lesen ➔</span>
+                    </div>
+                </a>
+            ))}
+        </div>
+    </section>
+</Layout>
+
+<style>
+.hero-leaf {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    animation: bounce 2s infinite ease-in-out;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.guides-section {
+    max-width: 900px;
+    margin: 2rem auto 4rem;
+    padding: 0 1rem;
+}
+
+.guides-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .guides-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.guide-card {
+    background: var(--ac-surface);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--ac-shadow);
+    text-decoration: none;
+    display: flex;
+    gap: 1.25rem;
+    align-items: flex-start;
+    border: 2px solid transparent;
+    transition: transform 0.2s, border-color 0.2s;
+    color: inherit;
+}
+
+.guide-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--ac-green-light);
+}
+
+.guide-card:active {
+    transform: scale(0.98);
+}
+
+.card-icon {
+    font-size: 2.2rem;
+    background: var(--ac-bg);
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-md);
+    flex-shrink: 0;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.card-body h2 {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: var(--ac-text);
+    margin: 0;
+    line-height: 1.2;
+}
+
+.card-body p {
+    font-size: 0.95rem;
+    color: var(--ac-text-muted);
+    margin: 0;
+    line-height: 1.4;
+}
+
+.read-more {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: var(--ac-green);
+    margin-top: 0.25rem;
+}
+</style>

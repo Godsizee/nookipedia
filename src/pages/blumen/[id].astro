@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
   const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
@@ -76,6 +77,9 @@ const guideName = pluralNames[flower.name] || flower.name + 'n';
 const imageUrl = flower.image_path ? (flower.image_path.startsWith('http') ? flower.image_path : `${directusUrl}/assets/${flower.image_path}`) : '/assets/img/acnh/koeder.png';
 const seeds = flower.seeds || [];
 const combinations = flower.combinations || [];
+
+const allGuides = await getCollection('guides');
+const matchingGuide = allGuides.find(g => g.data.flowerId === Number(flower.id));
 ---
 
 <Layout title={`Der ultimative ${guideName}-Guide`}>
@@ -90,6 +94,20 @@ const combinations = flower.combinations || [];
     <section class="guide-section">
         <div class="guide-intro">
             <p>{flower.description || `Willkommen beim Zucht-Guide für die ${flower.name}. Erfahre alles über Genetik und Kreuzungschancen.`}</p>
+            {matchingGuide && (
+                <div class="guide-link-callout" style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 2px dashed var(--ac-border); display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span style="font-size: 2rem;">📖</span>
+                        <div style="text-align: left;">
+                            <strong style="display: block; font-weight: 900; color: var(--ac-green);">Zucht-Guide verfügbar!</strong>
+                            <span style="font-size: 0.9rem; color: var(--ac-text-muted);">Lese den detaillierten Profi-Guide für {guideName}.</span>
+                        </div>
+                    </div>
+                    <a href={`/guides/${matchingGuide.slug}`} class="btn-read-guide" style="background: var(--ac-green); color: white; padding: 0.5rem 1.2rem; border-radius: 100px; text-decoration: none; font-weight: 800; font-size: 0.9rem; box-shadow: 0 4px 12px rgba(89, 166, 131, 0.2); transition: transform 0.2s;">
+                        Jetzt lesen ➔
+                    </a>
+                </div>
+            )}
         </div>
 
         <h2 class="guide-heading">1. Die Grundfarben (Samen)</h2>
