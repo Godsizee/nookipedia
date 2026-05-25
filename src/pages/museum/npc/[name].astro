@@ -1,0 +1,135 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
+  let npcs = [];
+  try {
+    const res = await fetch(`${directusUrl}/items/special_npcs?limit=-1`);
+    if (res.ok) {
+      const data = await res.json();
+      npcs = data.data || [];
+    }
+  } catch (err) {
+    console.warn('Directus API not reachable during build, using robust static fallback dataset.');
+  }
+
+  if (npcs.length === 0) {
+    npcs = [
+      {
+        id: 1,
+        name_de: 'Eugen',
+        name_en: 'Blathers',
+        role: 'Museumsleiter',
+        species: 'Eule',
+        gender: 'Männlich',
+        birthday: '24. September',
+        image_path: 'Eugen.png',
+        description: '<p>Eugen ist die gelehrte Eule, die das Museum leitet. Er ist ein passionierter Historiker und Wissenschaftler, der sich über jede Spende freut – außer über Insekten! Vor diesen ekelt er sich zutiefst und teilt seine Abneigung gerne in humorvollen Dialogen mit dir. Nachts ist er meist wach, während er tagsüber friedlich im Stehen schlummert.</p>'
+      },
+      {
+        id: 2,
+        name_de: 'Kofi',
+        name_en: 'Brewster',
+        role: 'Café-Betreiber',
+        species: 'Taube',
+        gender: 'Männlich',
+        birthday: '15. Oktober',
+        image_path: 'Kofi.png',
+        description: '<p>Kofi ist eine ruhige, zurückhaltende Taube, die das Café „Taubenschlag“ im Museum betreibt. Er ist ein Meister des Kaffeebrühens und legt großen Wert auf die richtige Temperatur seiner Spezialitäten. Zunächst wirkt er wortkarg, doch wenn du sein Stammkunde wirst, taut er langsam auf und schenkt dir sogar manchmal ein Lächeln oder spezielle Kaffeetipps.</p>'
+      },
+      {
+        id: 3,
+        name_de: 'Reiner',
+        name_en: 'Redd',
+        role: 'Schwarzmarkt-Händler',
+        species: 'Fuchs',
+        gender: 'Männlich',
+        birthday: '18. Oktober',
+        image_path: 'Reiner.png',
+        description: '<p>Reiner ist ein gerissener Fuchs, der mit seinem Schatzkutter an deiner geheimen Bucht anlegt. Er verkauft seltene Kunstwerke und exklusive Möbel. Aber Vorsicht: Viele seiner Gemälde und Skulpturen sind gefälscht! Mit seinem charmanten, aber aufdringlichen Verkaufsstil versucht er stets, den besten Deal für sich herauszuschlagen.</p>'
+      }
+    ];
+  }
+
+  return npcs.map((npc) => {
+    const slug = (npc.name_de || npc.name).toLowerCase();
+    return {
+      params: { name: slug },
+      props: { npc },
+    };
+  });
+}
+
+const { npc } = Astro.props;
+const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
+
+const getImageUrl = (path) => {
+  if (!path) return '/assets/img/acnh/placeholder.png';
+  if (path.startsWith('http')) return path;
+  if (path.includes('/') || path.includes('.')) return `/assets/img/acnh/museum/${path}`;
+  return `${directusUrl}/assets/${path}`;
+};
+
+const npcNameLower = (npc.name_de || npc.name).toLowerCase();
+const themeGradients = {
+  eugen: 'linear-gradient(135deg, #795548 0%, #4e342e 100%)',
+  kofi: 'linear-gradient(135deg, #00897b 0%, #004d40 100%)',
+  reiner: 'linear-gradient(135deg, #fb8c00 0%, #e65100 100%)'
+};
+const headerBg = themeGradients[npcNameLower] || 'linear-gradient(135deg, #59a683 0%, #3f7d60 100%)';
+---
+
+<Layout title={`${npc.name_de || npc.name} - Profil`}>
+    <div class="npc-hero" style={`background: ${headerBg}; padding: 4rem 1.5rem; border-radius: var(--radius-lg); text-align: center; margin-bottom: 2rem; border: 3px solid #d4af37; box-shadow: 0 10px 30px rgba(0,0,0,0.15); display: flex; flex-direction: column; align-items: center; position: relative;`}>
+        <div class="npc-hero-icon" style="width: 140px; height: 140px; border-radius: 50%; overflow: hidden; background: rgba(255,255,255,0.15); display: flex; align-items: center; justify-content: center; border: 4px solid #d4af37; box-shadow: 0 8px 24px rgba(0,0,0,0.2); margin-bottom: 1.5rem;" transition:name={`npc-img-${npc.id}`}>
+            <img src={getImageUrl(npc.image_path)} alt={npc.name_de || npc.name} onerror="this.src='/assets/img/acnh/placeholder.png'" style="width: 90%; height: 90%; object-fit: contain;" />
+        </div>
+        <h1 style="color: #f8f4e6; font-weight: 900; margin: 0 0 5px; font-family: 'Outfit', sans-serif; font-size: 2.5rem; text-shadow: 0 2px 4px rgba(0,0,0,0.2);">{npc.name_de || npc.name}</h1>
+        <p style="color: #d4af37; font-size: 1.05rem; font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; margin: 0; text-shadow: 0 1px 2px rgba(0,0,0,0.2);">{npc.role}</p>
+    </div>
+
+    <div class="profile-content" style="max-width: 750px; margin: 0 auto 5rem; padding: 0 1.5rem;">
+        
+        <!-- Stammdaten-Leiste (Edel strukturiert) -->
+        <div style="display: flex; gap: 2rem; border-bottom: 2px dashed var(--ac-border); padding-bottom: 2rem; margin-bottom: 2rem; justify-content: center; flex-wrap: wrap;">
+            <div style="text-align: center; min-width: 100px;">
+                <span style="opacity: 0.7; font-size: 0.8rem; display: block; text-transform: uppercase; font-weight: 900; letter-spacing: 1px; color: var(--ac-text-muted);">Tierart</span>
+                <strong style="font-size: 1.15rem; color: var(--ac-text);">{npc.species || '-'}</strong>
+            </div>
+            <div style="text-align: center; min-width: 100px;">
+                <span style="opacity: 0.7; font-size: 0.8rem; display: block; text-transform: uppercase; font-weight: 900; letter-spacing: 1px; color: var(--ac-text-muted);">Geschlecht</span>
+                <strong style="font-size: 1.15rem; color: var(--ac-text);">{npc.gender || '-'}</strong>
+            </div>
+            <div style="text-align: center; min-width: 100px;">
+                <span style="opacity: 0.7; font-size: 0.8rem; display: block; text-transform: uppercase; font-weight: 900; letter-spacing: 1px; color: var(--ac-text-muted);">Geburtstag</span>
+                <strong style="font-size: 1.15rem; color: var(--ac-text);">🎂 {npc.birthday || '-'}</strong>
+            </div>
+            {npc.name_en && (
+                <div style="text-align: center; min-width: 100px;">
+                    <span style="opacity: 0.7; font-size: 0.8rem; display: block; text-transform: uppercase; font-weight: 900; letter-spacing: 1px; color: var(--ac-text-muted);">Englisch</span>
+                    <strong style="font-size: 1.15rem; color: var(--ac-text);">{npc.name_en}</strong>
+                </div>
+            )}
+        </div>
+
+        <!-- Fluff-Text -->
+        <div class="fluff-text npc-story" style="font-size: 1.1rem; line-height: 1.8; color: var(--ac-text); text-align: justify; font-weight: 500;">
+            <div set:html={npc.description}></div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 4.5rem;">
+            <a href="/museum" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: #d4af37; font-weight: 800; font-size: 1.1rem; border: 2px solid #d4af37; padding: 0.6rem 1.8rem; border-radius: 100px; background: transparent; transition: all 0.2s;">
+                🏛️ Zurück zum Museum
+            </a>
+        </div>
+    </div>
+
+    <style>
+        .profile-content a:hover {
+            background: #d4af37 !important;
+            color: #1a100c !important;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+        }
+    </style>
+</Layout>
