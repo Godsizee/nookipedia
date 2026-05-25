@@ -20,3 +20,6 @@ pnpm-debug.log*
 # OS files
 .DS_Store
 Thumbs.db
+
+# Temp / Backup folders
+nookipedia-a921a33e0840008a3ed83e529474e527da06aaad/
