@@ -108,7 +108,7 @@ function initSpotlightSearch() {
             const data = await response.json();
             
             const items = (data.data || []).map(item => ({
-                url: `/tier/${item.id}`,
+                url: `/tier/${item.id}/`,
                 image: item.image_path ? `${directusUrl}/assets/${item.image_path}` : '/assets/img/acnh/koeder.png',
                 title: item.name,
                 subtitle: `${item.price || 0} Sternis`,

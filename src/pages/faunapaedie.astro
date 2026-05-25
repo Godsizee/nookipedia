@@ -4,7 +4,7 @@ import Layout from '../layouts/Layout.astro';
 const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
 let creatures = [];
 try {
-  const res = await fetch(`${directusUrl}/items/creatures?limit=100`);
+  const res = await fetch(`${directusUrl}/items/creatures?limit=-1`);
   if (res.ok) {
     const data = await res.json();
     creatures = data.data || [];
@@ -74,7 +74,7 @@ if (creatures.length === 0) {
                     </div>
 
                     <div style="margin-top: 1.5rem; text-align:center;">
-                        <a href={`/tier/${creature.id}`} style="display:inline-block; width:100%; padding:0.8rem; background:var(--ac-green-light); color:var(--ac-green); font-weight:800; border-radius:var(--radius-sm); text-decoration:none;">
+                        <a href={`/tier/${creature.id}/`} style="display:inline-block; width:100%; padding:0.8rem; background:var(--ac-green-light); color:var(--ac-green); font-weight:800; border-radius:var(--radius-sm); text-decoration:none;">
                             Akte öffnen →
                         </a>
                     </div>

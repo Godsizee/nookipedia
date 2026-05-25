@@ -7,15 +7,15 @@ const currentPath = Astro.url.pathname;
         <span>🍃</span>
         <span>Wiki</span>
     </a>
-    <a href="/faunapaedie" class={`bottom-tab-item ${currentPath.startsWith('/tier') || currentPath.startsWith('/faunapaedie') ? 'active' : ''}`} title="Faunapädie">
+    <a href="/faunapaedie/" class={`bottom-tab-item ${currentPath.startsWith('/tier') || currentPath.startsWith('/faunapaedie') ? 'active' : ''}`} title="Faunapädie">
         <span>🦋</span>
         <span>Fauna</span>
     </a>
-    <a href="/blumen" class={`bottom-tab-item ${currentPath.startsWith('/blumen') ? 'active' : ''}`} title="Blumen & Zucht">
+    <a href="/blumen/" class={`bottom-tab-item ${currentPath.startsWith('/blumen') ? 'active' : ''}`} title="Blumen & Zucht">
         <span>🌷</span>
         <span>Blumen</span>
     </a>
-    <a href="/items" class={`bottom-tab-item ${currentPath.startsWith('/items') ? 'active' : ''}`} title="Möbel & Rezepte">
+    <a href="/items/" class={`bottom-tab-item ${currentPath.startsWith('/items') ? 'active' : ''}`} title="Möbel & Rezepte">
         <span>🪓</span>
         <span>Items</span>
     </a>

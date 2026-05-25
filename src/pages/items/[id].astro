@@ -5,11 +5,31 @@ export async function getStaticPaths() {
   const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
   let recipes = [];
   try {
-    const res = await fetch(`${directusUrl}/items/recipes?limit=500`);
-    if (res.ok) {
-      const data = await res.json();
-      recipes = data.data || [];
+    const [diyRes, cookingRes] = await Promise.all([
+      fetch(`${directusUrl}/items/diy_recipes?limit=-1`),
+      fetch(`${directusUrl}/items/cooking_recipes?limit=-1`)
+    ]);
+    
+    let diyData = [];
+    let cookingData = [];
+    
+    if (diyRes.ok) {
+      const data = await diyRes.json();
+      diyData = (data.data || []).map(item => ({
+        ...item,
+        id: `diy-${item.id}`
+      }));
     }
+    
+    if (cookingRes.ok) {
+      const data = await cookingRes.json();
+      cookingData = (data.data || []).map(item => ({
+        ...item,
+        id: `cooking-${item.id}`
+      }));
+    }
+    
+    recipes = [...diyData, ...cookingData];
   } catch (err) {
     console.warn('Directus API not reachable during build, using robust static fallback dataset.');
   }
@@ -60,7 +80,7 @@ const materials = recipe.materials || [];
 <Layout title={`${recipe.name} - Basteln & Kochen`}>
     <div class="hero" style="background: linear-gradient(135deg, #ffa726 0%, #fb8c00 100%);">
         <div class="recipe-visual" transition:name={`recipe-img-${recipe.id}`}>
-            <img src={imageUrl} alt={recipe.name} onerror="this.src='🍳'" />
+            <img src={imageUrl} alt={recipe.name} onerror="this.src='/assets/img/acnh/placeholder.png'" />
         </div>
         <h1>{recipe.name}</h1>
         <p>Lass deiner Kreativität freien Lauf an der Werkbank und am Herd!</p>

@@ -4,11 +4,31 @@ import Layout from '../layouts/Layout.astro';
 const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
 let recipes = [];
 try {
-  const res = await fetch(`${directusUrl}/items/recipes?limit=100`);
-  if (res.ok) {
-    const data = await res.json();
-    recipes = data.data || [];
+  const [diyRes, cookingRes] = await Promise.all([
+    fetch(`${directusUrl}/items/diy_recipes?limit=-1`),
+    fetch(`${directusUrl}/items/cooking_recipes?limit=-1`)
+  ]);
+  
+  let diyData = [];
+  let cookingData = [];
+  
+  if (diyRes.ok) {
+    const data = await diyRes.json();
+    diyData = (data.data || []).map(item => ({
+      ...item,
+      id: `diy-${item.id}`
+    }));
   }
+  
+  if (cookingRes.ok) {
+    const data = await cookingRes.json();
+    cookingData = (data.data || []).map(item => ({
+      ...item,
+      id: `cooking-${item.id}`
+    }));
+  }
+  
+  recipes = [...diyData, ...cookingData];
 } catch (err) {
   console.warn('Directus API not reachable during build, using robust static fallback dataset.');
 }
@@ -49,7 +69,7 @@ if (recipes.length === 0) {
                 <article class="recipe-card-premium" style="background: var(--ac-surface); border-radius: var(--radius-lg); box-shadow: var(--ac-shadow); padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between; border: 2px solid transparent; transition: transform 0.2s;">
                     <div style="display:flex; gap:1rem; align-items:center;">
                         <div class="visual-glow" style="width: 80px; height: 80px; background: var(--ac-bg); border-radius: 20px; display:flex; align-items:center; justify-content:center; padding: 10px;" transition:name={`recipe-img-${recipe.id}`}>
-                            <img src={imageUrl} alt={recipe.name} onerror="this.src='🍳'" style="width:100%; height:100%; object-fit:contain;" />
+                            <img src={imageUrl} alt={recipe.name} onerror="this.src='/assets/img/acnh/placeholder.png'" style="width:100%; height:100%; object-fit:contain;" />
                         </div>
                         <div>
                             <h3 style="margin:0 0 6px; font-size:1.3rem; font-weight:900;">{recipe.name}</h3>
@@ -65,7 +85,7 @@ if (recipes.length === 0) {
                     </div>
 
                     <div style="text-align:center;">
-                        <a href={`/items/${recipe.id}`} style="display:inline-block; width:100%; padding:0.8rem; background:var(--ac-green); color:white; font-weight:800; border-radius:var(--radius-sm); text-decoration:none;">
+                        <a href={`/items/${recipe.id}/`} style="display:inline-block; width:100%; padding:0.8rem; background:var(--ac-green); color:white; font-weight:800; border-radius:var(--radius-sm); text-decoration:none;">
                             Anleitung ansehen →
                         </a>
                     </div>

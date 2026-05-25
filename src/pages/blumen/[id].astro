@@ -5,7 +5,7 @@ export async function getStaticPaths() {
   const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
   let flowers = [];
   try {
-    const res = await fetch(`${directusUrl}/items/flowers?limit=100`);
+    const res = await fetch(`${directusUrl}/items/flowers?limit=-1`);
     if (res.ok) {
       const data = await res.json();
       flowers = data.data || [];
@@ -81,7 +81,7 @@ const combinations = flower.combinations || [];
 <Layout title={`Der ultimative ${guideName}-Guide`}>
     <div class="hero">
         <div class="hero-flower-icon" transition:name={`flower-img-${flower.id}`}>
-            <img src={imageUrl} alt={flower.name} onerror="this.src='🌷'" />
+            <img src={imageUrl} alt={flower.name} onerror="this.src='/assets/img/acnh/placeholder.png'" />
         </div>
         <h1>Der ultimative {guideName}-Guide</h1>
         <p>Von der einfachen Samentüte zur seltenen Pracht.</p>
@@ -100,7 +100,7 @@ const combinations = flower.combinations || [];
                 {seeds.length > 0 ? (
                     seeds.map((seed) => (
                         <div class="seed-card">
-                            <img src={`/assets/img/acnh/${seed.image_path}`} alt={seed.color} onerror="this.src='🌱'" />
+                            <img src={`/assets/img/acnh/${seed.image_path}`} alt={seed.color} onerror="this.src='/assets/img/acnh/placeholder.png'" />
                             <div class="seed-info">
                                 <span class={`color-badge color-${seed.color.toLowerCase()}`} style="display: inline-block; font-weight:800; color:var(--ac-green);">
                                     {seed.color}
@@ -123,21 +123,21 @@ const combinations = flower.combinations || [];
                 <div class="breeding-card">
                     <div class="breeding-formula">
                         <div class="flower-entity">
-                            <img src={`/assets/img/acnh/${combo.parent1_image}`} alt={combo.parent1_color} onerror="this.src='🌸'" />
+                            <img src={`/assets/img/acnh/${combo.parent1_image}`} alt={combo.parent1_color} onerror="this.src='/assets/img/acnh/placeholder.png'" />
                             <span>{combo.parent1_color}</span>
                         </div>
                         
                         <div class="math-symbol">+</div>
                         
                         <div class="flower-entity">
-                            <img src={`/assets/img/acnh/${combo.parent2_image}`} alt={combo.parent2_color} onerror="this.src='🌸'" />
+                            <img src={`/assets/img/acnh/${combo.parent2_image}`} alt={combo.parent2_color} onerror="this.src='/assets/img/acnh/placeholder.png'" />
                             <span>{combo.parent2_color}</span>
                         </div>
                         
                         <div class="math-symbol equals">=</div>
                         
                         <div class="flower-entity result-entity">
-                            <img src={`/assets/img/acnh/${combo.child_image}`} alt={combo.child_color} onerror="this.src='🌺'" />
+                            <img src={`/assets/img/acnh/${combo.child_image}`} alt={combo.child_color} onerror="this.src='/assets/img/acnh/placeholder.png'" />
                             <span class="result-color">{combo.child_color}</span>
                             <span class="probability-badge">{combo.probability}</span>
                         </div>
