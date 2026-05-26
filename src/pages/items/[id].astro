@@ -1,67 +1,11 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import { getRecipes } from '../../lib/api.js';
 
 export async function getStaticPaths() {
   const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
-  let recipes = [];
-  try {
-    const [diyRes, cookingRes] = await Promise.all([
-      fetch(`${directusUrl}/items/diy_recipes?limit=-1`),
-      fetch(`${directusUrl}/items/cooking_recipes?limit=-1`)
-    ]);
-    
-    let diyData = [];
-    let cookingData = [];
-    
-    if (diyRes.ok) {
-      const data = await diyRes.json();
-      diyData = (data.data || []).map(item => ({
-        ...item,
-        id: `diy-${item.id}`
-      }));
-    }
-    
-    if (cookingRes.ok) {
-      const data = await cookingRes.json();
-      cookingData = (data.data || []).map(item => ({
-        ...item,
-        id: `cooking-${item.id}`
-      }));
-    }
-    
-    recipes = [...diyData, ...cookingData];
-  } catch (err) {
-    console.warn('Directus API not reachable during build, using robust static fallback dataset.');
-  }
+  const recipes = await getRecipes(directusUrl);
 
-  if (recipes.length === 0) {
-    recipes = [
-      {
-        id: 1,
-        name: 'Goldschaufel',
-        is_customizable: true,
-        source: 'Gulliver (nach 30 Rettungen)',
-        sell_price: '10.000 Sternis',
-        durability: '250 Nutzungen',
-        image_path: 'diy/tools/Goldschaufel.png',
-        materials: [
-          { id: 1, amount: 1, name: 'Golderz', image_path: 'golderz.png' },
-          { id: 2, amount: 1, name: 'Wackelschaufel', image_path: 'wackelschaufel.png' }
-        ]
-      },
-      {
-        id: 2,
-        name: 'Kirschmarmelade',
-        is_customizable: false,
-        source: 'Bewohner (Kochen)',
-        sell_price: '300 Sternis',
-        image_path: 'diy/cooking/Kirschmarmelade.png',
-        materials: [
-          { id: 3, amount: 3, name: 'Kirsche', image_path: 'kirsche.png' }
-        ]
-      }
-    ];
-  }
 
   return recipes.map((recipe) => {
     return {

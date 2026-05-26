@@ -1,35 +1,46 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { getMaterials } from '../lib/api.js';
+
+const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
+const allMaterials = await getMaterials(directusUrl);
+
+const getImageUrl = (path) => {
+  if (!path) return '/assets/img/acnh/koeder.png';
+  if (path.startsWith('http')) return path;
+  if (path.includes('/') || path.includes('.')) {
+    let clean = path.startsWith('/') ? path.slice(1) : path;
+    if (clean.startsWith('assets/')) clean = clean.slice(7);
+    if (clean.startsWith('img/acnh/')) clean = clean.slice(9);
+    return `/assets/img/acnh/${clean}`;
+  }
+  return `${directusUrl}/assets/${path}`;
+};
 
 const categories = [
     {
         key: 'normal',
         name: '🪵 Basis-Materialien & Zutaten',
         desc: 'Ressourcen, die du das ganze Jahr über auf deiner Insel sammeln kannst.',
-        items: [
-            { id: 1, name: 'Ast', source: 'Bäume schütteln', price: '5 Sternis', image_path: '64px-Tree_Branch_NH_Inv_Icon.png' },
-            { id: 2, name: 'Weichholz', source: 'Bäume hacken', price: '60 Sternis', image_path: '64px-Tree_Branch_NH_Inv_Icon.png' },
-            { id: 3, name: 'Hartholz', source: 'Bäume hacken', price: '60 Sternis', image_path: '64px-Tree_Branch_NH_Inv_Icon.png' },
-            { id: 4, name: 'Holz', source: 'Bäume hacken', price: '60 Sternis', image_path: '64px-Tree_Branch_NH_Inv_Icon.png' },
-            { id: 5, name: 'Eisenerz', source: 'Steine schlagen', price: '375 Sternis', image_path: '64px-Tree_Branch_NH_Inv_Icon.png' },
-            { id: 6, name: 'Golderz', source: 'Steine schlagen (selten)', price: '10.000 Sternis', image_path: '64px-99k_Bells_NH_Inv_Icon.png' }
-        ]
+        items: allMaterials.filter(m => m.category === 'normal')
     },
     {
         key: 'seasonal',
         name: '❄️ Saisonale Materialien',
         desc: 'Ressourcen für spezielle Feiertags- und Saisonanleitungen.',
-        items: [
-            { id: 7, name: 'Kirschblütenblatt', source: 'Mit Kescher fangen (April)', price: '200 Sternis', image_path: '64px-Tree_Branch_NH_Inv_Icon.png' },
-            { id: 8, name: 'Eichel', source: 'Laubbäume schütteln (Herbst)', price: '200 Sternis', image_path: '64px-Tree_Branch_NH_Inv_Icon.png' },
-            { id: 9, name: 'Sternensplitter', source: 'Sternschnuppen wünschen', price: '250 Sternis', image_path: '64px-Tree_Branch_NH_Inv_Icon.png' }
-        ]
+        items: allMaterials.filter(m => m.category === 'seasonal')
+    },
+    {
+        key: 'other',
+        name: '✨ Sonstige Gegenstände & Ressourcen',
+        desc: 'Weitere nützliche Werkstoffe für dein Inselleben.',
+        items: allMaterials.filter(m => m.category === 'other' || !m.category)
     }
-];
+].filter(cat => cat.items.length > 0);
 ---
 
 <Layout title="Materialien & Zutaten - Bastel-Wiki">
-    <div class="hero">
+    <div class="hero" style="background: linear-gradient(135deg, #ffa726 0%, #fb8c00 100%);">
         <h1>Materialien & Zutaten</h1>
         <p>Alles, was du zum Basteln von Werkzeugen und Möbeln auf deiner Insel benötigst!</p>
     </div>
@@ -50,13 +61,14 @@ const categories = [
                     <div class="material-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem;">
                         {cat.items.map((mat) => (
                             <div class="material-card" id={`mat-${mat.id}`} style="background: var(--ac-surface); border: 1px solid var(--ac-border); border-radius: var(--radius-md); padding: 12px; display: flex; align-items: center; gap: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.04);">
-                                <div class="material-img" style="width: 48px; height: 48px; background: var(--ac-bg); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                                    <span style="font-size:1.5rem;">🪵</span>
+                                <div class="material-img" style="width: 48px; height: 48px; background: var(--ac-bg); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; padding: 4px;">
+                                    <img src={getImageUrl(mat.image_path)} alt={mat.name} onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" style="max-width:100%; max-height:100%; object-fit:contain;" />
+                                    <span style="font-size:1.5rem; display:none;">🪵</span>
                                 </div>
                                 <div class="material-details" style="display: flex; flex-direction: column; gap: 4px; flex-grow: 1;">
                                     <span class="material-name" style="font-weight: 900; font-size: 0.95rem;">{mat.name}</span>
-                                    <span class="material-source" style="font-size: 0.75rem; color: var(--ac-text-muted);">📍 {mat.source}</span>
-                                    <span class="material-price" style="font-size: 0.75rem; color: var(--ac-bell); font-weight: 900; background: var(--ac-bell-bg, rgba(242, 192, 70, 0.15)); padding: 2px 6px; border-radius: 4px; width: fit-content;">💰 {mat.price}</span>
+                                    <span class="material-source" style="font-size: 0.75rem; color: var(--ac-text-muted);">📍 {mat.source || 'Unbekannt'}</span>
+                                    <span class="material-price" style="font-size: 0.75rem; color: var(--ac-bell); font-weight: 900; background: var(--ac-bell-bg, rgba(242, 192, 70, 0.15)); padding: 2px 6px; border-radius: 4px; width: fit-content;">💰 {mat.sell_price || '0 Sternis'}</span>
                                 </div>
                             </div>
                         ))}

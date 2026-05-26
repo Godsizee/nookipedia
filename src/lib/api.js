@@ -63,4 +63,79 @@ export async function getCreatures(directusUrl) {
   }));
 }
 
+export async function getRecipes(directusUrl) {
+  const [diyRes, cookingRes, materialsRes, itemMaterialsRes] = await Promise.all([
+    fetchWithRetry(`${directusUrl}/items/diy_recipes?limit=-1`),
+    fetchWithRetry(`${directusUrl}/items/cooking_recipes?limit=-1`),
+    fetchWithRetry(`${directusUrl}/items/materials?limit=-1`),
+    fetchWithRetry(`${directusUrl}/items/item_materials?limit=-1`)
+  ]);
+
+  const [diyData, cookingData, materialsData, itemMaterialsData] = await Promise.all([
+    diyRes.json(),
+    cookingRes.json(),
+    materialsRes.json(),
+    itemMaterialsRes.json()
+  ]);
+
+  const diys = diyData.data || [];
+  const cookings = cookingData.data || [];
+  const materials = materialsData.data || [];
+  const itemMats = itemMaterialsData.data || [];
+
+  const materialsMap = new Map(materials.map(m => [m.id, m]));
+
+  const diyMaterialsMap = new Map();
+  const cookingMaterialsMap = new Map();
+
+  itemMats.forEach(im => {
+    const mat = materialsMap.get(im.material_id);
+    if (!mat) return;
+
+    const joinedMat = {
+      id: mat.id,
+      amount: im.amount,
+      name: mat.name,
+      image_path: mat.image_path
+    };
+
+    if (im.diy_recipe_id) {
+      if (!diyMaterialsMap.has(im.diy_recipe_id)) {
+        diyMaterialsMap.set(im.diy_recipe_id, []);
+      }
+      diyMaterialsMap.get(im.diy_recipe_id).push(joinedMat);
+    } else if (im.cooking_recipe_id) {
+      if (!cookingMaterialsMap.has(im.cooking_recipe_id)) {
+        cookingMaterialsMap.set(im.cooking_recipe_id, []);
+      }
+      cookingMaterialsMap.get(im.cooking_recipe_id).push(joinedMat);
+    }
+  });
+
+  const diyRecipesJoined = diys.map(r => ({
+    ...r,
+    id: `diy-${r.id}`,
+    type: 'diy',
+    group_name: r.category_name || 'Bastelprojekte',
+    materials: diyMaterialsMap.get(r.id) || []
+  }));
+
+  const cookingRecipesJoined = cookings.map(r => ({
+    ...r,
+    id: `cooking-${r.id}`,
+    type: 'cooking',
+    group_name: r.category_name || 'Kochrezepte',
+    materials: cookingMaterialsMap.get(r.id) || []
+  }));
+
+  return [...diyRecipesJoined, ...cookingRecipesJoined];
+}
+
+export async function getMaterials(directusUrl) {
+  const res = await fetchWithRetry(`${directusUrl}/items/materials?limit=-1`);
+  const data = await res.json();
+  return data.data || [];
+}
+
+
 
