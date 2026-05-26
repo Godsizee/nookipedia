@@ -3,55 +3,8 @@ import Layout from '../layouts/Layout.astro';
 import { getCreatures } from '../lib/api.js';
 
 const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
-let creatures = [];
-try {
-  creatures = await getCreatures(directusUrl);
-} catch (err) {
-  console.warn('Directus API not reachable during build, using robust static fallback dataset.');
-}
+const creatures = await getCreatures(directusUrl);
 
-if (creatures.length === 0) {
-  creatures = [
-    {
-      id: 1,
-      category: 'fish',
-      name: 'Quastenflosser',
-      price: 15000,
-      image_path: 'faunapedia/fish/Quastenflosser.png',
-      months_northern: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-      time_active: 'Ganzjährig / Alle Uhrzeiten',
-      location_name: 'Meer (bei Regen)',
-      shadow_image: 'groß',
-      weather: 'Regen',
-      catchphrase: 'Ein Quastenflosser! Manche halten ihn für ein lebendes Fossil!'
-    },
-    {
-      id: 2,
-      category: 'insect',
-      name: 'Vogelfalter',
-      price: 4000,
-      image_path: 'home/vogelfalter.png',
-      months_northern: [4, 5, 6, 7, 8, 9],
-      time_active: '08:00 - 16:00',
-      location_name: 'Fliegend (Blumen)',
-      weather: 'Schön',
-      catchphrase: 'Einen Vogelfalter gefangen! Er flattert so wunderschön!'
-    },
-    {
-      id: 3,
-      category: 'sea',
-      name: 'Gießkannenschwamm',
-      price: 5000,
-      image_path: 'faunapedia/sea/giesskannenschwamm.png',
-      months_northern: [10, 11, 12, 1, 2],
-      time_active: 'Ganz Tag',
-      location_name: 'Meeresgrund',
-      shadow_image: 'groß',
-      speed: 'Sehr langsam',
-      catchphrase: 'Einen Gießkannenschwamm gefunden! Sieht aus wie eine Gießkanne!'
-    }
-  ];
-}
 
 const getImageUrl = (path) => {
   if (!path) return '/assets/img/acnh/koeder.png';

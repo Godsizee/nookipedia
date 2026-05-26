@@ -3,64 +3,9 @@ import Layout from '../../layouts/Layout.astro';
 import { getCreatures } from '../../lib/api.js';
 
 const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
-let creatures = [];
+const allCreatures = await getCreatures(directusUrl);
+const creatures = allCreatures.filter(c => c.category === 'insect');
 
-try {
-  const allCreatures = await getCreatures(directusUrl);
-  creatures = allCreatures.filter(c => c.category === 'insect');
-} catch (err) {
-  console.warn('Directus API not reachable during build, using robust static fallback dataset.');
-}
-
-if (creatures.length === 0) {
-  creatures = [
-    {
-      id: 2,
-      category: 'insect',
-      name: 'Vogelfalter',
-      price: 4000,
-      image_path: 'faunapedia/insects/Queen Alexandra\'s Birdwing.png',
-      time_active: '08:00 - 16:00 Uhr',
-      location_name: 'Fliegend (Blumen)'
-    },
-    {
-      id: 8,
-      category: 'insect',
-      name: 'Himmelsfalter',
-      price: 4000,
-      image_path: 'faunapedia/insects/Emperor Butterfly.png',
-      time_active: '17:00 - 08:00 Uhr',
-      location_name: 'Fliegend (nahe Blumen)'
-    },
-    {
-      id: 9,
-      category: 'insect',
-      name: 'Atlasspinner',
-      price: 3000,
-      image_path: 'faunapedia/insects/Atlas Moth.png',
-      time_active: '19:00 - 04:00 Uhr',
-      location_name: 'An Bäumen'
-    },
-    {
-      id: 10,
-      category: 'insect',
-      name: 'Orchideenmantis',
-      price: 2400,
-      image_path: 'faunapedia/insects/Orchid Mantis.png',
-      time_active: '08:00 - 17:00 Uhr',
-      location_name: 'Auf weißen Blumen'
-    },
-    {
-      id: 11,
-      category: 'insect',
-      name: 'Skorpion',
-      price: 8000,
-      image_path: 'faunapedia/insects/Scorpion.png',
-      time_active: '19:00 - 04:00 Uhr',
-      location_name: 'Am Boden'
-    }
-  ];
-}
 
 const getImageUrl = (path) => {
   if (!path) return '/assets/img/acnh/koeder.png';

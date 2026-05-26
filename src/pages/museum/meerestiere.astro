@@ -3,64 +3,9 @@ import Layout from '../../layouts/Layout.astro';
 import { getCreatures } from '../../lib/api.js';
 
 const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
-let creatures = [];
+const allCreatures = await getCreatures(directusUrl);
+const creatures = allCreatures.filter(c => c.category === 'sea');
 
-try {
-  const allCreatures = await getCreatures(directusUrl);
-  creatures = allCreatures.filter(c => c.category === 'sea');
-} catch (err) {
-  console.warn('Directus API not reachable during build, using robust static fallback dataset.');
-}
-
-if (creatures.length === 0) {
-  creatures = [
-    {
-      id: 3,
-      category: 'sea',
-      name: 'Gießkannenschwamm',
-      price: 5000,
-      image_path: 'faunapedia/sea_creatures/Venus\' Flower Basket.png',
-      time_active: 'Ganz Tag',
-      location_name: 'Meeresgrund'
-    },
-    {
-      id: 12,
-      category: 'sea',
-      name: 'Riesenassel',
-      price: 12000,
-      image_path: 'faunapedia/sea_creatures/Giant Isopod.png',
-      time_active: '09:00 - 16:00 & 21:00 - 04:00 Uhr',
-      location_name: 'Meeresgrund'
-    },
-    {
-      id: 13,
-      category: 'sea',
-      name: 'Riesenmuschel',
-      price: 15000,
-      image_path: 'faunapedia/sea_creatures/Gigas Giant Clam.png',
-      time_active: 'Ganzjährig / Alle Uhrzeiten',
-      location_name: 'Meeresgrund'
-    },
-    {
-      id: 14,
-      category: 'sea',
-      name: 'Krake',
-      price: 1200,
-      image_path: 'faunapedia/sea_creatures/Octopus.png',
-      time_active: 'Ganzjährig / Alle Uhrzeiten',
-      location_name: 'Meeresgrund'
-    },
-    {
-      id: 15,
-      category: 'sea',
-      name: 'Kamm-Muschel',
-      price: 2500,
-      image_path: 'faunapedia/sea_creatures/Scallop.png',
-      time_active: 'Ganzjährig / Alle Uhrzeiten',
-      location_name: 'Meeresgrund'
-    }
-  ];
-}
 
 const getImageUrl = (path) => {
   if (!path) return '/assets/img/acnh/koeder.png';

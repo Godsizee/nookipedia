@@ -3,70 +3,8 @@ import Layout from '../../layouts/Layout.astro';
 import { getCreatures } from '../../lib/api.js';
 
 const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
-let creatures = [];
-
-try {
-  const allCreatures = await getCreatures(directusUrl);
-  creatures = allCreatures.filter(c => c.category === 'fish');
-} catch (err) {
-  console.warn('Directus API not reachable during build, using robust static fallback dataset.');
-}
-
-if (creatures.length === 0) {
-  creatures = [
-    {
-      id: 1,
-      category: 'fish',
-      name: 'Quastenflosser',
-      price: 15000,
-      image_path: 'faunapedia/fish/Coelacanth.png',
-      time_active: 'Ganzjährig / Alle Uhrzeiten',
-      location_name: 'Meer (bei Regen)',
-      shadow_image: 'sehr groß'
-    },
-    {
-      id: 4,
-      category: 'fish',
-      name: 'Kaimanfisch',
-      price: 4000,
-      image_path: 'faunapedia/fish/Gar.png',
-      time_active: '16:00 - 09:00 Uhr',
-      location_name: 'Teich',
-      shadow_image: 'sehr groß'
-    },
-    {
-      id: 5,
-      category: 'fish',
-      name: 'Goldforelle',
-      price: 15000,
-      image_path: 'faunapedia/fish/Golden Trout.png',
-      time_active: '16:00 - 09:00 Uhr',
-      location_name: 'Fluss (Wasserfall)',
-      shadow_image: 'mittel'
-    },
-    {
-      id: 6,
-      category: 'fish',
-      name: 'Rochen',
-      price: 3000,
-      image_path: 'faunapedia/fish/Ray.png',
-      time_active: '04:00 - 21:00 Uhr',
-      location_name: 'Meer',
-      shadow_image: 'groß'
-    },
-    {
-      id: 7,
-      category: 'fish',
-      name: 'See-Engel',
-      price: 1000,
-      image_path: 'faunapedia/fish/Sea Butterfly.png',
-      time_active: 'Ganzjährig / Alle Uhrzeiten',
-      location_name: 'Meer',
-      shadow_image: 'winzig'
-    }
-  ];
-}
-
+const allCreatures = await getCreatures(directusUrl);
+const creatures = allCreatures.filter(c => c.category === 'fish');
 const getImageUrl = (path) => {
   if (!path) return '/assets/img/acnh/koeder.png';
   if (path.startsWith('http')) return path;
