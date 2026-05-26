@@ -1,14 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { getCreatures } from '../lib/api.js';
 
 const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
 let creatures = [];
 try {
-  const res = await fetch(`${directusUrl}/items/creatures?limit=-1`);
-  if (res.ok) {
-    const data = await res.json();
-    creatures = data.data || [];
-  }
+  creatures = await getCreatures(directusUrl);
 } catch (err) {
   console.warn('Directus API not reachable during build, using robust static fallback dataset.');
 }
