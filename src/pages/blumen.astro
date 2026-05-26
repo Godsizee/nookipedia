@@ -1,85 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { getFlowers } from '../lib/api.js';
 
 const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
-let flowers = [];
-try {
-  const res = await fetch(`${directusUrl}/items/flowers?limit=-1`);
-  if (res.ok) {
-    const data = await res.json();
-    flowers = data.data || [];
-  }
-} catch (err) {
-  console.warn('Directus API not reachable during build, using robust static fallback dataset.');
-}
-
-if (flowers.length === 0) {
-  flowers = [
-    {
-      id: 1,
-      name: 'Anemone',
-      description: 'Diese filigranen Blumen lieben windige Klippen. Sie bringen wunderschöne blaue und lilane Hybriden hervor.',
-      image_path: 'home/Red_Cosmos_NL_Icon.png',
-      colors: ['Rot', 'Weiß', 'Orange', 'Pink', 'Blau', 'Lila']
-    },
-    {
-      id: 2,
-      name: 'Chrysantheme',
-      description: 'Klassische, buschige Blumen mit einer der seltensten Zuchtfarben überhaupt: der grünen Chrysantheme.',
-      image_path: 'home/Red_Cosmos_NL_Icon.png',
-      colors: ['Rot', 'Gelb', 'Weiß', 'Pink', 'Lila', 'Grün']
-    },
-    {
-      id: 3,
-      name: 'Cosmea',
-      description: 'Filigrane Wildblumen mit wunderschönen sternförmigen Blütenköpfen. Sehr leicht zu kreuzen!',
-      image_path: 'home/Red_Cosmos_NL_Icon.png',
-      colors: ['Rot', 'Gelb', 'Weiß', 'Pink', 'Orange', 'Schwarz']
-    },
-    {
-      id: 4,
-      name: 'Hyazinthe',
-      description: 'Wunderschöne, dichte Blütenkerzen, die deiner Insel einen mediterranen Flair verleihen. Extrem beliebt für lila Hybride.',
-      image_path: 'home/Red_Cosmos_NL_Icon.png',
-      colors: ['Rot', 'Gelb', 'Weiß', 'Pink', 'Orange', 'Blau', 'Lila']
-    },
-    {
-      id: 5,
-      name: 'Lilie',
-      description: 'Edle, trompetenförmige Blüten. Besonders die schwarzen Lilien wirken geheimnisvoll und elegant.',
-      image_path: 'home/Red_Cosmos_NL_Icon.png',
-      colors: ['Rot', 'Gelb', 'Weiß', 'Pink', 'Orange', 'Schwarz']
-    },
-    {
-      id: 6,
-      name: 'Rose',
-      description: 'Die unangefochtene Königin der Blumenwelt. Nur wer die anspruchsvolle Genetik meistert, erhält die legendäre Blaue Rose.',
-      image_path: 'home/Red_Cosmos_NL_Icon.png',
-      colors: ['Rot', 'Gelb', 'Weiß', 'Pink', 'Orange', 'Schwarz', 'Lila', 'Blau', 'Gold']
-    },
-    {
-      id: 7,
-      name: 'Stiefmütterchen',
-      description: 'Zweifarbige Gesichter machen diese Blume zu einem fröhlichen Hingucker auf jeder Wiese.',
-      image_path: 'home/Red_Cosmos_NL_Icon.png',
-      colors: ['Rot', 'Gelb', 'Weiß', 'Orange', 'Blau', 'Lila']
-    },
-    {
-      id: 8,
-      name: 'Tulpe',
-      description: 'Die stolzen Frühlingsboten. Aus den tiefschwarzen Tulpen lassen sich herrliche Düster-Gärten anlegen.',
-      image_path: 'home/Red_Cosmos_NL_Icon.png',
-      colors: ['Rot', 'Gelb', 'Weiß', 'Pink', 'Orange', 'Schwarz', 'Lila']
-    },
-    {
-      id: 9,
-      name: 'Maiglöckchen',
-      description: 'Ein exklusives Geschenk der Natur. Wächst nur an Klippen, wenn deine Insel ein perfektes 5-Sterne-Rating erreicht hat.',
-      image_path: 'home/Red_Cosmos_NL_Icon.png',
-      colors: ['Weiß']
-    }
-  ];
-}
+const flowers = await getFlowers(directusUrl);
 
 const getImageUrl = (path) => {
   if (!path) return '/assets/img/acnh/koeder.png';

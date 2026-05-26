@@ -137,5 +137,47 @@ export async function getMaterials(directusUrl) {
   return data.data || [];
 }
 
+export async function getFlowers(directusUrl) {
+  const [flowersRes, seedsRes, combinationsRes] = await Promise.all([
+    fetchWithRetry(`${directusUrl}/items/flowers?limit=-1`),
+    fetchWithRetry(`${directusUrl}/items/flower_seeds?limit=-1`),
+    fetchWithRetry(`${directusUrl}/items/flower_combinations?limit=-1`)
+  ]);
+
+  const [flowersData, seedsData, combinationsData] = await Promise.all([
+    flowersRes.json(),
+    seedsRes.json(),
+    combinationsRes.json()
+  ]);
+
+  const fls = flowersData.data || [];
+  const sds = seedsData.data || [];
+  const cmbs = combinationsData.data || [];
+
+  const seedsMap = new Map();
+  const combinationsMap = new Map();
+
+  sds.forEach(s => {
+    if (!seedsMap.has(s.flower_id)) {
+      seedsMap.set(s.flower_id, []);
+    }
+    seedsMap.get(s.flower_id).push(s);
+  });
+
+  cmbs.forEach(c => {
+    if (!combinationsMap.has(c.flower_id)) {
+      combinationsMap.set(c.flower_id, []);
+    }
+    combinationsMap.get(c.flower_id).push(c);
+  });
+
+  return fls.map(f => ({
+    ...f,
+    seeds: seedsMap.get(f.id) || [],
+    combinations: combinationsMap.get(f.id) || []
+  }));
+}
+
+
 
 

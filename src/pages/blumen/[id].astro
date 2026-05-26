@@ -1,54 +1,11 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
+import { getFlowers } from '../../lib/api.js';
 
 export async function getStaticPaths() {
   const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
-  let flowers = [];
-  try {
-    const res = await fetch(`${directusUrl}/items/flowers?limit=-1`);
-    if (res.ok) {
-      const data = await res.json();
-      flowers = data.data || [];
-    }
-  } catch (err) {
-    console.warn('Directus API not reachable during build, using robust static fallback dataset.');
-  }
-
-  if (flowers.length === 0) {
-    flowers = [
-      {
-        id: 1,
-        name: 'Rose',
-        description: 'Die Königin der Blumen. Bekannt für ihre exklusiven goldenen und blauen Hybride.',
-        image_path: 'home/Red_Cosmos_NL_Icon.png',
-        colors: ['Rot', 'Weiß', 'Gelb', 'Rosa', 'Orange', 'Lila', 'Schwarz', 'Blau', 'Gold'],
-        seeds: [
-          { color: 'Rot', source: 'Nooks Laden', image_path: 'home/Red_Cosmos_NL_Icon.png' },
-          { color: 'Weiß', source: 'Nooks Laden', image_path: 'home/Red_Cosmos_NL_Icon.png' },
-          { color: 'Gelb', source: 'Nooks Laden', image_path: 'home/Red_Cosmos_NL_Icon.png' }
-        ],
-        combinations: [
-          { parent1_color: 'Rot', parent1_image: 'home/Red_Cosmos_NL_Icon.png', parent2_color: 'Rot', parent2_image: 'home/Red_Cosmos_NL_Icon.png', child_color: 'Schwarz', child_image: 'home/Red_Cosmos_NL_Icon.png', probability: '25%', notes: 'Gieße mit der Goldgießkanne für Goldrosen!' },
-          { parent1_color: 'Weiß', parent1_image: 'home/Red_Cosmos_NL_Icon.png', parent2_color: 'Weiß', parent2_image: 'home/Red_Cosmos_NL_Icon.png', child_color: 'Lila', child_image: 'home/Red_Cosmos_NL_Icon.png', probability: '25%', notes: 'Wichtiger Zwischenschritt für blaue Rosen.' }
-        ]
-      },
-      {
-        id: 2,
-        name: 'Tulpe',
-        description: 'Eine klassische Frühlingsblume in leuchtenden Farben.',
-        image_path: 'home/Red_Cosmos_NL_Icon.png',
-        colors: ['Rot', 'Weiß', 'Gelb', 'Rosa', 'Orange', 'Lila', 'Schwarz'],
-        seeds: [
-          { color: 'Rot', source: 'Gerd / Nooks Laden', image_path: 'home/Red_Cosmos_NL_Icon.png' },
-          { color: 'Weiß', source: 'Gerd / Nooks Laden', image_path: 'home/Red_Cosmos_NL_Icon.png' }
-        ],
-        combinations: [
-          { parent1_color: 'Rot', parent1_image: 'home/Red_Cosmos_NL_Icon.png', parent2_color: 'Gelb', parent2_image: 'home/Red_Cosmos_NL_Icon.png', child_color: 'Orange', child_image: 'home/Red_Cosmos_NL_Icon.png', probability: '50%', notes: 'Sehr pflegeleicht.' }
-        ]
-      }
-    ];
-  }
+  const flowers = await getFlowers(directusUrl);
 
   return flowers.map((flower) => {
     return {
@@ -57,6 +14,7 @@ export async function getStaticPaths() {
     };
   });
 }
+
 
 const { flower } = Astro.props;
 const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
