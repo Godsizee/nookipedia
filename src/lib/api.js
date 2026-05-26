@@ -1,27 +1,31 @@
+async function fetchWithRetry(url, retries = 5, delay = 3000) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const res = await fetch(url);
+      if (res.ok) return res;
+      if (res.status === 503 || res.status === 502 || res.status === 504 || res.status === 408) {
+        console.warn(`Directus returned status ${res.status} for ${url}, retrying in ${delay}ms... (Attempt ${i + 1}/${retries})`);
+      } else {
+        throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+      }
+    } catch (err) {
+      if (i === retries - 1) {
+        throw new Error(`Failed to fetch ${url} after ${retries} attempts. Last error: ${err.message}`);
+      }
+      console.warn(`Fetch failed for ${url} (${err.message}). Retrying in ${delay}ms... (Attempt ${i + 1}/${retries})`);
+    }
+    await new Promise(resolve => setTimeout(resolve, delay));
+  }
+}
+
 export async function getCreatures(directusUrl) {
   const [creaturesRes, locationsRes, shadowsRes, speedsRes, weathersRes] = await Promise.all([
-    fetch(`${directusUrl}/items/creatures?limit=-1`),
-    fetch(`${directusUrl}/items/creature_locations?limit=-1`),
-    fetch(`${directusUrl}/items/creature_shadows?limit=-1`),
-    fetch(`${directusUrl}/items/creature_speeds?limit=-1`),
-    fetch(`${directusUrl}/items/creature_weathers?limit=-1`)
+    fetchWithRetry(`${directusUrl}/items/creatures?limit=-1`),
+    fetchWithRetry(`${directusUrl}/items/creature_locations?limit=-1`),
+    fetchWithRetry(`${directusUrl}/items/creature_shadows?limit=-1`),
+    fetchWithRetry(`${directusUrl}/items/creature_speeds?limit=-1`),
+    fetchWithRetry(`${directusUrl}/items/creature_weathers?limit=-1`)
   ]);
-
-  if (!creaturesRes.ok) {
-    throw new Error(`Failed to fetch creatures: ${creaturesRes.status} ${creaturesRes.statusText}`);
-  }
-  if (!locationsRes.ok) {
-    throw new Error(`Failed to fetch locations: ${locationsRes.status} ${locationsRes.statusText}`);
-  }
-  if (!shadowsRes.ok) {
-    throw new Error(`Failed to fetch shadows: ${shadowsRes.status} ${shadowsRes.statusText}`);
-  }
-  if (!speedsRes.ok) {
-    throw new Error(`Failed to fetch speeds: ${speedsRes.status} ${speedsRes.statusText}`);
-  }
-  if (!weathersRes.ok) {
-    throw new Error(`Failed to fetch weathers: ${weathersRes.status} ${weathersRes.statusText}`);
-  }
 
   const [creaturesData, locationsData, shadowsData, speedsData, weathersData] = await Promise.all([
     creaturesRes.json(),
@@ -50,4 +54,5 @@ export async function getCreatures(directusUrl) {
     weather: weathersMap.get(c.id) || null
   }));
 }
+
 
