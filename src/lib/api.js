@@ -1,18 +1,26 @@
 async function fetchWithRetry(url, retries = 5, delay = 3000) {
+  let currentUrl = url;
   for (let i = 0; i < retries; i++) {
     try {
-      const res = await fetch(url);
+      if (i >= 2 && currentUrl.includes('directus.2.godsize.info')) {
+        currentUrl = currentUrl.replace('directus.2.godsize.info', 'backend-nookipedia.2.godsize.info');
+        console.warn(`Swapping domain to backend-nookipedia.2.godsize.info for retry: ${currentUrl}`);
+      }
+      const res = await fetch(currentUrl);
       if (res.ok) return res;
       if (res.status === 503 || res.status === 502 || res.status === 504 || res.status === 408) {
-        console.warn(`Directus returned status ${res.status} for ${url}, retrying in ${delay}ms... (Attempt ${i + 1}/${retries})`);
+        console.warn(`Directus returned status ${res.status} for ${currentUrl}, retrying in ${delay}ms... (Attempt ${i + 1}/${retries})`);
+        if (i === retries - 1) {
+          throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+        }
       } else {
         throw new Error(`HTTP ${res.status}: ${res.statusText}`);
       }
     } catch (err) {
       if (i === retries - 1) {
-        throw new Error(`Failed to fetch ${url} after ${retries} attempts. Last error: ${err.message}`);
+        throw new Error(`Failed to fetch ${currentUrl} after ${retries} attempts. Last error: ${err.message}`);
       }
-      console.warn(`Fetch failed for ${url} (${err.message}). Retrying in ${delay}ms... (Attempt ${i + 1}/${retries})`);
+      console.warn(`Fetch failed for ${currentUrl} (${err.message}). Retrying in ${delay}ms... (Attempt ${i + 1}/${retries})`);
     }
     await new Promise(resolve => setTimeout(resolve, delay));
   }
