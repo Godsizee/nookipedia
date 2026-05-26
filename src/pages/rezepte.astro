@@ -1,0 +1,262 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
+let recipes = [];
+let category = 'diy';
+
+try {
+  const [diyRes, cookingRes] = await Promise.all([
+    fetch(`${directusUrl}/items/diy_recipes?limit=-1`),
+    fetch(`${directusUrl}/items/cooking_recipes?limit=-1`)
+  ]);
+  
+  let diyData = [];
+  let cookingData = [];
+  
+  if (diyRes.ok) {
+    const data = await diyRes.json();
+    diyData = (data.data || []).map(item => ({
+      ...item,
+      id: `diy-${item.id}`,
+      type: 'diy',
+      group_name: item.category_name || 'Bastelprojekte'
+    }));
+  }
+  
+  if (cookingRes.ok) {
+    const data = await cookingRes.json();
+    cookingData = (data.data || []).map(item => ({
+      ...item,
+      id: `cooking-${item.id}`,
+      type: 'cooking',
+      group_name: item.category_name || 'Kochrezepte'
+    }));
+  }
+  
+  recipes = [...diyData, ...cookingData];
+} catch (err) {
+  console.warn('Directus API not reachable during build, using robust static fallback dataset.');
+}
+
+if (recipes.length === 0) {
+  recipes = [
+    {
+      id: 'diy-1',
+      name: 'Goldschaufel',
+      type: 'diy',
+      group_name: 'Werkzeuge',
+      is_customizable: true,
+      source: 'Gulliver (nach 30 Rettungen)',
+      sell_price: '10.000 Sternis',
+      durability: '250 Nutzungen',
+      image_path: 'diy/tools/Goldschaufel.png'
+    },
+    {
+      id: 'diy-2',
+      name: 'Baumstamm-Sofa',
+      type: 'diy',
+      group_name: 'Möbel',
+      is_customizable: true,
+      source: 'Bewohner (Typ Schlafmütze)',
+      sell_price: '800 Sternis',
+      image_path: 'leaf_icon.png'
+    },
+    {
+      id: 'cooking-1',
+      name: 'Kirschmarmelade',
+      type: 'cooking',
+      group_name: 'Süßspeisen',
+      is_customizable: false,
+      source: 'Bewohner (Kochen)',
+      sell_price: '300 Sternis',
+      image_path: 'diy/cooking/Kirschmarmelade.png'
+    },
+    {
+      id: 'cooking-2',
+      name: 'Apfelkuchen',
+      type: 'cooking',
+      group_name: 'Süßspeisen',
+      is_customizable: false,
+      source: 'Bewohner (Kochen)',
+      sell_price: '450 Sternis',
+      image_path: 'diy/cooking/Kirschmarmelade.png'
+    }
+  ];
+}
+
+const getImageUrl = (path) => {
+  if (!path) return '/assets/img/acnh/koeder.png';
+  if (path.startsWith('http')) return path;
+  if (path.includes('/') || path.includes('.')) {
+    let clean = path.startsWith('/') ? path.slice(1) : path;
+    if (clean.startsWith('assets/')) clean = clean.slice(7);
+    if (clean.startsWith('img/acnh/')) clean = clean.slice(9);
+    return `/assets/img/acnh/${clean}`;
+  }
+  return `${directusUrl}/assets/${path}`;
+};
+
+// Group recipes by group_name
+const groupRecipes = (list) => {
+  const grouped = {};
+  list.forEach(r => {
+    if (!grouped[r.group_name]) {
+      grouped[r.group_name] = [];
+    }
+    grouped[r.group_name].push(r);
+  });
+  return grouped;
+};
+
+const groupedDiy = groupRecipes(recipes.filter(r => r.type === 'diy'));
+const groupedCooking = groupRecipes(recipes.filter(r => r.type === 'cooking'));
+---
+
+<Layout title="Bastelanleitungen & Kochrezepte - Nookipedia">
+    <div class="recipe-hero" style="background: linear-gradient(135deg, #8d6e63 0%, #4e342e 100%); padding: 3rem 1.5rem 4rem; border-radius: var(--radius-lg); text-align: center; margin-bottom: 2rem; border: 3px solid #8d6e63; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+        <div class="recipe-hero-icon" style="font-size: 3.5rem; margin-bottom: 10px;">🛠️</div>
+        <h1 style="color: #f8f4e6; font-weight: 900; margin-top: 10px; font-family: 'Outfit', sans-serif;">Rezepte-Werkbank</h1>
+        <p class="recipe-hero-subtitle" style="color: #d7ccc8; font-size: 1.1rem; max-width: 600px; margin: 10px auto 0; font-weight: 600;">Lass deiner Kreativität freien Lauf an der Werkbank und am Herd!</p>
+    </div>
+
+    <!-- Tab Buttons for DIY vs Cooking -->
+    <div class="tab-container" style="max-width: 500px; margin: 0 auto 2rem; display: flex; gap: 10px; background: rgba(0,0,0,0.05); padding: 6px; border-radius: 100px;">
+        <button class="tab-btn active" data-tab="diy" style="flex: 1; padding: 12px; border-radius: 100px; border: none; font-weight: 900; font-size: 1rem; cursor: pointer; background: var(--ac-green); color: white; transition: all 0.2s;">
+            🔨 Basteln
+        </button>
+        <button class="tab-btn" data-tab="cooking" style="flex: 1; padding: 12px; border-radius: 100px; border: none; font-weight: 900; font-size: 1rem; cursor: pointer; background: transparent; color: var(--ac-text); transition: all 0.2s;">
+            🍳 Kochen
+        </button>
+    </div>
+
+    <div class="recipes-container" style="max-width: 900px; margin: 0 auto 5rem; padding: 0 1rem;">
+        
+        <!-- DIY Tab Panel -->
+        <div id="diy-panel" class="tab-panel active">
+            {Object.entries(groupedDiy).map(([groupName, list]) => (
+                <details class="recipe-group" open style="background: var(--ac-surface); border-radius: var(--radius-lg); border: 2px solid var(--ac-border); box-shadow: var(--ac-shadow); overflow: hidden; margin-bottom: 1.5rem; transition: all 0.2s;">
+                    <summary style="padding: 1.25rem 1.5rem; display: flex; align-items: center; justify-content: space-between; font-weight: 900; font-size: 1.2rem; cursor: pointer; user-select: none; background: rgba(0,0,0,0.02); border-bottom: 1px solid var(--ac-border); list-style: none;">
+                        <span style="display: flex; align-items: center; gap: 10px;">📦 {groupName}</span>
+                        <span class="chevron" style="transition: transform 0.2s; font-size: 0.9rem;">▲</span>
+                    </summary>
+                    
+                    <div class="recipe-group-grid" style="padding: 1.5rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem;">
+                        {list.map((recipe) => (
+                            <div class="recipe-card-premium" style="background: var(--ac-bg); border-radius: var(--radius-md); padding: 1.2rem; border: 2px solid transparent; box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; flex-direction: column; transition: all 0.2s; height: 100%;">
+                                <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 10px;">
+                                    <div class="recipe-img-wrap" style="width: 70px; height: 70px; display: flex; align-items: center; justify-content: center; background: var(--ac-surface); border-radius: var(--radius-sm); padding: 8px; box-shadow: inset 0 2px 8px rgba(0,0,0,0.04); flex-shrink: 0;">
+                                        <img src={getImageUrl(recipe.image_path)} alt={recipe.name} loading="lazy" onerror="this.src='/assets/img/acnh/koeder.png'" style="max-height: 100%; max-width: 100%; object-fit: contain;" />
+                                    </div>
+                                    <div style="flex-grow: 1;">
+                                        <strong style="font-size: 1.05rem; font-weight: 900; color: var(--ac-text); display: block; line-height: 1.2;">{recipe.name}</strong>
+                                        {recipe.is_customizable && (
+                                            <span style="background: var(--ac-green-light); color: var(--ac-green); font-size: 0.7rem; font-weight: 800; padding: 2px 8px; border-radius: 100px; margin-top: 4px; display: inline-block;">🎨 Umgestaltbar</span>
+                                        )}
+                                    </div>
+                                </div>
+                                <div style="margin-top: auto; border-top: 1px dashed var(--ac-border); padding-top: 10px; font-size: 0.85rem; display: flex; flex-direction: column; gap: 4px; color: var(--ac-text-muted);">
+                                    {recipe.source && <div><strong>📍 Quelle:</strong> {recipe.source}</div>}
+                                    {recipe.sell_price && <div><strong>💰 Wert:</strong> {recipe.sell_price}</div>}
+                                    {recipe.durability && <div><strong>🛡️ Haltbarkeit:</strong> {recipe.durability}</div>}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </details>
+            ))}
+        </div>
+
+        <!-- Cooking Tab Panel -->
+        <div id="cooking-panel" class="tab-panel" style="display: none;">
+            {Object.entries(groupedCooking).map(([groupName, list]) => (
+                <details class="recipe-group" open style="background: var(--ac-surface); border-radius: var(--radius-lg); border: 2px solid var(--ac-border); box-shadow: var(--ac-shadow); overflow: hidden; margin-bottom: 1.5rem; transition: all 0.2s;">
+                    <summary style="padding: 1.25rem 1.5rem; display: flex; align-items: center; justify-content: space-between; font-weight: 900; font-size: 1.2rem; cursor: pointer; user-select: none; background: rgba(0,0,0,0.02); border-bottom: 1px solid var(--ac-border); list-style: none;">
+                        <span style="display: flex; align-items: center; gap: 10px;">🍲 {groupName}</span>
+                        <span class="chevron" style="transition: transform 0.2s; font-size: 0.9rem;">▲</span>
+                    </summary>
+                    
+                    <div class="recipe-group-grid" style="padding: 1.5rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1.5rem;">
+                        {list.map((recipe) => (
+                            <div class="recipe-card-premium" style="background: var(--ac-bg); border-radius: var(--radius-md); padding: 1.2rem; border: 2px solid transparent; box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; flex-direction: column; transition: all 0.2s; height: 100%;">
+                                <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 10px;">
+                                    <div class="recipe-img-wrap" style="width: 70px; height: 70px; display: flex; align-items: center; justify-content: center; background: var(--ac-surface); border-radius: var(--radius-sm); padding: 8px; box-shadow: inset 0 2px 8px rgba(0,0,0,0.04); flex-shrink: 0;">
+                                        <img src={getImageUrl(recipe.image_path)} alt={recipe.name} loading="lazy" onerror="this.src='/assets/img/acnh/koeder.png'" style="max-height: 100%; max-width: 100%; object-fit: contain;" />
+                                    </div>
+                                    <div style="flex-grow: 1;">
+                                        <strong style="font-size: 1.05rem; font-weight: 900; color: var(--ac-text); display: block; line-height: 1.2;">{recipe.name}</strong>
+                                    </div>
+                                </div>
+                                <div style="margin-top: auto; border-top: 1px dashed var(--ac-border); padding-top: 10px; font-size: 0.85rem; display: flex; flex-direction: column; gap: 4px; color: var(--ac-text-muted);">
+                                    {recipe.source && <div><strong>📍 Quelle:</strong> {recipe.source}</div>}
+                                    {recipe.sell_price && <div><strong>💰 Wert:</strong> {recipe.sell_price}</div>}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </details>
+            ))}
+        </div>
+
+    </div>
+
+    <!-- Client-side Tab Switcher Script -->
+    <script>
+        function setupTabs() {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const diyPanel = document.getElementById('diy-panel');
+            const cookingPanel = document.getElementById('cooking-panel');
+
+            if (!tabs.length) return;
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Update active button classes
+                    tabs.forEach(t => {
+                        (t as HTMLButtonElement).style.background = 'transparent';
+                        (t as HTMLButtonElement).style.color = 'var(--ac-text)';
+                        t.classList.remove('active');
+                    });
+                    tab.classList.add('active');
+                    (tab as HTMLButtonElement).style.background = 'var(--ac-green)';
+                    (tab as HTMLButtonElement).style.color = 'white';
+
+                    // Update visible panels
+                    const selected = tab.getAttribute('data-tab');
+                    if (selected === 'diy') {
+                        if (diyPanel) diyPanel.style.display = 'block';
+                        if (cookingPanel) cookingPanel.style.display = 'none';
+                    } else {
+                        if (diyPanel) diyPanel.style.display = 'none';
+                        if (cookingPanel) cookingPanel.style.display = 'block';
+                    }
+                });
+            });
+        }
+
+        // Initialize setup on page load & subsequent swaps
+        setupTabs();
+        document.addEventListener('astro:after-swap', setupTabs);
+    </script>
+
+    <style>
+        /* Details Summary styles */
+        details::-webkit-details-marker {
+            display: none;
+        }
+        
+        details[open] .chevron {
+            transform: rotate(180deg);
+        }
+        
+        details:hover {
+            border-color: #8d6e63 !important;
+        }
+
+        .recipe-card-premium:hover {
+            transform: translateY(-4px);
+            border-color: #8d6e63 !important;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important;
+        }
+    </style>
+</Layout>
