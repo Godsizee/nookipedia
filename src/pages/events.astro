@@ -1,54 +1,289 @@
 ---
 import Layout from '../layouts/Layout.astro';
 
+const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
+let eventsList = [];
+try {
+  const res = await fetch(`${directusUrl}/items/events?limit=-1`);
+  if (res.ok) {
+    const data = await res.json();
+    eventsList = data.data || [];
+  }
+} catch (err) {
+  console.warn('Directus API not reachable during build, using robust static fallback dataset.');
+}
+
+if (eventsList.length === 0) {
+  eventsList = [
+    // Jan
+    { id: 1, name: 'Neujahr', event_type: 'holiday', month: 1, date_description: '1. Januar', description: 'Feiere das neue Jahr mit deinen Nachbarn auf dem Festplatz!', image_path: 'placeholder.png' },
+    { id: 2, name: 'Angelturnier', event_type: 'tournament', month: 1, date_description: '2. Samstag im Januar', description: 'Lomeus veranstaltet das große Winter-Angelturnier. Schnapp dir deine Angel!', image_path: 'placeholder.png' },
+    // Feb
+    { id: 3, name: 'Karneval', event_type: 'holiday', month: 2, date_description: 'Februar', description: 'Pavo tanzt und sammelt bunte Federn! Tausche sie gegen coole Möbel.', image_path: 'placeholder.png' },
+    { id: 4, name: 'Valentinstag', event_type: 'event', month: 2, date_description: '14. Februar', description: 'Verschicke Geschenke und Schokolade an deine treuen Inselnachbarn.', image_path: 'placeholder.png' },
+    // Apr
+    { id: 5, name: 'Häschentag', event_type: 'holiday', month: 4, date_description: 'Ostern (März/April)', description: 'Ohs der Osterhase versteckt bunte Glückseier auf der gesamten Insel. Sammle sie für Bastelanleitungen!', image_path: 'placeholder.png' },
+    { id: 6, name: 'Kirschblütenzeit', event_type: 'season', month: 4, date_description: '1. - 10. April', description: 'Die Kirschbäume blühen wunderschön rosa! Fange Kirschblütenblätter mit deinem Kescher.', image_path: 'placeholder.png' },
+    // Jun
+    { id: 7, name: 'Insektikusturnier', event_type: 'tournament', month: 6, date_description: '4. Samstag im Juni', description: 'Carlson veranstaltet das große Sommer-Turnier. Fange so viele Insekten wie möglich!', image_path: 'placeholder.png' },
+    { id: 8, name: 'Hochzeitssaison', event_type: 'season', month: 6, date_description: 'Juni', description: 'Besuche Björn und Rosina auf Harveys Fotostudio-Insel und gestalte ihr Hochzeitsfoto.', image_path: 'placeholder.png' },
+    // Jul
+    { id: 9, name: 'Angelturnier', event_type: 'tournament', month: 7, date_description: '2. Samstag im Juli', description: 'Lomeus veranstaltet das große Sommer-Angelturnier auf dem Festplatz.', image_path: 'placeholder.png' },
+    // Aug
+    { id: 10, name: 'Feuerwerksfest', event_type: 'event', month: 8, date_description: 'Jeden Sonntag im August', description: 'Jeden Sonntagabend gibt es ein spektakuläres Feuerwerk! Triff Reiner und ziehe Lose.', image_path: 'placeholder.png' },
+    // Oct
+    { id: 11, name: 'Halloween', event_type: 'holiday', month: 10, date_description: '31. Oktober', description: 'Jakob, der Prinz von Halloween, besucht deine Insel. Verteile Bonbons an deine Nachbarn!', image_path: 'placeholder.png' },
+    // Nov
+    { id: 12, name: 'Schlemmfest', event_type: 'holiday', month: 11, date_description: '4. Donnerstag im November', description: 'Gernod der Truthahn-Chefkoch kocht ein fabelhaftes Festmahl. Hilf ihm bei den Zutaten!', image_path: 'placeholder.png' },
+    { id: 13, name: 'Pilzsaison', event_type: 'season', month: 11, date_description: 'November', description: 'Überall im Wald und um Bäume herum wachsen Pilze zum Kochen und Basteln.', image_path: 'placeholder.png' },
+    // Dec
+    { id: 14, name: 'Spielzeugtag', event_type: 'holiday', month: 12, date_description: '24. Dezember', description: 'Chris das Rentier verteilt festliche Geschenke. Hilf ihm, Weihnachtsstimmung zu verbreiten!', image_path: 'placeholder.png' },
+    { id: 15, name: 'Silvester', event_type: 'event', month: 12, date_description: '31. Dezember', description: 'Feiere den Countdown auf dem Festplatz mit Hüten, Sekt und einem Riesenfeuerwerk!', image_path: 'placeholder.png' }
+  ];
+}
+
+const getImageUrl = (path) => {
+  if (!path || path === 'placeholder.png') return '/assets/img/acnh/koeder.png';
+  if (path.startsWith('http')) return path;
+  if (path.includes('/') || path.includes('.')) {
+    let clean = path.startsWith('/') ? path.slice(1) : path;
+    if (clean.startsWith('assets/')) clean = clean.slice(7);
+    if (clean.startsWith('img/acnh/')) clean = clean.slice(9);
+    return `/assets/img/acnh/${clean}`;
+  }
+  return `${directusUrl}/assets/${path}`;
+};
+
+const getEventTypeName = (type) => {
+  switch (type) {
+    case 'tournament': return '🏆 Turnier';
+    case 'holiday': return '🎈 Feiertag';
+    case 'season': return '🌸 Saison';
+    case 'event': return '🛍️ Event';
+    default: return '📅 Event';
+  }
+};
+
+const getEventTypeBadgeClass = (type) => {
+  return `badge-${type || 'event'}`;
+};
+
 const monthNames = [
-    { num: 1, name: 'Januar', icon: '⛄', events: [{ name: 'Neujahr', desc: 'Feiere das neue Jahr mit deinen Nachbarn auf dem Festplatz!', time: '1. Januar' }] },
-    { num: 2, name: 'Februar', icon: '💝', events: [{ name: 'Karneval', desc: 'Pavo tanzt und sammelt Federn!', time: 'Februar' }] },
-    { num: 3, name: 'März', icon: '☘️', events: [] },
-    { num: 4, name: 'April', icon: '🌸', events: [{ name: 'Häschentag', desc: 'Ohs der Hase versteckt Eier auf der gesamten Insel.', time: 'April' }] },
-    { num: 5, name: 'Mai', icon: '🌿', events: [] },
-    { num: 6, name: 'Juni', icon: '☀️', events: [{ name: 'Insektikusturnier', desc: 'Carleon veranstaltet das große Sommer-Turnier.', time: '4. Samstag im Juni' }] },
-    { num: 7, name: 'Juli', icon: '🐚', events: [{ name: 'Angelturnier', desc: 'Lomeus veranstaltet das große Sommer-Angelturnier.', time: '2. Samstag im Juli' }] },
-    { num: 8, name: 'August', icon: '🎇', events: [{ name: 'Feuerwerksfest', desc: 'Jeden Sonntag im August gibt es ein spektakuläres Feuerwerk.', time: 'Sonntags im August' }] },
-    { num: 9, name: 'September', icon: '🍇', events: [] },
-    { num: 10, name: 'Oktober', icon: '🎃', events: [{ name: 'Halloween', desc: 'Jakob der Prinz der Kürbisse besucht die Insel.', time: '31. Oktober' }] },
-    { num: 11, name: 'November', icon: '🍄', events: [{ name: 'Schlemmfest', desc: 'Gernod kocht ein fabelhaftes Festmahl.', time: '4. Donnerstag im November' }] },
-    { num: 12, name: 'Dezember', icon: '🎄', events: [{ name: 'Spielzeugtag', desc: 'Chris das Rentier verteilt Geschenke.', time: '24. Dezember' }] }
+  { num: 1, name: 'Januar', icon: '⛄' },
+  { num: 2, name: 'Februar', icon: '💝' },
+  { num: 3, name: 'März', icon: '☘️' },
+  { num: 4, name: 'April', icon: '🌸' },
+  { num: 5, name: 'Mai', icon: '🌿' },
+  { num: 6, name: 'Juni', icon: '☀️' },
+  { num: 7, name: 'Juli', icon: '🐚' },
+  { num: 8, name: 'August', icon: '🎇' },
+  { num: 9, name: 'September', icon: '🍇' },
+  { num: 10, name: 'Oktober', icon: '🎃' },
+  { num: 11, name: 'November', icon: '🍄' },
+  { num: 12, name: 'Dezember', icon: '🎄' }
 ];
+
+const getEventsForMonth = (mNum) => {
+  return eventsList.filter(e => e.month === mNum);
+};
 ---
 
 <Layout title="Feiertage & Events - Festkalender">
-    <div class="hero">
-        <h1>Feiertage & Events</h1>
-        <p>Verpasse keine Turniere, Partys und besonderen Gäste auf deiner Insel mehr!</p>
+    <div class="hero" style="background: linear-gradient(135deg, #f57c00 0%, #ffb74d 100%); padding: 3rem 1.5rem 4rem; border-radius: var(--radius-lg); text-align: center; margin-bottom: 2rem; box-shadow: var(--ac-shadow); color: white;">
+        <div style="font-size: 3.5rem;">🎉</div>
+        <h1 style="color: white; font-weight: 900; margin-top: 10px; font-family: 'Outfit', sans-serif;">Feiertage & Events</h1>
+        <p style="opacity: 0.9; max-width: 600px; margin: 10px auto 0; font-size: 1.1rem;">Verpasse keine Partys, Turniere und besonderen Gäste mehr auf deiner Insel!</p>
     </div>
 
-    <div class="events-container" style="max-width:850px; margin: 2rem auto 4rem; display:flex; flex-direction:column; gap:1.5rem;">
-        {monthNames.map((m) => (
-            <details class="month-group" style="background: var(--ac-surface); border-radius: var(--radius-lg); box-shadow: var(--ac-shadow); overflow: hidden;">
-                <summary class="month-summary" style="padding: 1.5rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-weight: 900; font-size: 1.2rem; border-bottom: 1px solid rgba(0,0,0,0.05);">
-                    <span style="display: flex; align-items: center; gap: 10px;">
-                        <span>{m.icon}</span> {m.name}
-                    </span>
-                    <span style="font-size: 0.9rem; color: var(--ac-text-muted);">▼</span>
-                </summary>
-                
-                <div class="month-grid" style="padding: 1.5rem; background: var(--ac-bg);">
-                    {m.events.length > 0 ? (
-                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem;">
-                            {m.events.map((ev) => (
-                                <div style="background: var(--ac-surface); padding: 1.25rem; border-radius: var(--radius-md); box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 4px solid var(--ac-green);">
-                                    <h3 style="margin: 0 0 4px; font-size: 1.15rem; font-weight: 900;">{ev.name}</h3>
-                                    <div style="font-size: 0.85rem; color: var(--ac-green); font-weight: 800; margin-bottom: 8px;">📅 {ev.time}</div>
-                                    <p style="margin: 0; font-size: 0.9rem; color: var(--ac-text-muted);">{ev.desc}</p>
-                                </div>
-                            ))}
-                        </div>
-                    ) : (
-                        <p style="text-align: center; color: var(--ac-text-muted); margin: 0; font-style: italic;">Keine größeren Events in diesem Monat.</p>
-                    )}
-                </div>
-            </details>
-        ))}
+    <!-- Info Box -->
+    <div class="faunapedia-header" style="border-left: 5px solid #f57c00; background: var(--ac-surface); padding: 1.5rem; border-radius: var(--radius-lg); box-shadow: var(--ac-shadow); margin-bottom: 2.5rem;">
+        <h2 style="margin-top: 0; font-weight: 900; color: #f57c00; font-family: 'Outfit', sans-serif; display: flex; align-items: center; gap: 8px;">🎉 Lass uns feiern!</h2>
+        <p style="line-height: 1.6; margin: 0; color: var(--ac-text-muted);">
+            Das ganze Jahr über finden in <i>Animal Crossing: New Horizons</i> aufregende Feiertage, Turniere und saisonale Events statt. Über die Filter kannst du ganz einfach ausblenden, was dich gerade nicht interessiert!
+        </p>
     </div>
+
+    <!-- Filter Panel -->
+    <div class="faunapedia-section" style="background: var(--ac-surface); padding: 1.5rem 2rem; border-radius: var(--radius-lg); box-shadow: var(--ac-shadow); margin-bottom: 3rem; border: 1px solid var(--ac-border);">
+        <div class="filter-controls" style="display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; justify-content: center;">
+            <label class="ac-checkbox" style="display: inline-flex; align-items: center; gap: 8px; font-weight: 800; cursor: pointer; user-select: none;">
+                <input type="checkbox" id="filter-tournament" class="event-filter-checkbox" checked style="width: 18px; height: 18px; cursor: pointer;" />
+                <span class="label-text">🏆 Turniere</span>
+            </label>
+            
+            <label class="ac-checkbox" style="display: inline-flex; align-items: center; gap: 8px; font-weight: 800; cursor: pointer; user-select: none;">
+                <input type="checkbox" id="filter-holiday" class="event-filter-checkbox" checked style="width: 18px; height: 18px; cursor: pointer;" />
+                <span class="label-text">🎈 Feiertage</span>
+            </label>
+            
+            <label class="ac-checkbox" style="display: inline-flex; align-items: center; gap: 8px; font-weight: 800; cursor: pointer; user-select: none;">
+                <input type="checkbox" id="filter-season" class="event-filter-checkbox" checked style="width: 18px; height: 18px; cursor: pointer;" />
+                <span class="label-text">🌸 Saisons</span>
+            </label>
+            
+            <label class="ac-checkbox" style="display: inline-flex; align-items: center; gap: 8px; font-weight: 800; cursor: pointer; user-select: none;">
+                <input type="checkbox" id="filter-event" class="event-filter-checkbox" checked style="width: 18px; height: 18px; cursor: pointer;" />
+                <span class="label-text">🛍️ Events</span>
+            </label>
+        </div>
+    </div>
+
+    <!-- Monthly Events Container -->
+    <div class="events-container" style="max-width:850px; margin: 2rem auto 4rem; display:flex; flex-direction:column; gap:1.5rem;">
+        {monthNames.map((m) => {
+            const events = getEventsForMonth(m.num);
+            return (
+                <details class="month-group" id={`month-group-${m.num}`} style="background: var(--ac-surface); border-radius: var(--radius-lg); box-shadow: var(--ac-shadow); overflow: hidden; border: 1px solid var(--ac-border);">
+                    <summary class="month-summary" style="padding: 1.5rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-weight: 900; font-size: 1.25rem; border-bottom: 1px solid rgba(0,0,0,0.05); user-select: none; font-family: 'Outfit', sans-serif;">
+                        <span style="display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 1.4rem;">{m.icon}</span> {m.name}
+                        </span>
+                        <span class="summary-chevron" style="font-size: 0.9rem; color: var(--ac-text-muted); transition: transform 0.2s;">▼</span>
+                    </summary>
+                    
+                    <div class="month-grid" style="padding: 1.5rem; background: var(--ac-bg);">
+                        {events.length > 0 ? (
+                            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem;">
+                                {events.map((ev) => (
+                                    <article class="event-card" id={`event-${ev.id}`} data-type={ev.event_type} style="background: var(--ac-surface); padding: 1.5rem; border-radius: var(--radius-md); box-shadow: 0 4px 12px rgba(0,0,0,0.04); border-left: 4px solid var(--ac-green); display: flex; flex-direction: column; gap: 10px; transition: transform 0.2s, box-shadow 0.2s;">
+                                        <div style="display: flex; gap: 12px; align-items: center;">
+                                            <div style="width: 50px; height: 50px; background: var(--ac-bg); border-radius: 50%; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 4px; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);">
+                                                <img src={getImageUrl(ev.image_path)} alt={ev.name} onerror="this.src='/assets/img/acnh/koeder.png'" style="width: 100%; height: 100%; object-fit: contain;" />
+                                            </div>
+                                            <div style="flex-grow: 1;">
+                                                <h3 style="margin: 0; font-size: 1.15rem; font-weight: 900; font-family: 'Outfit', sans-serif;">{ev.name}</h3>
+                                                <span class={`event-badge ${getEventTypeBadgeClass(ev.event_type)}`} style="margin-top: 4px;">
+                                                    {getEventTypeName(ev.event_type)}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div style="border-top: 1px solid rgba(0,0,0,0.05); padding-top: 8px; margin-top: 4px;">
+                                            <div style="font-size: 0.85rem; color: var(--ac-green); font-weight: 800; margin-bottom: 6px; display: flex; align-items: center; gap: 4px;">
+                                                📅 <span>{ev.date_description}</span>
+                                            </div>
+                                            <p style="margin: 0; font-size: 0.9rem; color: var(--ac-text-muted); line-height: 1.5;">{ev.description}</p>
+                                        </div>
+                                    </article>
+                                ))}
+                            </div>
+                        ) : (
+                            <p style="text-align: center; color: var(--ac-text-muted); margin: 0; font-style: italic; font-weight: 600;">Keine größeren Events in diesem Monat.</p>
+                        )}
+                    </div>
+                </details>
+            );
+        })}
+        
+        <div id="events-empty-state" style="display: none; text-align: center; padding: 4rem 2rem; background: var(--ac-surface); border-radius: var(--radius-lg); box-shadow: var(--ac-shadow);">
+            <p style="font-size: 1.5rem; margin: 0; color: var(--ac-text-muted);">🎈 Keine Events entsprechen den ausgewählten Kriterien.</p>
+        </div>
+    </div>
+
+    <style>
+        .event-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08) !important;
+        }
+        .event-badge {
+            padding: 0.35rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-block;
+        }
+        .badge-tournament { background: #ffe0b2; color: #e65100; }
+        .badge-holiday { background: #f8bbd0; color: #c2185b; }
+        .badge-season { background: #c8e6c9; color: #2e7d32; }
+        .badge-event { background: #b3e5fc; color: #0277bd; }
+
+        summary::-webkit-details-marker {
+            display: none;
+        }
+        details[open] .summary-chevron {
+            transform: rotate(180deg);
+        }
+    </style>
+
+    <!-- Client-Side Event Filtering Script -->
+    <script is:inline>
+        function initEventsPage() {
+            const checkboxes = document.querySelectorAll('.event-filter-checkbox');
+            const eventCards = document.querySelectorAll('.event-card');
+            const monthGroups = document.querySelectorAll('.month-group');
+            const emptyState = document.getElementById('events-empty-state');
+
+            if (!checkboxes.length || !eventCards.length) return;
+
+            // Load saved filter states from local storage
+            checkboxes.forEach(checkbox => {
+                const savedState = localStorage.getItem(`nook_event_filter_${checkbox.id}`);
+                if (savedState !== null) {
+                    checkbox.checked = savedState === 'true';
+                }
+            });
+
+            function applyFilters() {
+                const filters = {
+                    'tournament': document.getElementById('filter-tournament').checked,
+                    'holiday': document.getElementById('filter-holiday').checked,
+                    'season': document.getElementById('filter-season').checked,
+                    'event': document.getElementById('filter-event').checked
+                };
+
+                let totalVisible = 0;
+
+                // Loop through all event cards and control visibility
+                eventCards.forEach(card => {
+                    const cardType = card.getAttribute('data-type');
+                    if (filters[cardType]) {
+                        card.style.display = 'flex';
+                        card.classList.remove('is-hidden');
+                        totalVisible++;
+                    } else {
+                        card.style.display = 'none';
+                        card.classList.add('is-hidden');
+                    }
+                });
+
+                // Loop through all month details groups
+                monthGroups.forEach(group => {
+                    const cards = group.querySelectorAll('.event-card');
+                    if (cards.length === 0) return; // ignore empty months
+
+                    const hiddenCards = group.querySelectorAll('.event-card.is-hidden');
+                    
+                    if (cards.length === hiddenCards.length) {
+                        group.style.display = 'none';
+                    } else {
+                        group.style.display = 'block';
+                    }
+                });
+
+                // Control global empty state
+                if (totalVisible === 0) {
+                    emptyState.style.display = 'block';
+                } else {
+                    emptyState.style.display = 'none';
+                }
+
+                // Save states in local storage
+                checkboxes.forEach(checkbox => {
+                    localStorage.setItem(`nook_event_filter_${checkbox.id}`, checkbox.checked);
+                });
+            }
+
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', applyFilters);
+            });
+
+            applyFilters();
+        }
+
+        // Run immediately and on swaps
+        initEventsPage();
+        document.addEventListener('astro:after-swap', initEventsPage);
+    </script>
 </Layout>
