@@ -178,12 +178,59 @@ export async function getItemsCatalog(directusUrl) {
   }));
 }
 
+/* ── Artworks joined with their (German) forgery hints ──────────────────── */
+/**
+ * Returns only *displayable* artworks (those with a name + real image), each
+ * enriched with `forgery_description` / `always_genuine` from the
+ * artwork_forgeries collection (joined on name_en). Stub rows that only carry
+ * a name_en — an import artefact — are dropped so the gallery stays clean.
+ *
+ * NOTE: today most German catalogue rows have `name_en = null`, so the forgery
+ * join is a no-op for them and we fall back to the row's own `fake_description`.
+ * The moment `name_en` is populated on those rows in Directus, the German
+ * forgery hints light up automatically — no code change needed.
+ */
+export async function getArtworks(directusUrl, fallback = []) {
+  const [artworks, forgeries] = await Promise.all([
+    fetchRows(`${directusUrl}/items/artworks?limit=-1`),
+    fetchRows(`${directusUrl}/items/artwork_forgeries?limit=-1`),
+  ]);
+  if (!artworks.length) return fallback;
+
+  const norm = (s) => (s || '').toString().trim().toLowerCase();
+  const has = (x) => Boolean(x) && x !== 'NA';
+
+  // The collection holds two parallel record shapes (a data-quality quirk):
+  //  • display rows  → German `name` + `image_real` (the complete catalogue)
+  //  • metadata rows → `name_de` + `name_en` (join key) + `image_genuine`
+  // We show the display rows and bridge the German forgery hints across via the
+  // shared German name (display.name === metadata.name_de).
+  const forgeryByEn = new Map(forgeries.map((f) => [norm(f.artwork_name_en), f]));
+  const forgeryByDeName = new Map();
+  for (const m of artworks) {
+    if (!has(m.name_de) || !has(m.name_en)) continue;
+    const f = forgeryByEn.get(norm(m.name_en));
+    if (f) forgeryByDeName.set(norm(m.name_de), f);
+  }
+
+  return artworks
+    .filter((a) => has(a.name) && has(a.image_real))
+    .map((a) => {
+      const f = forgeryByDeName.get(norm(a.name));
+      return {
+        ...a,
+        forgery_description: f?.forgery_description || a.fake_description || null,
+        // An artwork is forgeable iff the game ships a fake image for it.
+        always_genuine: !has(a.image_fake),
+      };
+    });
+}
+
 /* ── Thin collection wrappers (Open-Closed extension point) ─────────────── */
 export const getEvents = (url, fb = []) => getCollection(url, 'events', fb);
 export const getVillagers = (url, fb = []) => getCollection(url, 'villagers', fb);
 export const getItems = (url, fb = []) => getCollection(url, 'items', fb);
 export const getItemVariants = (url, fb = []) => getCollection(url, 'item_variants', fb);
-export const getArtworks = (url, fb = []) => getCollection(url, 'artworks', fb);
 export const getFossils = (url, fb = []) => getCollection(url, 'fossils', fb);
 export const getSpecialNpcs = (url, fb = []) => getCollection(url, 'special_npcs', fb);
 

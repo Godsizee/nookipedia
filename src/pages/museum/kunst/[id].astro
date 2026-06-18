@@ -43,7 +43,7 @@ const hasFake = !!art.image_fake;
     {hasFake ? (
       <div class="info-box accent-flower mt-8">
         <h2>🚨 Worauf musst du achten?</h2>
-        <p>{art.fake_description}</p>
+        <p>{art.forgery_description || 'Achte genau auf Details – diese Fälschung weicht subtil vom Original ab.'}</p>
       </div>
     ) : (
       <div class="info-box accent-insect mt-8 text-center">
