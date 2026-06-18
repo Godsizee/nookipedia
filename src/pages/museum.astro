@@ -1,167 +1,94 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import InfoBox from '../components/InfoBox.astro';
+
+const wings = [
+  { href: '/museum/insekten',    accent: 'insect', emoji: '🦋', label: 'Insektenabteilung',     sub: '⬅️ Westflügel' },
+  { href: '/museum/fische',      accent: 'fish',   emoji: '🐟', label: 'Aquarium: Fische',      sub: '➡️ Ostflügel' },
+  { href: '/museum/meerestiere', accent: 'sea',    emoji: '🐙', label: 'Aquarium: Meerestiere', sub: '➡️ Ostflügel' },
+  { href: '/museum/fossilien',   accent: 'fossil', emoji: '🦴', label: 'Fossilienausstellung',  sub: '⬇️ Untergeschoss' },
+  { href: '/museum/kunst',       accent: 'museum', emoji: '🖼️', label: 'Kunstgalerie',          sub: '⬆️ Obergeschoss' },
+];
+
+const guides = [
+  { icon: '⛺', title: 'Vom Zelt zum Museum', items: [
+    '<strong>Eugens Zelt:</strong> Gib Tom Nook zu Beginn 5 verschiedene Fische oder Insekten. Daraufhin lädt er Eugen ein, der am nächsten Tag sein Zelt aufschlägt.',
+    '<strong>Das Gebäude:</strong> Gib Eugen 15 weitere verschiedene Exponate. Danach wird am Folgetag das echte Museum gebaut.',
+  ]},
+  { icon: '🦊', title: 'Die Kunstgalerie', items: [
+    'Sobald du <strong>60 verschiedene Exponate</strong> gespendet hast, möchte Eugen auch Kunstwerke annehmen.',
+    'Am nächsten Tag warnt Melinda vor einem „zwielichtigen Händler". Finde <strong>Reiner</strong> und kaufe dein erstes echtes Kunstwerk.',
+    'Spende es bei Eugen – das Obergeschoss wird am nächsten Tag eröffnet!',
+  ]},
+  { icon: '☕', title: 'Café Taubenschlag', items: [
+    'Deine Insel braucht <strong>mind. 3 Sterne</strong> und K.K. Slider muss aufgetreten sein.',
+    'In allen 5 Kategorien muss <strong>je ein Exponat</strong> gespendet sein.',
+    'Eugen bittet dich, seinen Freund Kofi zu suchen.',
+    'Triff Kofi auf einer <strong>Käpten</strong>-Bootstour und richte Grüße aus. Der Umbau folgt am nächsten Tag.',
+  ]},
+  { icon: '🖼️', title: 'Die Lithografien', items: [
+    'Komplettierst du einen Bereich <strong>zu 100%</strong>, schickt dir Eugen am nächsten Tag die passende Lithografie per Post.',
+    '<em>Experten-Tipp:</em> Vor Update 2.0 abgeschlossene Kategorien? Sprich Eugen einmal an, damit er sie nachträglich schickt!',
+  ]},
+];
 
 const curators = [
-  {
-    name: 'Eugen',
-    role: 'Museumsleiter',
-    image: '/assets/img/acnh/museum/Eugen.png',
-    link: '/museum/npc/eugen'
-  },
-  {
-    name: 'Kofi',
-    role: 'Café-Betreiber',
-    image: '/assets/img/acnh/museum/Kofi.png',
-    link: '/museum/npc/kofi'
-  },
-  {
-    name: 'Reiner',
-    role: 'Schwarzmarkt-Händler',
-    image: '/assets/img/acnh/museum/Reiner.png',
-    link: '/museum/npc/reiner'
-  }
+  { name: 'Eugen',  role: 'Museumsleiter',        image: '/assets/img/acnh/museum/Eugen.png',  link: '/museum/npc/eugen' },
+  { name: 'Kofi',   role: 'Café-Betreiber',       image: '/assets/img/acnh/museum/Kofi.png',   link: '/museum/npc/kofi' },
+  { name: 'Reiner', role: 'Schwarzmarkt-Händler', image: '/assets/img/acnh/museum/Reiner.png', link: '/museum/npc/reiner' },
 ];
 ---
 
-<Layout title="Das Museum - Eugen's Museum">
-    <div class="museum-hero" style="background: linear-gradient(to bottom, #f8f4e6 0%, #f8f4e6 30%, #3e241a 30%, #2d1b13 35%, #8b151a 35%, #5a0e11 100%); padding: 3rem 1rem 4rem; border-radius: var(--radius-lg); text-align: center; margin-bottom: 2rem; border: 3px solid #d4af37; box-shadow: 0 10px 25px rgba(0,0,0,0.15);">
-        <div class="museum-hero-icon" style="font-size: 3.5rem;">🏛️</div>
-        <h1 style="color: #f8f4e6; font-weight: 900; margin-top: 10px; font-family: 'Outfit', sans-serif;">Das Museum</h1>
-        
-        <div class="museum-intro-box" style="margin: 1.5rem auto 0; max-width: 700px; text-align: left; background: rgba(27, 42, 33, 0.85); padding: 1.5rem; border-radius: var(--radius-md); border-left: 4px solid #d4af37; color: #e0f2ea; box-shadow: 0 8px 16px rgba(0,0,0,0.2);">
-            <p style="margin-bottom: 0.8rem; line-height: 1.6;">
-                Das Museum wird von <strong>Eugen</strong> geleitet. Es ist täglich 24 Stunden geöffnet und der Eintritt ist natürlich kostenlos! Eugen nimmt deine Spenden liebend gern entgegen (es sei denn, du bringst ihm Insekten...) und stellt sie liebevoll im Gebäude aus.
-            </p>
-            <p style="margin: 0; line-height: 1.6;">
-                Das Museum ist in faszinierende Bereiche unterteilt: das <strong>Aquarium</strong> (Fische und Meerestiere), die <strong>Insektenausstellung</strong>, die <strong>Fossiliengalerie</strong> und die <strong>Kunstgalerie</strong>. Zudem befindet sich im ersten Stock das legendäre <strong>Café Taubenschlag</strong>.
-            </p>
-        </div>
-    </div>
+<Layout title="Das Museum - Eugens Museum">
+  <PageHero accent="museum" emoji="🏛️" title="Das Museum" subtitle="Täglich 24 Stunden geöffnet · Eintritt frei" />
 
-    <div class="museum-section-header" style="text-align: center; margin-bottom: 2rem; margin-top: 3rem;">
-        <h2 style="font-weight: 900; font-size: 1.8rem; margin:0; font-family: 'Outfit', sans-serif;">Die Ausstellungsräume</h2>
-        <p style="color: var(--ac-text-muted); margin-top: 0.5rem;">Wähle einen Museumsflügel aus, um die Sammlungen zu betrachten.</p>
-    </div>
+  <InfoBox accent="museum" emoji="🦉" title="Willkommen bei Eugen">
+    <p>Das Museum wird von <strong>Eugen</strong> geleitet und nimmt deine Spenden liebend gern entgegen. Es ist in faszinierende Bereiche unterteilt: das <strong>Aquarium</strong> (Fische & Meerestiere), die <strong>Insektenausstellung</strong>, die <strong>Fossiliengalerie</strong> und die <strong>Kunstgalerie</strong>. Im ersten Stock wartet zudem das legendäre <strong>Café Taubenschlag</strong>.</p>
+  </InfoBox>
 
-    <div class="museum-categories" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 4rem;">
-        <a href="/museum/insekten" class="cat-card" style="display:flex; align-items:center; gap:1rem; padding:1.5rem; background:var(--ac-surface); border-radius:var(--radius-lg); border-left:6px solid #2e7d32; box-shadow:var(--ac-shadow); text-decoration:none; color:var(--ac-text); transition:transform 0.2s, border-color 0.2s;">
-            <span style="font-size:2.5rem;">🦋</span>
-            <div>
-                <strong style="font-size:1.2rem; display:block; font-weight:900;">Insektenabteilung</strong>
-                <span style="font-size:0.85rem; color:var(--ac-text-muted);">⬅️ Westflügel</span>
-            </div>
-        </a>
+  <h2 class="section-title">🗺️ Die Ausstellungsräume</h2>
+  <nav class="app-grid mb-8" aria-label="Museumsflügel">
+    {wings.map((w) => (
+      <a href={w.href} class={`app-tile accent-${w.accent}`}>
+        <span class="tile-icon">{w.emoji}</span>
+        <span class="stack stack-2"><span class="tile-label">{w.label}</span><span class="tile-sub">{w.sub}</span></span>
+      </a>
+    ))}
+  </nav>
 
-        <a href="/museum/fische" class="cat-card" style="display:flex; align-items:center; gap:1rem; padding:1.5rem; background:var(--ac-surface); border-radius:var(--radius-lg); border-left:6px solid #0277bd; box-shadow:var(--ac-shadow); text-decoration:none; color:var(--ac-text); transition:transform 0.2s, border-color 0.2s;">
-            <span style="font-size:2.5rem;">🐟</span>
-            <div>
-                <strong style="font-size:1.2rem; display:block; font-weight:900;">Aquarium: Fische</strong>
-                <span style="font-size:0.85rem; color:var(--ac-text-muted);">➡️ Ostflügel</span>
-            </div>
-        </a>
+  <h2 class="section-title mt-10">🔓 Freischaltungen & Geheimnisse</h2>
+  <div class="grid-auto mb-8" style="--min: 300px">
+    {guides.map((g) => (
+      <article class="ac-card accent-museum">
+        <h3 class="cluster"><span>{g.icon}</span> {g.title}</h3>
+        <ul class="guide-list">
+          {g.items.map((it) => <li set:html={it} />)}
+        </ul>
+      </article>
+    ))}
+  </div>
 
-        <a href="/museum/meerestiere" class="cat-card" style="display:flex; align-items:center; gap:1rem; padding:1.5rem; background:var(--ac-surface); border-radius:var(--radius-lg); border-left:6px solid #6a1b9a; box-shadow:var(--ac-shadow); text-decoration:none; color:var(--ac-text); transition:transform 0.2s, border-color 0.2s;">
-            <span style="font-size:2.5rem;">🐙</span>
-            <div>
-                <strong style="font-size:1.2rem; display:block; font-weight:900;">Aquarium: Meerestiere</strong>
-                <span style="font-size:0.85rem; color:var(--ac-text-muted);">➡️ Ostflügel</span>
-            </div>
-        </a>
-
-        <a href="/museum/fossilien" class="cat-card" style="display:flex; align-items:center; gap:1rem; padding:1.5rem; background:var(--ac-surface); border-radius:var(--radius-lg); border-left:6px solid #8d6e63; box-shadow:var(--ac-shadow); text-decoration:none; color:var(--ac-text); transition:transform 0.2s, border-color 0.2s;">
-            <span style="font-size:2.5rem;">🦴</span>
-            <div>
-                <strong style="font-size:1.2rem; display:block; font-weight:900;">Fossilienausstellung</strong>
-                <span style="font-size:0.85rem; color:var(--ac-text-muted);">⬇️ Untergeschoss</span>
-            </div>
-        </a>
-
-        <a href="/museum/kunst" class="cat-card" style="display:flex; align-items:center; gap:1rem; padding:1.5rem; background:var(--ac-surface); border-radius:var(--radius-lg); border-left:6px solid #b8860b; box-shadow:var(--ac-shadow); text-decoration:none; color:var(--ac-text); transition:transform 0.2s, border-color 0.2s;">
-            <span style="font-size:2.5rem;">🖼️</span>
-            <div>
-                <strong style="font-size:1.2rem; display:block; font-weight:900;">Kunstgalerie</strong>
-                <span style="font-size:0.85rem; color:var(--ac-text-muted);">⬆️ Obergeschoss</span>
-            </div>
-        </a>
-    </div>
-
-    <div class="museum-section-header" style="text-align: center; margin-bottom: 2rem; margin-top: 5rem;">
-        <h2 style="font-weight: 900; font-size: 1.8rem; margin:0; font-family: 'Outfit', sans-serif;">Freischaltungen & Geheimnisse</h2>
-        <p style="color: var(--ac-text-muted); margin-top: 0.5rem;">So erweiterst du dein Museum Schritt für Schritt zur absoluten Perfektion.</p>
-    </div>
-
-    <div class="museum-guide-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-bottom: 5rem;">
-        <div class="museum-guide-card" style="background: var(--ac-surface); padding: 1.75rem; border-radius: var(--radius-lg); border: 2px solid transparent; box-shadow: var(--ac-shadow); transition: transform 0.2s, border-color 0.2s;">
-            <h3 style="margin-top: 0; font-size: 1.25rem; font-weight: 900; display: flex; align-items: center; gap: 8px;">⛺ Vom Zelt zum Museum</h3>
-            <ul style="padding-left: 1.2rem; margin: 1rem 0 0; color: var(--ac-text-muted); display: flex; flex-direction: column; gap: 0.8rem; font-size: 0.95rem; line-height: 1.5;">
-                <li><strong>Eugens Zelt:</strong> Gib Tom Nook zu Beginn des Spiels 5 verschiedene Fische oder Insekten. Daraufhin lädt er Eugen auf deine Insel ein. Am nächsten Tag schlägt dieser sein Zelt auf.</li>
-                <li><strong>Das Museumsgebäude:</strong> Gib Eugen im Zelt 15 weitere, verschiedene Exponate (Fische, Insekten oder Fossilien). Nach diesen 15 Spenden wird am darauffolgenden Tag das echte Museum gebaut.</li>
-            </ul>
-        </div>
-        
-        <div class="museum-guide-card" style="background: var(--ac-surface); padding: 1.75rem; border-radius: var(--radius-lg); border: 2px solid transparent; box-shadow: var(--ac-shadow); transition: transform 0.2s, border-color 0.2s;">
-            <h3 style="margin-top: 0; font-size: 1.25rem; font-weight: 900; display: flex; align-items: center; gap: 8px;">🦊 Die Kunstgalerie</h3>
-            <ul style="padding-left: 1.2rem; margin: 1rem 0 0; color: var(--ac-text-muted); display: flex; flex-direction: column; gap: 0.8rem; font-size: 0.95rem; line-height: 1.5;">
-                <li>Sobald du insgesamt <strong>60 verschiedene Exponate</strong> gespendet hast, weist Eugen dich darauf hin, dass er nun auch Kunstwerke annehmen möchte.</li>
-                <li>Am nächsten Tag warnt Melinda in den Insel-News vor einem „zwielichtigen Händler“. Suche <strong>Reiner</strong> auf deiner Insel und kaufe dein erstes (echtes) Kunstwerk von ihm.</li>
-                <li>Spende dieses Kunstwerk bei Eugen. Das Museum wird am nächsten Tag um das Obergeschoss erweitert!</li>
-            </ul>
-        </div>
-
-        <div class="museum-guide-card" style="background: var(--ac-surface); padding: 1.75rem; border-radius: var(--radius-lg); border: 2px solid transparent; box-shadow: var(--ac-shadow); transition: transform 0.2s, border-color 0.2s;">
-            <h3 style="margin-top: 0; font-size: 1.25rem; font-weight: 900; display: flex; align-items: center; gap: 8px;">☕ Café Taubenschlag</h3>
-            <ul style="padding-left: 1.2rem; margin: 1rem 0 0; color: var(--ac-text-muted); display: flex; flex-direction: column; gap: 0.8rem; font-size: 0.95rem; line-height: 1.5;">
-                <li>Deine Insel muss eine Bewertung von <strong>mindestens 3 Sternen</strong> haben und K.K. Slider muss bereits aufgetreten sein.</li>
-                <li>Du musst in allen 5 Kategorien (Fische, Insekten, Meerestiere, Fossilien, Kunst) <strong>jeweils mindestens ein Exponat</strong> gespendet haben.</li>
-                <li>Sprich mit Eugen. Er bittet dich, seinen Freund Kofi zu suchen, und gibt dir ein Foto.</li>
-                <li>Fahre mit <strong>Käpten</strong> auf eine Bootstour. Dort triffst du Kofi. Richte ihm Eugens Grüße aus und kehre zurück. Das Museum wird am Folgetag umgebaut.</li>
-            </ul>
-        </div>
-
-        <div class="museum-guide-card" style="background: var(--ac-surface); padding: 1.75rem; border-radius: var(--radius-lg); border: 2px solid transparent; box-shadow: var(--ac-shadow); transition: transform 0.2s, border-color 0.2s;">
-            <h3 style="margin-top: 0; font-size: 1.25rem; font-weight: 900; display: flex; align-items: center; gap: 8px;">🖼️ Die Lithografien (Poster)</h3>
-            <p style="margin: 0.8rem 0 0; color: var(--ac-text-muted); font-size: 0.9rem; line-height: 1.5; font-style: italic;">Lithografien sind spezielle Wandmöbel, die du als Belohnung für deine harte Arbeit erhältst:</p>
-            <ul style="padding-left: 1.2rem; margin: 0.8rem 0 0; color: var(--ac-text-muted); display: flex; flex-direction: column; gap: 0.8rem; font-size: 0.95rem; line-height: 1.5;">
-                <li>Sobald du einen Bereich <strong>zu 100% komplettiert</strong> hast (alle Fische, alle Insekten, etc.), schickt dir Eugen am nächsten Tag die entsprechende Lithografie per Post zu.</li>
-                <li><em>Experten-Tipp:</em> Hast du eine Kategorie bereits vor dem großen Update 2.0 abgeschlossen? Dann musst du Eugen einfach einmal im Museum ansprechen, damit er sie dir nachträglich zuschickt!</li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="museum-section-header" style="text-align: center; margin-bottom: 2rem; margin-top: 5rem;">
-        <h2 style="font-weight: 900; font-size: 1.8rem; margin:0; font-family: 'Outfit', sans-serif;">Museums-Persönlichkeiten</h2>
-        <p style="color: var(--ac-text-muted); margin-top: 0.5rem;">Triff die treuen Seelen, die das Museum so besonders machen.</p>
-    </div>
-
-    <div class="museum-npc-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; margin-bottom: 5rem; max-width: 800px; margin-left: auto; margin-right: auto;">
-        {curators.map((npc) => (
-            <a href={npc.link} class="npc-card" style="display: flex; align-items: center; gap: 1rem; padding: 1.2rem; background: var(--ac-surface); border-radius: var(--radius-lg); box-shadow: var(--ac-shadow); text-decoration: none; color: var(--ac-text); border: 2px solid transparent; transition: all 0.2s;">
-                <div class="npc-img-wrap" style="width: 60px; height: 60px; border-radius: 50%; overflow: hidden; background: var(--ac-bg); display: flex; align-items: center; justify-content: center; border: 2px solid var(--ac-border);">
-                    <img src={npc.image} alt={npc.name} onerror="this.src='/assets/img/acnh/placeholder.png'" style="width: 100%; height: 100%; object-fit: cover;" />
-                </div>
-                <div class="npc-info">
-                    <strong class="npc-name" style="display: block; font-size: 1.1rem; font-weight: 900;">{npc.name}</strong>
-                    <span class="npc-role" style="font-size: 0.85rem; color: var(--ac-text-muted); font-weight: 600;">{npc.role}</span>
-                </div>
-            </a>
-        ))}
-    </div>
-
-    <style>
-        .cat-card:hover {
-            transform: translateY(-4px);
-            border-color: inherit;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08) !important;
-        }
-        .npc-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--ac-green) !important;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08) !important;
-        }
-        .museum-guide-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--ac-green) !important;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08) !important;
-        }
-    </style>
+  <h2 class="section-title mt-10">💚 Museums-Persönlichkeiten</h2>
+  <div class="grid-auto" style="--min: 220px; max-width: 760px; margin-inline: auto;">
+    {curators.map((npc) => (
+      <a href={npc.link} class="ac-card npc-card accent-museum">
+        <span class="npc-photo"><img src={npc.image} alt={npc.name} onerror="this.src='/assets/img/acnh/placeholder.png'" /></span>
+        <span class="stack stack-2">
+          <strong class="npc-name">{npc.name}</strong>
+          <span class="muted">{npc.role}</span>
+        </span>
+      </a>
+    ))}
+  </div>
 </Layout>
+
+<style>
+  .guide-list { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; margin-top: 1rem; color: var(--ac-text-muted); font-size: 0.94rem; line-height: 1.5; }
+  .guide-list li { position: relative; padding-left: 1.6rem; }
+  .guide-list li::before { content: '🍃'; position: absolute; left: 0; top: 1px; font-size: 0.8rem; }
+  .npc-card { display: flex; align-items: center; gap: 1rem; padding: 1.1rem 1.25rem; text-decoration: none; color: var(--ac-text); }
+  .npc-photo { flex-shrink: 0; width: 62px; height: 62px; border-radius: var(--radius-pill); overflow: hidden; background: var(--ac-surface-2); border: 3px solid var(--accent-soft); }
+  .npc-photo img { width: 100%; height: 100%; object-fit: cover; }
+  .npc-name { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; }
+</style>

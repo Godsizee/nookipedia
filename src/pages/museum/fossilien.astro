@@ -1,201 +1,69 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import { getFossils, DEFAULT_DIRECTUS } from '../../lib/api.js';
+import { museumImage, formatBells } from '../../lib/format.js';
 
-const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
-let fossils = [];
+const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || DEFAULT_DIRECTUS;
 
-try {
-  const res = await fetch(`${directusUrl}/items/fossils?limit=-1`);
-  if (res.ok) {
-    const data = await res.json();
-    fossils = data.data || [];
-  }
-} catch (err) {
-  console.warn('Directus API not reachable during build, using robust static fallback dataset.');
-}
+const FALLBACK_FOSSILS = [
+  { id: 1, name: 'T-Rex-Schädel', dinosaur_group: 'T-Rex', price: 6000, image_path: 'T-Rex-Schaedel.png' },
+  { id: 2, name: 'T-Rex-Torso', dinosaur_group: 'T-Rex', price: 5500, image_path: 'T-Rex-Torso.png' },
+  { id: 3, name: 'T-Rex-Schwanz', dinosaur_group: 'T-Rex', price: 5000, image_path: 'T-Rex-Schwanz.png' },
+  { id: 4, name: 'Tricera-Schädel', dinosaur_group: 'Triceratops', price: 5500, image_path: 'Tricera-Schaedel.png' },
+  { id: 5, name: 'Tricera-Torso', dinosaur_group: 'Triceratops', price: 5000, image_path: 'Tricera-Torso.png' },
+  { id: 6, name: 'Tricera-Schwanz', dinosaur_group: 'Triceratops', price: 4500, image_path: 'Tricera-Schwanz.png' },
+  { id: 7, name: 'Bernstein', dinosaur_group: null, price: 1200, image_path: 'Bernstein.png' },
+  { id: 8, name: 'Ammonit', dinosaur_group: null, price: 1100, image_path: 'Ammonit.png' },
+  { id: 9, name: 'Urvogel', dinosaur_group: null, price: 1000, image_path: 'Urvogel.png' },
+  { id: 10, name: 'Dino-Spur', dinosaur_group: null, price: 1000, image_path: 'Dino-Spur.png' },
+];
 
-if (fossils.length === 0) {
-  fossils = [
-    {
-      id: 1,
-      name: 'T-Rex-Schädel',
-      dinosaur_group: 'T-Rex',
-      price: 6000,
-      image_path: 'T-Rex-Schaedel.png',
-      type: 'skull'
-    },
-    {
-      id: 2,
-      name: 'T-Rex-Torso',
-      dinosaur_group: 'T-Rex',
-      price: 5500,
-      image_path: 'T-Rex-Torso.png',
-      type: 'torso'
-    },
-    {
-      id: 3,
-      name: 'T-Rex-Schwanz',
-      dinosaur_group: 'T-Rex',
-      price: 5000,
-      image_path: 'T-Rex-Schwanz.png',
-      type: 'tail'
-    },
-    {
-      id: 4,
-      name: 'Tricera-Schädel',
-      dinosaur_group: 'Triceratops',
-      price: 5500,
-      image_path: 'Tricera-Schaedel.png',
-      type: 'skull'
-    },
-    {
-      id: 5,
-      name: 'Tricera-Torso',
-      dinosaur_group: 'Triceratops',
-      price: 5000,
-      image_path: 'Tricera-Torso.png',
-      type: 'torso'
-    },
-    {
-      id: 6,
-      name: 'Tricera-Schwanz',
-      dinosaur_group: 'Triceratops',
-      price: 4500,
-      image_path: 'Tricera-Schwanz.png',
-      type: 'tail'
-    },
-    {
-      id: 7,
-      name: 'Bernstein',
-      dinosaur_group: null,
-      price: 1200,
-      image_path: 'Bernstein.png',
-      type: 'standalone'
-    },
-    {
-      id: 8,
-      name: 'Ammonit',
-      dinosaur_group: null,
-      price: 1100,
-      image_path: 'Ammonit.png',
-      type: 'standalone'
-    },
-    {
-      id: 9,
-      name: 'Urvogel',
-      dinosaur_group: null,
-      price: 1000,
-      image_path: 'Urvogel.png',
-      type: 'standalone'
-    },
-    {
-      id: 10,
-      name: 'Dino-Spur',
-      dinosaur_group: null,
-      price: 1000,
-      image_path: 'Dino-Spur.png',
-      type: 'track'
-    }
-  ];
-}
+const fossils = await getFossils(directusUrl, FALLBACK_FOSSILS);
 
-const getImageUrl = (path) => {
-  if (!path) return '/assets/img/acnh/placeholder.png';
-  if (path.startsWith('http')) return path;
-  if (path.includes('/') || path.includes('.')) return `/assets/img/acnh/museum/${path}`;
-  return `${directusUrl}/assets/${path}`;
-};
-
-const formatPrice = (p) => {
-  return p.toLocaleString('de-DE') + ' Sternis';
-};
-
-const groupedFossils = {};
-const standaloneFossils = [];
-
-fossils.forEach(fossil => {
-  if (fossil.dinosaur_group) {
-    if (!groupedFossils[fossil.dinosaur_group]) {
-      groupedFossils[fossil.dinosaur_group] = [];
-    }
-    groupedFossils[fossil.dinosaur_group].push(fossil);
-  } else {
-    standaloneFossils.push(fossil);
-  }
+const grouped = {};
+const standalone = [];
+fossils.forEach((f) => {
+  if (f.dinosaur_group) (grouped[f.dinosaur_group] ||= []).push(f);
+  else standalone.push(f);
 });
+const groups = [
+  ...Object.entries(grouped).map(([name, items]) => ({ icon: '🦖', name, items })),
+  ...(standalone.length ? [{ icon: '🪨', name: 'Einzelne Fossilien & Spuren', items: standalone }] : []),
+];
 ---
 
-<Layout title="Fossilienausstellung - Eugen's Museum">
-    <div class="museum-hero fossil-hero" style="background: linear-gradient(135deg, #3d2f26 0%, #201813 100%); padding: 3rem 1.5rem 4rem; border-radius: var(--radius-lg); text-align: center; margin-bottom: 2rem; border: 3px solid #8d6e63; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
-        <div class="fossil-hero-icon" style="font-size: 3.5rem; margin-bottom: 10px;">🦴</div>
-        <h1 style="color: #f8f4e6; font-weight: 900; margin-top: 10px; font-family: 'Outfit', sans-serif;">Fossilienausstellung</h1>
-        <p class="fossil-hero-subtitle" style="color: #8d6e63; font-size: 1.1rem; max-width: 600px; margin: 10px auto 0; font-weight: 600;">Entdecke die faszinierenden Überreste vergangener Zeitalter deiner Insel.</p>
-    </div>
+<Layout title="Fossilienausstellung - Eugens Museum">
+  <PageHero accent="fossil" emoji="🦴" title="Fossilienausstellung" subtitle="Entdecke die faszinierenden Überreste vergangener Zeitalter." />
 
-    <div class="fossils-container" style="max-width: 900px; margin: 0 auto 5rem; padding: 0 1rem; display: flex; flex-direction: column; gap: 1.5rem;">
-        
-        {Object.entries(groupedFossils).map(([groupName, groupFossils]) => (
-            <details class="fossil-details-group" open style="background: var(--ac-surface); border-radius: var(--radius-lg); border: 2px solid var(--ac-border); box-shadow: var(--ac-shadow); overflow: hidden; transition: all 0.2s;">
-                <summary class="fossil-group-summary" style="padding: 1.25rem 1.5rem; display: flex; align-items: center; justify-content: space-between; font-weight: 900; font-size: 1.2rem; cursor: pointer; user-select: none; background: rgba(0,0,0,0.02); border-bottom: 1px solid var(--ac-border); list-style: none;">
-                    <span style="display: flex; align-items: center; gap: 10px;">🦖 {groupName}</span>
-                    <span class="chevron" style="transition: transform 0.2s; font-size: 0.9rem;">▲</span>
-                </summary>
-                
-                <div class="fossil-group-grid" style="padding: 1.5rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem;">
-                    {groupFossils.map((fossil) => (
-                        <div class="fossil-card" style="background: var(--ac-bg); border-radius: var(--radius-md); padding: 1.2rem; text-align: center; border: 2px solid transparent; box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; transition: all 0.2s;">
-                            <div class="fossil-img-wrap" style="width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; background: var(--ac-surface); border-radius: var(--radius-sm); padding: 10px; margin-bottom: 12px; box-shadow: inset 0 2px 8px rgba(0,0,0,0.04);">
-                                <img src={getImageUrl(fossil.image_path)} alt={fossil.name} loading="lazy" onerror="this.src='/assets/img/acnh/koeder.png'" style="max-height: 100%; max-width: 100%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));" />
-                            </div>
-                            <strong style="font-size: 1rem; font-weight: 900; margin-bottom: 4px; color: var(--ac-text);">{fossil.name}</strong>
-                            <span style="background: var(--ac-green-light); color: var(--ac-green); font-size: 0.85rem; font-weight: 800; padding: 2px 10px; border-radius: 100px; margin-top: auto; display: inline-flex; align-items: center; gap: 4px;">💰 {formatPrice(fossil.price)}</span>
-                        </div>
-                    ))}
-                </div>
-            </details>
-        ))}
-
-        {standaloneFossils.length > 0 && (
-            <details class="fossil-details-group" open style="background: var(--ac-surface); border-radius: var(--radius-lg); border: 2px solid var(--ac-border); box-shadow: var(--ac-shadow); overflow: hidden; transition: all 0.2s;">
-                <summary class="fossil-group-summary" style="padding: 1.25rem 1.5rem; display: flex; align-items: center; justify-content: space-between; font-weight: 900; font-size: 1.2rem; cursor: pointer; user-select: none; background: rgba(0,0,0,0.02); border-bottom: 1px solid var(--ac-border); list-style: none;">
-                    <span style="display: flex; align-items: center; gap: 10px;">🪨 Einzelne Fossilien & Spuren</span>
-                    <span class="chevron" style="transition: transform 0.2s; font-size: 0.9rem;">▲</span>
-                </summary>
-                
-                <div class="fossil-group-grid" style="padding: 1.5rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem;">
-                    {standaloneFossils.map((fossil) => (
-                        <div class="fossil-card" style="background: var(--ac-bg); border-radius: var(--radius-md); padding: 1.2rem; text-align: center; border: 2px solid transparent; box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; transition: all 0.2s;">
-                            <div class="fossil-img-wrap" style="width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; background: var(--ac-surface); border-radius: var(--radius-sm); padding: 10px; margin-bottom: 12px; box-shadow: inset 0 2px 8px rgba(0,0,0,0.04);">
-                                <img src={getImageUrl(fossil.image_path)} alt={fossil.name} loading="lazy" onerror="this.src='/assets/img/acnh/koeder.png'" style="max-height: 100%; max-width: 100%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));" />
-                            </div>
-                            <strong style="font-size: 1rem; font-weight: 900; margin-bottom: 4px; color: var(--ac-text);">{fossil.name}</strong>
-                            <span style="background: var(--ac-green-light); color: var(--ac-green); font-size: 0.85rem; font-weight: 800; padding: 2px 10px; border-radius: 100px; margin-top: auto; display: inline-flex; align-items: center; gap: 4px;">💰 {formatPrice(fossil.price)}</span>
-                        </div>
-                    ))}
-                </div>
-            </details>
-        )}
-
-    </div>
-
-    <style>
-        /* Summary Custom Styling */
-        .fossil-details-group::-webkit-details-marker {
-            display: none;
-        }
-        
-        .fossil-details-group[open] .chevron {
-            transform: rotate(180deg);
-        }
-        
-        .fossil-details-group:hover {
-            border-color: #8d6e63 !important;
-        }
-
-        .fossil-card:hover {
-            transform: translateY(-5px);
-            border-color: #8d6e63 !important;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important;
-        }
-    </style>
+  <div class="stack stack-5" style="max-width: 900px; margin: 0 auto var(--sp-12);">
+    {groups.map((g) => (
+      <details class="ac-card accent-fossil fossil-group" open>
+        <summary><span class="cluster">{g.icon} {g.name}</span><span class="chevron">▾</span></summary>
+        <div class="grid-auto" style="--min: 170px; margin-top: var(--sp-4);">
+          {g.items.map((f) => (
+            <div class="fossil-card">
+              <span class="fossil-img"><img src={museumImage(f.image_path)} alt={f.name} loading="lazy" onerror="this.src='/assets/img/acnh/koeder.png'" /></span>
+              <strong class="fossil-name">{f.name}</strong>
+              <span class="price-tag">💰 {formatBells(f.price)}</span>
+            </div>
+          ))}
+        </div>
+      </details>
+    ))}
+  </div>
 </Layout>
+
+<style>
+  .fossil-group { padding: var(--sp-5); }
+  .fossil-group summary { display: flex; align-items: center; justify-content: space-between; cursor: pointer; list-style: none; font-family: var(--font-display); font-weight: 700; font-size: 1.2rem; }
+  .fossil-group summary::-webkit-details-marker { display: none; }
+  .fossil-group .chevron { color: var(--ac-text-muted); transition: transform var(--t-base); }
+  .fossil-group[open] .chevron { transform: rotate(180deg); }
+  .fossil-card { display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; padding: var(--sp-4); background: var(--ac-surface-2); border: 2px solid transparent; border-radius: var(--radius-md); transition: transform var(--t-base) var(--ease-spring), border-color var(--t-base); }
+  .fossil-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+  .fossil-img { display: grid; place-items: center; width: 92px; height: 92px; padding: 8px; background: var(--ac-surface); border-radius: var(--radius-sm); box-shadow: inset 0 2px 8px rgba(0,0,0,0.05); }
+  .fossil-img img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15)); }
+  .fossil-name { font-family: var(--font-display); font-weight: 700; font-size: 0.98rem; text-align: center; }
+  .fossil-card .price-tag { margin-top: auto; }
+</style>

@@ -1,58 +1,17 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getCreatures } from '../../lib/api.js';
+import PageHero from '../../components/PageHero.astro';
+import EntityCard from '../../components/EntityCard.astro';
+import { getCreatures, DEFAULT_DIRECTUS } from '../../lib/api.js';
 
-const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
-const allCreatures = await getCreatures(directusUrl);
-const creatures = allCreatures.filter(c => c.category === 'insect');
-
-
-const getImageUrl = (path) => {
-  if (!path) return '/assets/img/acnh/koeder.png';
-  if (path.startsWith('http')) return path;
-  if (path.includes('/') || path.includes('.')) {
-    let clean = path.startsWith('/') ? path.slice(1) : path;
-    if (clean.startsWith('assets/')) clean = clean.slice(7);
-    if (clean.startsWith('img/acnh/')) clean = clean.slice(9);
-    return `/assets/img/acnh/${clean}`;
-  }
-  return `${directusUrl}/assets/${path}`;
-};
-
-const formatPrice = (p) => {
-  return p.toLocaleString('de-DE') + ' Sternis';
-};
+const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || DEFAULT_DIRECTUS;
+const creatures = (await getCreatures(directusUrl)).filter((c) => c.category === 'insect');
 ---
-
-<Layout title="Insektenabteilung - Eugen's Museum">
-    <div class="museum-hero insects-hero" style="background: linear-gradient(135deg, #2e7d32 0%, #0d2112 100%); padding: 3rem 1.5rem 4rem; border-radius: var(--radius-lg); text-align: center; margin-bottom: 2rem; border: 3px solid #2e7d32; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
-        <div class="insects-hero-icon" style="font-size: 3.5rem; margin-bottom: 10px;">🦋</div>
-        <h1 style="color: #f8f4e6; font-weight: 900; margin-top: 10px; font-family: 'Outfit', sans-serif;">Insektenabteilung</h1>
-        <p class="insects-hero-subtitle" style="color: #a5d6a7; font-size: 1.1rem; max-width: 600px; margin: 10px auto 0; font-weight: 600;">Erkunde das friedliche Schmetterlingshaus und die feuchtwarmen Käfer-Gehege.</p>
-    </div>
-
-    <div class="creatures-container" style="max-width: 900px; margin: 0 auto 5rem; padding: 0 1rem;">
-        <div class="creature-grid-mini" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1.5rem;">
-            {creatures.map((creature) => (
-                <a href={`/tier/${creature.id}/`} class="creature-card-link" style="text-decoration: none;">
-                    <div class="creature-card" style="background: var(--ac-surface); border-radius: var(--radius-md); padding: 1.2rem; text-align: center; border: 2px solid transparent; box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; flex-direction: column; align-items: center; transition: all 0.2s; height: 100%;">
-                        <div class="creature-img-wrap" style="width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; background: var(--ac-bg); border-radius: var(--radius-sm); padding: 10px; margin-bottom: 12px; box-shadow: inset 0 2px 8px rgba(0,0,0,0.04);">
-                            <img src={getImageUrl(creature.image_path)} alt={creature.name} loading="lazy" onerror="this.src='/assets/img/acnh/koeder.png'" style="max-height: 100%; max-width: 100%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));" />
-                        </div>
-                        <strong style="font-size: 1rem; font-weight: 900; margin-bottom: 4px; color: var(--ac-text);">{creature.name}</strong>
-                        <span style="font-size: 0.85rem; color: var(--ac-text-muted); margin-bottom: 8px; display: block;">📍 {creature.location_name || creature.location || 'Bäume'}</span>
-                        <span style="background: var(--ac-bell-bg); color: var(--ac-bell); font-size: 0.85rem; font-weight: 800; padding: 2px 10px; border-radius: 100px; margin-top: auto; display: inline-flex; align-items: center; gap: 4px;">💰 {formatPrice(creature.price)}</span>
-                    </div>
-                </a>
-            ))}
-        </div>
-    </div>
-
-    <style>
-        .creature-card:hover {
-            transform: translateY(-5px);
-            border-color: #2e7d32 !important;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.08) !important;
-        }
-    </style>
+<Layout title="Insektenausstellung - Eugens Museum">
+  <PageHero accent="insect" emoji="🦋" title="Insektenausstellung" subtitle="Erkunde das friedliche Schmetterlingshaus und die feuchtwarmen Käfer-Gehege." />
+  <div class="grid-auto" style="--min: 180px; margin-bottom: var(--sp-12);">
+    {creatures.map((c) => (
+      <EntityCard href={`/tier/${c.id}/`} image={c.image_path} title={c.name} subtitle={`📍 ${c.location_name || 'Bäume'}`} price={c.price} accent="insect" />
+    ))}
+  </div>
 </Layout>

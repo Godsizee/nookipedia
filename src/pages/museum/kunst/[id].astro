@@ -1,214 +1,105 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
+import { getArtworks, DEFAULT_DIRECTUS } from '../../../lib/api.js';
+import { museumImage } from '../../../lib/format.js';
 
 export async function getStaticPaths() {
-  const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
-  let artworks = [];
-  try {
-    const res = await fetch(`${directusUrl}/items/artworks?limit=-1`);
-    if (res.ok) {
-      const data = await res.json();
-      artworks = data.data || [];
-    }
-  } catch (err) {
-    console.warn('Directus API not reachable during build, using robust static fallback dataset.');
-  }
-
-  if (artworks.length === 0) {
-    artworks = [
-      {
-        id: 1,
-        name: 'Gemüsegemälde',
-        type: 'Gemälde',
-        real_world_name: 'Der Sommer',
-        artist: 'Giuseppe Arcimboldo',
-        image_real: 'Gemuesegemaelde_real.png',
-        image_fake: 'Gemuesegemaelde_fake.png',
-        fake_description: 'Bei der Fälschung fehlt die Knospe an der Brust des Gemüsemanns.'
-      },
-      {
-        id: 2,
-        name: 'Altertumsgemälde',
-        type: 'Gemälde',
-        real_world_name: 'Die Nachtwache',
-        artist: 'Rembrandt van Rijn',
-        image_real: 'Altertumsgemaelde_real.png',
-        image_fake: 'Altertumsgemaelde_fake.png',
-        fake_description: 'Der Mann im Vordergrund trägt auf der Fälschung keinen Hut.'
-      },
-      {
-        id: 3,
-        name: 'Blumengemälde',
-        type: 'Gemälde',
-        real_world_name: 'Sonnenblumen',
-        artist: 'Vincent van Gogh',
-        image_real: 'Blumengemaelde.png',
-        image_fake: null,
-        fake_description: null
-      },
-      {
-        id: 4,
-        name: 'Perlengemälde',
-        type: 'Gemälde',
-        real_world_name: 'Das Mädchen mit dem Perlenohrring',
-        artist: 'Johannes Vermeer',
-        image_real: 'Perlengemaelde_real.png',
-        image_fake: 'Perlengemaelde_fake.png',
-        fake_description: 'Auf der Fälschung ist der Perlenohrring sternförmig statt rund.'
-      },
-      {
-        id: 5,
-        name: 'Detailgemälde',
-        type: 'Gemälde',
-        real_world_name: 'Ajisai Sōki-zu',
-        artist: 'Itō Jakuchū',
-        image_real: 'Detailgemaelde_real.png',
-        image_fake: 'Detailgemaelde_fake.png',
-        fake_description: 'Die Blumen auf der Fälschung sind lila statt blau.'
-      },
-      {
-        id: 6,
-        name: 'Eleganzstatue',
-        type: 'Skulptur',
-        real_world_name: 'Venus von Milo',
-        artist: 'Alexandros von Antiochia',
-        image_real: 'Eleganzstatue_real.png',
-        image_fake: 'Eleganzstatue_fake.png',
-        fake_description: 'Die Fälschung trägt eine Perlenkette um den Hals.'
-      }
-    ];
-  }
-
-  return artworks.map((art) => {
-    return {
-      params: { id: art.id.toString() },
-      props: { art },
-    };
-  });
+  const FALLBACK_ART = [
+    { id: 1, name: 'Gemüsegemälde', type: 'Gemälde', real_world_name: 'Der Sommer', artist: 'Giuseppe Arcimboldo', image_real: 'Gemuesegemaelde_real.png', image_fake: 'Gemuesegemaelde_fake.png', fake_description: 'Bei der Fälschung fehlt die Knospe an der Brust des Gemüsemanns.' },
+    { id: 2, name: 'Altertumsgemälde', type: 'Gemälde', real_world_name: 'Die Nachtwache', artist: 'Rembrandt van Rijn', image_real: 'Altertumsgemaelde_real.png', image_fake: 'Altertumsgemaelde_fake.png', fake_description: 'Der Mann im Vordergrund trägt auf der Fälschung keinen Hut.' },
+    { id: 3, name: 'Blumengemälde', type: 'Gemälde', real_world_name: 'Sonnenblumen', artist: 'Vincent van Gogh', image_real: 'Blumengemaelde.png', image_fake: null, fake_description: null },
+    { id: 4, name: 'Perlengemälde', type: 'Gemälde', real_world_name: 'Das Mädchen mit dem Perlenohrring', artist: 'Johannes Vermeer', image_real: 'Perlengemaelde_real.png', image_fake: 'Perlengemaelde_fake.png', fake_description: 'Auf der Fälschung ist der Perlenohrring sternförmig statt rund.' },
+    { id: 5, name: 'Detailgemälde', type: 'Gemälde', real_world_name: 'Ajisai Sōki-zu', artist: 'Itō Jakuchū', image_real: 'Detailgemaelde_real.png', image_fake: 'Detailgemaelde_fake.png', fake_description: 'Die Blumen auf der Fälschung sind lila statt blau.' },
+    { id: 6, name: 'Eleganzstatue', type: 'Skulptur', real_world_name: 'Venus von Milo', artist: 'Alexandros von Antiochia', image_real: 'Eleganzstatue_real.png', image_fake: 'Eleganzstatue_fake.png', fake_description: 'Die Fälschung trägt eine Perlenkette um den Hals.' },
+  ];
+  const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || DEFAULT_DIRECTUS;
+  const artworks = await getArtworks(directusUrl, FALLBACK_ART);
+  return artworks.map((art) => ({ params: { id: art.id.toString() }, props: { art } }));
 }
 
 const { art } = Astro.props;
-const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
-
-const getImageUrl = (path) => {
-  if (!path) return '/assets/img/acnh/placeholder.png';
-  if (path.startsWith('http')) return path;
-  if (path.includes('/') || path.includes('.')) return `/assets/img/acnh/museum/${path}`;
-  return `${directusUrl}/assets/${path}`;
-};
-
 const hasFake = !!art.image_fake;
 ---
 
 <Layout title={`${art.name} - Fälschungscheck`}>
-    <div class="art-detail-header" style="text-align: center; margin-bottom: 3rem; background: linear-gradient(135deg, #2d1e18 0%, #1a100c 100%); padding: 3rem 1.5rem; border-radius: var(--radius-lg); border: 2px solid #d4af37; box-shadow: 0 8px 24px rgba(0,0,0,0.2);">
-        <h1 style="color: #f8f4e6; font-weight: 900; margin: 0 0 10px; font-family: 'Outfit', sans-serif; font-size: 2.2rem;">{art.name}</h1>
-        <p style="color: #d4af37; font-weight: 700; margin: 0; font-size: 1.15rem; font-style: italic;">
-            "{art.real_world_name}" <span style="color: var(--ac-text-muted); font-style: normal; font-weight: 500;">von</span> {art.artist}
-        </p>
+  <section class="art-detail-head accent-museum">
+    <h1>{art.name}</h1>
+    <p>„{art.real_world_name}" <span class="muted">von</span> {art.artist}</p>
+  </section>
+
+  <div class="art-detail" style="max-width: 800px; margin: 0 auto var(--sp-12);">
+    <div class="compare-box">
+      <div class="image-frame">
+        <img id="artwork-image" src={museumImage(art.image_real)} alt={`Original ${art.name}`} onerror="this.src='/assets/img/acnh/placeholder.png'" />
+        {hasFake && <span id="view-badge" class="frame-badge real">ORIGINAL</span>}
+      </div>
+      {hasFake && (
+        <button id="toggle-fake-btn" class="ac-btn toggle-art">
+          <span id="toggle-icon">🔍</span> <span id="toggle-text">Fälschung einblenden</span>
+        </button>
+      )}
     </div>
 
-    <div class="art-detail-wrapper" id="art-container" style="max-width: 800px; margin: 0 auto 5rem; padding: 0 1rem;">
-        
-        <div class="compare-box" style="background: #120b09; border-radius: var(--radius-lg); padding: 2rem; border: 3px solid #3c2a22; position: relative; box-shadow: 0 12px 32px rgba(0,0,0,0.3); display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 350px;">
-            <div class="image-frame" style="width: 100%; max-width: 450px; aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; border-radius: var(--radius-sm);">
-                
-                <img id="artwork-image" src={getImageUrl(art.image_real)} class="compare-img img-real" alt={`Original ${art.name}`} style="max-height: 100%; max-width: 100%; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.6)); transition: opacity 0.3s ease, transform 0.4s ease;" />
-                
-                {hasFake && (
-                    <span id="view-badge" style="position: absolute; top: 12px; right: 12px; background: #4caf50; color: white; padding: 4px 12px; border-radius: 100px; font-size: 0.8rem; font-weight: 900; box-shadow: 0 2px 8px rgba(0,0,0,0.3); transition: all 0.3s;">
-                        ORIGINAL
-                    </span>
-                )}
-            </div>
-
-            {hasFake && (
-                <div class="toggle-btn-wrap" style="margin-top: 2rem;">
-                    <button class="btn-toggle-art" id="toggle-fake-btn" style="background: #d4af37; color: #120b09; border: none; padding: 0.8rem 2rem; border-radius: 100px; font-weight: 900; font-size: 1rem; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3); transition: all 0.2s;">
-                        <span id="toggle-icon">🔍</span> 
-                        <span id="toggle-text">Fälschung einblenden</span>
-                    </button>
-                </div>
-            )}
-        </div>
-
-        {hasFake ? (
-            <div class="fake-warning" style="margin-top: 2.5rem; background: rgba(216, 27, 96, 0.08); border-left: 5px solid #d81b60; padding: 1.5rem 2rem; border-radius: var(--radius-md); box-shadow: var(--ac-shadow);">
-                <h4 style="margin: 0 0 10px; color: #ff4081; font-weight: 900; font-size: 1.2rem; display: flex; align-items: center; gap: 8px;">🚨 Worauf musst du achten?</h4>
-                <p style="margin: 0; line-height: 1.6; font-weight: 500; font-size: 1.05rem; color: var(--ac-text);">{art.fake_description}</p>
-            </div>
-        ) : (
-            <div class="always-real-msg" style="margin-top: 2.5rem; background: rgba(46, 125, 50, 0.08); border-left: 5px solid #2e7d32; padding: 1.5rem 2rem; border-radius: var(--radius-md); color: #4caf50; font-weight: 800; font-size: 1.1rem; text-align: center; box-shadow: var(--ac-shadow);">
-                ✨ Von diesem Kunstwerk existiert keine Fälschung im Spiel. Es ist immer ein Original!
-            </div>
-        )}
-
-        <div class="art-back-link" style="text-align: center; margin-top: 4rem;">
-            <a href="/museum/kunst" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: #d4af37; font-weight: 800; font-size: 1.1rem; border: 2px solid #d4af37; padding: 0.6rem 1.8rem; border-radius: 100px; background: transparent; transition: all 0.2s;">
-                ← Zurück zur Galerie
-            </a>
-        </div>
-    </div>
-
-    {hasFake && (
-        <script is:inline define:vars={{ realUrl: getImageUrl(art.image_real), fakeUrl: getImageUrl(art.image_fake) }}>
-            function initFakeToggler() {
-                const btn = document.getElementById('toggle-fake-btn');
-                const img = document.getElementById('artwork-image');
-                const badge = document.getElementById('view-badge');
-                const text = document.getElementById('toggle-text');
-                const icon = document.getElementById('toggle-icon');
-
-                if (!btn || !img) return;
-
-                let showingFake = false;
-
-                btn.addEventListener('click', () => {
-                    showingFake = !showingFake;
-                    img.style.opacity = '0';
-                    img.style.transform = 'scale(0.97)';
-
-                    setTimeout(() => {
-                        if (showingFake) {
-                            img.src = fakeUrl;
-                            badge.textContent = 'FÄLSCHUNG';
-                            badge.style.background = '#d81b60';
-                            text.textContent = 'Original einblenden';
-                            icon.textContent = '✅';
-                            btn.style.background = '#2e7d32';
-                            btn.style.color = '#ffffff';
-                            btn.style.boxShadow = '0 4px 15px rgba(46, 125, 50, 0.3)';
-                        } else {
-                            img.src = realUrl;
-                            badge.textContent = 'ORIGINAL';
-                            badge.style.background = '#4caf50';
-                            text.textContent = 'Fälschung einblenden';
-                            icon.textContent = '🔍';
-                            btn.style.background = '#d4af37';
-                            btn.style.color = '#120b09';
-                            btn.style.boxShadow = '0 4px 15px rgba(212, 175, 55, 0.3)';
-                        }
-                        img.style.opacity = '1';
-                        img.style.transform = 'scale(1)';
-                    }, 250);
-                });
-            }
-
-            document.addEventListener('astro:page-load', initFakeToggler);
-            // Run instantly if page is already loaded (fallback for standard loads)
-            initFakeToggler();
-        </script>
+    {hasFake ? (
+      <div class="info-box accent-flower mt-8">
+        <h2>🚨 Worauf musst du achten?</h2>
+        <p>{art.fake_description}</p>
+      </div>
+    ) : (
+      <div class="info-box accent-insect mt-8 text-center">
+        <p style="margin:0;">✨ Von diesem Kunstwerk existiert keine Fälschung – es ist immer ein Original!</p>
+      </div>
     )}
 
-    <style>
-        .btn-toggle-art:hover {
-            transform: translateY(-2px);
-            filter: brightness(1.1);
-        }
-        .art-back-link a:hover {
-            background: #d4af37 !important;
-            color: #120b09 !important;
-            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
-        }
-    </style>
+    <div class="text-center mt-8">
+      <a href="/museum/kunst" class="ac-btn ac-btn--primary accent-museum">← Zurück zur Galerie</a>
+    </div>
+  </div>
 </Layout>
+
+<style>
+  .art-detail-head { text-align: center; padding: var(--sp-10) var(--sp-6); margin-bottom: var(--sp-8); color: var(--on-accent); border-radius: var(--radius-xl); background: linear-gradient(150deg, #2d1e18, #160d09); border: 2px solid var(--accent); box-shadow: var(--ac-shadow); }
+  .art-detail-head h1 { color: #f8f4e6; font-size: clamp(1.8rem, 5vw, 2.4rem); }
+  .art-detail-head p { color: var(--accent); font-style: italic; font-weight: 700; margin-top: 6px; }
+  .art-detail-head .muted { color: rgba(255,255,255,0.6); font-style: normal; }
+
+  .compare-box { display: flex; flex-direction: column; align-items: center; gap: var(--sp-6); padding: var(--sp-8); background: #160d09; border: 3px solid #3c2a22; border-radius: var(--radius-lg); box-shadow: var(--ac-shadow-lg); }
+  .image-frame { position: relative; display: grid; place-items: center; width: 100%; max-width: 450px; aspect-ratio: 4/3; }
+  .image-frame img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.6)); transition: opacity 0.3s, transform 0.4s; }
+  .frame-badge { position: absolute; top: 12px; right: 12px; padding: 4px 12px; font-size: 0.8rem; font-weight: 900; color: #fff; border-radius: var(--radius-pill); box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
+  .frame-badge.real { background: #2e7d32; }
+  .frame-badge.fake { background: #c2185b; }
+  .toggle-art { background: var(--ac-bell); color: #160d09; border-color: var(--ac-bell-deep); font-weight: 700; }
+  .toggle-art:hover { filter: brightness(1.05); }
+</style>
+
+{hasFake && (
+  <script is:inline define:vars={{ realUrl: museumImage(art.image_real), fakeUrl: museumImage(art.image_fake) }}>
+    function initFakeToggler() {
+      const btn = document.getElementById('toggle-fake-btn');
+      const img = document.getElementById('artwork-image');
+      const badge = document.getElementById('view-badge');
+      const text = document.getElementById('toggle-text');
+      const icon = document.getElementById('toggle-icon');
+      if (!btn || !img || btn.dataset.init) return;
+      btn.dataset.init = '1';
+      let fake = false;
+      btn.addEventListener('click', () => {
+        fake = !fake;
+        img.style.opacity = '0';
+        img.style.transform = 'scale(0.97)';
+        setTimeout(() => {
+          img.src = fake ? fakeUrl : realUrl;
+          badge.textContent = fake ? 'FÄLSCHUNG' : 'ORIGINAL';
+          badge.className = 'frame-badge ' + (fake ? 'fake' : 'real');
+          text.textContent = fake ? 'Original einblenden' : 'Fälschung einblenden';
+          icon.textContent = fake ? '✅' : '🔍';
+          img.style.opacity = '1';
+          img.style.transform = 'scale(1)';
+        }, 250);
+      });
+    }
+    document.addEventListener('astro:page-load', initFakeToggler);
+    initFakeToggler();
+  </script>
+)}

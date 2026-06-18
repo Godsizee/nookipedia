@@ -1,0 +1,32 @@
+---
+/**
+ * EntityCard · compact, linkable tile (image + name + optional sub + price).
+ * Reused by museum grids, the item catalog and the villager browser.
+ */
+import { getImageUrl, formatBells } from '../lib/format.js';
+interface Props {
+  href: string;
+  image?: string;
+  title: string;
+  subtitle?: string;
+  price?: number | null;
+  accent?: string;
+}
+const { href, image, title, subtitle, price = null, accent } = Astro.props;
+---
+<a href={href} class={`entity-card ${accent ? `accent-${accent}` : ''}`}>
+  <span class="entity-img"><img src={getImageUrl(image)} alt={title} loading="lazy" onerror="this.src='/assets/img/acnh/koeder.png'" /></span>
+  <strong class="entity-name">{title}</strong>
+  {subtitle && <span class="entity-sub muted">{subtitle}</span>}
+  {price != null && <span class="price-tag">💰 {formatBells(price)}</span>}
+</a>
+
+<style>
+  .entity-card { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; height: 100%; padding: var(--sp-4); background: var(--ac-surface); border: 2px solid var(--ac-border); border-radius: var(--radius-lg); box-shadow: var(--ac-shadow); text-decoration: none; color: var(--ac-text); transition: transform var(--t-base) var(--ease-spring), border-color var(--t-base), box-shadow var(--t-base); }
+  .entity-card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: var(--ac-shadow-lg); }
+  .entity-img { display: grid; place-items: center; width: 96px; height: 96px; padding: 10px; background: var(--ac-surface-2); border-radius: var(--radius-md); box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.05); }
+  .entity-img img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.12)); }
+  .entity-name { font-family: var(--font-display); font-weight: 700; font-size: 1.02rem; line-height: 1.15; }
+  .entity-sub { font-size: 0.82rem; }
+  .entity-card .price-tag { margin-top: auto; }
+</style>

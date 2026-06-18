@@ -1,0 +1,80 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import EntityCard from '../../components/EntityCard.astro';
+import { getItemsCatalog, DEFAULT_DIRECTUS } from '../../lib/api.js';
+
+const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || DEFAULT_DIRECTUS;
+const items = await getItemsCatalog(directusUrl);
+
+const byCategory = {};
+for (const it of items) (byCategory[it.category || 'Sonstiges'] ||= []).push(it);
+const categories = Object.keys(byCategory).sort((a, b) => a.localeCompare(b, 'de'));
+for (const c of categories) byCategory[c].sort((a, b) => (a.name_de || '').localeCompare(b.name_de || '', 'de'));
+---
+
+<Layout title="Item-Katalog - Möbel & Gegenstände">
+  <PageHero accent="material" emoji="🛋️" title="Item-Katalog" subtitle={`Durchstöbere ${items.length} Möbel, Kleidung und Gegenstände deiner Insel.`} />
+
+  <div class="toolbar accent-material">
+    <input type="search" id="catalog-search" class="ac-input" placeholder="🔍 Gegenstand suchen… (öffnet passende Kategorien)" />
+  </div>
+
+  <div class="stack stack-4" id="catalog">
+    {categories.map((cat) => (
+      <details class="cat-group ac-card accent-material" data-cat={cat}>
+        <summary><span class="cluster">📦 {cat} <span class="muted">({byCategory[cat].length})</span></span><span class="chevron">▾</span></summary>
+        <div class="grid-auto cat-items" style="--min: 150px; --gap: var(--sp-4); margin-top: var(--sp-4);">
+          {byCategory[cat].map((it) => (
+            <div class="cat-item" data-search={`${it.name_de || ''} ${it.name_en || ''}`.toLowerCase()}>
+              <EntityCard href={`/items/${it.id}/`} image={it.image_path} title={it.name_de} subtitle={it.variant_count > 1 ? `🎨 ${it.variant_count} Varianten` : (it.source || '')} price={it.sell_price} accent="material" />
+            </div>
+          ))}
+        </div>
+      </details>
+    ))}
+  </div>
+
+  <div id="catalog-empty" class="empty-state hide mt-8"><span class="emoji">🔍</span> Keine Gegenstände gefunden.</div>
+
+  {items.length === 0 && (
+    <div class="empty-state"><span class="emoji">🛋️</span> Noch keine Katalog-Daten verfügbar.</div>
+  )}
+</Layout>
+
+<style>
+  .cat-group summary { display: flex; align-items: center; justify-content: space-between; cursor: pointer; list-style: none; font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; }
+  .cat-group summary::-webkit-details-marker { display: none; }
+  .cat-group .chevron { color: var(--ac-text-muted); transition: transform var(--t-base); }
+  .cat-group[open] .chevron { transform: rotate(180deg); }
+</style>
+
+<script is:inline>
+  function initCatalog() {
+    const search = document.getElementById('catalog-search');
+    const groups = Array.from(document.querySelectorAll('.cat-group'));
+    const empty = document.getElementById('catalog-empty');
+    if (!search) return;
+
+    function apply() {
+      const q = search.value.trim().toLowerCase();
+      let total = 0;
+      groups.forEach((g) => {
+        let visible = 0;
+        g.querySelectorAll('.cat-item').forEach((item) => {
+          const show = !q || item.dataset.search.includes(q);
+          item.classList.toggle('hide', !show);
+          if (show) visible++;
+        });
+        g.classList.toggle('hide', visible === 0);
+        if (q) g.open = visible > 0; else g.open = false;
+        total += visible;
+      });
+      empty && empty.classList.toggle('hide', total !== 0 || !q);
+    }
+
+    search.addEventListener('input', apply);
+  }
+  initCatalog();
+  document.addEventListener('astro:after-swap', initCatalog);
+</script>

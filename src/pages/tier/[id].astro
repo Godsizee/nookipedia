@@ -466,36 +466,29 @@ const activeMonths = creature.months_northern || [];
     }
 }
 
-@media (prefers-color-scheme: dark) {
-    .detail-content-card { 
-        background: var(--ac-surface); 
-        box-shadow: 0 15px 40px rgba(0,0,0,0.5);
-    }
-    
-    .data-list { background: rgba(0,0,0,0.2); }
-    .data-row { border-bottom-color: rgba(255,255,255,0.05); }
-    
-    .month-grid-premium { background: rgba(0,0,0,0.2); }
-    .month-pill.inactive { background: rgba(255,255,255,0.05); color: var(--ac-text-muted); opacity: 0.8; }
-    
-    .icon-price { background: rgba(211, 158, 0, 0.15); color: #f5cf66; }
-    .icon-location { background: rgba(2, 119, 189, 0.15); color: #4fc3f7; }
-    .icon-time { background: rgba(123, 31, 162, 0.15); color: #ce93d8; }
-    .icon-shadow { background: rgba(255, 255, 255, 0.1); color: #e0e0e0; }
-    .icon-speed { background: rgba(46, 125, 50, 0.15); color: #81c784; }
-    .icon-weather { background: rgba(230, 81, 0, 0.15); color: #ffb74d; }
-
-    .btn-detail-back {
-        background: var(--ac-bg);
-        border-color: var(--ac-border);
-        color: var(--ac-text);
-        box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-    }
-
-    .btn-detail-back:hover {
-        border-color: var(--ac-green);
-        background: rgba(89, 166, 131, 0.1);
-        color: var(--ac-green);
-    }
+[data-theme='dark'] .detail-content-card {
+    background: var(--ac-surface);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+}
+[data-theme='dark'] .data-list { background: rgba(0,0,0,0.2); }
+[data-theme='dark'] .data-row { border-bottom-color: rgba(255,255,255,0.05); }
+[data-theme='dark'] .month-grid-premium { background: rgba(0,0,0,0.2); }
+[data-theme='dark'] .month-pill.inactive { background: rgba(255,255,255,0.05); color: var(--ac-text-muted); opacity: 0.8; }
+[data-theme='dark'] .icon-price { background: rgba(211, 158, 0, 0.15); color: #f5cf66; }
+[data-theme='dark'] .icon-location { background: rgba(2, 119, 189, 0.15); color: #4fc3f7; }
+[data-theme='dark'] .icon-time { background: rgba(123, 31, 162, 0.15); color: #ce93d8; }
+[data-theme='dark'] .icon-shadow { background: rgba(255, 255, 255, 0.1); color: #e0e0e0; }
+[data-theme='dark'] .icon-speed { background: rgba(46, 125, 50, 0.15); color: #81c784; }
+[data-theme='dark'] .icon-weather { background: rgba(230, 81, 0, 0.15); color: #ffb74d; }
+[data-theme='dark'] .btn-detail-back {
+    background: var(--ac-bg);
+    border-color: var(--ac-border);
+    color: var(--ac-text);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+[data-theme='dark'] .btn-detail-back:hover {
+    border-color: var(--ac-green);
+    background: var(--ac-green-light);
+    color: var(--ac-green);
 }
 </style>

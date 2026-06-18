@@ -1,80 +1,53 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { getMaterials } from '../lib/api.js';
+import PageHero from '../components/PageHero.astro';
+import { getMaterials, DEFAULT_DIRECTUS } from '../lib/api.js';
+import { getImageUrl } from '../lib/format.js';
 
-const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
+const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || DEFAULT_DIRECTUS;
 const allMaterials = await getMaterials(directusUrl);
 
-const getImageUrl = (path) => {
-  if (!path) return '/assets/img/acnh/koeder.png';
-  if (path.startsWith('http')) return path;
-  if (path.includes('/') || path.includes('.')) {
-    let clean = path.startsWith('/') ? path.slice(1) : path;
-    if (clean.startsWith('assets/')) clean = clean.slice(7);
-    if (clean.startsWith('img/acnh/')) clean = clean.slice(9);
-    return `/assets/img/acnh/${clean}`;
-  }
-  return `${directusUrl}/assets/${path}`;
-};
-
 const categories = [
-    {
-        key: 'normal',
-        name: '🪵 Basis-Materialien & Zutaten',
-        desc: 'Ressourcen, die du das ganze Jahr über auf deiner Insel sammeln kannst.',
-        items: allMaterials.filter(m => m.category === 'normal')
-    },
-    {
-        key: 'seasonal',
-        name: '❄️ Saisonale Materialien',
-        desc: 'Ressourcen für spezielle Feiertags- und Saisonanleitungen.',
-        items: allMaterials.filter(m => m.category === 'seasonal')
-    },
-    {
-        key: 'other',
-        name: '✨ Sonstige Gegenstände & Ressourcen',
-        desc: 'Weitere nützliche Werkstoffe für dein Inselleben.',
-        items: allMaterials.filter(m => m.category === 'other' || !m.category)
-    }
-].filter(cat => cat.items.length > 0);
+  { key: 'normal',   name: '🪵 Basis-Materialien & Zutaten',  desc: 'Ressourcen, die du das ganze Jahr über sammeln kannst.',          items: allMaterials.filter((m) => m.category === 'normal') },
+  { key: 'seasonal', name: '❄️ Saisonale Materialien',         desc: 'Ressourcen für spezielle Feiertags- und Saisonanleitungen.',     items: allMaterials.filter((m) => m.category === 'seasonal') },
+  { key: 'other',    name: '✨ Sonstige Ressourcen',           desc: 'Weitere nützliche Werkstoffe für dein Inselleben.',              items: allMaterials.filter((m) => m.category === 'other' || !m.category) },
+].filter((c) => c.items.length > 0);
 ---
 
 <Layout title="Materialien & Zutaten - Bastel-Wiki">
-    <div class="hero" style="background: linear-gradient(135deg, #ffa726 0%, #fb8c00 100%);">
-        <h1>Materialien & Zutaten</h1>
-        <p>Alles, was du zum Basteln von Werkzeugen und Möbeln auf deiner Insel benötigst!</p>
-    </div>
+  <PageHero accent="material" emoji="🪵" title="Materialien & Zutaten" subtitle="Alles, was du zum Basteln von Werkzeugen und Möbeln benötigst!" />
 
-    <div class="events-container" style="max-width:900px; margin: 2rem auto 4rem; display:flex; flex-direction:column; gap:1.5rem;">
-        {categories.map((cat) => (
-            <details class="month-group material-group" style="background: var(--ac-surface); border-radius: var(--radius-lg); box-shadow: var(--ac-shadow); overflow: hidden;" open>
-                <summary class="month-summary" style="padding: 1.5rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-weight: 900; font-size: 1.2rem; border-bottom: 1px solid rgba(0,0,0,0.05);">
-                    <span>{cat.name}</span>
-                    <span style="font-size: 0.9rem; color: var(--ac-text-muted);">▼</span>
-                </summary>
-                
-                <div class="month-grid" style="padding: 1.5rem; background: var(--ac-bg);">
-                    <p style="margin-top:0; margin-bottom: 1.5rem; color: var(--ac-text-muted); text-align: center; font-style: italic;">
-                        {cat.desc}
-                    </p>
-                    
-                    <div class="material-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem;">
-                        {cat.items.map((mat) => (
-                            <div class="material-card" id={`mat-${mat.id}`} style="background: var(--ac-surface); border: 1px solid var(--ac-border); border-radius: var(--radius-md); padding: 12px; display: flex; align-items: center; gap: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.04);">
-                                <div class="material-img" style="width: 48px; height: 48px; background: var(--ac-bg); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; padding: 4px;">
-                                    <img src={getImageUrl(mat.image_path)} alt={mat.name} onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" style="max-width:100%; max-height:100%; object-fit:contain;" />
-                                    <span style="font-size:1.5rem; display:none;">🪵</span>
-                                </div>
-                                <div class="material-details" style="display: flex; flex-direction: column; gap: 4px; flex-grow: 1;">
-                                    <span class="material-name" style="font-weight: 900; font-size: 0.95rem;">{mat.name}</span>
-                                    <span class="material-source" style="font-size: 0.75rem; color: var(--ac-text-muted);">📍 {mat.source || 'Unbekannt'}</span>
-                                    <span class="material-price" style="font-size: 0.75rem; color: var(--ac-bell); font-weight: 900; background: var(--ac-bell-bg, rgba(242, 192, 70, 0.15)); padding: 2px 6px; border-radius: 4px; width: fit-content;">💰 {mat.sell_price || '0 Sternis'}</span>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </details>
-        ))}
-    </div>
+  <div class="stack stack-6" style="max-width: 900px; margin: 0 auto var(--sp-12);">
+    {categories.map((cat) => (
+      <details class="ac-card accent-material mat-group" open>
+        <summary><span>{cat.name}</span> <span class="chevron">▾</span></summary>
+        <p class="muted text-center" style="font-style: italic; margin: var(--sp-3) 0 var(--sp-5);">{cat.desc}</p>
+        <div class="grid-auto" style="--min: 210px; --gap: var(--sp-3);">
+          {cat.items.map((mat) => (
+            <div class="mat-card" id={`mat-${mat.id}`}>
+              <span class="mat-img"><img src={getImageUrl(mat.image_path)} alt={mat.name} loading="lazy" onerror="this.src='/assets/img/acnh/koeder.png'" /></span>
+              <span class="stack stack-2 grow">
+                <span class="mat-name">{mat.name}</span>
+                <span class="muted" style="font-size: 0.75rem;">📍 {mat.source || 'Unbekannt'}</span>
+                <span class="price-tag" style="font-size: 0.72rem;">💰 {mat.sell_price || '0 Sternis'}</span>
+              </span>
+            </div>
+          ))}
+        </div>
+      </details>
+    ))}
+  </div>
 </Layout>
+
+<style>
+  .mat-group summary { display: flex; align-items: center; justify-content: space-between; cursor: pointer; list-style: none; font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; }
+  .mat-group summary::-webkit-details-marker { display: none; }
+  .mat-group .chevron { color: var(--ac-text-muted); transition: transform var(--t-base); }
+  .mat-group[open] .chevron { transform: rotate(180deg); }
+  .mat-card { display: flex; align-items: center; gap: 10px; padding: 10px; background: var(--ac-surface-2); border: 2px solid transparent; border-radius: var(--radius-md); transition: border-color var(--t-fast), transform var(--t-fast) var(--ease-spring); }
+  .mat-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .mat-img { flex-shrink: 0; display: grid; place-items: center; width: 48px; height: 48px; padding: 5px; background: var(--ac-surface); border-radius: var(--radius-sm); }
+  .mat-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .mat-name { font-weight: 800; font-size: 0.92rem; line-height: 1.2; }
+  .mat-card .price-tag { width: fit-content; }
+</style>

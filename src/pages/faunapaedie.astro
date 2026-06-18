@@ -1,478 +1,179 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { getCreatures } from '../lib/api.js';
+import PageHero from '../components/PageHero.astro';
+import InfoBox from '../components/InfoBox.astro';
+import CreatureCard from '../components/CreatureCard.astro';
+import { getCreatures, DEFAULT_DIRECTUS } from '../lib/api.js';
+import { getImageUrl } from '../lib/format.js';
 
-const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
+const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || DEFAULT_DIRECTUS;
 const creatures = await getCreatures(directusUrl);
 
+const fishList = creatures.filter((c) => c.category === 'fish');
+const insectList = creatures.filter((c) => c.category === 'insect');
+const seaList = creatures.filter((c) => c.category === 'sea');
 
-const getImageUrl = (path) => {
-  if (!path) return '/assets/img/acnh/koeder.png';
-  if (path.startsWith('http')) return path;
-  if (path.includes('/') || path.includes('.')) {
-    let clean = path.startsWith('/') ? path.slice(1) : path;
-    if (clean.startsWith('assets/')) clean = clean.slice(7);
-    if (clean.startsWith('img/acnh/')) clean = clean.slice(9);
-    return `/assets/img/acnh/${clean}`;
-  }
-  return `${directusUrl}/assets/${path}`;
-};
+const tabs = [
+  { key: 'fish',   emoji: '🐟', label: 'Fische',      list: fishList },
+  { key: 'insect', emoji: '🦋', label: 'Insekten',    list: insectList },
+  { key: 'sea',    emoji: '🐙', label: 'Meerestiere', list: seaList },
+];
 
-const allMonthsShort = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
-
-const fishList = creatures.filter(c => c.category === 'fish');
-const insectList = creatures.filter(c => c.category === 'insect');
-const seaList = creatures.filter(c => c.category === 'sea');
+const fishTips = [
+  { title: '🎣 Der Köder-Trick', text: 'Aus am Strand ausgegrabenen Teppichmuscheln bastelst du pro Muschel einen Köder. Köder garantieren einen passenden Fisch und schließen Müll komplett aus!' },
+  { title: '♻️ Müll-Recycling', text: 'Ohne Köder angelst du manchmal Steine, Stiefel, Dosen oder Reifen. Kein Grund zum Ärgern: Damit schaltest du eigene Bastelanleitungen frei.' },
+];
+const insectTips = [
+  { title: '🏡 Deko-Tipp', text: 'Gefangene Insekten lassen sich in schicken Tierbehältnissen überall im Haus oder auf der Insel ausstellen.' },
+  { title: '⛈️ Gut zu wissen', text: 'Bei Regen verkriechen sich die meisten Insekten. Lifehack: Ein Gebäude betreten und wieder verlassen lädt die Insekten draußen neu. Happy Bug Catching!' },
+];
+const seaTips = [
+  { title: '🤿 Anschleichen für Profis', text: 'Schleiche dich an schnelle Meerestiere an, indem du nur sanft mit dem linken Stick schwimmst (ohne A). Direkt über dem Tier (an Blasen erkennbar) tauchst du es.' },
+  { title: '⚠️ Modell-Einschränkung', text: 'Meerestiere kannst du ausstellen, aber – anders als bei Insekten und Fischen – keine Modelle bei Lomeus oder Carlson in Auftrag geben.' },
+];
 ---
 
 <Layout title="Faunapädie - Insekten, Fische & Meerestiere">
-    <div class="hero" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); padding: 3rem 1.5rem 4rem; border-radius: var(--radius-lg); text-align: center; margin-bottom: 2rem; box-shadow: var(--ac-shadow); color: white;">
-        <div style="font-size: 3.5rem;">🐾</div>
-        <h1 style="color: white; font-weight: 900; margin-top: 10px; font-family: 'Outfit', sans-serif;">Faunapädie</h1>
-        <p style="opacity: 0.9; max-width: 600px; margin: 10px auto 0; font-size: 1.1rem;">Hier findest du alle Details zu den faszinierenden Kreaturen deiner Insel.</p>
+  <PageHero accent="insect" emoji="🐾" title="Faunapädie" subtitle="Alle Details zu den faszinierenden Kreaturen deiner Insel." />
+
+  <!-- Category tabs (re-theme the active button per category) -->
+  <div class="cluster justify-center mb-8">
+    {tabs.map((t, i) => (
+      <button class={`tab-btn accent-${t.key} ${i === 0 ? 'active' : ''}`} data-tab={t.key}>
+        <span>{t.emoji}</span> {t.label}
+      </button>
+    ))}
+  </div>
+
+  <!-- Tab-specific intro + tips -->
+  <InfoBox id="info-fish" accent="fish" emoji="🐟" title="Petri Heil!" tips={fishTips}>
+    <p>Vollständige Übersicht aller {fishList.length} Fische. Zücke deine <strong>Angel</strong> – aber renne nicht direkt ans Wasser, sonst verscheuchst du deine Beute!</p>
+  </InfoBox>
+  <InfoBox id="info-insect" accent="insect" emoji="🦋" title="Die Welt der Insekten" tips={insectTips} hidden>
+    <p>Vollständige Übersicht aller {insectList.length} Insekten. Schnapp dir deinen <strong>Kescher</strong> und los geht's!</p>
+  </InfoBox>
+  <InfoBox id="info-sea" accent="sea" emoji="🐙" title="Ab ins kühle Nass!" tips={seaTips} hidden>
+    <p>Vollständige Übersicht aller {seaList.length} Meerestiere. Zum Tauchen brauchst du einen <strong>Taucheranzug</strong>.</p>
+  </InfoBox>
+
+  <!-- Filter bar -->
+  <div class="filter-bar between mb-8">
+    <div class="cluster">
+      <label class="ac-checkbox"><input type="checkbox" id="filter-month" /> 📅 Nur in diesem Monat</label>
+      <label class="ac-checkbox"><input type="checkbox" id="filter-now" /> ⏰ Jetzt gerade fangbar</label>
     </div>
+    <button id="clear-filters" class="ac-btn">🧹 Filter löschen</button>
+  </div>
 
-    <!-- Category Tabs Selector -->
-    <div class="tab-nav-container" style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem;">
-        <button class="tab-btn active" data-tab="fish" style="display: flex; align-items: center; gap: 8px; padding: 0.8rem 1.8rem; border-radius: 100px; border: 3px solid transparent; font-weight: 900; font-size: 1.05rem; cursor: pointer; transition: all 0.3s; background: var(--ac-surface); color: var(--ac-text); box-shadow: var(--ac-shadow);">
-            <span>🐟</span> Fische
-        </button>
-        <button class="tab-btn" data-tab="insect" style="display: flex; align-items: center; gap: 8px; padding: 0.8rem 1.8rem; border-radius: 100px; border: 3px solid transparent; font-weight: 900; font-size: 1.05rem; cursor: pointer; transition: all 0.3s; background: var(--ac-surface); color: var(--ac-text); box-shadow: var(--ac-shadow);">
-            <span>🦋</span> Insekten
-        </button>
-        <button class="tab-btn" data-tab="sea" style="display: flex; align-items: center; gap: 8px; padding: 0.8rem 1.8rem; border-radius: 100px; border: 3px solid transparent; font-weight: 900; font-size: 1.05rem; cursor: pointer; transition: all 0.3s; background: var(--ac-surface); color: var(--ac-text); box-shadow: var(--ac-shadow);">
-            <span>🐙</span> Meerestiere
-        </button>
-    </div>
+  <!-- Quick-nav mini grids -->
+  <div class="ac-card mb-8">
+    {tabs.map((t, i) => (
+      <div class={`mini-grid accent-${t.key} ${i === 0 ? '' : 'hide'}`} id={`mini-grid-${t.key}`}>
+        {t.list.map((c) => (
+          <a href={`#creature-${c.id}`} class="mini-card" data-id={c.id} data-months={c.months_northern ? c.months_northern.join(',') : ''} data-time={c.time_active || ''} title={c.name}>
+            <img src={getImageUrl(c.image_path)} alt={c.name} loading="lazy" onerror="this.src='/assets/img/acnh/koeder.png'" />
+          </a>
+        ))}
+      </div>
+    ))}
+  </div>
 
-    <!-- Dynamische Info-Boxen -->
-    <div class="info-boxes-wrapper" style="margin-bottom: 2.5rem;">
-        <!-- FISH INFO -->
-        <div class="info-content-box active" id="info-fish" style="background: var(--ac-surface); padding: 1.75rem; border-radius: var(--radius-lg); box-shadow: var(--ac-shadow); border-left: 5px solid #0277bd;">
-            <h2 style="margin-top: 0; font-weight: 900; color: #0277bd; font-family: 'Outfit', sans-serif; display: flex; align-items: center; gap: 8px;">🐟 Petri Heil!</h2>
-            <p style="line-height: 1.6; margin-bottom: 1rem; color: var(--ac-text-muted);">
-                Hier findest du eine vollständige Übersicht aller 80 Fische in <i>Animal Crossing: New Horizons</i>. Zücke deine <strong>Angel</strong>, aber bemühe dich, nicht direkt am Wasser zu rennen, um deine wertvolle Beute nicht zu verscheuchen!
-            </p>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-top: 1.25rem;">
-                <div style="background: var(--ac-bg); padding: 1rem; border-radius: var(--radius-md); border-top: 3px solid #ffca28;">
-                    <strong style="display: block; font-weight: 900; margin-bottom: 6px; font-size: 0.95rem;">🎣 Der Köder-Trick</strong>
-                    <span style="font-size: 0.85rem; color: var(--ac-text-muted); line-height: 1.5; display: block;">
-                        Mithilfe der am Strand auszugrabenden Teppichmuscheln lässt sich pro Muschel ein Köder basteln. Die Bastelanleitung lernst du automatisch beim ersten Ausgraben. Köder garantieren das Erscheinen eines passenden Fisches und schließen Müll komplett aus!
-                    </span>
-                </div>
-                <div style="background: var(--ac-bg); padding: 1rem; border-radius: var(--radius-md); border-top: 3px solid #78909c;">
-                    <strong style="display: block; font-weight: 900; margin-bottom: 6px; font-size: 0.95rem;">♻️ Müll-Recycling</strong>
-                    <span style="font-size: 0.85rem; color: var(--ac-text-muted); line-height: 1.5; display: block;">
-                        Ohne Köder angelst du manchmal Steine, Stiefel, Dosen oder Reifen. Kein Grund zum Ärgern: Diese kannst du für Bastelanleitungen verwenden, die du beim Angeln von Müll freischaltest.
-                    </span>
-                </div>
-            </div>
-        </div>
+  <!-- Detail cards -->
+  <h2 class="section-title">📋 Kreaturen-Akten</h2>
+  <div class="creature-grid">
+    {creatures.map((c) => <CreatureCard creature={c} />)}
+  </div>
 
-        <!-- BUG INFO -->
-        <div class="info-content-box" id="info-insect" style="background: var(--ac-surface); padding: 1.75rem; border-radius: var(--radius-lg); box-shadow: var(--ac-shadow); border-left: 5px solid #2e7d32; display: none;">
-            <h2 style="margin-top: 0; font-weight: 900; color: #2e7d32; font-family: 'Outfit', sans-serif; display: flex; align-items: center; gap: 8px;">🦋 Die faszinierende Welt der Insekten</h2>
-            <p style="line-height: 1.6; margin-bottom: 1rem; color: var(--ac-text-muted);">
-                Hier findest du eine vollständige und fabelhafte Übersicht aller 80 Insekten in <i>Animal Crossing: New Horizons</i>. Schnapp dir deinen <strong>Kescher</strong> und los geht's!
-            </p>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-top: 1.25rem;">
-                <div style="background: var(--ac-bg); padding: 1rem; border-radius: var(--radius-md); border-top: 3px solid #ff7043;">
-                    <strong style="display: block; font-weight: 900; margin-bottom: 6px; font-size: 0.95rem;">🏡 Deko-Tipp</strong>
-                    <span style="font-size: 0.85rem; color: var(--ac-text-muted); line-height: 1.5; display: block;">
-                        Du kannst gefangene Insekten mit ihren schicken Tierbehältnissen wundervoll in deinem Haus oder überall auf deiner Insel platzieren und ausstellen.
-                    </span>
-                </div>
-                <div style="background: var(--ac-bg); padding: 1rem; border-radius: var(--radius-md); border-top: 3px solid #42a5f5;">
-                    <strong style="display: block; font-weight: 900; margin-bottom: 6px; font-size: 0.95rem;">⛈️ Gut zu wissen</strong>
-                    <span style="font-size: 0.85rem; color: var(--ac-text-muted); line-height: 1.5; display: block;">
-                        Bei Regen verkriechen sich die meisten Insekten und sind nicht anzutreffen. Ein kleiner Lifehack für die Jagd: Wenn du ein Gebäude betrittst und wieder verlässt, werden die Insekten draußen komplett neu geladen. Happy Bug Catching!
-                    </span>
-                </div>
-            </div>
-        </div>
-
-        <!-- SEA INFO -->
-        <div class="info-content-box" id="info-sea" style="background: var(--ac-surface); padding: 1.75rem; border-radius: var(--radius-lg); box-shadow: var(--ac-shadow); border-left: 5px solid #6a1b9a; display: none;">
-            <h2 style="margin-top: 0; font-weight: 900; color: #6a1b9a; font-family: 'Outfit', sans-serif; display: flex; align-items: center; gap: 8px;">🐙 Ab ins kühle Nass!</h2>
-            <p style="line-height: 1.6; margin-bottom: 1rem; color: var(--ac-text-muted);">
-                Hier findest du eine vollständige Übersicht aller 40 Meerestiere in <i>Animal Crossing: New Horizons</i>. Zum Schwimmen und Tauchen benötigst du einen <strong>Taucheranzug</strong>.
-            </p>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-top: 1.25rem;">
-                <div style="background: var(--ac-bg); padding: 1rem; border-radius: var(--radius-md); border-top: 3px solid #26a69a;">
-                    <strong style="display: block; font-weight: 900; margin-bottom: 6px; font-size: 0.95rem;">🤿 Anschleichen für Profis</strong>
-                    <span style="font-size: 0.85rem; color: var(--ac-text-muted); line-height: 1.5; display: block;">
-                        Du kannst dich an schnelle Meerestiere „anschleichen“, indem du nur durch sanftes Bewegen des linken Sticks schwimmst, ohne den A-Knopf zu drücken. Befindest du dich direkt über dem Tier (an den Blasen erkennbar), fängst du es mit einem direkten Tauchvorgang.
-                    </span>
-                </div>
-                <div style="background: var(--ac-bg); padding: 1rem; border-radius: var(--radius-md); border-top: 3px solid #ab47bc;">
-                    <strong style="display: block; font-weight: 900; margin-bottom: 6px; font-size: 0.95rem;">⚠️ Modell-Einschränkung</strong>
-                    <span style="font-size: 0.85rem; color: var(--ac-text-muted); line-height: 1.5; display: block;">
-                        Du kannst Meerestiere wundervoll in Tierbehältnissen ausstellen. Aber Achtung: Im Gegensatz zu Insekten und Fischen kannst du von Meerestieren leider keine Modelle bei Lomeus oder Carlson in Auftrag geben lassen.
-                    </span>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Filter & Grid Panel -->
-    <div class="faunapedia-section" style="background: var(--ac-surface); padding: 2rem; border-radius: var(--radius-lg); box-shadow: var(--ac-shadow); margin-bottom: 3rem; border: 1px solid var(--ac-border);">
-        <!-- Filter Controls -->
-        <div class="filter-controls" style="display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; justify-content: space-between; border-bottom: 2px solid var(--ac-bg); padding-bottom: 1.5rem; margin-bottom: 1.5rem;">
-            <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center;">
-                <label class="ac-checkbox" style="display: inline-flex; align-items: center; gap: 8px; font-weight: 800; cursor: pointer; user-select: none;">
-                    <input type="checkbox" id="filter-month" style="width: 18px; height: 18px; cursor: pointer;" />
-                    <span class="label-text">📅 Nur in diesem Monat</span>
-                </label>
-                <label class="ac-checkbox" style="display: inline-flex; align-items: center; gap: 8px; font-weight: 800; cursor: pointer; user-select: none;">
-                    <input type="checkbox" id="filter-now" style="width: 18px; height: 18px; cursor: pointer;" />
-                    <span class="label-text">⏰ Jetzt gerade fangbar</span>
-                </label>
-            </div>
-            <button id="clear-filters" class="btn-clear" style="padding: 0.6rem 1.2rem; background: var(--ac-bg); border: 2px solid var(--ac-border); border-radius: var(--radius-sm); font-weight: 800; cursor: pointer; transition: all 0.2s; color: var(--ac-text);">
-                🧹 Filter löschen
-            </button>
-        </div>
-
-        <!-- 8x10 or 5x8 Mini Grid Section -->
-        <div class="mini-grids-wrapper" style="margin-bottom: 1rem;">
-            <!-- FISH MINI GRID -->
-            <div class="mini-grid-container active" id="mini-grid-fish" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(65px, 1fr)); gap: 8px;">
-                {fishList.map((c) => (
-                    <a href={`#creature-${c.id}`} class="mini-card" data-id={c.id} data-months={c.months_northern ? c.months_northern.join(',') : ''} data-time={c.time_active} title={c.name} style="display: block; aspect-ratio: 1; background: var(--ac-bg); border-radius: var(--radius-sm); padding: 4px; border: 2px solid transparent; transition: all 0.2s; overflow: hidden; box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);">
-                        <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
-                            <img src={getImageUrl(c.image_path)} alt={c.name} loading="lazy" onerror="this.src='/assets/img/acnh/koeder.png'" style="width: 90%; height: 90%; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));" />
-                        </div>
-                    </a>
-                ))}
-            </div>
-
-            <!-- INSECT MINI GRID -->
-            <div class="mini-grid-container" id="mini-grid-insect" style="display: none; grid-template-columns: repeat(auto-fill, minmax(65px, 1fr)); gap: 8px;">
-                {insectList.map((c) => (
-                    <a href={`#creature-${c.id}`} class="mini-card" data-id={c.id} data-months={c.months_northern ? c.months_northern.join(',') : ''} data-time={c.time_active} title={c.name} style="display: block; aspect-ratio: 1; background: var(--ac-bg); border-radius: var(--radius-sm); padding: 4px; border: 2px solid transparent; transition: all 0.2s; overflow: hidden; box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);">
-                        <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
-                            <img src={getImageUrl(c.image_path)} alt={c.name} loading="lazy" onerror="this.src='/assets/img/acnh/koeder.png'" style="width: 90%; height: 90%; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));" />
-                        </div>
-                    </a>
-                ))}
-            </div>
-
-            <!-- SEA MINI GRID -->
-            <div class="mini-grid-container" id="mini-grid-sea" style="display: none; grid-template-columns: repeat(auto-fill, minmax(65px, 1fr)); gap: 8px;">
-                {seaList.map((c) => (
-                    <a href={`#creature-${c.id}`} class="mini-card" data-id={c.id} data-months={c.months_northern ? c.months_northern.join(',') : ''} data-time={c.time_active} title={c.name} style="display: block; aspect-ratio: 1; background: var(--ac-bg); border-radius: var(--radius-sm); padding: 4px; border: 2px solid transparent; transition: all 0.2s; overflow: hidden; box-shadow: inset 0 2px 5px rgba(0,0,0,0.05);">
-                        <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
-                            <img src={getImageUrl(c.image_path)} alt={c.name} loading="lazy" onerror="this.src='/assets/img/acnh/koeder.png'" style="width: 90%; height: 90%; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));" />
-                        </div>
-                    </a>
-                ))}
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Creatures Details Grid -->
-    <div class="creatures-details-section" style="margin-bottom: 5rem;">
-        <h2 style="font-weight: 900; font-size: 1.6rem; margin-bottom: 1.5rem; text-align: center; font-family: 'Outfit', sans-serif;">📋 Kreaturen-Akten</h2>
-        
-        <div class="creature-details-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 2rem;">
-            {creatures.map((c) => {
-                const imageUrl = getImageUrl(c.image_path);
-                const formattedPrice = new Intl.NumberFormat('de-DE').format(c.price || 0) + ' Sternis';
-                const activeMonths = c.months_northern || [];
-                return (
-                    <article class="creature-card" id={`creature-${c.id}`} data-category={c.category} style="background: var(--ac-surface); border-radius: var(--radius-lg); box-shadow: var(--ac-shadow); padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between; border: 2px solid transparent; transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;">
-                        <div style="display:flex; gap:1.25rem; align-items:center;">
-                            <div class="img-container" style="width: 90px; height: 90px; background: var(--ac-bg); border-radius: 50%; display:flex; align-items:center; justify-content:center; padding: 10px; box-shadow: inset 0 2px 6px rgba(0,0,0,0.05);" transition:name={`creature-img-${c.id}`}>
-                                <img src={imageUrl} alt={c.name} onerror="this.src='/assets/img/acnh/koeder.png'" style="width:100%; height:100%; object-fit:contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.12));" />
-                            </div>
-                            <div style="flex-grow:1;">
-                                <h3 style="margin:0; font-size:1.3rem; font-weight:900; font-family: 'Outfit', sans-serif;">{c.name}</h3>
-                                <div style="color:var(--ac-bell); font-weight:800; font-size:0.95rem; margin-top:4px; display: flex; align-items: center; gap: 4px;">💰 {formattedPrice}</div>
-                            </div>
-                        </div>
-
-                        <div style="margin-top: 1.25rem; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 1rem; display:flex; flex-direction:column; gap:8px; font-size:0.9rem; color: var(--ac-text-muted);">
-                            <div><strong>📍 Ort:</strong> <span style="color: var(--ac-text); font-weight: 700;">{c.location_name || 'Inselweit'}</span></div>
-                            <div><strong>⏰ Zeit:</strong> <span style="color: var(--ac-text); font-weight: 700;">{c.time_active || 'Ganz Tag'}</span></div>
-                            
-                            {c.shadow_image && (
-                                <div style="display: flex; align-items: center; gap: 6px;">
-                                    <strong>👤 Schatten:</strong> 
-                                    <span style="color: var(--ac-text); font-weight: 700; display: inline-flex; align-items: center; gap: 6px;">
-                                        <span class={`shadow-circle shadow-${c.shadow_image.toLowerCase().replace(' ', '-')}`} style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #666;"></span>
-                                        {c.shadow_image}
-                                    </span>
-                                </div>
-                            )}
-
-                            {c.speed && (
-                                <div><strong>💨 Tempo:</strong> <span style="color: var(--ac-text); font-weight: 700;">{c.speed}</span></div>
-                            )}
-
-                            {c.weather && (
-                                <div><strong>🌦️ Wetter:</strong> <span style="color: var(--ac-text); font-weight: 700;">{c.weather}</span></div>
-                            )}
-                        </div>
-
-                        {c.catchphrase && (
-                            <div style="margin-top: 1rem; padding: 0.75rem; background: var(--ac-bg); border-radius: var(--radius-sm); font-size: 0.85rem; font-style: italic; text-align: center; border-left: 3px solid var(--ac-green); color: var(--ac-text-muted);">
-                                "{c.catchphrase}"
-                            </div>
-                        )}
-
-                        <!-- Kalender Monats-Grid (12 boxes) -->
-                        <div style="margin-top: 1.25rem; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 1rem;">
-                            <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; text-align: center; font-size: 0.75rem; font-weight: 800;">
-                                {allMonthsShort.map((mName, idx) => {
-                                    const mNum = idx + 1;
-                                    const isActive = activeMonths.includes(mNum);
-                                    return (
-                                        <div style={`padding: 4px 2px; border-radius: 4px; ${isActive ? 'background: var(--ac-green); color: white; box-shadow: 0 2px 4px rgba(89,166,131,0.2);' : 'background: rgba(0,0,0,0.03); color: var(--ac-text-muted); opacity: 0.5;'}`}>
-                                            {mName}
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </div>
-
-                        <div style="margin-top: 1.25rem; text-align:center;">
-                            <a href={`/tier/${c.id}/`} style="display:inline-block; width:100%; padding:0.6rem; background:var(--ac-green-light); color:var(--ac-green); font-weight:800; border-radius:var(--radius-sm); text-decoration:none; font-size: 0.85rem; transition: all 0.2s;">
-                                Akte öffnen →
-                            </a>
-                        </div>
-                    </article>
-                );
-            })}
-        </div>
-        
-        <div id="empty-state" style="display: none; text-align: center; padding: 4rem 2rem; background: var(--ac-surface); border-radius: var(--radius-lg); box-shadow: var(--ac-shadow); margin-top: 2rem;">
-            <p style="font-size: 1.5rem; margin: 0; color: var(--ac-text-muted);">🏜️ Keine Kreaturen erfüllen diese Filterkriterien...</p>
-        </div>
-    </div>
-
-    <style>
-        .tab-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
-        }
-        .tab-btn.active {
-            background: var(--ac-green) !important;
-            color: white !important;
-            border-color: rgba(255, 255, 255, 0.2) !important;
-            box-shadow: 0 8px 20px rgba(89, 166, 131, 0.3) !important;
-        }
-        .mini-card:hover {
-            transform: scale(1.08);
-            border-color: var(--ac-green);
-            box-shadow: 0 4px 10px rgba(89,166,131,0.2) !important;
-            z-index: 10;
-        }
-        .mini-card.faded {
-            opacity: 0.25;
-            filter: grayscale(1);
-        }
-        .mini-card.faded:hover {
-            opacity: 0.5;
-            filter: grayscale(0.5);
-        }
-        .btn-clear:hover {
-            background: var(--ac-border) !important;
-            border-color: var(--ac-text-muted) !important;
-        }
-        .creature-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08) !important;
-        }
-    </style>
-
-    <!-- Native Client-Side Filter Script -->
-    <script is:inline>
-        function initFaunapedia() {
-            const tabs = document.querySelectorAll('.tab-btn');
-            const infoBoxes = document.querySelectorAll('.info-content-box');
-            const miniGrids = document.querySelectorAll('.mini-grid-container');
-            const miniCards = document.querySelectorAll('.mini-card');
-            const creatureCards = document.querySelectorAll('.creature-card');
-            const filterMonth = document.getElementById('filter-month');
-            const filterNow = document.getElementById('filter-now');
-            const btnClear = document.getElementById('clear-filters');
-            const emptyState = document.getElementById('empty-state');
-
-            let activeCategory = localStorage.getItem('nook_active_faunapedia_tab') || 'fish';
-
-            // Function to apply filters
-            function applyFilters() {
-                const date = new Date();
-                const currentMonth = date.getMonth() + 1; // 1-12
-                const currentHour = date.getHours();
-
-                // Save filter values to local storage
-                localStorage.setItem(`nook_filter_${activeCategory}_month`, filterMonth.checked);
-                localStorage.setItem(`nook_filter_${activeCategory}_now`, filterNow.checked);
-
-                let visibleCount = 0;
-
-                // Process each detailed card
-                creatureCards.forEach(card => {
-                    const category = card.getAttribute('data-category');
-                    if (category !== activeCategory) {
-                        card.style.display = 'none';
-                        return;
-                    }
-
-                    // Mini-card match to get properties
-                    const mCard = document.querySelector(`.mini-card[data-id="${card.id.split('-')[1]}"]`);
-                    if (!mCard) return;
-
-                    const months = mCard.getAttribute('data-months') ? mCard.getAttribute('data-months').split(',').map(Number) : [];
-                    const timeStr = mCard.getAttribute('data-time') ? mCard.getAttribute('data-time').toLowerCase() : '';
-
-                    let isVisible = true;
-
-                    // 1. Month Filter
-                    if (filterMonth.checked) {
-                        if (months.length > 0 && !months.includes(currentMonth)) {
-                            isVisible = false;
-                        }
-                    }
-
-                    // 2. Time Filter
-                    if (filterNow.checked && isVisible) {
-                        if (!timeStr.includes('immer') && !timeStr.includes('ganz') && !timeStr.includes('all')) {
-                            // Extract hour range (e.g. 08:00 - 16:00 or 8 - 16)
-                            const hours = timeStr.match(/\d+/g);
-                            if (hours && hours.length >= 2) {
-                                const start = parseInt(hours[0], 10);
-                                const end = parseInt(hours[1], 10);
-
-                                if (start < end) {
-                                    if (currentHour < start || currentHour >= end) isVisible = false;
-                                } else {
-                                    if (currentHour < start && currentHour >= end) isVisible = false;
-                                }
-                            }
-                        }
-                    }
-
-                    if (isVisible) {
-                        card.style.display = 'flex';
-                        mCard.classList.remove('faded');
-                        visibleCount++;
-                    } else {
-                        card.style.display = 'none';
-                        mCard.classList.add('faded');
-                    }
-                });
-
-                // Handle empty state visibility
-                if (visibleCount === 0) {
-                    emptyState.style.display = 'block';
-                } else {
-                    emptyState.style.display = 'none';
-                }
-            }
-
-            // Tab switcher
-            function switchTab(tabCategory) {
-                activeCategory = tabCategory;
-                localStorage.setItem('nook_active_faunapedia_tab', tabCategory);
-
-                // Update tab buttons
-                tabs.forEach(btn => {
-                    if (btn.getAttribute('data-tab') === tabCategory) {
-                        btn.classList.add('active');
-                    } else {
-                        btn.classList.remove('active');
-                    }
-                });
-
-                // Update info boxes
-                infoBoxes.forEach(box => {
-                    if (box.id === `info-${tabCategory}`) {
-                        box.style.display = 'block';
-                        box.classList.add('active');
-                    } else {
-                        box.style.display = 'none';
-                        box.classList.remove('active');
-                    }
-                });
-
-                // Update mini-grids
-                miniGrids.forEach(grid => {
-                    if (grid.id === `mini-grid-${tabCategory}`) {
-                        grid.style.display = 'grid';
-                        grid.classList.add('active');
-                    } else {
-                        grid.style.display = 'none';
-                        grid.classList.remove('active');
-                    }
-                });
-
-                // Restore filters for this category
-                filterMonth.checked = localStorage.getItem(`nook_filter_${tabCategory}_month`) === 'true';
-                filterNow.checked = localStorage.getItem(`nook_filter_${tabCategory}_now`) === 'true';
-
-                applyFilters();
-            }
-
-            // Tab Event Listeners
-            tabs.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    switchTab(btn.getAttribute('data-tab'));
-                });
-            });
-
-            // Filter Event Listeners
-            filterMonth.addEventListener('change', applyFilters);
-            filterNow.addEventListener('change', applyFilters);
-
-            btnClear.addEventListener('click', () => {
-                filterMonth.checked = false;
-                filterNow.checked = false;
-                applyFilters();
-            });
-
-            // Smooth Scrolling & Highlighting
-            miniCards.forEach(card => {
-                card.addEventListener('click', (e) => {
-                    const href = card.getAttribute('href');
-                    if (href && href.startsWith('#')) {
-                        e.preventDefault();
-                        const targetId = href.substring(1);
-                        const targetElement = document.getElementById(targetId);
-                        
-                        if (targetElement) {
-                            const headerOffset = 90;
-                            const elementPosition = targetElement.getBoundingClientRect().top;
-                            const offsetPosition = elementPosition + window.scrollY - headerOffset;
-
-                            window.scrollTo({
-                                top: offsetPosition,
-                                behavior: "smooth"
-                            });
-
-                            // Sexy Highlight Animation
-                            targetElement.style.transition = "transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease";
-                            targetElement.style.transform = "scale(1.03)";
-                            targetElement.style.borderColor = "var(--ac-green)";
-                            targetElement.style.boxShadow = "0 12px 30px rgba(89,166,131,0.25)";
-
-                            setTimeout(() => {
-                                targetElement.style.transform = "";
-                                targetElement.style.borderColor = "transparent";
-                                targetElement.style.boxShadow = "var(--ac-shadow)";
-                            }, 1200);
-                        }
-                    }
-                });
-            });
-
-            // Initial Switch to saved or default tab
-            switchTab(activeCategory);
-        }
-
-        // Run immediately and on view transitions
-        initFaunapedia();
-        document.addEventListener('astro:after-swap', initFaunapedia);
-    </script>
+  <div id="empty-state" class="empty-state hide mt-8">
+    <span class="emoji">🏜️</span>
+    Keine Kreaturen erfüllen diese Filterkriterien…
+  </div>
 </Layout>
+
+<script is:inline>
+  function initFaunapedia() {
+    const tabs = document.querySelectorAll('.tab-btn');
+    const infoBoxes = document.querySelectorAll('.info-box');
+    const miniGrids = document.querySelectorAll('.mini-grid');
+    const creatureCards = document.querySelectorAll('.creature-card');
+    const filterMonth = document.getElementById('filter-month');
+    const filterNow = document.getElementById('filter-now');
+    const btnClear = document.getElementById('clear-filters');
+    const emptyState = document.getElementById('empty-state');
+    if (!tabs.length || !filterMonth) return;
+
+    let activeCategory = localStorage.getItem('nook_active_faunapedia_tab') || 'fish';
+
+    function applyFilters() {
+      const now = new Date();
+      const currentMonth = now.getMonth() + 1;
+      const currentHour = now.getHours();
+      localStorage.setItem(`nook_filter_${activeCategory}_month`, filterMonth.checked);
+      localStorage.setItem(`nook_filter_${activeCategory}_now`, filterNow.checked);
+
+      let visibleCount = 0;
+      creatureCards.forEach((card) => {
+        if (card.dataset.category !== activeCategory) { card.style.display = 'none'; return; }
+
+        const months = card.dataset.months ? card.dataset.months.split(',').map(Number) : [];
+        const timeStr = (card.dataset.time || '').toLowerCase();
+        let visible = true;
+
+        if (filterMonth.checked && months.length && !months.includes(currentMonth)) visible = false;
+
+        if (visible && filterNow.checked && !/immer|ganz|all/.test(timeStr)) {
+          const hours = timeStr.match(/\d+/g);
+          if (hours && hours.length >= 2) {
+            const start = parseInt(hours[0], 10);
+            const end = parseInt(hours[1], 10);
+            if (start < end) { if (currentHour < start || currentHour >= end) visible = false; }
+            else { if (currentHour < start && currentHour >= end) visible = false; }
+          }
+        }
+
+        const mCard = document.querySelector(`.mini-card[data-id="${card.id.split('-')[1]}"]`);
+        if (visible) { card.style.display = 'flex'; mCard && mCard.classList.remove('faded'); visibleCount++; }
+        else { card.style.display = 'none'; mCard && mCard.classList.add('faded'); }
+      });
+
+      emptyState.classList.toggle('hide', visibleCount !== 0);
+    }
+
+    function switchTab(category) {
+      activeCategory = category;
+      localStorage.setItem('nook_active_faunapedia_tab', category);
+      tabs.forEach((b) => b.classList.toggle('active', b.dataset.tab === category));
+      infoBoxes.forEach((box) => box.classList.toggle('hide', box.id !== `info-${category}`));
+      miniGrids.forEach((g) => g.classList.toggle('hide', g.id !== `mini-grid-${category}`));
+      filterMonth.checked = localStorage.getItem(`nook_filter_${category}_month`) === 'true';
+      filterNow.checked = localStorage.getItem(`nook_filter_${category}_now`) === 'true';
+      applyFilters();
+    }
+
+    tabs.forEach((b) => b.addEventListener('click', () => switchTab(b.dataset.tab)));
+    filterMonth.addEventListener('change', applyFilters);
+    filterNow.addEventListener('change', applyFilters);
+    btnClear.addEventListener('click', () => { filterMonth.checked = false; filterNow.checked = false; applyFilters(); });
+
+    document.querySelectorAll('.mini-card').forEach((card) => {
+      card.addEventListener('click', (e) => {
+        const href = card.getAttribute('href');
+        if (!href || !href.startsWith('#')) return;
+        e.preventDefault();
+        const target = document.getElementById(href.substring(1));
+        if (!target) return;
+        const offset = target.getBoundingClientRect().top + window.scrollY - 90;
+        window.scrollTo({ top: offset, behavior: 'smooth' });
+        target.style.transition = 'transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease';
+        target.style.transform = 'scale(1.03)';
+        target.style.borderColor = 'var(--accent)';
+        setTimeout(() => { target.style.transform = ''; target.style.borderColor = ''; }, 1200);
+      });
+    });
+
+    switchTab(activeCategory);
+  }
+
+  initFaunapedia();
+  document.addEventListener('astro:after-swap', initFaunapedia);
+</script>

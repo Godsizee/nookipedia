@@ -1,0 +1,63 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
+import VillagerCard from '../../components/VillagerCard.astro';
+import { getVillagers, DEFAULT_DIRECTUS } from '../../lib/api.js';
+
+const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || DEFAULT_DIRECTUS;
+const villagers = await getVillagers(directusUrl);
+villagers.sort((a, b) => (a.name_de || '').localeCompare(b.name_de || '', 'de'));
+
+const species = [...new Set(villagers.map((v) => v.species).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'de'));
+---
+
+<Layout title="Bewohner - Alle Inselnachbarn">
+  <PageHero accent="villager" emoji="🐾" title="Bewohner" subtitle={`Lerne alle ${villagers.length} möglichen Inselnachbarn kennen.`} />
+
+  <div class="toolbar accent-villager">
+    <input type="search" id="villager-search" class="ac-input" placeholder="🔍 Bewohner, Art oder Charakter suchen…" />
+    <select id="species-filter" class="ac-input">
+      <option value="">Alle Arten</option>
+      {species.map((s) => <option value={s}>{s}</option>)}
+    </select>
+  </div>
+
+  <div class="entity-grid" id="villager-grid">
+    {villagers.map((v) => <VillagerCard villager={v} />)}
+  </div>
+
+  <div id="villager-empty" class="empty-state hide mt-8"><span class="emoji">🔍</span> Keine Bewohner gefunden.</div>
+
+  {villagers.length === 0 && (
+    <div class="empty-state"><span class="emoji">🐾</span> Noch keine Bewohner-Daten verfügbar.</div>
+  )}
+</Layout>
+
+<script is:inline>
+  function initVillagerBrowser() {
+    const search = document.getElementById('villager-search');
+    const speciesSel = document.getElementById('species-filter');
+    const cards = Array.from(document.querySelectorAll('.villager-card'));
+    const empty = document.getElementById('villager-empty');
+    if (!search) return;
+
+    function apply() {
+      const q = search.value.trim().toLowerCase();
+      const sp = speciesSel.value;
+      let visible = 0;
+      cards.forEach((c) => {
+        const matchQ = !q || c.dataset.search.includes(q);
+        const matchSp = !sp || c.dataset.species === sp;
+        const show = matchQ && matchSp;
+        c.classList.toggle('hide', !show);
+        if (show) visible++;
+      });
+      empty && empty.classList.toggle('hide', visible !== 0);
+    }
+
+    search.addEventListener('input', apply);
+    speciesSel.addEventListener('change', apply);
+  }
+  initVillagerBrowser();
+  document.addEventListener('astro:after-swap', initVillagerBrowser);
+</script>

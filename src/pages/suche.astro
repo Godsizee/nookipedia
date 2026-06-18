@@ -1,310 +1,166 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
 ---
 
 <Layout title="Spotlight Suche - Nookipedia">
-    <div class="hero" style="background: linear-gradient(135deg, #59a683 0%, #3f7d60 100%); padding: 3rem 1.5rem 4rem; border-radius: var(--radius-lg); text-align: center; margin-bottom: 2rem; position: relative; overflow: hidden; box-shadow: var(--ac-shadow);">
-        <div style="font-size: 3.5rem; margin-bottom: 10px; filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.2));">🔍</div>
-        <h1 style="color: #f8f4e6; font-weight: 900; margin-top: 10px; font-family: 'Outfit', sans-serif;">Nook-Spotlight Suche</h1>
-        <p style="color: #e0f2ea; font-size: 1.1rem; max-width: 600px; margin: 10px auto 0; font-weight: 600;">Durchsuche Fauna, Flora, Rezepte, Kunst und Fossilien auf deiner Insel.</p>
-        
-        <form id="search-page-form" class="page-search-form" style="margin-top: 1.8rem; max-width: 500px; margin-left: auto; margin-right: auto; display: flex; box-shadow: 0 8px 24px rgba(0,0,0,0.15); border-radius: 100px; overflow: hidden; background: white; border: 3px solid var(--ac-border);">
-            <input type="text" id="search-page-input" placeholder="Suche anpassen..." autocomplete="off" spellcheck="false" required style="flex-grow: 1; border: none; padding: 0.8rem 1.5rem; font-size: 1rem; font-weight: 700; color: #1b2a21; outline: none; background: transparent;" />
-            <button type="submit" aria-label="Suchen" style="background: var(--ac-green); color: white; border: none; padding: 0 1.5rem; font-size: 1.2rem; cursor: pointer; transition: background 0.2s;">🔍</button>
-        </form>
-        <p id="search-status" style="font-size: 1rem; margin-top: 1.2rem; color: #e0f2ea; font-weight: 700;"></p>
+  <PageHero accent="guide" emoji="🔍" title="Nook-Spotlight Suche" subtitle="Durchsuche Fauna, Flora, Rezepte, Kunst und Fossilien auf deiner Insel.">
+    <form id="search-page-form" class="search-form">
+      <input type="text" id="search-page-input" placeholder="Suche anpassen…" autocomplete="off" spellcheck="false" required />
+      <button type="submit" aria-label="Suchen">🔍</button>
+    </form>
+    <p id="search-status" class="search-status"></p>
+  </PageHero>
+
+  <section style="max-width: 900px; margin: 0 auto var(--sp-12);">
+    <div id="search-loading" class="hide text-center" style="padding: var(--sp-10);">
+      <div class="loader-spinner"></div>
+      <p class="muted" style="font-weight: 700;">Die Nook-Datenbank wird durchsucht…</p>
     </div>
 
-    <section class="search-results-page" style="max-width: 900px; margin: 0 auto 5rem; padding: 0 1rem;">
-        <div id="search-loading" style="display: none; text-align: center; padding: 3rem;">
-            <div class="loader-spinner" style="border: 4px solid rgba(0,0,0,0.1); border-top-color: var(--ac-green); border-radius: 50%; width: 40px; height: 40px; margin: 0 auto 1rem; animation: spin 1s linear infinite;"></div>
-            <p style="color: var(--ac-text-muted); font-weight: 700;">Die Nook-Datenbank wird durchsucht...</p>
-        </div>
+    <div id="search-no-results" class="empty-state hide">
+      <span class="emoji">🦝</span>
+      <h3>Oh weh! Resetti hat nichts gefunden.</h3>
+      <p class="muted" style="margin: var(--sp-2) 0 var(--sp-5);">Versuche es mit einem anderen Begriff oder überprüfe die Schreibweise.</p>
+      <a href="/" class="ac-btn ac-btn--primary accent-guide">Zurück zum Dorfplatz</a>
+    </div>
 
-        <div id="search-no-results" style="display: none; text-align: center; padding: 3rem; background: var(--ac-surface); border-radius: var(--radius-lg); box-shadow: var(--ac-shadow); border: 2px dashed var(--ac-border);">
-            <div style="font-size: 4rem; margin-bottom: 1rem;">🦝</div>
-            <h3 style="font-size: 1.4rem; color: var(--ac-text); font-weight: 900; margin-bottom: 0.5rem;">Oh weh! Resetti hat nichts gefunden.</h3>
-            <p style="color: var(--ac-text-muted); margin-bottom: 1.5rem; font-weight: 600;">Versuche es mit einem anderen Begriff oder überprüfe die Schreibweise.</p>
-            <a href="/" style="display: inline-block; background: var(--ac-green); color: white; padding: 0.6rem 1.5rem; border-radius: 100px; text-decoration: none; font-weight: 800; box-shadow: 0 4px 12px rgba(89, 166, 131, 0.2);">Zurück zum Dorfplatz</a>
-        </div>
-
-        <div id="search-results-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem;"></div>
-    </section>
-
-    <script>
-        const directusUrl = 'https://backend-nookipedia.2.godsize.info';
-
-        const getImageUrl = (path) => {
-            if (!path) return '/assets/img/acnh/koeder.png';
-            if (path.startsWith('http')) return path;
-            if (path.includes('/') || path.includes('.')) {
-                let clean = path.startsWith('/') ? path.slice(1) : path;
-                if (clean.startsWith('assets/')) clean = clean.slice(7);
-                if (clean.startsWith('img/acnh/')) clean = clean.slice(9);
-                return `/assets/img/acnh/${clean}`;
-            }
-            return `${directusUrl}/assets/${path}`;
-        };
-
-        // Static fallback search database
-        const staticFallbackDB = [
-            { title: 'Rose', subtitle: 'Zuchtblume', type: 'Flora', url: '/blumen/1', image: '/assets/img/acnh/flowers/Rose.png' },
-            { title: 'Tulpe', subtitle: 'Zuchtblume', type: 'Flora', url: '/blumen/2', image: '/assets/img/acnh/flowers/Tulpe.png' },
-            { title: 'Anemone', subtitle: 'Zuchtblume', type: 'Flora', url: '/blumen/1', image: '/assets/img/acnh/flowers/Anemone.png' },
-            { title: 'Chrysantheme', subtitle: 'Zuchtblume', type: 'Flora', url: '/blumen/3', image: '/assets/img/acnh/flowers/Chrysantheme.png' },
-            { title: 'Cosmea', subtitle: 'Zuchtblume', type: 'Flora', url: '/blumen/4', image: '/assets/img/acnh/flowers/Cosmea.png' },
-            { title: 'Hyazinthe', subtitle: 'Zuchtblume', type: 'Flora', url: '/blumen/5', image: '/assets/img/acnh/flowers/Hyazinthe.png' },
-            { title: 'Lilie', subtitle: 'Zuchtblume', type: 'Flora', url: '/blumen/6', image: '/assets/img/acnh/flowers/Lilie.png' },
-            { title: 'Alpenveilchen', subtitle: 'Zuchtblume', type: 'Flora', url: '/blumen/1', image: '/assets/img/acnh/flowers/Alpenveilchen.png' },
-            { title: 'Maiglöckchen', subtitle: 'Zuchtblume', type: 'Flora', url: '/blumen/9', image: '/assets/img/acnh/flowers/Maigloeckchen.png' },
-            
-            { title: 'Gemüsegemälde', subtitle: 'Kunstwerk (Der Sommer)', type: 'Kunst', url: '/museum/kunst/1', image: '/assets/img/acnh/museum/Gemuesegemaelde_real.png' },
-            { title: 'Altertumsgemälde', subtitle: 'Kunstwerk (Die Nachtwache)', type: 'Kunst', url: '/museum/kunst/2', image: '/assets/img/acnh/museum/Altertumsgemaelde_real.png' },
-            { title: 'Blumengemälde', subtitle: 'Kunstwerk (Sonnenblumen)', type: 'Kunst', url: '/museum/kunst/3', image: '/assets/img/acnh/museum/Blumengemaelde.png' },
-            { title: 'Perlengemälde', subtitle: 'Kunstwerk (Mädchen mit Perlenohrring)', type: 'Kunst', url: '/museum/kunst/4', image: '/assets/img/acnh/museum/Perlengemaelde_real.png' },
-            { title: 'Detailgemälde', subtitle: 'Kunstwerk (Ajisai Sōki-zu)', type: 'Kunst', url: '/museum/kunst/5', image: '/assets/img/acnh/museum/Detailgemaelde_real.png' },
-            { title: 'Eleganzstatue', subtitle: 'Kunstwerk (Venus von Milo)', type: 'Kunst', url: '/museum/kunst/6', image: '/assets/img/acnh/museum/Eleganzstatue_real.png' },
-            
-            { title: 'T-Rex-Schädel', subtitle: 'Dino-Fossil (T-Rex)', type: 'Fossil', url: '/museum/fossilien', image: '/assets/img/acnh/museum/T-Rex-Schaedel.png' },
-            { title: 'T-Rex-Torso', subtitle: 'Dino-Fossil (T-Rex)', type: 'Fossil', url: '/museum/fossilien', image: '/assets/img/acnh/museum/T-Rex-Torso.png' },
-            { title: 'T-Rex-Schwanz', subtitle: 'Dino-Fossil (T-Rex)', type: 'Fossil', url: '/museum/fossilien', image: '/assets/img/acnh/museum/T-Rex-Schwanz.png' },
-            { title: 'Tricera-Schädel', subtitle: 'Dino-Fossil (Triceratops)', type: 'Fossil', url: '/museum/fossilien', image: '/assets/img/acnh/museum/Tricera-Schaedel.png' },
-            { title: 'Tricera-Torso', subtitle: 'Dino-Fossil (Triceratops)', type: 'Fossil', url: '/museum/fossilien', image: '/assets/img/acnh/museum/Tricera-Torso.png' },
-            { title: 'Tricera-Schwanz', subtitle: 'Dino-Fossil (Triceratops)', type: 'Fossil', url: '/museum/fossilien', image: '/assets/img/acnh/museum/Tricera-Schwanz.png' },
-            { title: 'Bernstein', subtitle: 'Fossil', type: 'Fossil', url: '/museum/fossilien', image: '/assets/img/acnh/museum/Bernstein.png' },
-            { title: 'Ammonit', subtitle: 'Fossil', type: 'Fossil', url: '/museum/fossilien', image: '/assets/img/acnh/museum/Ammonit.png' },
-            { title: 'Urvogel', subtitle: 'Fossil', type: 'Fossil', url: '/museum/fossilien', image: '/assets/img/acnh/museum/Urvogel.png' },
-            { title: 'Dino-Spur', subtitle: 'Fossil', type: 'Fossil', url: '/museum/fossilien', image: '/assets/img/acnh/museum/Dino-Spur.png' },
-            
-            { title: 'Goldschaufel', subtitle: 'Haltbarkeit: 250', type: 'Rezept', url: '/items', image: '/assets/img/acnh/diy/tools/Goldschaufel.png' },
-            { title: 'Kirschmarmelade', subtitle: 'Kochen (Süß)', type: 'Rezept', url: '/items', image: '/assets/img/acnh/diy/cooking/Kirschmarmelade.png' }
-        ];
-
-        async function performSearchQuery(query) {
-            const statusEl = document.getElementById('search-status');
-            const loadingEl = document.getElementById('search-loading');
-            const noResultsEl = document.getElementById('search-no-results');
-            const gridEl = document.getElementById('search-results-grid');
-
-            if (!statusEl || !loadingEl || !noResultsEl || !gridEl) return;
-
-            gridEl.innerHTML = '';
-            noResultsEl.style.display = 'none';
-
-            if (!query || query.length < 2) {
-                statusEl.textContent = 'Bitte gib mindestens 2 Zeichen ein, um die Suche zu starten.';
-                statusEl.style.color = '#ff4081';
-                return;
-            }
-
-            statusEl.textContent = '';
-            loadingEl.style.display = 'block';
-
-            let results = [];
-
-            try {
-                // Search creatures, recipes, flowers, artworks, fossils parallel in Directus
-                const endpoints = [
-                    `${directusUrl}/items/creatures?filter[name][_icontains]=${encodeURIComponent(query)}&limit=15`,
-                    `${directusUrl}/items/flowers?filter[name][_icontains]=${encodeURIComponent(query)}&limit=5`,
-                    `${directusUrl}/items/diy_recipes?filter[name][_icontains]=${encodeURIComponent(query)}&limit=10`,
-                    `${directusUrl}/items/cooking_recipes?filter[name][_icontains]=${encodeURIComponent(query)}&limit=10`,
-                    `${directusUrl}/items/artworks?filter[name][_icontains]=${encodeURIComponent(query)}&limit=5`,
-                    `${directusUrl}/items/fossils?filter[name][_icontains]=${encodeURIComponent(query)}&limit=5`
-                ];
-
-                const responses = await Promise.all(
-                    endpoints.map(url => fetch(url).then(r => r.ok ? r.json() : { data: [] }).catch(() => ({ data: [] })))
-                );
-
-                const [creatures, flowers, diy, cooking, artworks, fossils] = responses.map(r => r.data || []);
-
-                creatures.forEach(c => {
-                    results.push({
-                        title: c.name,
-                        subtitle: `${c.price || 0} Sternis`,
-                        type: c.category === 'insect' ? 'Insekt' : c.category === 'fish' ? 'Fisch' : 'Meerestier',
-                        url: `/tier/${c.id}/`,
-                        image: getImageUrl(c.image_path)
-                    });
-                });
-
-                flowers.forEach(f => {
-                    results.push({
-                        title: f.name,
-                        subtitle: 'Zuchtblume',
-                        type: 'Flora',
-                        url: `/blumen/${f.id}/`,
-                        image: getImageUrl(f.image_path)
-                    });
-                });
-
-                diy.forEach(d => {
-                    results.push({
-                        title: d.name,
-                        subtitle: d.source || 'Bastelanleitung',
-                        type: 'Rezept',
-                        url: '/items/',
-                        image: getImageUrl(d.image_path)
-                    });
-                });
-
-                cooking.forEach(ck => {
-                    results.push({
-                        title: ck.name,
-                        subtitle: ck.source || 'Kochrezept',
-                        type: 'Rezept',
-                        url: '/items/',
-                        image: getImageUrl(ck.image_path)
-                    });
-                });
-
-                artworks.forEach(art => {
-                    results.push({
-                        title: art.name,
-                        subtitle: `Kunstwerk von ${art.artist}`,
-                        type: 'Kunst',
-                        url: `/museum/kunst/${art.id}`,
-                        image: getImageUrl(art.image_real)
-                    });
-                });
-
-                fossils.forEach(f => {
-                    results.push({
-                        title: f.name,
-                        subtitle: `Dino-Fossil`,
-                        type: 'Fossil',
-                        url: `/museum/fossilien`,
-                        image: getImageUrl(f.image_path)
-                    });
-                });
-
-            } catch (err) {
-                console.warn('Directus API search error, falling back to static search.', err);
-            }
-
-            // Fallback static DB in-memory filtering if directus is empty/down or we want complete local matches
-            const queryLower = query.toLowerCase();
-            const staticFiltered = staticFallbackDB.filter(item => 
-                item.title.toLowerCase().includes(queryLower) || 
-                item.subtitle.toLowerCase().includes(queryLower)
-            );
-
-            // Merge static results that aren't already included by title matching
-            staticFiltered.forEach(sf => {
-                if (!results.some(r => r.title.toLowerCase() === sf.title.toLowerCase())) {
-                    results.push(sf);
-                }
-            });
-
-            loadingEl.style.display = 'none';
-
-            if (results.length === 0) {
-                noResultsEl.style.display = 'block';
-                statusEl.textContent = `Keine Ergebnisse für "${query}"`;
-                statusEl.style.color = '#ff4081';
-            } else {
-                statusEl.textContent = `${results.length} Ergebnisse für "${query}"`;
-                statusEl.style.color = '#e0f2ea';
-
-                results.forEach(res => {
-                    const card = document.createElement('a');
-                    card.href = res.url;
-                    card.className = 'search-page-card';
-                    card.style.cssText = 'display: flex; align-items: center; gap: 1rem; padding: 1.2rem; background: var(--ac-surface); border-radius: var(--radius-lg); box-shadow: var(--ac-shadow); text-decoration: none; color: var(--ac-text); border: 2px solid transparent; transition: all 0.2s; position: relative;';
-                    
-                    const imgWrap = document.createElement('div');
-                    imgWrap.className = 'search-page-img';
-                    imgWrap.style.cssText = 'width: 60px; height: 60px; border-radius: 12px; background: var(--ac-bg); display: flex; align-items: center; justify-content: center; padding: 6px; overflow: hidden;';
-                    
-                    const img = document.createElement('img');
-                    img.src = res.image;
-                    img.alt = res.title;
-                    img.style.cssText = 'max-width: 100%; max-height: 100%; object-fit: contain;';
-                    img.onerror = () => { img.src = '/assets/img/acnh/koeder.png'; };
-                    imgWrap.appendChild(img);
-
-                    const info = document.createElement('div');
-                    info.className = 'search-page-info';
-                    
-                    const title = document.createElement('h3');
-                    title.textContent = res.title;
-                    title.style.cssText = 'margin: 0 0 4px; font-size: 1.1rem; font-weight: 900;';
-                    
-                    const subtitle = document.createElement('span');
-                    subtitle.textContent = res.subtitle;
-                    subtitle.style.cssText = 'font-size: 0.85rem; color: var(--ac-text-muted); font-weight: 700;';
-                    
-                    info.appendChild(title);
-                    info.appendChild(subtitle);
-
-                    const badge = document.createElement('span');
-                    badge.textContent = res.type;
-                    
-                    let badgeBg = 'var(--ac-green)';
-                    if (res.type === 'Insekt') badgeBg = '#2e7d32';
-                    else if (res.type === 'Fisch') badgeBg = '#0277bd';
-                    else if (res.type === 'Meerestier') badgeBg = '#6a1b9a';
-                    else if (res.type === 'Flora') badgeBg = '#ec407a';
-                    else if (res.type === 'Kunst') badgeBg = '#b8860b';
-                    else if (res.type === 'Fossil') badgeBg = '#8d6e63';
-
-                    badge.style.cssText = `position: absolute; top: 12px; right: 12px; background: ${badgeBg}; color: white; font-size: 0.75rem; font-weight: 900; padding: 2px 10px; border-radius: 100px;`;
-
-                    card.appendChild(imgWrap);
-                    card.appendChild(info);
-                    card.appendChild(badge);
-
-                    // Hover effects
-                    card.addEventListener('mouseenter', () => {
-                        card.style.borderColor = 'var(--ac-green)';
-                        card.style.transform = 'translateY(-3px)';
-                    });
-                    card.addEventListener('mouseleave', () => {
-                        card.style.borderColor = 'transparent';
-                        card.style.transform = 'none';
-                    });
-
-                    gridEl.appendChild(card);
-                });
-            }
-        }
-
-        function initSearchPage() {
-            const form = document.getElementById('search-page-form');
-            const input = document.getElementById('search-page-input') as HTMLInputElement;
-
-            if (!form || !input) return;
-
-            // Auto search on load if q query exists
-            const urlParams = new URLSearchParams(window.location.search);
-            const query = urlParams.get('q');
-            if (query) {
-                input.value = query;
-                performSearchQuery(query);
-            }
-
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const q = input.value.trim();
-                if (q) {
-                    // Update url query silently
-                    const newUrl = `${window.location.pathname}?q=${encodeURIComponent(q)}`;
-                    window.history.pushState({ path: newUrl }, '', newUrl);
-                    performSearchQuery(q);
-                }
-            });
-        }
-
-        document.addEventListener('astro:page-load', initSearchPage);
-        // Fallback standard load
-        initSearchPage();
-    </script>
-
-    <style>
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
+    <div id="search-results-grid" class="grid-auto" style="--min: 260px;"></div>
+  </section>
 </Layout>
+
+<style>
+  .search-form { display: flex; max-width: 500px; margin: var(--sp-6) auto 0; background: #fff; border-radius: var(--radius-pill); overflow: hidden; box-shadow: var(--ac-shadow); }
+  .search-form input { flex: 1; border: none; padding: 0.85rem 1.4rem; font: inherit; font-weight: 700; color: #1b2a21; outline: none; }
+  .search-form button { border: none; padding: 0 1.4rem; font-size: 1.2rem; color: #fff; background: var(--accent); cursor: pointer; transition: background var(--t-fast); }
+  .search-form button:hover { background: var(--accent-deep); }
+  .search-status { margin-top: var(--sp-4); font-weight: 700; color: rgba(255,255,255,0.95); }
+  .loader-spinner { width: 42px; height: 42px; margin: 0 auto var(--sp-4); border: 4px solid var(--ac-border); border-top-color: var(--ac-green); border-radius: 50%; animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .search-page-card { display: flex; align-items: center; gap: var(--sp-4); position: relative; padding: var(--sp-4); background: var(--ac-surface); border: 2px solid var(--ac-border); border-radius: var(--radius-lg); box-shadow: var(--ac-shadow); text-decoration: none; color: var(--ac-text); transition: transform var(--t-base) var(--ease-spring), border-color var(--t-base); }
+  .search-page-card:hover { transform: translateY(-3px); border-color: var(--ac-green); }
+  .search-page-img { flex-shrink: 0; display: grid; place-items: center; width: 60px; height: 60px; padding: 6px; background: var(--ac-surface-2); border-radius: var(--radius-sm); }
+  .search-page-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .sp-title { margin: 0 0 2px; font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; }
+  .sp-sub { font-size: 0.85rem; color: var(--ac-text-muted); font-weight: 700; }
+  .sp-badge { position: absolute; top: 12px; right: 12px; padding: 2px 10px; font-size: 0.72rem; font-weight: 800; color: #fff; background: var(--ac-green); border-radius: var(--radius-pill); }
+  .sp-badge[data-type="Insekt"] { background: #63bb47; }
+  .sp-badge[data-type="Fisch"] { background: #3d9be0; }
+  .sp-badge[data-type="Meerestier"] { background: #9b6dc4; }
+  .sp-badge[data-type="Flora"] { background: #ef74a7; }
+  .sp-badge[data-type="Kunst"] { background: #c79a2b; }
+  .sp-badge[data-type="Fossil"] { background: #a98253; }
+</style>
+
+<script>
+  const directusUrl = 'https://backend-nookipedia.2.godsize.info';
+
+  const getImageUrl = (path) => {
+    if (!path) return '/assets/img/acnh/koeder.png';
+    if (path.startsWith('http')) return path;
+    if (path.includes('/') || path.includes('.')) {
+      let clean = path.startsWith('/') ? path.slice(1) : path;
+      if (clean.startsWith('assets/')) clean = clean.slice(7);
+      if (clean.startsWith('img/acnh/')) clean = clean.slice(9);
+      return `/assets/img/acnh/${clean}`;
+    }
+    return `${directusUrl}/assets/${path}`;
+  };
+
+  const staticFallbackDB = [
+    { title: 'Rose', subtitle: 'Zuchtblume', type: 'Flora', url: '/blumen/1', image: '/assets/img/acnh/flowers/Rose.png' },
+    { title: 'Tulpe', subtitle: 'Zuchtblume', type: 'Flora', url: '/blumen/2', image: '/assets/img/acnh/flowers/Tulpe.png' },
+    { title: 'Maiglöckchen', subtitle: 'Zuchtblume', type: 'Flora', url: '/blumen/9', image: '/assets/img/acnh/flowers/Maigloeckchen.png' },
+    { title: 'Gemüsegemälde', subtitle: 'Kunstwerk (Der Sommer)', type: 'Kunst', url: '/museum/kunst/1', image: '/assets/img/acnh/museum/Gemuesegemaelde_real.png' },
+    { title: 'T-Rex-Schädel', subtitle: 'Dino-Fossil (T-Rex)', type: 'Fossil', url: '/museum/fossilien', image: '/assets/img/acnh/museum/T-Rex-Schaedel.png' },
+  ];
+
+  async function performSearchQuery(query) {
+    const statusEl = document.getElementById('search-status');
+    const loadingEl = document.getElementById('search-loading');
+    const noResultsEl = document.getElementById('search-no-results');
+    const gridEl = document.getElementById('search-results-grid');
+    if (!statusEl || !loadingEl || !noResultsEl || !gridEl) return;
+
+    gridEl.innerHTML = '';
+    noResultsEl.classList.add('hide');
+
+    if (!query || query.length < 2) {
+      statusEl.textContent = 'Bitte gib mindestens 2 Zeichen ein.';
+      return;
+    }
+
+    statusEl.textContent = '';
+    loadingEl.classList.remove('hide');
+    let results = [];
+
+    try {
+      const endpoints = [
+        `${directusUrl}/items/creatures?filter[name][_icontains]=${encodeURIComponent(query)}&limit=15`,
+        `${directusUrl}/items/flowers?filter[name][_icontains]=${encodeURIComponent(query)}&limit=5`,
+        `${directusUrl}/items/diy_recipes?filter[name][_icontains]=${encodeURIComponent(query)}&limit=10`,
+        `${directusUrl}/items/cooking_recipes?filter[name][_icontains]=${encodeURIComponent(query)}&limit=10`,
+        `${directusUrl}/items/artworks?filter[name][_icontains]=${encodeURIComponent(query)}&limit=5`,
+        `${directusUrl}/items/fossils?filter[name][_icontains]=${encodeURIComponent(query)}&limit=5`,
+      ];
+      const responses = await Promise.all(endpoints.map((url) => fetch(url).then((r) => (r.ok ? r.json() : { data: [] })).catch(() => ({ data: [] }))));
+      const [creatures, flowers, diy, cooking, artworks, fossils] = responses.map((r) => r.data || []);
+
+      creatures.forEach((c) => results.push({ title: c.name, subtitle: `${c.price || 0} Sternis`, type: c.category === 'insect' ? 'Insekt' : c.category === 'fish' ? 'Fisch' : 'Meerestier', url: `/tier/${c.id}/`, image: getImageUrl(c.image_path) }));
+      flowers.forEach((f) => results.push({ title: f.name, subtitle: 'Zuchtblume', type: 'Flora', url: `/blumen/${f.id}/`, image: getImageUrl(f.image_path) }));
+      diy.forEach((d) => results.push({ title: d.name, subtitle: d.source || 'Bastelanleitung', type: 'Rezept', url: '/items/', image: getImageUrl(d.image_path) }));
+      cooking.forEach((ck) => results.push({ title: ck.name, subtitle: ck.source || 'Kochrezept', type: 'Rezept', url: '/items/', image: getImageUrl(ck.image_path) }));
+      artworks.forEach((art) => results.push({ title: art.name, subtitle: `Kunstwerk von ${art.artist}`, type: 'Kunst', url: `/museum/kunst/${art.id}`, image: getImageUrl(art.image_real) }));
+      fossils.forEach((f) => results.push({ title: f.name, subtitle: 'Dino-Fossil', type: 'Fossil', url: '/museum/fossilien', image: getImageUrl(f.image_path) }));
+    } catch (err) {
+      console.warn('Directus search error, using static fallback.', err);
+    }
+
+    const queryLower = query.toLowerCase();
+    staticFallbackDB
+      .filter((item) => item.title.toLowerCase().includes(queryLower) || item.subtitle.toLowerCase().includes(queryLower))
+      .forEach((sf) => { if (!results.some((r) => r.title.toLowerCase() === sf.title.toLowerCase())) results.push(sf); });
+
+    loadingEl.classList.add('hide');
+
+    if (results.length === 0) {
+      noResultsEl.classList.remove('hide');
+      statusEl.textContent = `Keine Ergebnisse für „${query}"`;
+      return;
+    }
+
+    statusEl.textContent = `${results.length} Ergebnisse für „${query}"`;
+    const frag = document.createDocumentFragment();
+    results.forEach((res) => {
+      const card = document.createElement('a');
+      card.href = res.url;
+      card.className = 'search-page-card';
+      card.innerHTML = `
+        <span class="search-page-img"><img src="${res.image}" alt="" onerror="this.src='/assets/img/acnh/koeder.png'" /></span>
+        <span><span class="sp-title">${res.title}</span><br><span class="sp-sub">${res.subtitle}</span></span>
+        <span class="sp-badge" data-type="${res.type}">${res.type}</span>`;
+      frag.appendChild(card);
+    });
+    gridEl.appendChild(frag);
+  }
+
+  function initSearchPage() {
+    const form = document.getElementById('search-page-form');
+    const input = document.getElementById('search-page-input');
+    if (!form || !input) return;
+    const query = new URLSearchParams(window.location.search).get('q');
+    if (query) { input.value = query; performSearchQuery(query); }
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const q = input.value.trim();
+      if (q) {
+        window.history.pushState({}, '', `${window.location.pathname}?q=${encodeURIComponent(q)}`);
+        performSearchQuery(q);
+      }
+    });
+  }
+
+  document.addEventListener('astro:page-load', initSearchPage);
+  initSearchPage();
+</script>

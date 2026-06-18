@@ -1,0 +1,19 @@
+---
+/**
+ * PageHero · themed banner at the top of a section page.
+ * Accent is chosen per page (Open-Closed: just pass `accent`).
+ */
+interface Props {
+  emoji?: string;
+  title: string;
+  subtitle?: string;
+  accent?: string;
+}
+const { emoji, title, subtitle, accent = 'guide' } = Astro.props;
+---
+<section class={`page-hero accent-${accent}`}>
+  {emoji && <span class="hero-emoji">{emoji}</span>}
+  <h1>{title}</h1>
+  {subtitle && <p>{subtitle}</p>}
+  <slot />
+</section>

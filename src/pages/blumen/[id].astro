@@ -437,12 +437,10 @@ const matchingGuide = allGuides.find(g => g.data.flowerId === Number(flower.id))
     }
 }
 
-@media (prefers-color-scheme: dark) {
-    .probability-badge {
-        background: var(--ac-bg);
-        color: var(--ac-bell);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-        border: 1px solid var(--ac-border);
-    }
+[data-theme='dark'] .probability-badge {
+    background: var(--ac-bg);
+    color: var(--ac-bell);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--ac-border);
 }
 </style>

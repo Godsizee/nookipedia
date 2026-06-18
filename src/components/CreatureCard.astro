@@ -1,0 +1,54 @@
+---
+/**
+ * CreatureCard · the signature data card for fish / insects / sea creatures.
+ * Self-contained (SRP): derives everything from the `creature` record and
+ * the shared format helpers. Carries data-* attributes so the faunapaedie
+ * client filter can read straight off the card.
+ */
+import { getImageUrl, formatBells, MONTHS_SHORT, accentFor, shadowClass } from '../lib/format.js';
+
+interface Props { creature: any; }
+const { creature: c } = Astro.props;
+
+const months = c.months_northern || [];
+---
+<article
+  class={`creature-card accent-${accentFor(c.category)}`}
+  id={`creature-${c.id}`}
+  data-category={c.category}
+  data-months={months.join(',')}
+  data-time={c.time_active || ''}
+>
+  <div class="card-content-top">
+    <div class="img-container" transition:name={`creature-img-${c.id}`}>
+      <img src={getImageUrl(c.image_path)} alt={c.name} loading="lazy" onerror="this.src='/assets/img/acnh/koeder.png'" />
+    </div>
+    <div class="stack stack-2 grow">
+      <h3 class="name">{c.name}</h3>
+      <span class="price-tag">💰 {formatBells(c.price)}</span>
+    </div>
+  </div>
+
+  <div class="creature-info-list">
+    <div class="info-row"><span class="info-label">📍 Ort</span><span class="info-value">{c.location_name || 'Inselweit'}</span></div>
+    <div class="info-row"><span class="info-label">⏰ Zeit</span><span class="info-value">{c.time_active || 'Ganztägig'}</span></div>
+    {c.shadow_image && (
+      <div class="info-row">
+        <span class="info-label">👤 Schatten</span>
+        <span class="info-value"><span class={`shadow-circle ${shadowClass(c.shadow_image)}`}></span>{c.shadow_image}</span>
+      </div>
+    )}
+    {c.speed && <div class="info-row"><span class="info-label">💨 Tempo</span><span class="info-value">{c.speed}</span></div>}
+    {c.weather && <div class="info-row"><span class="info-label">🌦️ Wetter</span><span class="info-value">{c.weather}</span></div>}
+  </div>
+
+  {c.catchphrase && <div class="ac-bubble">„{c.catchphrase}"</div>}
+
+  <div class="month-grid">
+    {MONTHS_SHORT.map((m, i) => (
+      <div class={`month-box ${months.includes(i + 1) ? 'active' : 'inactive'}`}>{m}</div>
+    ))}
+  </div>
+
+  <a href={`/tier/${c.id}/`} class="ac-btn ac-btn--primary ac-btn--block">Akte öffnen →</a>
+</article>

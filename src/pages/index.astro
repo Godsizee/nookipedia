@@ -1,58 +1,44 @@
 ---
 import Layout from '../layouts/Layout.astro';
+
+/** Home "Nook Phone" launcher — one row of data drives the whole grid. */
+const apps = [
+  { href: '/museum/',      accent: 'museum',   emoji: '🏛️', img: null,                                         label: 'Das Museum',          sub: 'Eugens Sammlungen' },
+  { href: '/faunapaedie/', accent: 'insect',   emoji: null,  img: '/assets/img/acnh/home/vogelfalter.png',     label: 'Faunapädie',          sub: 'Fische · Insekten · Meer' },
+  { href: '/blumen/',      accent: 'flower',   emoji: null,  img: '/assets/img/acnh/home/Red_Cosmos_NL_Icon.png', label: 'Pflanzenwelt',      sub: 'Blumen & Hybriden' },
+  { href: '/events/',      accent: 'event',    emoji: null,  img: '/assets/img/acnh/home/64px-Red_Balloon_NH_Icon.png', label: 'Feiertage & Events', sub: 'Der Festkalender' },
+  { href: '/materialien/', accent: 'material', emoji: null,  img: '/assets/img/acnh/home/64px-Tree_Branch_NH_Inv_Icon.png', label: 'Materialien',  sub: 'Zutaten & Rohstoffe' },
+  { href: '/rezepte',      accent: 'recipe',   emoji: null,  img: '/assets/img/acnh/home/BastelnKochen.png',    label: 'Basteln & Kochen',    sub: 'DIY & Rezepte' },
+  { href: '/villager/',    accent: 'villager', emoji: '🐾',  img: null,                                         label: 'Bewohner',            sub: 'Alle Inselnachbarn' },
+  { href: '/katalog/',     accent: 'material', emoji: '🛋️',  img: null,                                         label: 'Item-Katalog',        sub: 'Möbel & Gegenstände' },
+  { href: '/guides/',      accent: 'guide',    emoji: '📖',  img: null,                                         label: 'Zucht-Guides',        sub: 'Schritt für Schritt' },
+];
 ---
 
 <Layout title="Willkommen auf Nookipedia">
-    <section class="hero">
-        <div style="font-size: 4.5rem; margin-bottom: 15px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));">🏝️</div>
-        <h1>Nookipedia Next-Level</h1>
-        <p>Dein ultimativer, fabelhafter und pfeilschneller Begleiter für Animal Crossing: New Horizons.</p>
-    </section>
+  <section class="hero">
+    <span class="hero-emoji floating" style="font-size:4.5rem">🏝️</span>
+    <h1>Nookipedia Next-Level</h1>
+    <p>Dein ultimativer, fabelhafter und pfeilschneller Begleiter für Animal Crossing: New Horizons.</p>
+  </section>
 
-    <div class="category-selection">
-        <a href="/museum/" class="cat-card cat-card-museum">
-            <i>
-                <span style="font-size: 2.2rem; line-height: 1; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));">🏛️</span>
-            </i>
-            <span>Das Museum</span>
-        </a>
+  <nav class="app-grid" aria-label="Hauptkategorien">
+    {apps.map((a) => (
+      <a href={a.href} class={`app-tile accent-${a.accent}`}>
+        <span class="tile-icon">
+          {a.img
+            ? <img src={a.img} alt="" loading="lazy" onerror="this.src='/assets/img/acnh/placeholder.png'" />
+            : a.emoji}
+        </span>
+        <span class="stack stack-2">
+          <span class="tile-label">{a.label}</span>
+          <span class="tile-sub">{a.sub}</span>
+        </span>
+      </a>
+    ))}
+  </nav>
 
-        <a href="/faunapaedie/" class="cat-card faunapaedie">
-            <i><img src="/assets/img/acnh/home/vogelfalter.png" alt="Faunapädie" style="max-width: 80%; max-height: 80%; object-fit: contain;" onerror="this.src='/assets/img/acnh/placeholder.png'" /></i>
-            <span>Faunapädie</span>
-        </a>
-        
-        <a href="/blumen/" class="cat-card flowers">
-            <i><img src="/assets/img/acnh/home/Red_Cosmos_NL_Icon.png" alt="Pflanzenwelt" style="max-width: 80%; max-height: 80%; object-fit: contain;" onerror="this.src='/assets/img/acnh/placeholder.png'" /></i>
-            <span>Pflanzenwelt</span>
-        </a>
-
-        <a href="/events/" class="cat-card events">
-            <i><img src="/assets/img/acnh/home/64px-Red_Balloon_NH_Icon.png" alt="Feiertage & Events" style="max-width: 80%; max-height: 80%; object-fit: contain;" onerror="this.src='/assets/img/acnh/placeholder.png'" /></i>
-            <span>Feiertage & Events</span>
-        </a>
-
-        <a href="/materialien/" class="cat-card" style="border-color: rgba(41, 182, 246, 0.4);">
-            <i><img src="/assets/img/acnh/home/64px-Tree_Branch_NH_Inv_Icon.png" alt="Materialien & Zutaten" style="max-width: 80%; max-height: 80%; object-fit: contain;" onerror="this.src='/assets/img/acnh/placeholder.png'" /></i>
-            <span>Materialien & Zutaten</span>
-        </a>
-
-        <a href="/rezepte" class="cat-card" style="border-color: rgba(255, 152, 0, 0.4);">
-            <i><img src="/assets/img/acnh/home/BastelnKochen.png" alt="Bastelanleitungen & Kochrezepte" style="max-width: 80%; max-height: 80%; object-fit: contain;" onerror="this.src='/assets/img/acnh/placeholder.png'" /></i>
-            <span>Basteln & Kochen</span>
-        </a>
-
-        <a href="/guides/" class="cat-card" style="border-color: rgba(89, 166, 131, 0.4);">
-            <i>
-                <span style="font-size: 2.2rem; line-height: 1; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.1));">📖</span>
-            </i>
-            <span>Zucht-Guides</span>
-        </a>
-    </div>
-
-    <div style="margin-top: 50px; text-align: center;">
-        <p style="color: var(--ac-text-muted); font-size: 1rem; font-weight: 600;">
-            Wähle eine Kategorie aus, um zu sehen, was du gerade auf deiner Insel entdecken kannst!
-        </p>
-    </div>
+  <p class="text-center muted mt-10" style="font-weight:700">
+    Wähle eine Kategorie, um zu sehen, was du gerade auf deiner Insel entdecken kannst! 🌟
+  </p>
 </Layout>

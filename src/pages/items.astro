@@ -1,58 +1,21 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { getRecipes } from '../lib/api.js';
+import PageHero from '../components/PageHero.astro';
+import RecipeCard from '../components/RecipeCard.astro';
+import { getRecipes, DEFAULT_DIRECTUS } from '../lib/api.js';
 
-const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
+const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || DEFAULT_DIRECTUS;
 const recipes = await getRecipes(directusUrl);
-
-const getImageUrl = (path) => {
-  if (!path) return '/assets/img/acnh/koeder.png';
-  if (path.startsWith('http')) return path;
-  if (path.includes('/') || path.includes('.')) {
-    let clean = path.startsWith('/') ? path.slice(1) : path;
-    if (clean.startsWith('assets/')) clean = clean.slice(7);
-    if (clean.startsWith('img/acnh/')) clean = clean.slice(9);
-    return `/assets/img/acnh/${clean}`;
-  }
-  return `${directusUrl}/assets/${path}`;
-};
 ---
 
-<Layout title="Bastelanleitungen & Kochrezepte - Nookipedia">
-    <div class="hero" style="background: linear-gradient(135deg, #ffa726 0%, #fb8c00 100%);">
-        <h1>Bastelanleitungen & Kochrezepte</h1>
-        <p>Lass deiner Kreativität freien Lauf an der Werkbank und am Herd!</p>
-    </div>
+<Layout title="Alle Rezepte - Nookipedia">
+  <PageHero accent="recipe" emoji="📒" title="Alle Rezepte" subtitle="Jede Bastelanleitung und jedes Kochrezept auf einen Blick." />
 
-    <div class="recipe-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; max-width:1000px; margin: 2rem auto 4rem;">
-        {recipes.map((recipe) => {
-            const imageUrl = getImageUrl(recipe.image_path);
-            return (
-                <article class="recipe-card-premium" style="background: var(--ac-surface); border-radius: var(--radius-lg); box-shadow: var(--ac-shadow); padding: 1.5rem; display: flex; flex-direction: column; justify-content: space-between; border: 2px solid transparent; transition: transform 0.2s;">
-                    <div style="display:flex; gap:1rem; align-items:center;">
-                        <div class="visual-glow" style="width: 80px; height: 80px; background: var(--ac-bg); border-radius: 20px; display:flex; align-items:center; justify-content:center; padding: 10px;" transition:name={`recipe-img-${recipe.id}`}>
-                            <img src={imageUrl} alt={recipe.name} onerror="this.src='/assets/img/acnh/placeholder.png'" style="width:100%; height:100%; object-fit:contain;" />
-                        </div>
-                        <div>
-                            <h3 style="margin:0 0 6px; font-size:1.3rem; font-weight:900;">{recipe.name}</h3>
-                            {recipe.is_customizable && (
-                                <span style="background:var(--ac-green-light); color:var(--ac-green); font-weight:800; font-size:0.75rem; padding:2px 8px; border-radius:100px;">🎨 Umgestaltbar</span>
-                            )}
-                        </div>
-                    </div>
+  <div class="grid-auto accent-recipe" style="--min: 240px; margin-bottom: var(--sp-12);">
+    {recipes.map((recipe) => <RecipeCard recipe={recipe} />)}
+  </div>
 
-                    <div style="margin: 1.5rem 0; border-top: 1px solid rgba(0,0,0,0.05); border-bottom: 1px solid rgba(0,0,0,0.05); padding: 1rem 0; display:flex; flex-direction:column; gap:6px; font-size:0.9rem;">
-                        {recipe.source && <div><strong>📍 Quelle:</strong> {recipe.source}</div>}
-                        {recipe.sell_price && <div><strong>💰 Wert:</strong> {recipe.sell_price}</div>}
-                    </div>
-
-                    <div style="text-align:center;">
-                        <a href={`/items/${recipe.id}/`} style="display:inline-block; width:100%; padding:0.8rem; background:var(--ac-green); color:white; font-weight:800; border-radius:var(--radius-sm); text-decoration:none;">
-                            Anleitung ansehen →
-                        </a>
-                    </div>
-                </article>
-            );
-        })}
-    </div>
+  {recipes.length === 0 && (
+    <div class="empty-state"><span class="emoji">📒</span> Noch keine Rezepte verfügbar.</div>
+  )}
 </Layout>

@@ -1,0 +1,53 @@
+---
+/**
+ * FlowerCard · flower overview card with breeding color badges + guide link.
+ */
+import { getImageUrl } from '../lib/format.js';
+interface Props { flower: any; }
+const { flower: f } = Astro.props;
+const colors = f.colors || [];
+const slug = (c) => c.toLowerCase().trim().replace(/\s+/g, '-').replace('ß', 'ss');
+---
+<article class="flower-card accent-flower" id={`flower-${f.id}`}>
+  <div class="card-content-top">
+    <div class="img-container" transition:name={`flower-img-${f.id}`}>
+      <img src={getImageUrl(f.image_path)} alt={f.name} onerror="this.src='/assets/img/acnh/koeder.png'" />
+    </div>
+    <div class="stack stack-2 grow">
+      <h3 class="name">{f.name}</h3>
+      <span class="ac-badge">📖 Zucht-Guide</span>
+    </div>
+  </div>
+
+  <p class="muted flower-desc">{f.description || `Der komplette Guide zur Zucht und Genetik der ${f.name}.`}</p>
+
+  {colors.length > 0 && (
+    <div>
+      <span class="flower-color-label">Mögliche Zuchtfarben</span>
+      <div class="cluster" style="gap: 6px;">
+        {colors.map((c) => <span class={`color-badge color-${slug(c)}`}>{c}</span>)}
+      </div>
+    </div>
+  )}
+
+  <a href={`/blumen/${f.id}/`} class="ac-btn ac-btn--primary ac-btn--block">Zucht-Guide öffnen →</a>
+</article>
+
+<style>
+  .flower-card { display: flex; flex-direction: column; gap: var(--sp-4); height: 100%; padding: var(--sp-5); background: var(--ac-surface); border: 2px solid var(--ac-border); border-radius: var(--radius-lg); box-shadow: var(--ac-shadow); transition: transform var(--t-base) var(--ease-spring), border-color var(--t-base), box-shadow var(--t-base); }
+  .flower-card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: var(--ac-shadow-lg); }
+  .flower-desc { font-size: 0.94rem; line-height: 1.5; }
+  .flower-color-label { display: block; margin-bottom: 8px; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--ac-text-muted); }
+  .color-badge { padding: 0.25rem 0.65rem; border-radius: 8px; font-size: 0.75rem; font-weight: 800; border: 1px solid rgba(0, 0, 0, 0.06); }
+  .color-rot { background: #ffcdd2; color: #c62828; }
+  .color-gelb { background: #fff9c4; color: #f57f17; }
+  .color-weiss, .color-weiß { background: #f5f5f5; color: #424242; }
+  .color-pink { background: #f8bbd0; color: #c2185b; }
+  .color-orange { background: #ffe0b2; color: #e65100; }
+  .color-schwarz { background: #212121; color: #fff; }
+  .color-lila { background: #e1bee7; color: #6a1b9a; }
+  .color-blau { background: #bbdefb; color: #0d47a1; }
+  .color-gruen, .color-grün { background: #c8e6c9; color: #2e7d32; }
+  .color-gold { background: #fff59d; color: #f57f17; border-color: #fbc02d; }
+  .flower-card .name { font-family: var(--font-display); font-weight: 700; font-size: 1.35rem; }
+</style>

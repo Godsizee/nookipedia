@@ -1,0 +1,32 @@
+---
+/**
+ * InfoBox · the friendly "fluff" panel with an optional grid of tip cards.
+ * Replaces the hand-duplicated info blocks. Body text goes in the slot;
+ * `tips` renders the small highlight cards. `id`/`hidden` support tabbed use.
+ */
+interface Tip { title: string; text: string; }
+interface Props {
+  emoji?: string;
+  title: string;
+  accent?: string;
+  tips?: Tip[];
+  id?: string;
+  hidden?: boolean;
+}
+const { emoji, title, accent, tips = [], id, hidden = false } = Astro.props;
+const cls = ['info-box', accent && `accent-${accent}`, hidden && 'hide'].filter(Boolean).join(' ');
+---
+<div id={id} class={cls}>
+  <h2>{emoji && <span>{emoji}</span>}{title}</h2>
+  <slot />
+  {tips.length > 0 && (
+    <div class="tip-grid">
+      {tips.map((t) => (
+        <div class="tip-card">
+          <strong>{t.title}</strong>
+          <span set:html={t.text} />
+        </div>
+      ))}
+    </div>
+  )}
+</div>
