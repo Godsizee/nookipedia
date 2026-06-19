@@ -25,7 +25,7 @@ const categories = [
         <div class="grid-auto" style="--min: 210px; --gap: var(--sp-3);">
           {cat.items.map((mat) => (
             <div class="mat-card" id={`mat-${mat.id}`}>
-              <span class="mat-img"><img src={getImageUrl(mat.image_path)} alt={mat.name} loading="lazy" onerror="this.src='/assets/img/acnh/koeder.png'" /></span>
+              <span class="mat-img"><img src={getImageUrl(mat.image_path, { folder: 'materials' })} alt={mat.name} loading="lazy" onerror="this.src='/assets/img/acnh/koeder.png'" /></span>
               <span class="stack stack-2 grow">
                 <span class="mat-name">{mat.name}</span>
                 <span class="muted" style="font-size: 0.75rem;">📍 {mat.source || 'Unbekannt'}</span>

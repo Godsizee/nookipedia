@@ -14,29 +14,68 @@ export function formatBells(value) {
   return new Intl.NumberFormat('de-DE').format(value || 0) + ' Sternis';
 }
 
+const LOCAL_BASE = '/assets/img/acnh';
+
 /**
  * Resolve an image reference to a usable URL.
- * Handles: absolute URLs, local /assets/img/acnh paths, and bare Directus
- * asset IDs. Keeps one rule set so every page renders images identically.
+ *
+ * The dataset stores image references in two shapes:
+ *   • a path that already carries its category sub-folder, e.g.
+ *     "faunapedia/insects/Ant.png" or "flowers/Rose.png"
+ *   • a bare file name whose folder is *implied* by the entity, e.g.
+ *     materials → "64px-Wood…png", events → "…Nook_shopping.webp"
+ *   A bare token without an extension is treated as a Directus asset ID.
+ *
+ * `folder` supplies the implied sub-folder for the bare-filename case, so each
+ * entity lands in its correct directory (materials/, events/, museum/, …) —
+ * mirroring the per-model paths the original backend used. Without it, bare
+ * file names resolved to the asset root and silently fell back to placeholders.
+ *
+ * Accepts either an options object `{ folder, fallback }` or, for backwards
+ * compatibility, a plain string fallback as the second argument.
  */
-export function getImageUrl(path, fallback = '/assets/img/acnh/koeder.png') {
+export function getImageUrl(path, opts = {}) {
+  const { folder = '', fallback = '/assets/img/acnh/koeder.png' } =
+    typeof opts === 'string' ? { fallback: opts } : opts;
+
   if (!path) return fallback;
   if (path.startsWith('http')) return path;
-  if (path.includes('/') || path.includes('.')) {
-    let clean = path.startsWith('/') ? path.slice(1) : path;
-    if (clean.startsWith('assets/')) clean = clean.slice(7);
-    if (clean.startsWith('img/acnh/')) clean = clean.slice(9);
-    return `/assets/img/acnh/${clean}`;
+
+  // Normalise accidental local prefixes ("/assets/img/acnh/…", "assets/…").
+  let clean = path.replace(/^\/+/, '');
+  if (clean.startsWith('assets/')) clean = clean.slice('assets/'.length);
+  if (clean.startsWith('img/acnh/')) clean = clean.slice('img/acnh/'.length);
+
+  // A bare token with no folder and no extension → a Directus asset ID.
+  if (!clean.includes('/') && !clean.includes('.')) {
+    return `${DIRECTUS_URL}/assets/${clean}`;
   }
-  return `${DIRECTUS_URL}/assets/${path}`;
+
+  // Decide what the value is relative to. Bare file names and "../"-relative
+  // paths (materials reuse DIY icons via "../diy/tools/…") are anchored at the
+  // category folder; a value that already carries its own sub-folder is
+  // anchored at the asset root.
+  const anchored =
+    folder && (!clean.includes('/') || clean.startsWith('../'))
+      ? `${folder}/${clean}`
+      : clean;
+
+  return `${LOCAL_BASE}/${collapseRelative(anchored)}`;
+}
+
+/** Collapse "." / ".." segments so e.g. "materials/../diy/x.png" → "diy/x.png". */
+function collapseRelative(p) {
+  const out = [];
+  for (const seg of p.split('/')) {
+    if (seg === '..') out.pop();
+    else if (seg && seg !== '.') out.push(seg);
+  }
+  return out.join('/');
 }
 
 /** Resolve a museum asset (fossils / artworks / NPCs live in the museum/ folder). */
 export function museumImage(path, fallback = '/assets/img/acnh/placeholder.png') {
-  if (!path) return fallback;
-  if (path.startsWith('http')) return path;
-  if (path.includes('/') || path.includes('.')) return `/assets/img/acnh/museum/${path}`;
-  return `${DIRECTUS_URL}/assets/${path}`;
+  return getImageUrl(path, { folder: 'museum', fallback });
 }
 
 /**
