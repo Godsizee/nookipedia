@@ -19,6 +19,9 @@ const tabs = [
   { key: 'sea',    emoji: '🐙', label: 'Meerestiere', list: seaList },
 ];
 
+// Full month names for the catch planner (month + hour query)
+const MONTHS_LONG = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+
 const fishTips = [
   { title: '🎣 Der Köder-Trick', text: 'Aus am Strand ausgegrabenen Teppichmuscheln bastelst du pro Muschel einen Köder. Köder garantieren einen passenden Fisch und schließen Müll komplett aus!' },
   { title: '♻️ Müll-Recycling', text: 'Ohne Köder angelst du manchmal Steine, Stiefel, Dosen oder Reifen. Kein Grund zum Ärgern: Damit schaltest du eigene Bastelanleitungen frei.' },
@@ -66,6 +69,26 @@ const seaTips = [
     <button id="clear-filters" class="ac-btn">🧹 Zurücksetzen</button>
   </div>
 
+  <!-- Catch planner · query catchability for any chosen month & hour -->
+  <div class="filter-bar planner-bar mb-6">
+    <span class="planner-label">🔮 Fang-Planer</span>
+    <label class="planner-field">
+      <span>📅 Monat</span>
+      <select id="plan-month" class="ac-input">
+        <option value="">— egal —</option>
+        {MONTHS_LONG.map((m, i) => <option value={i + 1}>{m}</option>)}
+      </select>
+    </label>
+    <label class="planner-field">
+      <span>⏰ Uhrzeit</span>
+      <select id="plan-hour" class="ac-input">
+        <option value="">— egal —</option>
+        {Array.from({ length: 24 }, (_, h) => <option value={h}>{String(h).padStart(2, '0')}:00 Uhr</option>)}
+      </select>
+    </label>
+    <span class="planner-hint" id="plan-hint"></span>
+  </div>
+
   <!-- Quick-nav mini grids -->
   <div class="ac-card mb-8">
     {tabs.map((t, i) => (
@@ -96,9 +119,11 @@ const seaTips = [
 </Layout>
 
 <script is:inline>
-  // Is a creature catchable right now? (month + one-or-more time-of-day windows)
-  function isCatchableNow(months, timeStr, month, hour) {
-    if (months.length && !months.includes(month)) return false;
+  const MONTHS_LONG = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+  const CAT_LABEL = { fish: 'Fische', insect: 'Insekten', sea: 'Meerestiere' };
+
+  // Is the creature active during a given hour? (parses one-or-more time windows)
+  function isActiveAtHour(timeStr, hour) {
     const t = (timeStr || '').toLowerCase();
     if (/immer|ganz|all/.test(t) || !t) return true;
     const hrs = (t.match(/(\d{1,2}):/g) || []).map((h) => parseInt(h, 10));
@@ -108,6 +133,19 @@ const seaTips = [
       if (s < e ? (hour >= s && hour < e) : (hour >= s || hour < e)) return true;
     }
     return false;
+  }
+
+  // Is a creature catchable right now? (month + time-of-day windows)
+  function isCatchableNow(months, timeStr, month, hour) {
+    if (months.length && !months.includes(month)) return false;
+    return isActiveAtHour(timeStr, hour);
+  }
+
+  // Does a creature match the planner query? null = "egal" (ignored)
+  function matchesQuery(months, timeStr, qMonth, qHour) {
+    if (qMonth !== null && months.length && !months.includes(qMonth)) return false;
+    if (qHour !== null && !isActiveAtHour(timeStr, qHour)) return false;
+    return true;
   }
 
   function initFaunapedia() {
@@ -121,7 +159,14 @@ const seaTips = [
     const resultNum = document.getElementById('result-num');
     const btnClear = document.getElementById('clear-filters');
     const emptyState = document.getElementById('empty-state');
+    const planMonth = document.getElementById('plan-month');
+    const planHour = document.getElementById('plan-hour');
+    const planHint = document.getElementById('plan-hint');
     if (!tabs.length || !filterMonth) return;
+
+    // Restore planner selection (global across categories)
+    if (planMonth) planMonth.value = localStorage.getItem('nook_plan_month') || '';
+    if (planHour) planHour.value = localStorage.getItem('nook_plan_hour') || '';
 
     let activeCategory = localStorage.getItem('nook_active_faunapedia_tab') || 'fish';
 
@@ -132,6 +177,13 @@ const seaTips = [
       const term = (search.value || '').trim().toLowerCase();
       localStorage.setItem(`nook_filter_${activeCategory}_month`, filterMonth.checked);
       localStorage.setItem(`nook_filter_${activeCategory}_now`, filterNow.checked);
+
+      // Planner query: chosen month / hour ('' = egal → null = ignored)
+      const qMonth = planMonth && planMonth.value !== '' ? parseInt(planMonth.value, 10) : null;
+      const qHour = planHour && planHour.value !== '' ? parseInt(planHour.value, 10) : null;
+      const planActive = qMonth !== null || qHour !== null;
+      localStorage.setItem('nook_plan_month', planMonth ? planMonth.value : '');
+      localStorage.setItem('nook_plan_hour', planHour ? planHour.value : '');
 
       let visibleCount = 0;
       creatureCards.forEach((card) => {
@@ -146,6 +198,7 @@ const seaTips = [
         if (term && !(card.dataset.name || '').includes(term)) visible = false;
         if (visible && filterMonth.checked && months.length && !months.includes(currentMonth)) visible = false;
         if (visible && filterNow.checked && !liveNow) visible = false;
+        if (visible && planActive && !matchesQuery(months, timeStr, qMonth, qHour)) visible = false;
 
         const mCard = document.querySelector(`.mini-card[data-id="${card.id.split('-')[1]}"]`);
         if (mCard) { mCard.classList.toggle('faded', !visible); mCard.classList.toggle('is-now', liveNow); }
@@ -155,6 +208,21 @@ const seaTips = [
 
       if (resultNum) resultNum.textContent = visibleCount;
       emptyState.classList.toggle('hide', visibleCount !== 0);
+
+      // Plain-language summary of the active planner query
+      if (planHint) {
+        const cat = CAT_LABEL[activeCategory] || 'Kreaturen';
+        let msg = '';
+        if (qMonth !== null && qHour !== null) {
+          msg = `Zeigt ${cat}, die im ${MONTHS_LONG[qMonth - 1]} um ${String(qHour).padStart(2, '0')}:00 Uhr fangbar sind.`;
+        } else if (qMonth !== null) {
+          msg = `Zeigt ${cat}, die im ${MONTHS_LONG[qMonth - 1]} fangbar sind.`;
+        } else if (qHour !== null) {
+          msg = `Zeigt ${cat}, die um ${String(qHour).padStart(2, '0')}:00 Uhr fangbar sind.`;
+        }
+        planHint.textContent = msg;
+        planHint.classList.toggle('hide', !msg);
+      }
     }
 
     function switchTab(category) {
@@ -172,7 +240,14 @@ const seaTips = [
     filterMonth.addEventListener('change', applyFilters);
     filterNow.addEventListener('change', applyFilters);
     search.addEventListener('input', applyFilters);
-    btnClear.addEventListener('click', () => { filterMonth.checked = false; filterNow.checked = false; search.value = ''; applyFilters(); });
+    if (planMonth) planMonth.addEventListener('change', applyFilters);
+    if (planHour) planHour.addEventListener('change', applyFilters);
+    btnClear.addEventListener('click', () => {
+      filterMonth.checked = false; filterNow.checked = false; search.value = '';
+      if (planMonth) planMonth.value = '';
+      if (planHour) planHour.value = '';
+      applyFilters();
+    });
 
     document.querySelectorAll('.mini-card').forEach((card) => {
       card.addEventListener('click', (e) => {

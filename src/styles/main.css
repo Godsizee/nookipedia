@@ -614,6 +614,17 @@
   .ac-checkbox:hover { background: var(--ac-surface-2); }
   .ac-checkbox input { width: 20px; height: 20px; accent-color: var(--accent); cursor: pointer; }
 
+  /* ── Catch planner (month + hour query) ───────────────────── */
+  .planner-bar { gap: var(--sp-4); }
+  .planner-label { font-weight: 900; font-size: 1.05rem; white-space: nowrap; }
+  .planner-field { display: inline-flex; align-items: center; gap: var(--sp-2); font-weight: 800; }
+  .planner-field select.ac-input { min-width: auto; }
+  .planner-hint {
+    flex: 1 1 220px;
+    font-weight: 700; color: var(--ac-text-muted);
+  }
+  .planner-hint.hide { display: none; }
+
   /* ── Toolbar (search + selects) ───────────────────────────── */
   .toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-6); }
   .ac-input {
