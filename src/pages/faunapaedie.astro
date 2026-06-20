@@ -5,9 +5,10 @@ import InfoBox from '../components/InfoBox.astro';
 import CreatureCard from '../components/CreatureCard.astro';
 import { getCreatures, DEFAULT_DIRECTUS } from '../lib/api.js';
 import { getImageUrl } from '../lib/format.js';
+import creaturesFallback from '../data/creatures.json';
 
 const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || DEFAULT_DIRECTUS;
-const creatures = await getCreatures(directusUrl);
+const creatures = await getCreatures(directusUrl, creaturesFallback);
 
 const fishList = creatures.filter((c) => c.category === 'fish');
 const insectList = creatures.filter((c) => c.category === 'insect');

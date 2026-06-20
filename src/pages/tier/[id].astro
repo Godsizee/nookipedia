@@ -1,10 +1,11 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCreatures } from '../../lib/api.js';
+import creaturesFallback from '../../data/creatures.json';
 
 export async function getStaticPaths() {
   const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
-  const creatures = await getCreatures(directusUrl);
+  const creatures = await getCreatures(directusUrl, creaturesFallback);
 
 
   return creatures.map((creature) => {
