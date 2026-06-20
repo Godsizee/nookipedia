@@ -10,14 +10,17 @@ Anemonen (engl. Windflowers) gehören zu den vielseitigsten Blumen in Animal Cro
 
 ## Profi-Tipps für die Zucht
 
-### 💧 Besucher-Bonus
-Das Gießen durch fremde Besucher erhöht die Chance auf neue Knospen massiv!
-- **Du selbst:** ~5% Chance
-- **1 Besucher:** ~25% Chance
-- **5 Besucher:** ~80% Chance (Blumen glitzern golden!)
+### 💧 Gieß-Chancen (Datamined)
+Jede gegossene Blume "würfelt" um 5 Uhr morgens, ob sie sich vermehrt. Fremde Besucher, die mitgießen, steigern diese Chance massiv – es zählen bis zu 5 Besucher pro Tag:
+- **Nur du / Regen:** 5 %
+- **1 Besucher:** 25 %
+- **2 Besucher:** 35 %
+- **3 Besucher:** 50 %
+- **4 Besucher:** 65 %
+- **5+ Besucher:** 80 % *(die Blume glitzert dann besonders hell!)*
 
-### 👯 Das Klonen
-Wenn du eine seltene Farbe (wie Lila oder Blau) hast und mehr willst, stelle die Blume **alleine** auf ein Feld (kein Kontakt zu anderen Blumen). Gießt du sie, klont sie sich mit einer gewissen Wahrscheinlichkeit exakt selbst.
+### 👯 Klonen (sortenreine Vermehrung)
+Hast du eine seltene Farbe (Lila oder Blau), stelle sie **isoliert** auf – keine andere Anemone in den 8 Nachbarfeldern. Vermehrt sie sich beim Gießen, ist das Kind eine **100 % genetisch identische Kopie**. Wichtig: Die *tägliche* Chance bleibt dieselbe wie oben (5–80 %), nur das Ergebnis ist garantiert sortenrein.
 
 ### 📏 Layout & Sauberkeit
-Ein Schachbrettmuster ist super für große Flächen. Willst du 100% reine Genetik, nutze die **Paarweise Isolierung**. Entferne zudem "ungewollte" Blumenkinder sofort, damit sie den Genpool nicht ruinieren.
+Ein Schachbrettmuster ist super für große Flächen. Für saubere Genetik nutze die **paarweise Isolierung** (zwei Eltern nebeneinander, ringsum ein Feld Abstand). Entferne "ungewollte" Blumenkinder sofort, damit sie keinen Platz blockieren und nicht mit falschen Genen weiterkreuzen.

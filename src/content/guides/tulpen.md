@@ -10,11 +10,17 @@ Tulpen (engl. Tulips) sind klassische Frühlingsblumen und gehören zu den unkom
 
 ## Profi-Tipps für die Zucht
 
-### 💧 Besucher-Bonus
-Die Wahrscheinlichkeit, dass ein Blumenpaar eine neue Knospe hervorbringt, hängt stark vom Gießen ab. Lass **5 Besucher** gießen, um die Vermehrungschance auf fantastische 80% anzuheben!
+### 💧 Gieß-Chancen (Datamined)
+Die Wahrscheinlichkeit, dass ein Blumenpaar eine neue Knospe hervorbringt, hängt stark vom Gießen ab. Fremde Besucher heben sie deutlich an – es zählen bis zu 5 pro Tag:
+- **Nur du / Regen:** 5 %
+- **1 Besucher:** 25 %
+- **2 Besucher:** 35 %
+- **3 Besucher:** 50 %
+- **4 Besucher:** 65 %
+- **5+ Besucher:** 80 % *(besonders helles Glitzern)*
 
 ### 👯 Klonen seltener Farben
-Sobald du deine erste lila oder schwarze Tulpe hast, solltest du sie isolieren. Stelle sie auf ein Feld ohne kontakt zu anderen Tulpen. So klont sich die Blume und garantiert dir Nachwuchs derselben Genetik.
+Sobald du deine erste lila oder schwarze Tulpe hast, isoliere sie – keine andere Tulpe in den 8 Nachbarfeldern. Vermehrt sie sich beim Gießen, ist das Kind eine **100 % identische Kopie** derselben Genetik (tägliche Chance gemäß Gieß-Tabelle oben).
 
 ### 📏 Das \"X\"-Muster
 Für die Zucht von Lila aus Orange eignet sich ein versetztes Schachbrettmuster. So hat jede Blume genügend Platz, um in die angrenzenden freien Felder zu "werfen".

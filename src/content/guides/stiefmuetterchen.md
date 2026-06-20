@@ -10,11 +10,17 @@ Stiefmütterchen (engl. Pansies) bestechen durch ihre zweifarbigen Blütenblätt
 
 ## Profi-Tipps für die Zucht
 
-### 💧 Besucher-Bonus
-Die Chance auf eine neue Blume pro Tag ist ohne Hilfe gering (~5%). Lass **5 Besucher** gießen, um die Chance auf ~80% zu erhöhen. Dies ist der absolut schnellste Weg zu Lila!
+### 💧 Gieß-Chancen (Datamined)
+Jede gegossene Blume "würfelt" um 5 Uhr morgens auf Vermehrung. Fremde Besucher steigern diese Chance enorm – es zählen bis zu 5 pro Tag:
+- **Nur du / Regen:** 5 %
+- **1 Besucher:** 25 %
+- **2 Besucher:** 35 %
+- **3 Besucher:** 50 %
+- **4 Besucher:** 65 %
+- **5+ Besucher:** 80 % *(besonders helles Glitzern)*
 
-### 👯 Klonen
-Sobald du deine erste lila Blume hast, solltest du sie isolieren. Stelle sie so auf, dass sie keine andere Blume berührt, und gieße sie. Sie kopiert sich selbst zu 100%.
+### 👯 Klonen (sortenreine Vermehrung)
+Sobald du deine erste lila Blume hast, isoliere sie – kein anderes Stiefmütterchen in den 8 Nachbarfeldern. Vermehrt sie sich beim Gießen, ist das Kind eine **100 % identische Kopie**. Die *tägliche* Spawn-Chance bleibt aber dieselbe wie oben (5–80 %).
 
 ### 📏 Das Paar-System
 Verwende für die Erzeugung von Hybrid-Rot das Paar-System (Rot und Blau direkt nebeneinander). So verhinderst du, dass sich blaue Blumen ungewollt untereinander kreuzen.

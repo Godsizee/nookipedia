@@ -15,183 +15,68 @@ const { Content } = await guide.render();
 ---
 
 <Layout title={guide.data.title}>
-    <div class="guide-header">
-        <a href="/guides" class="btn-back-link">← Zurück zu allen Guides</a>
-        <div class="header-icon">{guide.data.icon || '🍃'}</div>
-        <h1>{guide.data.title}</h1>
-        <p class="subtitle">{guide.data.description}</p>
+  <a href="/guides/" class="ac-btn back-btn accent-flower">← Alle Zucht-Guides</a>
+
+  <section class="page-hero accent-flower guide-hero">
+    <span class="hero-emoji">{guide.data.icon || '🍃'}</span>
+    <h1>{guide.data.title}</h1>
+    <p>{guide.data.description}</p>
+  </section>
+
+  <article class="ac-card accent-flower guide-body">
+    <div class="markdown-content">
+      <Content />
     </div>
 
-    <article class="guide-container">
-        <div class="markdown-content">
-            <Content />
-        </div>
-        
-        <div class="guide-footer-actions">
-            <a href={`/blumen/${guide.data.flowerId}`} class="btn-flower-link">
-                🌸 Zuchtdaten für {guide.data.flowerName} ansehen
-            </a>
-        </div>
-    </article>
+    <div class="guide-footer">
+      <a href={`/blumen/${guide.data.flowerId}/`} class="ac-btn ac-btn--primary">
+        🌸 Zuchtdaten für {guide.data.flowerName} ansehen →
+      </a>
+    </div>
+  </article>
 </Layout>
 
+<!-- Markdown content is rendered by <Content />, so it needs global rules -->
 <style is:global>
-/* We use is:global here to style the markdown components rendered by <Content /> */
-.markdown-content h2 {
-    color: var(--ac-green) !important;
-    font-size: 1.4rem !important;
-    font-weight: 900 !important;
-    margin-top: 2.5rem !important;
-    margin-bottom: 1.25rem !important;
-    border-bottom: 2px dashed var(--ac-border) !important;
-    padding-bottom: 0.5rem !important;
-}
-
-.markdown-content h3 {
-    color: var(--ac-text) !important;
-    font-size: 1.15rem !important;
-    font-weight: 900 !important;
-    margin-top: 1.75rem !important;
-    margin-bottom: 0.75rem !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 8px !important;
-}
-
-.markdown-content p {
-    font-size: 1.05rem !important;
-    line-height: 1.6 !important;
-    margin-bottom: 1.25rem !important;
-    color: var(--ac-text) !important;
-}
-
-.markdown-content ul, .markdown-content ol {
-    margin-bottom: 1.5rem !important;
-    padding-left: 1.5rem !important;
-}
-
-.markdown-content li {
-    font-size: 1.02rem !important;
-    line-height: 1.5 !important;
-    margin-bottom: 0.5rem !important;
-    color: var(--ac-text) !important;
-}
-
-.markdown-content strong {
-    font-weight: 800 !important;
-    color: var(--ac-green) !important;
-}
-
-.markdown-content blockquote {
-    background: var(--ac-blue-light) !important;
-    border-left: 6px solid var(--ac-green) !important;
-    padding: 1rem 1.25rem !important;
-    border-radius: var(--radius-md) !important;
-    margin: 1.5rem 0 !important;
-    font-style: italic !important;
-}
-
-.markdown-content blockquote p {
-    margin: 0 !important;
-    color: var(--ac-text-muted) !important;
-}
+  .markdown-content h2 {
+    display: flex; align-items: center; gap: 8px;
+    color: var(--accent-deep);
+    font-size: 1.35rem;
+    margin: var(--sp-8) 0 var(--sp-4);
+    padding-bottom: var(--sp-2);
+    border-bottom: 2px dashed var(--ac-border);
+  }
+  .markdown-content h2:first-child { margin-top: 0; }
+  .markdown-content h3 {
+    display: flex; align-items: center; gap: 8px;
+    color: var(--ac-text);
+    font-size: 1.1rem;
+    margin: var(--sp-6) 0 var(--sp-3);
+  }
+  .markdown-content p { font-size: 1.02rem; line-height: 1.65; margin-bottom: var(--sp-4); color: var(--ac-text); }
+  .markdown-content ul, .markdown-content ol { margin: 0 0 var(--sp-5); padding-left: var(--sp-6); }
+  .markdown-content li { line-height: 1.55; margin-bottom: var(--sp-2); color: var(--ac-text); }
+  .markdown-content li::marker { color: var(--accent); }
+  .markdown-content strong { font-weight: 800; color: var(--accent-deep); }
+  .markdown-content em { color: var(--ac-text-muted); }
+  .markdown-content blockquote {
+    margin: var(--sp-5) 0;
+    padding: var(--sp-4) var(--sp-5);
+    background: var(--accent-soft);
+    border-left: 6px solid var(--accent);
+    border-radius: var(--radius-md);
+  }
+  .markdown-content blockquote p { margin: 0; }
 </style>
 
 <style>
-.guide-header {
-    text-align: center;
-    padding: 2rem 0 1rem;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.btn-back-link {
-    display: inline-block;
-    color: var(--ac-green);
-    text-decoration: none;
-    font-weight: 800;
-    font-size: 0.95rem;
-    margin-bottom: 1.5rem;
-    transition: transform 0.2s;
-}
-
-.btn-back-link:hover {
-    transform: translateX(-4px);
-}
-
-.header-icon {
-    font-size: 3.5rem;
-    background: var(--ac-surface);
-    width: 80px;
-    height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    margin: 0 auto 1rem;
-    box-shadow: var(--ac-shadow);
-    border: 3px solid var(--ac-green-light);
-}
-
-.guide-header h1 {
-    font-size: 2rem;
-    font-weight: 900;
-    line-height: 1.2;
-    margin-bottom: 0.5rem;
-}
-
-.subtitle {
-    color: var(--ac-text-muted);
-    font-size: 1.1rem;
-    line-height: 1.4;
-    margin: 0;
-}
-
-.guide-container {
-    max-width: 800px;
-    margin: 1.5rem auto 4rem;
-    background: var(--ac-surface);
-    padding: 2rem 1.5rem;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--ac-shadow);
-    border: 2px solid var(--ac-border);
-}
-
-@media (min-width: 768px) {
-    .guide-container {
-        padding: 3rem;
-    }
-    .guide-header h1 {
-        font-size: 2.5rem;
-    }
-}
-
-.guide-footer-actions {
-    margin-top: 3rem;
-    padding-top: 2rem;
+  .back-btn { margin: var(--sp-4) 0 var(--sp-6); }
+  .guide-hero { padding-block: var(--sp-8) var(--sp-10); }
+  .guide-body { max-width: 820px; margin-inline: auto; }
+  .guide-footer {
+    margin-top: var(--sp-8);
+    padding-top: var(--sp-6);
     border-top: 2px dashed var(--ac-border);
-    display: flex;
-    justify-content: center;
-}
-
-.btn-flower-link {
-    background: var(--ac-green);
-    color: #ffffff;
-    padding: 0.8rem 1.8rem;
-    border-radius: 100px;
-    text-decoration: none;
-    font-weight: 800;
-    font-size: 1rem;
-    box-shadow: 0 4px 12px rgba(89, 166, 131, 0.3);
-    transition: transform 0.2s, background-color 0.2s;
-}
-
-.btn-flower-link:hover {
-    transform: translateY(-2px);
-    background: #4a8f6e;
-}
-
-.btn-flower-link:active {
-    transform: translateY(0);
-}
+    display: flex; justify-content: center;
+  }
 </style>
