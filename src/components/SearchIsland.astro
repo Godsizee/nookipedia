@@ -86,27 +86,40 @@ function initSpotlightSearch() {
 
     let currentAbortController = null;
 
-    const performSearch = async (query) => {
+    // Holt die Daten mit einem Timeout, damit eine hängende Verbindung nicht
+    // unbegrenzt in "Lade Daten..." verharrt, bevor der Retry greifen kann.
+    const fetchWithTimeout = (url, signal, timeoutMs = 6000) => {
+        const timeoutController = new AbortController();
+        const timeoutId = setTimeout(() => timeoutController.abort(), timeoutMs);
+        signal.addEventListener('abort', () => timeoutController.abort());
+        return fetch(url, { signal: timeoutController.signal }).finally(() => clearTimeout(timeoutId));
+    };
+
+    const performSearch = async (query, isRetry = false) => {
         if (query.length < 2) {
             resultsContainer.innerHTML = '<div class="spotlight-empty-state">Tippe mindestens 2 Zeichen...</div>';
             return;
         }
 
-        if (currentAbortController) {
-            currentAbortController.abort();
+        if (!isRetry) {
+            if (currentAbortController) {
+                currentAbortController.abort();
+            }
+            currentAbortController = new AbortController();
+            resultsContainer.innerHTML = '<div class="spotlight-empty-state">Lade Daten von Nook Inc. 📡...</div>';
         }
-        currentAbortController = new AbortController();
-
-        resultsContainer.innerHTML = '<div class="spotlight-empty-state">Lade Daten von Nook Inc. 📡...</div>';
+        // Lokale Referenz, damit ein späterer Tippvorgang (der currentAbortController
+        // neu zuweist) die Abbruch-Prüfung dieses Aufrufs nicht verfälscht.
+        const controller = currentAbortController;
 
         try {
             const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
             const apiUrl = `${directusUrl}/items/creatures?filter[name][_icontains]=${encodeURIComponent(query)}&limit=5`;
-            const response = await fetch(apiUrl, { signal: currentAbortController.signal });
-            if (!response.ok) throw new Error('Netzwerk-Fehler');
-            
+            const response = await fetchWithTimeout(apiUrl, controller.signal);
+            if (!response.ok) throw new Error(`Directus antwortete mit Status ${response.status}`);
+
             const data = await response.json();
-            
+
             const items = (data.data || []).map(item => ({
                 url: `/tier/${item.id}/`,
                 image: item.image_path ? `${directusUrl}/assets/${item.image_path}` : '/assets/img/acnh/koeder.png',
@@ -115,12 +128,27 @@ function initSpotlightSearch() {
                 type: item.category === 'insect' ? 'Insekt' : item.category === 'fish' ? 'Fisch' : 'Meerestier'
             }));
 
-            renderResults(items, query); 
-            
+            renderResults(items, query);
+
         } catch (error) {
-            if (error.name === 'AbortError') return;
+            if (error.name === 'AbortError' && controller.signal.aborted) {
+                // Eigener Tippvorgang hat den Request abgebrochen, kein echter Fehler.
+                return;
+            }
+            if (!isRetry) {
+                // Eine einzelne Netzwerk-Hakeligkeit (z.B. kalter Backend-Start oder
+                // Timeout) soll nicht sofort als harter Fehler erscheinen - ein
+                // Versuch wird automatisch wiederholt.
+                console.warn('Search Error, retrying once:', error);
+                await performSearch(query, true);
+                return;
+            }
             console.error('Search Error:', error);
-            resultsContainer.innerHTML = '<div class="spotlight-empty-state" style="color: #d81b60;">Fehler bei der Nook-Verbindung!</div>';
+            resultsContainer.innerHTML = `
+                <div class="spotlight-empty-state" style="color: #d81b60;">
+                    Fehler bei der Nook-Verbindung!<br />
+                    <a href="/suche?q=${encodeURIComponent(query)}" style="color: var(--ac-green); text-decoration: underline;">Stattdessen vollständige Suche versuchen</a>
+                </div>`;
         }
     };
 
