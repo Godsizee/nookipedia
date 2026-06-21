@@ -39,7 +39,8 @@ export default defineConfig({
         description: 'Das ultimative, superschnelle Animal Crossing Wiki für die Hosentasche',
         theme_color: '#1a5c3e',
         background_color: '#121212',
-        display: 'standalone',
+        display: 'fullscreen',
+        display_override: ['fullscreen', 'standalone', 'minimal-ui'],
         orientation: 'portrait',
         start_url: '/',
         icons: [
