@@ -70,7 +70,7 @@ const filters = [
                 {evs.map((ev) => (
                   <article class={`event-card type-${ev.event_type}`} data-type={ev.event_type}>
                     <div class="cluster" style="flex-wrap: nowrap;">
-                      <span class="ev-img"><img src={getImageUrl(ev.image_path)} alt={ev.name} onerror="this.src='/assets/img/acnh/koeder.png'" /></span>
+                      <span class="ev-img"><img src={getImageUrl(ev.image_path, { folder: 'events' })} alt={ev.name} onerror="this.src='/assets/img/acnh/koeder.png'" /></span>
                       <span class="stack stack-2 grow">
                         <strong class="ev-name">{ev.name}</strong>
                         <span class="ev-badge">{typeName(ev.event_type)}</span>

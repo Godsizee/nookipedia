@@ -1,10 +1,11 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCreatures } from '../../lib/api.js';
+import creaturesFallback from '../../data/creatures.json';
 
 export async function getStaticPaths() {
   const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
-  const creatures = await getCreatures(directusUrl);
+  const creatures = await getCreatures(directusUrl, creaturesFallback);
 
 
   return creatures.map((creature) => {
@@ -18,31 +19,14 @@ export async function getStaticPaths() {
 const { creature } = Astro.props;
 const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
 
-let catName = 'Kreatur';
-let backLink = '/faunapaedie';
-let catIcon = '🐾';
-let gradient = 'linear-gradient(to bottom, #2c4a3d 0%, #1a2e25 100%)';
-let btnLabel = 'Faunapädie';
-
-if (creature.category === 'fish') {
-    catName = 'Fisch';
-    backLink = '/faunapaedie';
-    catIcon = '🐟';
-    gradient = 'linear-gradient(135deg, #0277bd 0%, #011d4a 100%)';
-    btnLabel = 'Fische-Übersicht';
-} else if (creature.category === 'insect') {
-    catName = 'Insekt';
-    backLink = '/faunapaedie';
-    catIcon = '🦋';
-    gradient = 'linear-gradient(135deg, #2e7d32 0%, #0d2112 100%)';
-    btnLabel = 'Insekten-Übersicht';
-} else if (creature.category === 'sea') {
-    catName = 'Meerestier';
-    backLink = '/faunapaedie';
-    catIcon = '🐙';
-    gradient = 'linear-gradient(135deg, #6a1b9a 0%, #200542 100%)';
-    btnLabel = 'Meerestiere-Übersicht';
-}
+const CATS = {
+  fish:   { name: 'Fisch',      icon: '🐟', accent: 'fish',   btn: 'Fische-Übersicht' },
+  insect: { name: 'Insekt',     icon: '🦋', accent: 'insect', btn: 'Insekten-Übersicht' },
+  sea:    { name: 'Meerestier', icon: '🐙', accent: 'sea',    btn: 'Meerestiere-Übersicht' },
+};
+const cat = CATS[creature.category] || { name: 'Kreatur', icon: '🐾', accent: 'guide', btn: 'Faunapädie' };
+const catName = cat.name, catIcon = cat.icon, btnLabel = cat.btn, accentKey = cat.accent;
+const backLink = '/faunapaedie';
 
 const getImageUrl = (path) => {
   if (!path) return '/assets/img/acnh/koeder.png';
@@ -63,15 +47,16 @@ const activeMonths = creature.months_northern || [];
 ---
 
 <Layout title={`${creature.name} - ${catName}`}>
-    <div class="detail-hero" style={`background: ${gradient};`}>
+    <div class={`detail-hero accent-${accentKey}`} data-months={activeMonths.join(',')} data-time={creature.time_active || ''}>
         <div class="detail-icon-wrap" transition:name={`creature-img-${creature.id}`}>
             <img src={imageUrl} alt={creature.name} onerror="this.src='/assets/img/acnh/koeder.png'" />
         </div>
         <h1 class="detail-title">{creature.name}</h1>
         <div class="detail-subtitle"><span>{catIcon}</span> {catName}</div>
+        <div id="live-badge" class="detail-live hide"><span class="dot"></span> Jetzt fangbar!</div>
     </div>
 
-    <div class="detail-content-card">
+    <div class={`detail-content-card accent-${accentKey}`}>
         {creature.catchphrase && (
             <div class="detail-quote">
                 {creature.catchphrase}
@@ -157,7 +142,7 @@ const activeMonths = creature.months_northern || [];
                 </div>
                 
                 {Array.isArray(activeMonths) && activeMonths.length === 12 && (
-                    <div style="margin-top: 1.5rem; padding: 1rem; background: var(--ac-green-light); color: var(--ac-green); border-radius: var(--radius-sm); text-align: center; font-weight: 800;">
+                    <div style="margin-top: 1.5rem; padding: 1rem; background: var(--accent-soft); color: var(--accent-deep); border-radius: var(--radius-sm); text-align: center; font-weight: 800;">
                         ✅ Ganzjährig fangbar!
                     </div>
                 )}
@@ -176,14 +161,17 @@ const activeMonths = creature.months_northern || [];
 <style>
 .detail-hero {
     position: relative;
-    margin: -2.5rem -1.25rem 0; 
+    margin: -2.5rem -1.25rem 0;
     padding: 3.5rem 1.5rem 5rem;
     text-align: center;
     border-radius: 0 0 40px 40px;
     color: #fff;
     overflow: hidden;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(255,255,255,0.30), transparent 60%),
+      linear-gradient(150deg, var(--accent) 0%, var(--accent-deep) 100%);
     box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-    margin-bottom: -3.5rem; 
+    margin-bottom: -3.5rem;
     z-index: 1;
 }
 
@@ -191,11 +179,22 @@ const activeMonths = creature.months_northern || [];
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0; bottom: 0;
-    background-image: radial-gradient(rgba(255,255,255,0.15) 2px, transparent 2px);
+    background-image: radial-gradient(rgba(255,255,255,0.18) 2px, transparent 2px);
     background-size: 24px 24px;
-    opacity: 0.4;
+    opacity: 0.5;
     pointer-events: none;
 }
+
+.detail-live {
+    position: relative; z-index: 2;
+    display: inline-flex; align-items: center; gap: 8px;
+    margin-top: 1rem; padding: 6px 16px;
+    font-weight: 900; font-size: 0.9rem; color: var(--accent-deep);
+    background: #fff; border-radius: 100px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.18);
+}
+.detail-live .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--accent); animation: floatIcon 1.6s ease-in-out infinite; }
+.detail-live.hide { display: none; }
 
 .detail-icon-wrap {
     position: relative;
@@ -281,7 +280,7 @@ const activeMonths = creature.months_northern || [];
 
 .detail-quote::before, .detail-quote::after {
     content: '"';
-    color: var(--ac-green-light);
+    color: var(--accent);
     font-size: 2rem;
     line-height: 0;
     vertical-align: bottom;
@@ -386,9 +385,9 @@ const activeMonths = creature.months_northern || [];
 }
 
 .month-pill.active {
-    background: var(--ac-green);
+    background: var(--accent);
     color: #ffffff;
-    box-shadow: 0 4px 12px rgba(89, 166, 131, 0.4);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--accent) 40%, transparent);
     transform: translateY(-2px);
 }
 
@@ -409,14 +408,14 @@ const activeMonths = creature.months_northern || [];
     justify-content: center;
     gap: 12px;
     padding: 1rem 2rem;
-    background: var(--ac-surface);
-    color: var(--ac-text);
+    background: var(--accent);
+    color: var(--on-accent);
     text-decoration: none !important;
     font-weight: 900;
     font-size: 1.05rem;
     border-radius: 100px;
-    border: 3px solid var(--ac-green-light);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    border: none;
+    box-shadow: 0 6px 0 var(--accent-deep);
     transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
@@ -426,11 +425,9 @@ const activeMonths = creature.months_northern || [];
 }
 
 .btn-detail-back:hover {
-    transform: translateY(-4px) scale(1.02);
-    border-color: var(--ac-green);
-    background: var(--ac-green-light);
-    color: var(--ac-green);
-    box-shadow: 0 12px 25px rgba(89, 166, 131, 0.2);
+    transform: translateY(-3px);
+    background: var(--accent-deep);
+    box-shadow: 0 9px 0 var(--accent-deep);
 }
 
 .btn-detail-back:hover .btn-icon {
@@ -438,7 +435,8 @@ const activeMonths = creature.months_northern || [];
 }
 
 .btn-detail-back:active {
-    transform: translateY(1px) scale(0.98);
+    transform: translateY(2px) scale(0.98);
+    box-shadow: 0 3px 0 var(--accent-deep);
 }
 
 @media (min-width: 768px) {
@@ -480,15 +478,30 @@ const activeMonths = creature.months_northern || [];
 [data-theme='dark'] .icon-shadow { background: rgba(255, 255, 255, 0.1); color: #e0e0e0; }
 [data-theme='dark'] .icon-speed { background: rgba(46, 125, 50, 0.15); color: #81c784; }
 [data-theme='dark'] .icon-weather { background: rgba(230, 81, 0, 0.15); color: #ffb74d; }
-[data-theme='dark'] .btn-detail-back {
-    background: var(--ac-bg);
-    border-color: var(--ac-border);
-    color: var(--ac-text);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-}
-[data-theme='dark'] .btn-detail-back:hover {
-    border-color: var(--ac-green);
-    background: var(--ac-green-light);
-    color: var(--ac-green);
-}
+[data-theme='dark'] .detail-live { background: var(--ac-surface-2); color: var(--ac-text); }
 </style>
+
+<script is:inline>
+  function initLiveBadge() {
+    const hero = document.querySelector('.detail-hero[data-months]');
+    const badge = document.getElementById('live-badge');
+    if (!hero || !badge) return;
+    const months = hero.dataset.months ? hero.dataset.months.split(',').map(Number) : [];
+    const t = (hero.dataset.time || '').toLowerCase();
+    const now = new Date(), month = now.getMonth() + 1, hour = now.getHours();
+    let live = !months.length || months.includes(month);
+    if (live && t && !/immer|ganz|all/.test(t)) {
+      const h = (t.match(/(\d{1,2}):/g) || []).map((x) => parseInt(x, 10));
+      if (h.length >= 2) {
+        live = false;
+        for (let i = 0; i + 1 < h.length; i += 2) {
+          const s = h[i], e = h[i + 1];
+          if (s < e ? (hour >= s && hour < e) : (hour >= s || hour < e)) { live = true; break; }
+        }
+      }
+    }
+    badge.classList.toggle('hide', !live);
+  }
+  initLiveBadge();
+  document.addEventListener('astro:after-swap', initLiveBadge);
+</script>

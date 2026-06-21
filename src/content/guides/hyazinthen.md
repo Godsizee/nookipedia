@@ -11,12 +11,16 @@ Hyazinthen (engl. Hyacinths) sind aufgrund ihrer kräftigen Farben und der wunde
 ## Profi-Tipps für die Zucht
 
 ### 👯 Klonen-Prinzip
-Sobald du eine lila Hyazinthe hast, ist der schnellste Weg zu mehr Blumen nicht die weitere Zucht, sondern das **Klonen**. Platziere die Blume so, dass sie keine andere Hyazinthe berührt, und gieße sie. Die Chance auf eine exakte Kopie ist extrem hoch.
+Sobald du eine lila Hyazinthe hast, ist der schnellste Weg zu mehr Blumen nicht die weitere Zucht, sondern das **Klonen**. Stelle die Blume isoliert auf (keine andere Hyazinthe in den 8 Nachbarfeldern) und gieße sie – jedes Kind ist dann eine **100 % identische Kopie**.
 
-### 💧 Besucher-Bonus
-Die Vermehrungsrate steigt massiv an, wenn Freunde aus anderen Städten deine Blumen gießen:
-- **Du allein:** ca. 5% Chance
-- **5 Besucher:** ca. 80% Chance *(Die Blumen glitzern dann besonders hell und groß!)*
+### 💧 Gieß-Chancen (Datamined)
+Die tägliche Vermehrungs- bzw. Klon-Chance steigt massiv, wenn Besucher aus anderen Städten mitgießen – es zählen bis zu 5 pro Tag:
+- **Nur du / Regen:** 5 %
+- **1 Besucher:** 25 %
+- **2 Besucher:** 35 %
+- **3 Besucher:** 50 %
+- **4 Besucher:** 65 %
+- **5+ Besucher:** 80 % *(die Blumen glitzern dann besonders hell und groß!)*
 
 ### 📏 Platzierung (Layout)
 Verwende für die Zucht von Lila am besten das **Paar-System**. Setze eine orange und eine blaue Blume direkt nebeneinander und lasse ansonsten in alle Richtungen ein Feld Platz. So verhinderst du ungewollte Gen-Mischungen.

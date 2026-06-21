@@ -16,9 +16,11 @@ const months = c.months_northern || [];
   class={`creature-card accent-${accentFor(c.category)}`}
   id={`creature-${c.id}`}
   data-category={c.category}
+  data-name={(c.name || '').toLowerCase()}
   data-months={months.join(',')}
   data-time={c.time_active || ''}
 >
+  <span class="now-badge"><span class="dot"></span>Jetzt fangbar</span>
   <div class="card-content-top">
     <div class="img-container" transition:name={`creature-img-${c.id}`}>
       <img src={getImageUrl(c.image_path)} alt={c.name} loading="lazy" onerror="this.src='/assets/img/acnh/koeder.png'" />

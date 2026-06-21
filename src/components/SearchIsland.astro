@@ -84,7 +84,20 @@ function initSpotlightSearch() {
         }
     });
 
-    let currentAbortController = null;
+    // Das Suchindex-JSON wird zur Build-Zeit aus Directus generiert (inkl.
+    // gebündeltem Fallback) und als statische, same-origin Datei ausgeliefert.
+    // Dadurch hängt die Live-Suche nicht mehr von einer Cross-Origin-Verbindung
+    // zum Directus-Backend im Browser ab (CORS, Backend-Downtime, Kaltstart, …
+    // konnten dort zuvor sofort "Fehler bei der Nook-Verbindung!" auslösen).
+    let searchIndexPromise = null;
+    const loadSearchIndex = () => {
+        if (!searchIndexPromise) {
+            searchIndexPromise = fetch('/search-index.json')
+                .then(res => (res.ok ? res.json() : []))
+                .catch(() => []);
+        }
+        return searchIndexPromise;
+    };
 
     const performSearch = async (query) => {
         if (query.length < 2) {
@@ -92,36 +105,15 @@ function initSpotlightSearch() {
             return;
         }
 
-        if (currentAbortController) {
-            currentAbortController.abort();
-        }
-        currentAbortController = new AbortController();
-
         resultsContainer.innerHTML = '<div class="spotlight-empty-state">Lade Daten von Nook Inc. 📡...</div>';
 
-        try {
-            const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
-            const apiUrl = `${directusUrl}/items/creatures?filter[name][_icontains]=${encodeURIComponent(query)}&limit=5`;
-            const response = await fetch(apiUrl, { signal: currentAbortController.signal });
-            if (!response.ok) throw new Error('Netzwerk-Fehler');
-            
-            const data = await response.json();
-            
-            const items = (data.data || []).map(item => ({
-                url: `/tier/${item.id}/`,
-                image: item.image_path ? `${directusUrl}/assets/${item.image_path}` : '/assets/img/acnh/koeder.png',
-                title: item.name,
-                subtitle: `${item.price || 0} Sternis`,
-                type: item.category === 'insect' ? 'Insekt' : item.category === 'fish' ? 'Fisch' : 'Meerestier'
-            }));
+        const index = await loadSearchIndex();
+        const needle = query.toLowerCase();
+        const items = index
+            .filter(item => item.title && item.title.toLowerCase().includes(needle))
+            .slice(0, 5);
 
-            renderResults(items, query); 
-            
-        } catch (error) {
-            if (error.name === 'AbortError') return;
-            console.error('Search Error:', error);
-            resultsContainer.innerHTML = '<div class="spotlight-empty-state" style="color: #d81b60;">Fehler bei der Nook-Verbindung!</div>';
-        }
+        renderResults(items, query);
     };
 
     const renderResults = (items, originalQuery) => {
