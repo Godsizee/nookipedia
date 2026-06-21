@@ -54,30 +54,19 @@ import PageHero from '../components/PageHero.astro';
 </style>
 
 <script>
-  const directusUrl = 'https://backend-nookipedia.2.godsize.info';
-
-  // Mirror src/lib/format.js getImageUrl: a bare file name is placed inside its
-  // implied category folder (museum/, materials/, …); a path that already
-  // carries its sub-folder is used as-is; a bare token without extension is a
-  // Directus asset ID.
-  const getImageUrl = (path, folder = '') => {
-    if (!path) return '/assets/img/acnh/koeder.png';
-    if (path.startsWith('http')) return path;
-    let clean = path.replace(/^\/+/, '');
-    if (clean.startsWith('assets/')) clean = clean.slice(7);
-    if (clean.startsWith('img/acnh/')) clean = clean.slice(9);
-    if (!clean.includes('/') && !clean.includes('.')) return `${directusUrl}/assets/${clean}`;
-    if (clean.includes('/') || !folder) return `/assets/img/acnh/${clean}`;
-    return `/assets/img/acnh/${folder}/${clean}`;
+  // Sucht im selben statischen, same-origin Suchindex wie die Spotlight-Suche
+  // (siehe SearchIsland.astro / search-index.json.js), statt direkt und
+  // Cross-Origin gegen Directus zu fetchen. Das macht die volle Ergebnisseite
+  // unabhängig von Backend-Erreichbarkeit im Browser (CORS, Downtime, …).
+  let searchIndexPromise = null;
+  const loadSearchIndex = () => {
+    if (!searchIndexPromise) {
+      searchIndexPromise = fetch('/search-index.json')
+        .then((res) => (res.ok ? res.json() : []))
+        .catch(() => []);
+    }
+    return searchIndexPromise;
   };
-
-  const staticFallbackDB = [
-    { title: 'Rose', subtitle: 'Zuchtblume', type: 'Flora', url: '/blumen/1', image: '/assets/img/acnh/flowers/Rose.png' },
-    { title: 'Tulpe', subtitle: 'Zuchtblume', type: 'Flora', url: '/blumen/2', image: '/assets/img/acnh/flowers/Tulpe.png' },
-    { title: 'Maiglöckchen', subtitle: 'Zuchtblume', type: 'Flora', url: '/blumen/9', image: '/assets/img/acnh/flowers/Maigloeckchen.png' },
-    { title: 'Gemüsegemälde', subtitle: 'Kunstwerk (Der Sommer)', type: 'Kunst', url: '/museum/kunst/1', image: '/assets/img/acnh/museum/Gemuesegemaelde_real.png' },
-    { title: 'T-Rex-Schädel', subtitle: 'Dino-Fossil (T-Rex)', type: 'Fossil', url: '/museum/fossilien', image: '/assets/img/acnh/museum/T-Rex-Schaedel.png' },
-  ];
 
   async function performSearchQuery(query) {
     const statusEl = document.getElementById('search-status');
@@ -96,34 +85,10 @@ import PageHero from '../components/PageHero.astro';
 
     statusEl.textContent = '';
     loadingEl.classList.remove('hide');
-    let results = [];
 
-    try {
-      const endpoints = [
-        `${directusUrl}/items/creatures?filter[name][_icontains]=${encodeURIComponent(query)}&limit=15`,
-        `${directusUrl}/items/flowers?filter[name][_icontains]=${encodeURIComponent(query)}&limit=5`,
-        `${directusUrl}/items/diy_recipes?filter[name][_icontains]=${encodeURIComponent(query)}&limit=10`,
-        `${directusUrl}/items/cooking_recipes?filter[name][_icontains]=${encodeURIComponent(query)}&limit=10`,
-        `${directusUrl}/items/artworks?filter[name][_icontains]=${encodeURIComponent(query)}&limit=5`,
-        `${directusUrl}/items/fossils?filter[name][_icontains]=${encodeURIComponent(query)}&limit=5`,
-      ];
-      const responses = await Promise.all(endpoints.map((url) => fetch(url).then((r) => (r.ok ? r.json() : { data: [] })).catch(() => ({ data: [] }))));
-      const [creatures, flowers, diy, cooking, artworks, fossils] = responses.map((r) => r.data || []);
-
-      creatures.forEach((c) => results.push({ title: c.name, subtitle: `${c.price || 0} Sternis`, type: c.category === 'insect' ? 'Insekt' : c.category === 'fish' ? 'Fisch' : 'Meerestier', url: `/tier/${c.id}/`, image: getImageUrl(c.image_path) }));
-      flowers.forEach((f) => results.push({ title: f.name, subtitle: 'Zuchtblume', type: 'Flora', url: `/blumen/${f.id}/`, image: getImageUrl(f.image_path) }));
-      diy.forEach((d) => results.push({ title: d.name, subtitle: d.source || 'Bastelanleitung', type: 'Rezept', url: '/items/', image: getImageUrl(d.image_path) }));
-      cooking.forEach((ck) => results.push({ title: ck.name, subtitle: ck.source || 'Kochrezept', type: 'Rezept', url: '/items/', image: getImageUrl(ck.image_path) }));
-      artworks.forEach((art) => results.push({ title: art.name, subtitle: `Kunstwerk von ${art.artist}`, type: 'Kunst', url: `/museum/kunst/${art.id}`, image: getImageUrl(art.image_real, 'museum') }));
-      fossils.forEach((f) => results.push({ title: f.name, subtitle: 'Dino-Fossil', type: 'Fossil', url: '/museum/fossilien', image: getImageUrl(f.image_path, 'museum') }));
-    } catch (err) {
-      console.warn('Directus search error, using static fallback.', err);
-    }
-
+    const index = await loadSearchIndex();
     const queryLower = query.toLowerCase();
-    staticFallbackDB
-      .filter((item) => item.title.toLowerCase().includes(queryLower) || item.subtitle.toLowerCase().includes(queryLower))
-      .forEach((sf) => { if (!results.some((r) => r.title.toLowerCase() === sf.title.toLowerCase())) results.push(sf); });
+    const results = index.filter((item) => item.title?.toLowerCase().includes(queryLower) || item.subtitle?.toLowerCase().includes(queryLower));
 
     loadingEl.classList.add('hide');
 
