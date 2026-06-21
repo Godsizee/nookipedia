@@ -5,9 +5,10 @@ import InfoBox from '../components/InfoBox.astro';
 import CreatureCard from '../components/CreatureCard.astro';
 import { getCreatures, DEFAULT_DIRECTUS } from '../lib/api.js';
 import { getImageUrl } from '../lib/format.js';
+import creaturesFallback from '../data/creatures.json';
 
 const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || DEFAULT_DIRECTUS;
-const creatures = await getCreatures(directusUrl);
+const creatures = await getCreatures(directusUrl, creaturesFallback);
 
 const fishList = creatures.filter((c) => c.category === 'fish');
 const insectList = creatures.filter((c) => c.category === 'insect');
@@ -18,6 +19,9 @@ const tabs = [
   { key: 'insect', emoji: '🦋', label: 'Insekten',    list: insectList },
   { key: 'sea',    emoji: '🐙', label: 'Meerestiere', list: seaList },
 ];
+
+// Full month names for the catch planner (month + hour query)
+const MONTHS_LONG = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
 
 const fishTips = [
   { title: '🎣 Der Köder-Trick', text: 'Aus am Strand ausgegrabenen Teppichmuscheln bastelst du pro Muschel einen Köder. Köder garantieren einen passenden Fisch und schließen Müll komplett aus!' },
@@ -36,11 +40,11 @@ const seaTips = [
 <Layout title="Faunapädie - Insekten, Fische & Meerestiere">
   <PageHero accent="insect" emoji="🐾" title="Faunapädie" subtitle="Alle Details zu den faszinierenden Kreaturen deiner Insel." />
 
-  <!-- Category tabs (re-theme the active button per category) -->
-  <div class="cluster justify-center mb-8">
+  <!-- Category tabs · sticky rail with live counts (re-theme per category) -->
+  <div class="fauna-tabs">
     {tabs.map((t, i) => (
       <button class={`tab-btn accent-${t.key} ${i === 0 ? 'active' : ''}`} data-tab={t.key}>
-        <span>{t.emoji}</span> {t.label}
+        <span>{t.emoji}</span> {t.label} <span class="count">{t.list.length}</span>
       </button>
     ))}
   </div>
@@ -56,30 +60,55 @@ const seaTips = [
     <p>Vollständige Übersicht aller {seaList.length} Meerestiere. Zum Tauchen brauchst du einen <strong>Taucheranzug</strong>.</p>
   </InfoBox>
 
-  <!-- Filter bar -->
-  <div class="filter-bar between mb-8">
+  <!-- Search + filter bar -->
+  <div class="filter-bar mb-6">
+    <input type="search" id="fauna-search" class="ac-input" placeholder="🔎 Kreatur suchen…" autocomplete="off" />
     <div class="cluster">
-      <label class="ac-checkbox"><input type="checkbox" id="filter-month" /> 📅 Nur in diesem Monat</label>
-      <label class="ac-checkbox"><input type="checkbox" id="filter-now" /> ⏰ Jetzt gerade fangbar</label>
+      <label class="ac-checkbox"><input type="checkbox" id="filter-month" /> 📅 Diesen Monat</label>
+      <label class="ac-checkbox"><input type="checkbox" id="filter-now" /> ⏰ Jetzt fangbar</label>
     </div>
-    <button id="clear-filters" class="ac-btn">🧹 Filter löschen</button>
+    <button id="clear-filters" class="ac-btn">🧹 Zurücksetzen</button>
+  </div>
+
+  <!-- Catch planner · query catchability for any chosen month & hour -->
+  <div class="filter-bar planner-bar mb-6">
+    <span class="planner-label">🔮 Fang-Planer</span>
+    <label class="planner-field">
+      <span>📅 Monat</span>
+      <select id="plan-month" class="ac-input">
+        <option value="">— egal —</option>
+        {MONTHS_LONG.map((m, i) => <option value={i + 1}>{m}</option>)}
+      </select>
+    </label>
+    <label class="planner-field">
+      <span>⏰ Uhrzeit</span>
+      <select id="plan-hour" class="ac-input">
+        <option value="">— egal —</option>
+        {Array.from({ length: 24 }, (_, h) => <option value={h}>{String(h).padStart(2, '0')}:00 Uhr</option>)}
+      </select>
+    </label>
+    <span class="planner-hint" id="plan-hint"></span>
   </div>
 
   <!-- Quick-nav mini grids -->
   <div class="ac-card mb-8">
     {tabs.map((t, i) => (
-      <div class={`mini-grid accent-${t.key} ${i === 0 ? '' : 'hide'}`} id={`mini-grid-${t.key}`}>
-        {t.list.map((c) => (
-          <a href={`#creature-${c.id}`} class="mini-card" data-id={c.id} data-months={c.months_northern ? c.months_northern.join(',') : ''} data-time={c.time_active || ''} title={c.name}>
-            <img src={getImageUrl(c.image_path)} alt={c.name} loading="lazy" onerror="this.src='/assets/img/acnh/koeder.png'" />
-          </a>
-        ))}
+      <div class={`mini-grid-wrap accent-${t.key} ${i === 0 ? '' : 'hide'}`} id={`mini-grid-${t.key}`}>
+        <div class="mini-grid-head"><span>{t.emoji}</span> Schnellauswahl · {t.label}</div>
+        <div class="mini-grid">
+          {t.list.map((c) => (
+            <a href={`#creature-${c.id}`} class="mini-card" data-id={c.id} data-name={(c.name || '').toLowerCase()} data-months={c.months_northern ? c.months_northern.join(',') : ''} data-time={c.time_active || ''} title={c.name}>
+              <img src={getImageUrl(c.image_path)} alt={c.name} loading="lazy" onerror="this.src='/assets/img/acnh/koeder.png'" />
+            </a>
+          ))}
+        </div>
       </div>
     ))}
   </div>
 
   <!-- Detail cards -->
   <h2 class="section-title">📋 Kreaturen-Akten</h2>
+  <p class="result-count">Zeige <b id="result-num">0</b> Kreaturen</p>
   <div class="creature-grid">
     {creatures.map((c) => <CreatureCard creature={c} />)}
   </div>
@@ -91,16 +120,54 @@ const seaTips = [
 </Layout>
 
 <script is:inline>
+  const MONTHS_LONG = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+  const CAT_LABEL = { fish: 'Fische', insect: 'Insekten', sea: 'Meerestiere' };
+
+  // Is the creature active during a given hour? (parses one-or-more time windows)
+  function isActiveAtHour(timeStr, hour) {
+    const t = (timeStr || '').toLowerCase();
+    if (/immer|ganz|all/.test(t) || !t) return true;
+    const hrs = (t.match(/(\d{1,2}):/g) || []).map((h) => parseInt(h, 10));
+    if (hrs.length < 2) return true;
+    for (let i = 0; i + 1 < hrs.length; i += 2) {
+      const s = hrs[i], e = hrs[i + 1];
+      if (s < e ? (hour >= s && hour < e) : (hour >= s || hour < e)) return true;
+    }
+    return false;
+  }
+
+  // Is a creature catchable right now? (month + time-of-day windows)
+  function isCatchableNow(months, timeStr, month, hour) {
+    if (months.length && !months.includes(month)) return false;
+    return isActiveAtHour(timeStr, hour);
+  }
+
+  // Does a creature match the planner query? null = "egal" (ignored)
+  function matchesQuery(months, timeStr, qMonth, qHour) {
+    if (qMonth !== null && months.length && !months.includes(qMonth)) return false;
+    if (qHour !== null && !isActiveAtHour(timeStr, qHour)) return false;
+    return true;
+  }
+
   function initFaunapedia() {
     const tabs = document.querySelectorAll('.tab-btn');
     const infoBoxes = document.querySelectorAll('.info-box');
-    const miniGrids = document.querySelectorAll('.mini-grid');
+    const miniGrids = document.querySelectorAll('.mini-grid-wrap');
     const creatureCards = document.querySelectorAll('.creature-card');
     const filterMonth = document.getElementById('filter-month');
     const filterNow = document.getElementById('filter-now');
+    const search = document.getElementById('fauna-search');
+    const resultNum = document.getElementById('result-num');
     const btnClear = document.getElementById('clear-filters');
     const emptyState = document.getElementById('empty-state');
+    const planMonth = document.getElementById('plan-month');
+    const planHour = document.getElementById('plan-hour');
+    const planHint = document.getElementById('plan-hint');
     if (!tabs.length || !filterMonth) return;
+
+    // Restore planner selection (global across categories)
+    if (planMonth) planMonth.value = localStorage.getItem('nook_plan_month') || '';
+    if (planHour) planHour.value = localStorage.getItem('nook_plan_hour') || '';
 
     let activeCategory = localStorage.getItem('nook_active_faunapedia_tab') || 'fish';
 
@@ -108,35 +175,55 @@ const seaTips = [
       const now = new Date();
       const currentMonth = now.getMonth() + 1;
       const currentHour = now.getHours();
+      const term = (search.value || '').trim().toLowerCase();
       localStorage.setItem(`nook_filter_${activeCategory}_month`, filterMonth.checked);
       localStorage.setItem(`nook_filter_${activeCategory}_now`, filterNow.checked);
+
+      // Planner query: chosen month / hour ('' = egal → null = ignored)
+      const qMonth = planMonth && planMonth.value !== '' ? parseInt(planMonth.value, 10) : null;
+      const qHour = planHour && planHour.value !== '' ? parseInt(planHour.value, 10) : null;
+      const planActive = qMonth !== null || qHour !== null;
+      localStorage.setItem('nook_plan_month', planMonth ? planMonth.value : '');
+      localStorage.setItem('nook_plan_hour', planHour ? planHour.value : '');
 
       let visibleCount = 0;
       creatureCards.forEach((card) => {
         if (card.dataset.category !== activeCategory) { card.style.display = 'none'; return; }
 
         const months = card.dataset.months ? card.dataset.months.split(',').map(Number) : [];
-        const timeStr = (card.dataset.time || '').toLowerCase();
+        const timeStr = card.dataset.time || '';
+        const liveNow = isCatchableNow(months, timeStr, currentMonth, currentHour);
+        card.classList.toggle('is-now', liveNow);
+
         let visible = true;
-
-        if (filterMonth.checked && months.length && !months.includes(currentMonth)) visible = false;
-
-        if (visible && filterNow.checked && !/immer|ganz|all/.test(timeStr)) {
-          const hours = timeStr.match(/\d+/g);
-          if (hours && hours.length >= 2) {
-            const start = parseInt(hours[0], 10);
-            const end = parseInt(hours[1], 10);
-            if (start < end) { if (currentHour < start || currentHour >= end) visible = false; }
-            else { if (currentHour < start && currentHour >= end) visible = false; }
-          }
-        }
+        if (term && !(card.dataset.name || '').includes(term)) visible = false;
+        if (visible && filterMonth.checked && months.length && !months.includes(currentMonth)) visible = false;
+        if (visible && filterNow.checked && !liveNow) visible = false;
+        if (visible && planActive && !matchesQuery(months, timeStr, qMonth, qHour)) visible = false;
 
         const mCard = document.querySelector(`.mini-card[data-id="${card.id.split('-')[1]}"]`);
-        if (visible) { card.style.display = 'flex'; mCard && mCard.classList.remove('faded'); visibleCount++; }
-        else { card.style.display = 'none'; mCard && mCard.classList.add('faded'); }
+        if (mCard) { mCard.classList.toggle('faded', !visible); mCard.classList.toggle('is-now', liveNow); }
+        card.style.display = visible ? 'flex' : 'none';
+        if (visible) visibleCount++;
       });
 
+      if (resultNum) resultNum.textContent = visibleCount;
       emptyState.classList.toggle('hide', visibleCount !== 0);
+
+      // Plain-language summary of the active planner query
+      if (planHint) {
+        const cat = CAT_LABEL[activeCategory] || 'Kreaturen';
+        let msg = '';
+        if (qMonth !== null && qHour !== null) {
+          msg = `Zeigt ${cat}, die im ${MONTHS_LONG[qMonth - 1]} um ${String(qHour).padStart(2, '0')}:00 Uhr fangbar sind.`;
+        } else if (qMonth !== null) {
+          msg = `Zeigt ${cat}, die im ${MONTHS_LONG[qMonth - 1]} fangbar sind.`;
+        } else if (qHour !== null) {
+          msg = `Zeigt ${cat}, die um ${String(qHour).padStart(2, '0')}:00 Uhr fangbar sind.`;
+        }
+        planHint.textContent = msg;
+        planHint.classList.toggle('hide', !msg);
+      }
     }
 
     function switchTab(category) {
@@ -153,7 +240,15 @@ const seaTips = [
     tabs.forEach((b) => b.addEventListener('click', () => switchTab(b.dataset.tab)));
     filterMonth.addEventListener('change', applyFilters);
     filterNow.addEventListener('change', applyFilters);
-    btnClear.addEventListener('click', () => { filterMonth.checked = false; filterNow.checked = false; applyFilters(); });
+    search.addEventListener('input', applyFilters);
+    if (planMonth) planMonth.addEventListener('change', applyFilters);
+    if (planHour) planHour.addEventListener('change', applyFilters);
+    btnClear.addEventListener('click', () => {
+      filterMonth.checked = false; filterNow.checked = false; search.value = '';
+      if (planMonth) planMonth.value = '';
+      if (planHour) planHour.value = '';
+      applyFilters();
+    });
 
     document.querySelectorAll('.mini-card').forEach((card) => {
       card.addEventListener('click', (e) => {

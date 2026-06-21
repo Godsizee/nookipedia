@@ -20,7 +20,7 @@ const { recipe: r } = Astro.props;
     <div class="recipe-mats">
       {r.materials.map((m) => (
         <span class="mat-chip" title={m.name}>
-          <img src={getImageUrl(m.image_path)} alt={m.name} loading="lazy" onerror="this.src='/assets/img/acnh/koeder.png'" />
+          <img src={getImageUrl(m.image_path, { folder: 'materials' })} alt={m.name} loading="lazy" onerror="this.src='/assets/img/acnh/koeder.png'" />
           ×{m.amount}
         </span>
       ))}

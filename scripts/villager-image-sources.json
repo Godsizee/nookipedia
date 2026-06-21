@@ -1,0 +1,2480 @@
+{
+  "Ace": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/brd09.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBrd09.png",
+    "house": null,
+    "de": "Helge"
+  },
+  "Admiral": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/brd06.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBrd06.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/brd06_39_Admiral.png",
+    "de": "Ansgar"
+  },
+  "Agent S": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/squ05.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlSqu05.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/squ05_357_Agent%20S.png",
+    "de": "Karin"
+  },
+  "Agnes": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pig17.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPig17.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pig17_313_Agnes.png",
+    "de": "Nora"
+  },
+  "Al": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/gor08.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlGor08.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/gor08_190_Al.png",
+    "de": "Kokong"
+  },
+  "Alfonso": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/crd00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCrd00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/crd00_102_Alfonso.png",
+    "de": "Markus"
+  },
+  "Alice": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/kal01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlKal01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/kal01_221_Alice.png",
+    "de": "Konny"
+  },
+  "Alli": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/crd01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCrd01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/crd01_103_Alli.png",
+    "de": "Ali"
+  },
+  "Amelia": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pbr01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPbr01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pbr01_279_Amelia.png",
+    "de": "Adelheid"
+  },
+  "Anabelle": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/ant03.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlAnt03.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/ant03_15_Anabelle.png",
+    "de": "Annabell"
+  },
+  "Anchovy": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/brd02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBrd02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/brd02_35_Anchovy.png",
+    "de": "Armin"
+  },
+  "Angus": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/bul00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBul00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/bul00_46_Angus.png",
+    "de": "Angus"
+  },
+  "Anicotti": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/mus10.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlMus10.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/mus10_258_Anicotti.png",
+    "de": "Eva"
+  },
+  "Ankha": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cat19.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCat19.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cat19_70_Ankha.png",
+    "de": "Kleo"
+  },
+  "Annalisa": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/ant08.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlAnt08.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/ant08_17_Annalisa.png",
+    "de": "Annalena"
+  },
+  "Annalise": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/hrs09.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlHrs09.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/hrs09_214_Annalise.png",
+    "de": "Annerose"
+  },
+  "Antonio": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/ant01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlAnt01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/ant01_13_Antonio.png",
+    "de": "Siggi"
+  },
+  "Apollo": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pbr00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPbr00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pbr00_278_Apollo.png",
+    "de": "Apollo"
+  },
+  "Apple": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/ham01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlHam01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/ham01_194_Apple.png",
+    "de": "Jessi"
+  },
+  "Astrid": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/kgr05.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlKgr05.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/kgr05_231_Astrid.png",
+    "de": "Astrid"
+  },
+  "Audie": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/wol12.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlWol12.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/wol12_387_Audie.png",
+    "de": "Katharina"
+  },
+  "Aurora": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pgn00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPgn00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pgn00_287_Aurora.png",
+    "de": "Sonja"
+  },
+  "Ava": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/chn05.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlChn05.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/chn05_92_Ava.png",
+    "de": "Gisela"
+  },
+  "Avery": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pbr05.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPbr05.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pbr05_282_Avery.png",
+    "de": "Quetzal"
+  },
+  "Axel": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/elp06.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlElp06.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/elp06_154_Axel.png",
+    "de": "Axel"
+  },
+  "Azalea": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/rhn05.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlRhn05.png",
+    "house": null,
+    "de": "Jasmin"
+  },
+  "Baabara": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/shp01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlShp01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/shp01_341_Baabara.png",
+    "de": "Babsi"
+  },
+  "Bam": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/der01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDer01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/der01_110_Bam.png",
+    "de": "Benjamin"
+  },
+  "Bangle": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/tig03.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlTig03.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/tig03_373_Bangle.png",
+    "de": "Tamara"
+  },
+  "Barold": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cbr16.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCbr16.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cbr16_86_Barold.png",
+    "de": "Hubert"
+  },
+  "Bea": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/dog10.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDog10.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/dog10_128_Bea.png",
+    "de": "Bea"
+  },
+  "Beardo": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/bea13.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBea13.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/bea13_30_Beardo.png",
+    "de": "Berthold"
+  },
+  "Beau": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/der07.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDer07.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/der07_115_Beau.png",
+    "de": "Martin"
+  },
+  "Becky": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/chn09.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlChn09.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/chn09_93_Becky.png",
+    "de": "Inga"
+  },
+  "Bella": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/mus02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlMus02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/mus02_252_Bella.png",
+    "de": "Susi"
+  },
+  "Benedict": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/chn01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlChn01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/chn01_90_Benedict.png",
+    "de": "Benedikt"
+  },
+  "Benjamin": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/dog16.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDog16.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/dog16_130_Benjamin.png",
+    "de": "Wastl"
+  },
+  "Bertha": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/hip03.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlHip03.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/hip03_202_Bertha.png",
+    "de": "Berta"
+  },
+  "Bettina": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/mus15.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlMus15.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/mus15_261_Bettina.png",
+    "de": "Schoki"
+  },
+  "Bianca": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/tig06.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlTig06.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/tig06_376_Bianca.png",
+    "de": "Bettina"
+  },
+  "Biff": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/hip04.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlHip04.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/hip04_203_Biff.png",
+    "de": "Norbert"
+  },
+  "Big Top": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/elp02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlElp02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/elp02_150_Big%20Top.png",
+    "de": "Benni"
+  },
+  "Bill": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/duk00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDuk00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/duk00_133_Bill.png",
+    "de": "Bill"
+  },
+  "Billy": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/goa02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlGoa02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/goa02_178_Billy.png",
+    "de": "Hennes"
+  },
+  "Biskit": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/dog03.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDog03.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/dog03_121_Biskit.png",
+    "de": "Keks"
+  },
+  "Bitty": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/hip05.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlHip05.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/hip05_204_Bitty.png",
+    "de": "Biggi"
+  },
+  "Blaire": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/squ01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlSqu01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/squ01_353_Blaire.png",
+    "de": "Klara"
+  },
+  "Blanche": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/ost08.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlOst08.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/ost08_275_Blanche.png",
+    "de": "Christa"
+  },
+  "Bluebear": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cbr00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCbr00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cbr00_74_Bluebear.png",
+    "de": "Birte"
+  },
+  "Bob": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cat00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCat00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cat00_52_Bob.png",
+    "de": "Jens"
+  },
+  "Bonbon": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/rbt17.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlRbt17.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/rbt17_331_Bonbon.png",
+    "de": "Henrike"
+  },
+  "Bones": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/dog04.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDog04.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/dog04_122_Bones.png",
+    "de": "Strolch"
+  },
+  "Boomer": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pgn10.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPgn10.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pgn10_295_Boomer.png",
+    "de": "Max"
+  },
+  "Boone": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/gor02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlGor02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/gor02_186_Boone.png",
+    "de": "Kong"
+  },
+  "Boots": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/crd02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCrd02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/crd02_104_Boots.png",
+    "de": "Tilmann"
+  },
+  "Boris": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pig09.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPig09.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pig09_306_Boris.png",
+    "de": "Bolle"
+  },
+  "Boyd": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/gor05.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlGor05.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/gor05_188_Boyd.png",
+    "de": "Boyd"
+  },
+  "Bree": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/mus03.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlMus03.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/mus03_253_Bree.png",
+    "de": "Jenny"
+  },
+  "Broccolo": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/mus12.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlMus12.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/mus12_259_Broccolo.png",
+    "de": "Fritzi"
+  },
+  "Broffina": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/chn12.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlChn12.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/chn12_96_Broffina.png",
+    "de": "Elfriede"
+  },
+  "Bruce": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/der03.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDer03.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/der03_111_Bruce.png",
+    "de": "Oswald"
+  },
+  "Bubbles": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/hip02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlHip02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/hip02_201_Bubbles.png",
+    "de": "Christin"
+  },
+  "Buck": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/hrs00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlHrs00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/hrs00_206_Buck.png",
+    "de": "Rudi"
+  },
+  "Bud": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/lon00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlLon00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/lon00_236_Bud.png",
+    "de": "Dieter"
+  },
+  "Bunnie": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/rbt00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlRbt00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/rbt00_314_Bunnie.png",
+    "de": "Mimmi"
+  },
+  "Butch": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/dog01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDog01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/dog01_119_Butch.png",
+    "de": "Hasso"
+  },
+  "Buzz": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pbr03.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPbr03.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pbr03_281_Buzz.png",
+    "de": "Balduin"
+  },
+  "Cally": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/squ11.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlSqu11.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/squ11_363_Cally.png",
+    "de": "Hörnchen"
+  },
+  "Camofrog": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/flg03.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlFlg03.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/flg03_161_Camofrog.png",
+    "de": "Tarno"
+  },
+  "Canberra": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/kal08.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlKal08.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/kal08_225_Canberra.png",
+    "de": "Caroline"
+  },
+  "Candi": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/mus08.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlMus08.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/mus08_256_Candi.png",
+    "de": "Renate"
+  },
+  "Carmen": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/rbt16.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlRbt16.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/rbt16_330_Carmen.png",
+    "de": "Hilda"
+  },
+  "Caroline": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/squ06.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlSqu06.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/squ06_358_Caroline.png",
+    "de": "Ricarda"
+  },
+  "Carrie": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/kgr02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlKgr02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/kgr02_230_Carrie.png",
+    "de": "Carola"
+  },
+  "Cashmere": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/shp04.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlShp04.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/shp04_343_Cashmere.png",
+    "de": "Lana"
+  },
+  "Celia": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pbr09.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPbr09.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pbr09_286_Celia.png",
+    "de": "Lora"
+  },
+  "Cephalobot": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/ocp04.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlOcp04.png",
+    "house": null,
+    "de": "Tentatron"
+  },
+  "Cesar": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/gor00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlGor00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/gor00_184_Cesar.png",
+    "de": "Alfredo"
+  },
+  "Chabwick": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pgn07.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPgn07.png",
+    "house": null,
+    "de": "Achim"
+  },
+  "Chadder": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/mus18.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlMus18.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/mus18_264_Chadder.png",
+    "de": "Charlie"
+  },
+  "Chai": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/elp11.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlElp11.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/elp11_Chai.png",
+    "de": "Chai"
+  },
+  "Charlise": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/bea12.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBea12.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/bea12_29_Charlise.png",
+    "de": "Tabea"
+  },
+  "Chelsea": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/der10.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDer10.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/der10_Chelsea.png",
+    "de": "Chelsea"
+  },
+  "Cheri": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cbr10.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCbr10.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cbr10_83_Cheri.png",
+    "de": "Claudia"
+  },
+  "Cherry": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/dog17.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDog17.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/dog17_131_Cherry.png",
+    "de": "Bella"
+  },
+  "Chester": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cbr15.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCbr15.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cbr15_85_Chester.png",
+    "de": "Eduard"
+  },
+  "Chevre": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/goa00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlGoa00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/goa00_176_Chevre.png",
+    "de": "Anette"
+  },
+  "Chief": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/wol00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlWol00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/wol00_377_Chief.png",
+    "de": "Sascha"
+  },
+  "Chops": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pig14.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPig14.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pig14_310_Chops.png",
+    "de": "Clemens"
+  },
+  "Chow": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/bea03.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBea03.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/bea03_21_Chow.png",
+    "de": "Chang"
+  },
+  "Chrissy": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/rbt13.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlRbt13.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/rbt13_327_Chrissy.png",
+    "de": "Anne"
+  },
+  "Claude": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/rbt11.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlRbt11.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/rbt11_325_Claude.png",
+    "de": "Claude"
+  },
+  "Claudia": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/tig05.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlTig05.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/tig05_375_Claudia.png",
+    "de": "Lilly"
+  },
+  "Clay": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/ham05.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlHam05.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/ham05_197_Clay.png",
+    "de": "Dietmar"
+  },
+  "Cleo": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/hrs07.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlHrs07.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/hrs07_7_Cleo.png",
+    "de": "Birgit"
+  },
+  "Clyde": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/hrs10.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlHrs10.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/hrs10_215_Clyde.png",
+    "de": "Tommi"
+  },
+  "Coach": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/bul07.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBul07.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/bul07_50_Coach.png",
+    "de": "Arnold"
+  },
+  "Cobb": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pig08.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPig08.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pig08_305_Cobb.png",
+    "de": "Rolo"
+  },
+  "Coco": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/rbt02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlRbt02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/rbt02_316_Coco.png",
+    "de": "Koko"
+  },
+  "Cole": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/rbt18.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlRbt18.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/rbt18_332_Cole.png",
+    "de": "Karl"
+  },
+  "Colton": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/hrs11.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlHrs11.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/hrs11_216_Colton.png",
+    "de": "Carsten"
+  },
+  "Cookie": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/dog08.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDog08.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/dog08_126_Cookie.png",
+    "de": "Rosi"
+  },
+  "Cousteau": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/flg10.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlFlg10.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/flg10_167_Cousteau.png",
+    "de": "Jacques"
+  },
+  "Cranston": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/ost06.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlOst06.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/ost06_273_Cranston.png",
+    "de": "Guido"
+  },
+  "Croque": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/flg17.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlFlg17.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/flg17_173_Croque.png",
+    "de": "Carlo"
+  },
+  "Cube": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pgn02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPgn02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pgn02_289_Cube.png",
+    "de": "Cube"
+  },
+  "Curlos": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/shp08.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlShp08.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/shp08_345_Curlos.png",
+    "de": "Locke"
+  },
+  "Curly": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pig00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPig00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pig00_300_Curly.png",
+    "de": "Oink"
+  },
+  "Curt": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/bea02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBea02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/bea02_388_Curt.png",
+    "de": "Kurt"
+  },
+  "Cyd": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/elp12.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlElp12.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/elp12_158_Cyd.png",
+    "de": "Sid"
+  },
+  "Cyrano": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/ant00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlAnt00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/ant00_12_Cyrano.png",
+    "de": "Theo"
+  },
+  "Daisy": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/dog07.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDog07.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/dog07_125_Daisy.png",
+    "de": "Doris"
+  },
+  "Deena": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/duk04.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDuk04.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/duk04_137_Deena.png",
+    "de": "Olivia"
+  },
+  "Deirdre": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/der04.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDer04.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/der04_112_Deirdre.png",
+    "de": "Dina"
+  },
+  "Del": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/crd04.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCrd04.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/crd04_105_Del.png",
+    "de": "Krokki"
+  },
+  "Deli": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/mnk08.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlMnk08.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/mnk08_249_Deli.png",
+    "de": "Anton"
+  },
+  "Derwin": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/duk08.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDuk08.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/duk08_140_Derwin.png",
+    "de": "Erwin"
+  },
+  "Diana": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/der08.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDer08.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/der08_116_Diana.png",
+    "de": "Vroni"
+  },
+  "Diva": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/flg18.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlFlg18.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/flg18_174_Diva.png",
+    "de": "Dörte"
+  },
+  "Dizzy": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/elp01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlElp01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/elp01_149_Dizzy.png",
+    "de": "Bastian"
+  },
+  "Dobie": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/wol04.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlWol04.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/wol04_381_Dobie.png",
+    "de": "Sigmund"
+  },
+  "Doc": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/rbt10.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlRbt10.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/rbt10_324_Doc.png",
+    "de": "Gustl"
+  },
+  "Dom": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/shp15.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlShp15.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/shp15_351_Dom.png",
+    "de": "Dominik"
+  },
+  "Dora": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/mus00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlMus00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/mus00_250_Dora.png",
+    "de": "Dora"
+  },
+  "Dotty": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/rbt01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlRbt01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/rbt01_315_Dotty.png",
+    "de": "Doro"
+  },
+  "Drago": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/crd08.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCrd08.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/crd08_108_Drago.png",
+    "de": "Frederik"
+  },
+  "Drake": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/duk09.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDuk09.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/duk09_141_Drake.png",
+    "de": "Gustav"
+  },
+  "Drift": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/flg04.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlFlg04.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/flg04_162_Drift.png",
+    "de": "Caspar"
+  },
+  "Ed": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/hrs06.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlHrs06.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/hrs06_212_Ed.png",
+    "de": "Hermann"
+  },
+  "Egbert": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/chn02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlChn02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/chn02_91_Egbert.png",
+    "de": "Waldemar"
+  },
+  "Elise": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/mnk05.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlMnk05.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/mnk05_246_Elise.png",
+    "de": "Steffi"
+  },
+  "Ellie": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/elp07.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlElp07.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/elp07_155_Ellie.png",
+    "de": "Elfi"
+  },
+  "Elmer": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/hrs03.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlHrs03.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/hrs03_209_Elmer.png",
+    "de": "Emil"
+  },
+  "Eloise": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/elp03.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlElp03.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/elp03_151_Eloise.png",
+    "de": "Frauke"
+  },
+  "Elvis": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/lon01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlLon01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/lon01_237_Elvis.png",
+    "de": "Leonardo"
+  },
+  "Erik": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/der09.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDer09.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/der09_117_Erik.png",
+    "de": "Erik"
+  },
+  "Eugene": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/kal10.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlKal10.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/kal10_227_Eugene.png",
+    "de": "Sunny"
+  },
+  "Eunice": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/shp02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlShp02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/shp02_342_Eunice.png",
+    "de": "Edith"
+  },
+  "Faith": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/kal07.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlKal07.png",
+    "house": null,
+    "de": "Finchen"
+  },
+  "Fang": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/wol06.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlWol06.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/wol06_383_Fang.png",
+    "de": "Grimm"
+  },
+  "Fauna": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/der00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDer00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/der00_109_Fauna.png",
+    "de": "Fatima"
+  },
+  "Felicity": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cat17.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCat17.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cat17_68_Felicity.png",
+    "de": "Minka"
+  },
+  "Filbert": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/squ02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlSqu02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/squ02_354_Filbert.png",
+    "de": "Felix"
+  },
+  "Flip": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/mnk06.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlMnk06.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/mnk06_247_Flip.png",
+    "de": "Pippo"
+  },
+  "Flo": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pgn13.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPgn13.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pgn13_298_Flo.png",
+    "de": "Susanne"
+  },
+  "Flora": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/ost09.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlOst09.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/ost09_276_Flora.png",
+    "de": "Flora"
+  },
+  "Flurry": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/ham06.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlHam06.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/ham06_198_Flurry.png",
+    "de": "Emilie"
+  },
+  "Francine": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/rbt12.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlRbt12.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/rbt12_326_Francine.png",
+    "de": "Manu"
+  },
+  "Frank": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pbr06.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPbr06.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pbr06_283_Frank.png",
+    "de": "Arthur"
+  },
+  "Freckles": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/duk07.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDuk07.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/duk07_2_Freckles.png",
+    "de": "Quacks"
+  },
+  "Frett": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/dog11.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDog11.png",
+    "house": null,
+    "de": "Jupp"
+  },
+  "Freya": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/wol05.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlWol05.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/wol05_382_Freya.png",
+    "de": "Freya"
+  },
+  "Friga": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pgn04.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPgn04.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pgn04_291_Friga.png",
+    "de": "Frieda"
+  },
+  "Frita": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/shp11.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlShp11.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/shp11_348_Frita.png",
+    "de": "Martina"
+  },
+  "Frobert": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/flg02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlFlg02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/flg02_4_Frobert.png",
+    "de": "Fritz"
+  },
+  "Fuchsia": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/der06.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDer06.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/der06_114_Fuchsia.png",
+    "de": "Selina"
+  },
+  "Gabi": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/rbt05.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlRbt05.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/rbt05_319_Gabi.png",
+    "de": "Gabi"
+  },
+  "Gala": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pig13.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPig13.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pig13_309_Gala.png",
+    "de": "Oinka"
+  },
+  "Gaston": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/rbt04.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlRbt04.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/rbt04_318_Gaston.png",
+    "de": "Gaston"
+  },
+  "Gayle": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/crd07.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCrd07.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/crd07_107_Gayle.png",
+    "de": "Rosa"
+  },
+  "Genji": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/rbt08.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlRbt08.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/rbt08_322_Genji.png",
+    "de": "Aki"
+  },
+  "Gigi": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/flg16.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlFlg16.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/flg16_172_Gigi.png",
+    "de": "Violetta"
+  },
+  "Gladys": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/ost01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlOst01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/ost01_269_Gladys.png",
+    "de": "Sandra"
+  },
+  "Gloria": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/duk15.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDuk15.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/duk15_145_Gloria.png",
+    "de": "Gustavia"
+  },
+  "Goldie": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/dog00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDog00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/dog00_118_Goldie.png",
+    "de": "Bienchen"
+  },
+  "Gonzo": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/kal04.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlKal04.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/kal04_223_Gonzo.png",
+    "de": "Heribert"
+  },
+  "Goose": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/chn00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlChn00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/chn00_89_Goose.png",
+    "de": "Konrad"
+  },
+  "Graham": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/ham02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlHam02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/ham02_195_Graham.png",
+    "de": "Günther"
+  },
+  "Greta": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/mus16.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlMus16.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/mus16_262_Greta.png",
+    "de": "Gretel"
+  },
+  "Grizzly": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/bea09.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBea09.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/bea09_26_Grizzly.png",
+    "de": "Gerald"
+  },
+  "Groucho": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/bea06.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBea06.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/bea06_23_Groucho.png",
+    "de": "Ernst"
+  },
+  "Gruff": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/goa04.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlGoa04.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/goa04_179_Gruff.png",
+    "de": "Gregor"
+  },
+  "Gwen": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pgn05.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPgn05.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pgn05_292_Gwen.png",
+    "de": "Judith"
+  },
+  "Hamlet": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/ham00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlHam00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/ham00_193_Hamlet.png",
+    "de": "Hamid"
+  },
+  "Hamphrey": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/ham07.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlHam07.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/ham07_199_Hamphrey.png",
+    "de": "Heinrich"
+  },
+  "Hans": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/gor10.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlGor10.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/gor10_192_Hans.png",
+    "de": "Hans"
+  },
+  "Harry": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/hip08.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlHip08.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/hip08_205_Harry.png",
+    "de": "Jürgen"
+  },
+  "Hazel": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/squ18.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlSqu18.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/squ18_369_Hazel.png",
+    "de": "Nadine"
+  },
+  "Henry": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/flg19.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlFlg19.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/flg19_175_Henry.png",
+    "de": "Freddy"
+  },
+  "Hippeux": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/hip09.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlHip09.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/hip09_6_Hippeux.png",
+    "de": "Herbert"
+  },
+  "Hopkins": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/rbt14.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlRbt14.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/rbt14_328_Hopkins.png",
+    "de": "Poldi"
+  },
+  "Hopper": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pgn03.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPgn03.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pgn03_290_Hopper.png",
+    "de": "Hauke"
+  },
+  "Hornsby": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/rhn04.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlRhn04.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/rhn04_337_Hornsby.png",
+    "de": "Rüdiger"
+  },
+  "Huck": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/flg11.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlFlg11.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/flg11_168_Huck.png",
+    "de": "Knuth"
+  },
+  "Hugh": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pig03.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPig03.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pig03_302_Hugh.png",
+    "de": "Hugo"
+  },
+  "Iggly": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pgn11.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPgn11.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pgn11_296_Iggly.png",
+    "de": "Pingi"
+  },
+  "Ike": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/bea11.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBea11.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/bea11_28_Ike.png",
+    "de": "Ike"
+  },
+  "Ione": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/squ21.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlSqu21.png",
+    "house": null,
+    "de": "Vega"
+  },
+  "Jacob": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/brd11.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBrd11.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/brd11_41_Jakey.png",
+    "de": "Jesko"
+  },
+  "Jacques": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/brd16.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBrd16.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/brd16_43_Jacques.png",
+    "de": "Pierre"
+  },
+  "Jambette": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/flg13.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlFlg13.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/flg13_170_Jambette.png",
+    "de": "Jeanette"
+  },
+  "Jay": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/brd00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBrd00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/brd00_33_Jay.png",
+    "de": "Jan"
+  },
+  "Jeremiah": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/flg07.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlFlg07.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/flg07_165_Jeremiah.png",
+    "de": "Jörg"
+  },
+  "Jitters": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/brd04.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBrd04.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/brd04_37_Jitters.png",
+    "de": "Alex"
+  },
+  "Joey": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/duk01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDuk01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/duk01_134_Joey.png",
+    "de": "Kalle"
+  },
+  "Judy": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cbr19.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCbr19.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cbr19_88_Judy.png",
+    "de": "Misuzu"
+  },
+  "Julia": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/ost05.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlOst05.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/ost05_272_Julia.png",
+    "de": "Julia"
+  },
+  "Julian": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/hrs13.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlHrs13.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/hrs13_218_Julian.png",
+    "de": "Jimmy"
+  },
+  "June": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cbr13.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCbr13.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cbr13_390_June.png",
+    "de": "Juna"
+  },
+  "Kabuki": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cat09.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCat09.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cat09_60_Kabuki.png",
+    "de": "Kabuki"
+  },
+  "Katt": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cat21.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCat21.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cat21_72_Katt.png",
+    "de": "Janine"
+  },
+  "Keaton": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pbr08.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPbr08.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pbr08_285_Keaton.png",
+    "de": "Kai"
+  },
+  "Ken": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/chn13.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlChn13.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/chn13_97_Ken.png",
+    "de": "Hannes"
+  },
+  "Ketchup": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/duk13.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDuk13.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/duk13_144_Ketchup.png",
+    "de": "Pullunda"
+  },
+  "Kevin": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pig15.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPig15.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pig15_311_Kevin.png",
+    "de": "Kevin"
+  },
+  "Kid Cat": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cat10.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCat10.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cat10_61_Kid%20Cat.png",
+    "de": "Pit"
+  },
+  "Kidd": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/goa07.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlGoa07.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/goa07_181_Kidd.png",
+    "de": "Bocki"
+  },
+  "Kiki": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cat04.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCat04.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cat04_56_Kiki.png",
+    "de": "Kiki"
+  },
+  "Kitt": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/kgr00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlKgr00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/kgr00_228_Kitt.png",
+    "de": "Kerstin"
+  },
+  "Kitty": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cat14.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCat14.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cat14_65_Kitty.png",
+    "de": "Karen"
+  },
+  "Klaus": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/bea14.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBea14.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/bea14_31_Klaus.png",
+    "de": "Grischa"
+  },
+  "Knox": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/chn11.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlChn11.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/chn11_95_Knox.png",
+    "de": "Tschiwi"
+  },
+  "Kody": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cbr04.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCbr04.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cbr04_78_Kody.png",
+    "de": "Bernd"
+  },
+  "Kyle": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/wol10.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlWol10.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/wol10_386_Kyle.png",
+    "de": "Wolfgang"
+  },
+  "Leonardo": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/tig04.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlTig04.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/tig04_374_Leonardo.png",
+    "de": "Tim"
+  },
+  "Leopold": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/lon04.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlLon04.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/lon04_239_Leopold.png",
+    "de": "Leandro"
+  },
+  "Lily": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/flg00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlFlg00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/flg00_159_Lily.png",
+    "de": "Liliane"
+  },
+  "Limberg": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/mus01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlMus01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/mus01_251_Limberg.png",
+    "de": "Rafael"
+  },
+  "Lionel": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/lon08.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlLon08.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/lon08_242_Lionel.png",
+    "de": "Lorenz"
+  },
+  "Lobo": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/wol01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlWol01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/wol01_378_Lobo.png",
+    "de": "Lupo"
+  },
+  "Lolly": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cat18.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCat18.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cat18_69_Lolly.png",
+    "de": "Feline"
+  },
+  "Lopez": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/der05.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDer05.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/der05_113_Lopez.png",
+    "de": "Eckart"
+  },
+  "Louie": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/gor04.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlGor04.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/gor04_187_Louie.png",
+    "de": "Ludwig"
+  },
+  "Lucha": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/brd15.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBrd15.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/brd15_42_Lucha.png",
+    "de": "Lukas"
+  },
+  "Lucky": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/dog02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDog02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/dog02_120_Lucky.png",
+    "de": "Viktor"
+  },
+  "Lucy": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pig04.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPig04.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pig04_303_Lucy.png",
+    "de": "Larissa"
+  },
+  "Lyman": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/kal09.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlKal09.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/kal09_226_Lyman.png",
+    "de": "Pepe"
+  },
+  "Mac": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/dog14.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDog14.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/dog14_1_Mac.png",
+    "de": "Wuffi"
+  },
+  "Maddie": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/dog09.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDog09.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/dog09_127_Maddie.png",
+    "de": "Agnes"
+  },
+  "Maelle": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/duk03.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDuk03.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/duk03_136_Maelle.png",
+    "de": "Sissi"
+  },
+  "Maggie": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pig10.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPig10.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pig10_307_Maggie.png",
+    "de": "Magda"
+  },
+  "Mallary": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/duk06.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDuk06.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/duk06_139_Mallary.png",
+    "de": "Marina"
+  },
+  "Maple": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cbr01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCbr01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cbr01_75_Maple.png",
+    "de": "Mona"
+  },
+  "Marcel": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/dog15.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDog15.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/dog15_129_Marcel.png",
+    "de": "Ronaldo"
+  },
+  "Marcie": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/kgr10.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlKgr10.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/kgr10_235_Marcie.png",
+    "de": "Marlies"
+  },
+  "Margie": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/elp04.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlElp04.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/elp04_152_Margie.png",
+    "de": "Elisa"
+  },
+  "Marina": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/ocp01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlOcp01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/ocp01_266_Marina.png",
+    "de": "Marianne"
+  },
+  "Marlo": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/ham09.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlHam09.png",
+    "house": null,
+    "de": "Marlo"
+  },
+  "Marshal": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/squ17.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlSqu17.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/squ17_368_Marshal.png",
+    "de": "Huschke"
+  },
+  "Marty": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cbr18.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCbr18.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cbr18_Marty.png",
+    "de": "Marty"
+  },
+  "Mathilda": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/kgr01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlKgr01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/kgr01_229_Mathilda.png",
+    "de": "Marga"
+  },
+  "Megan": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/bea15.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBea15.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/bea15_32_Megan.png",
+    "de": "Dagmar"
+  },
+  "Melba": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/kal02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlKal02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/kal02_222_Melba.png",
+    "de": "Kornelia"
+  },
+  "Merengue": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/rhn07.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlRhn07.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/rhn07_338_Merengue.png",
+    "de": "Maria"
+  },
+  "Merry": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cat16.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCat16.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cat16_67_Merry.png",
+    "de": "Mischka"
+  },
+  "Midge": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/brd08.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBrd08.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/brd08_40_Midge.png",
+    "de": "Anna"
+  },
+  "Mint": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/squ09.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlSqu09.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/squ09_361_Mint.png",
+    "de": "Marika"
+  },
+  "Mira": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/rbt19.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlRbt19.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/rbt19_333_Mira.png",
+    "de": "Mira"
+  },
+  "Miranda": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/duk12.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDuk12.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/duk12_143_Miranda.png",
+    "de": "Tanya"
+  },
+  "Mitzi": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cat01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCat01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cat01_53_Mitzi.png",
+    "de": "Miezi"
+  },
+  "Moe": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cat08.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCat08.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cat08_59_Moe.png",
+    "de": "Tristan"
+  },
+  "Molly": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/duk16.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDuk16.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/duk16_146_Molly.png",
+    "de": "Monika"
+  },
+  "Monique": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cat11.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCat11.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cat11_62_Monique.png",
+    "de": "Monique"
+  },
+  "Monty": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/mnk04.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlMnk04.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/mnk04_245_Monty.png",
+    "de": "Daniel"
+  },
+  "Moose": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/mus14.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlMus14.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/mus14_260_Moose.png",
+    "de": "Mausbert"
+  },
+  "Mott": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/lon06.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlLon06.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/lon06_240_Mott.png",
+    "de": "Leonhard"
+  },
+  "Muffy": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/shp12.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlShp12.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/shp12_349_Muffy.png",
+    "de": "Marion"
+  },
+  "Murphy": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cbr07.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCbr07.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cbr07_81_Murphy.png",
+    "de": "Michael"
+  },
+  "Nan": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/goa01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlGoa01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/goa01_177_Nan.png",
+    "de": "Zenobi"
+  },
+  "Nana": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/mnk01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlMnk01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/mnk01_243_Nana.png",
+    "de": "Dorothea"
+  },
+  "Naomi": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cow07.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCow07.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cow07_101_Naomi.png",
+    "de": "Jolanda"
+  },
+  "Nate": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/bea05.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBea05.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/bea05_22_Nate.png",
+    "de": "Nathan"
+  },
+  "Nibbles": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/squ04.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlSqu04.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/squ04_356_Nibbles.png",
+    "de": "Knuspi"
+  },
+  "Norma": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cow06.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCow06.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cow06_100_Norma.png",
+    "de": "Nelly"
+  },
+  "O'Hare": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/rbt15.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlRbt15.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/rbt15_329_O_Hare.png",
+    "de": "Nico"
+  },
+  "Octavian": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/ocp00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlOcp00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/ocp00_265_Octavian.png",
+    "de": "Ottfried"
+  },
+  "Olaf": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/ant09.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlAnt09.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/ant09_18_Olaf.png",
+    "de": "Olaf"
+  },
+  "Olive": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cbr09.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCbr09.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cbr09_82_Olive.png",
+    "de": "Linda"
+  },
+  "Olivia": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cat03.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCat03.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cat03_55_Olivia.png",
+    "de": "Bianca"
+  },
+  "Opal": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/elp00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlElp00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/elp00_148_Opal.png",
+    "de": "Olga"
+  },
+  "Ozzie": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/kal05.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlKal05.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/kal05_224_Ozzie.png",
+    "de": "Oskar"
+  },
+  "Pancetti": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pig16.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPig16.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pig16_312_Pancetti.png",
+    "de": "Brigitte"
+  },
+  "Pango": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/ant02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlAnt02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/ant02_14_Pango.png",
+    "de": "Mathilda"
+  },
+  "Paolo": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/elp05.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlElp05.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/elp05_153_Paolo.png",
+    "de": "Paolo"
+  },
+  "Papi": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/hrs12.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlHrs12.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/hrs12_217_Papi.png",
+    "de": "Friedel"
+  },
+  "Pashmina": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/goa08.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlGoa08.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/goa08_182_Pashmina.png",
+    "de": "Pamela"
+  },
+  "Pate": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/duk02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDuk02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/duk02_135_Pate.png",
+    "de": "Daune"
+  },
+  "Patty": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cow00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCow00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cow00_98_Patty.png",
+    "de": "Patricia"
+  },
+  "Paula": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/bea10.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBea10.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/bea10_27_Paula.png",
+    "de": "Paula"
+  },
+  "Peaches": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/hrs08.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlHrs08.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/hrs08_213_Peaches.png",
+    "de": "Claire"
+  },
+  "Peanut": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/squ00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlSqu00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/squ00_352_Peanut.png",
+    "de": "Paulina"
+  },
+  "Pecan": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/squ03.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlSqu03.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/squ03_355_Pecan.png",
+    "de": "Noisette"
+  },
+  "Peck": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/brd17.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBrd17.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/brd17_44_Peck.png",
+    "de": "Picko"
+  },
+  "Peewee": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/gor01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlGor01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/gor01_185_Peewee.png",
+    "de": "Manfred"
+  },
+  "Peggy": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pig11.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPig11.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pig11_308_Peggy.png",
+    "de": "Quiekie"
+  },
+  "Pekoe": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cbr14.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCbr14.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cbr14_84_Pekoe.png",
+    "de": "Sandrine"
+  },
+  "Penelope": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/mus17.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlMus17.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/mus17_263_Penelope.png",
+    "de": "Penelope"
+  },
+  "Petri": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/mus19.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlMus19.png",
+    "house": null,
+    "de": "Pipette"
+  },
+  "Phil": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/ost07.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlOst07.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/ost07_274_Phil.png",
+    "de": "Ingo"
+  },
+  "Phoebe": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/ost10.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlOst10.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/ost10_277_Phoebe.png",
+    "de": "Philippa"
+  },
+  "Pierce": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pbr02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPbr02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pbr02_280_Pierce.png",
+    "de": "Adrian"
+  },
+  "Pietro": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/shp13.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlShp13.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/shp13_350_Pietro.png",
+    "de": "Pietro"
+  },
+  "Pinky": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/bea01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBea01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/bea01_20_Pinky.png",
+    "de": "Pia"
+  },
+  "Piper": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/brd05.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBrd05.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/brd05_38_Piper.png",
+    "de": "Iris"
+  },
+  "Pippy": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/rbt06.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlRbt06.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/rbt06_320_Pippy.png",
+    "de": "Lotta"
+  },
+  "Plucky": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/chn10.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlChn10.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/chn10_94_Plucky.png",
+    "de": "Mareile"
+  },
+  "Pompom": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/duk05.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDuk05.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/duk05_138_Pompom.png",
+    "de": "Erika"
+  },
+  "Poncho": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cbr02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCbr02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cbr02_76_Poncho.png",
+    "de": "Toni"
+  },
+  "Poppy": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/squ15.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlSqu15.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/squ15_366_Poppy.png",
+    "de": "Trita"
+  },
+  "Portia": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/dog05.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDog05.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/dog05_123_Portia.png",
+    "de": "Isolde"
+  },
+  "Prince": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/flg12.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlFlg12.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/flg12_169_Prince.png",
+    "de": "Prinz"
+  },
+  "Puck": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pgn06.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPgn06.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pgn06_293_Puck.png",
+    "de": "Puck"
+  },
+  "Puddles": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/flg06.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlFlg06.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/flg06_164_Puddles.png",
+    "de": "Nele"
+  },
+  "Pudge": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cbr03.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCbr03.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cbr03_77_Pudge.png",
+    "de": "Bertram"
+  },
+  "Punchy": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cat06.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCat06.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cat06_389_Punchy.png",
+    "de": "Julian"
+  },
+  "Purrl": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cat07.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCat07.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cat07_58_Purrl.png",
+    "de": "Franka"
+  },
+  "Queenie": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/ost00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlOst00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/ost00_268_Queenie.png",
+    "de": "Isabella"
+  },
+  "Quillson": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/duk17.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDuk17.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/duk17_147_Quillson.png",
+    "de": "Quentin"
+  },
+  "Quinn": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pbr10.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPbr10.png",
+    "house": null,
+    "de": "Kim"
+  },
+  "Raddle": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/flg15.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlFlg15.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/flg15_171_Raddle.png",
+    "de": "Sani"
+  },
+  "Rasher": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pig02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPig02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pig02_301_Rasher.png",
+    "de": "Ede"
+  },
+  "Raymond": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cat23.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCat23.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cat23_73_Raymond.png",
+    "de": "Gunnar"
+  },
+  "Reneigh": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/hrs16.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlHrs16.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/hrs16_219_Reneigh.png",
+    "de": "Andrea"
+  },
+  "Renée": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/rhn08.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlRhn08.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/rhn08_339_Ren�e.png",
+    "de": "Ilona"
+  },
+  "Rex": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/lon02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlLon02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/lon02_238_Rex.png",
+    "de": "Rex"
+  },
+  "Rhonda": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/rhn01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlRhn01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/rhn01_335_Rhonda.png",
+    "de": "Regina"
+  },
+  "Ribbot": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/flg01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlFlg01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/flg01_160_Ribbot.png",
+    "de": "Robbi"
+  },
+  "Ricky": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/squ10.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlSqu10.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/squ10_362_Ricky.png",
+    "de": "Ronny"
+  },
+  "Rilla": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/gor11.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlGor11.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/gor11_Rilla.png",
+    "de": "Rilla"
+  },
+  "Rio": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/ost04.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlOst04.png",
+    "house": null,
+    "de": "Verona"
+  },
+  "Rizzo": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/mus09.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlMus09.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/mus09_257_Rizzo.png",
+    "de": "Ricky"
+  },
+  "Roald": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pgn01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPgn01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pgn01_288_Roald.png",
+    "de": "Roland"
+  },
+  "Robin": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/brd01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBrd01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/brd01_34_Robin.png",
+    "de": "Jule"
+  },
+  "Rocco": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/hip00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlHip00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/hip00_200_Rocco.png",
+    "de": "Richi"
+  },
+  "Rocket": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/gor09.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlGor09.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/gor09_191_Rocket.png",
+    "de": "Katrin"
+  },
+  "Rod": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/mus05.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlMus05.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/mus05_255_Rod.png",
+    "de": "Manni"
+  },
+  "Rodeo": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/bul01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBul01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/bul01_47_Rodeo.png",
+    "de": "Toro"
+  },
+  "Rodney": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/ham03.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlHam03.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/ham03_196_Rodney.png",
+    "de": "Reinhold"
+  },
+  "Rolf": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/tig00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlTig00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/tig00_370_Rolf.png",
+    "de": "Boris"
+  },
+  "Rooney": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/kgr09.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlKgr09.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/kgr09_234_Rooney.png",
+    "de": "Robert"
+  },
+  "Rory": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/lon07.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlLon07.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/lon07_241_Rory.png",
+    "de": "Leon"
+  },
+  "Roscoe": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/hrs04.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlHrs04.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/hrs04_210_Roscoe.png",
+    "de": "Jolly"
+  },
+  "Rosie": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cat02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCat02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cat02_54_Rosie.png",
+    "de": "Sophie"
+  },
+  "Roswell": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/crd05.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCrd05.png",
+    "house": null,
+    "de": "Juri"
+  },
+  "Rowan": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/tig01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlTig01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/tig01_371_Rowan.png",
+    "de": "Gisbert"
+  },
+  "Ruby": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/rbt09.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlRbt09.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/rbt09_323_Ruby.png",
+    "de": "Rubina"
+  },
+  "Rudy": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cat20.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCat20.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cat20_71_Rudy.png",
+    "de": "Heinz"
+  },
+  "Sally": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/squ07.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlSqu07.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/squ07_359_Sally.png",
+    "de": "Hanne"
+  },
+  "Samson": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/mus04.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlMus04.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/mus04_254_Samson.png",
+    "de": "Samson"
+  },
+  "Sandy": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/ost02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlOst02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/ost02_270_Sandy.png",
+    "de": "Senta"
+  },
+  "Sasha": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/rbt21.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlRbt21.png",
+    "house": null,
+    "de": "Gerrit"
+  },
+  "Savannah": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/hrs02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlHrs02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/hrs02_208_Savannah.png",
+    "de": "Zara"
+  },
+  "Scoot": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/duk10.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDuk10.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/duk10_3_Scoot.png",
+    "de": "Helmut"
+  },
+  "Shari": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/mnk07.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlMnk07.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/mnk07_248_Shari.png",
+    "de": "Uta"
+  },
+  "Sheldon": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/squ16.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlSqu16.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/squ16_367_Sheldon.png",
+    "de": "Steffen"
+  },
+  "Shep": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/dog18.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDog18.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/dog18_132_Shep.png",
+    "de": "Thomas"
+  },
+  "Sherb": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/goa09.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlGoa09.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/goa09_183_Sherb.png",
+    "de": "Morpheus"
+  },
+  "Shino": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/der11.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDer11.png",
+    "house": null,
+    "de": "Yoshino"
+  },
+  "Simon": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/mnk02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlMnk02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/mnk02_9_Simon.png",
+    "de": "Simon"
+  },
+  "Skye": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/wol09.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlWol09.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/wol09_385_Skye.png",
+    "de": "Sabine"
+  },
+  "Sly": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/crd06.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCrd06.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/crd06_106_Sly.png",
+    "de": "Steve"
+  },
+  "Snake": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/rbt03.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlRbt03.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/rbt03_317_Snake.png",
+    "de": "Philip"
+  },
+  "Snooty": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/ant06.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlAnt06.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/ant06_16_Snooty.png",
+    "de": "Hilde"
+  },
+  "Soleil": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/ham04.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlHam04.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/ham04_5_Soleil.png",
+    "de": "Samira"
+  },
+  "Sparro": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/brd18.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBrd18.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/brd18_45_Sparro.png",
+    "de": "Nestor"
+  },
+  "Spike": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/rhn02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlRhn02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/rhn02_336_Spike.png",
+    "de": "Atze"
+  },
+  "Spork": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pig05.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPig05.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pig05_304_Crackle.png",
+    "de": "Schwarte"
+  },
+  "Sprinkle": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pgn14.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPgn14.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pgn14_299_Sprinkle.png",
+    "de": "Svenja"
+  },
+  "Sprocket": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/ost03.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlOst03.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/ost03_271_Sprocket.png",
+    "de": "Lutz"
+  },
+  "Static": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/squ08.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlSqu08.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/squ08_360_Static.png",
+    "de": "Rudolf"
+  },
+  "Stella": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/shp03.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlShp03.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/shp03_11_Stella.png",
+    "de": "Stella"
+  },
+  "Sterling": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pbr07.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPbr07.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pbr07_284_Sterling.png",
+    "de": "Horst"
+  },
+  "Stinky": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cat13.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCat13.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cat13_64_Stinky.png",
+    "de": "Stefan"
+  },
+  "Stitches": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cbr05.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCbr05.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cbr05_79_Stitches.png",
+    "de": "Berry"
+  },
+  "Stu": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/bul03.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBul03.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/bul03_48_Stu.png",
+    "de": "Carlos"
+  },
+  "Sydney": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/kal03.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlKal03.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/kal03_8_Sydney.png",
+    "de": "Silke"
+  },
+  "Sylvana": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/squ14.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlSqu14.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/squ14_365_Sylvana.png",
+    "de": "Maren"
+  },
+  "Sylvia": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/kgr06.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlKgr06.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/kgr06_232_Sylvia.png",
+    "de": "Sylvia"
+  },
+  "T-Bone": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/bul05.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBul05.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/bul05_49_T-Bone.png",
+    "de": "Marius"
+  },
+  "Tabby": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cat12.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCat12.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cat12_63_Tabby.png",
+    "de": "Zita"
+  },
+  "Tad": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/flg09.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlFlg09.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/flg09_166_Tad.png",
+    "de": "Paul"
+  },
+  "Tammi": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/mnk03.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlMnk03.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/mnk03_244_Tammi.png",
+    "de": "Bonni"
+  },
+  "Tammy": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cbr17.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCbr17.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cbr17_87_Tammy.png",
+    "de": "Tatjana"
+  },
+  "Tangy": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cat05.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCat05.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cat05_57_Tangy.png",
+    "de": "Tanja"
+  },
+  "Tank": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/rhn00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlRhn00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/rhn00_334_Tank.png",
+    "de": "Frank"
+  },
+  "Tasha": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/squ13.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlSqu13.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/squ13_364_Tasha.png",
+    "de": "Natalja"
+  },
+  "Teddy": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/bea00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBea00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/bea00_19_Teddy.png",
+    "de": "Torsten"
+  },
+  "Tex": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pgn12.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPgn12.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pgn12_297_Tex.png",
+    "de": "Matze"
+  },
+  "Tia": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/elp10.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlElp10.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/elp10_157_Tia.png",
+    "de": "Eleonore"
+  },
+  "Tiansheng": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/mnk09.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlMnk09.png",
+    "house": null,
+    "de": "Tiansheng"
+  },
+  "Tiffany": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/rbt07.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlRbt07.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/rbt07_321_Tiffany.png",
+    "de": "Michelle"
+  },
+  "Timbra": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/shp10.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlShp10.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/shp10_347_Timbra.png",
+    "de": "Tippsi"
+  },
+  "Tipper": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cow01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCow01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cow01_99_Tipper.png",
+    "de": "Angela"
+  },
+  "Toby": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/rbt20.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlRbt20.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/rbt20_Toby.png",
+    "de": "Toby"
+  },
+  "Tom": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cat15.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCat15.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cat15_66_Tom.png",
+    "de": "Timo"
+  },
+  "Truffles": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pig01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPig01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pig01_10_Truffles.png",
+    "de": "Luzie"
+  },
+  "Tucker": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/elp09.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlElp09.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/elp09_156_Tucker.png",
+    "de": "Thorsten"
+  },
+  "Tutu": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/bea07.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBea07.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/bea07_24_Tutu.png",
+    "de": "Mandy"
+  },
+  "Twiggy": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/brd03.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBrd03.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/brd03_36_Twiggy.png",
+    "de": "Twiggy"
+  },
+  "Tybalt": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/tig02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlTig02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/tig02_372_Tybalt.png",
+    "de": "Arne"
+  },
+  "Ursala": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/bea08.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBea08.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/bea08_25_Ursala.png",
+    "de": "Ursula"
+  },
+  "Velma": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/goa06.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlGoa06.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/goa06_180_Velma.png",
+    "de": "Wilma"
+  },
+  "Vesta": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/shp00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlShp00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/shp00_340_Vesta.png",
+    "de": "Dolly"
+  },
+  "Vic": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/bul08.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlBul08.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/bul08_51_Vic.png",
+    "de": "Klaus"
+  },
+  "Victoria": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/hrs01.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlHrs01.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/hrs01_207_Victoria.png",
+    "de": "Emma"
+  },
+  "Violet": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/gor07.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlGor07.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/gor07_189_Violet.png",
+    "de": "Konga"
+  },
+  "Vivian": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/wol08.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlWol08.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/wol08_384_Vivian.png",
+    "de": "Viviane"
+  },
+  "Vladimir": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/cbr06.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlCbr06.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/cbr06_80_Vladimir.png",
+    "de": "Vladimir"
+  },
+  "Wade": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/pgn09.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlPgn09.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/pgn09_294_Wade.png",
+    "de": "Staksi"
+  },
+  "Walker": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/dog06.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDog06.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/dog06_124_Walker.png",
+    "de": "Fido"
+  },
+  "Walt": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/kgr08.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlKgr08.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/kgr08_233_Walt.png",
+    "de": "Sinan"
+  },
+  "Wart Jr.": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/flg05.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlFlg05.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/flg05_163_Wart%20Jr..png",
+    "de": "Warzi"
+  },
+  "Weber": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/duk11.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDuk11.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/duk11_142_Weber.png",
+    "de": "Volker"
+  },
+  "Wendy": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/shp09.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlShp09.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/shp09_346_Wendy.png",
+    "de": "Wolli"
+  },
+  "Whitney": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/wol03.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlWol03.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/wol03_380_Whitney.png",
+    "de": "Lupa"
+  },
+  "Willow": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/shp07.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlShp07.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/shp07_344_Willow.png",
+    "de": "Natascha"
+  },
+  "Winnie": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/hrs05.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlHrs05.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/hrs05_211_Winnie.png",
+    "de": "Walli"
+  },
+  "Wolfgang": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/wol02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlWol02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/wol02_379_Wolfgang.png",
+    "de": "Weber"
+  },
+  "Yuka": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/kal00.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlKal00.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/kal00_220_Yuka.png",
+    "de": "Ute"
+  },
+  "Zell": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/der02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlDer02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/der02_0_Zell.png",
+    "de": "Walter"
+  },
+  "Zoe": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/ant05.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlAnt05.png",
+    "house": null,
+    "de": "Zoe"
+  },
+  "Zucker": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/ocp02.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlOcp02.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/ocp02_267_Zucker.png",
+    "de": "Ottokar"
+  },
+  "Étoile": {
+    "icon": "https://acnhcdn.com/latest/NpcIcon/shp14.png",
+    "photo": "https://acnhcdn.com/latest/NpcBromide/NpcNmlShp14.png",
+    "house": "https://acnhcdn.com/drivesync/render/houses/shp14_Etoile.png",
+    "de": "Etoile"
+  }
+}

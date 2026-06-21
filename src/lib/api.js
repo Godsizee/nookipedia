@@ -13,7 +13,10 @@
 
 const DEFAULT_DIRECTUS = 'https://backend-nookipedia.2.godsize.info';
 
-async function fetchWithRetry(url, retries = 5, delay = 3000) {
+// Builds run unattended on a small server: when the backend is down we want to
+// fail fast to the bundled fallbacks rather than stall the whole build on long
+// retry waits. A couple of quick attempts still rides out a momentary blip.
+async function fetchWithRetry(url, retries = 3, delay = 1000) {
   let currentUrl = url;
   for (let i = 0; i < retries; i++) {
     try {
@@ -61,7 +64,7 @@ export async function getCollection(directusUrl, name, fallback = []) {
 }
 
 /* ── Creatures (fish / insects / sea) with their 1:N detail joins ───────── */
-export async function getCreatures(directusUrl) {
+export async function getCreatures(directusUrl, fallback = []) {
   const [creatures, locations, shadows, speeds, weathers] = await Promise.all([
     fetchRows(`${directusUrl}/items/creatures?limit=-1`),
     fetchRows(`${directusUrl}/items/creature_locations?limit=-1`),
@@ -69,6 +72,10 @@ export async function getCreatures(directusUrl) {
     fetchRows(`${directusUrl}/items/creature_speeds?limit=-1`),
     fetchRows(`${directusUrl}/items/creature_weathers?limit=-1`),
   ]);
+
+  // Backend unreachable → keep the build alive with the bundled fallback, which
+  // already carries the joined location/shadow/speed/weather fields.
+  if (!creatures.length) return fallback;
 
   const locationsMap = new Map(locations.map((i) => [i.creature_id, i.location_name]));
   const shadowsMap = new Map(shadows.map((i) => [i.creature_id, i.shadow_image]));

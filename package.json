@@ -10,6 +10,8 @@
     "astro": "astro",
     "db:sync-data": "node scripts/fetch-data.js",
     "db:sync-assets": "node scripts/download-assets.js",
+    "db:sync-villagers": "node scripts/sync-villager-images.js",
+    "db:sync-villagers:report": "node scripts/sync-villager-images.js --report",
     "db:build-local": "npm run db:sync-data && npm run db:sync-assets"
   },
   "dependencies": {

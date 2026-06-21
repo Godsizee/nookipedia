@@ -1,123 +1,75 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/PageHero.astro';
 import { getCollection } from 'astro:content';
 
 const allGuides = await getCollection('guides');
+// Keep the overview tidily ordered by the flower id the guide belongs to.
+allGuides.sort((a, b) => a.data.flowerId - b.data.flowerId);
 ---
 
 <Layout title="Zucht-Guides Übersicht">
-    <div class="hero">
-        <div class="hero-leaf">🍃</div>
-        <h1>Nookipedia Zucht-Guides</h1>
-        <p>Erfahre, wie du seltene Hybride züchtest, deinen Ertrag maximierst und deine Insel mit perfekten Maiglöckchen schmückst.</p>
-    </div>
+  <a href="/blumen/" class="ac-btn back-btn accent-flower">← Pflanzenwelt &amp; Zucht</a>
 
-    <section class="guides-section">
-        <div class="guides-grid">
-            {allGuides.map((guide) => (
-                <a href={`/guides/${guide.slug}`} class="guide-card">
-                    <div class="card-icon">{guide.data.icon || '🍃'}</div>
-                    <div class="card-body">
-                        <h2>{guide.data.title}</h2>
-                        <p>{guide.data.description}</p>
-                        <span class="read-more">Guide lesen ➔</span>
-                    </div>
-                </a>
-            ))}
-        </div>
-    </section>
+  <PageHero
+    accent="flower"
+    emoji="📖"
+    title="Zucht-Guides"
+    subtitle="Detaillierte Profi-Wege für jede Blumenart – von der Samentüte zur seltensten Hybride."
+  />
+
+  <section class="guide-grid accent-flower">
+    {allGuides.map((guide) => (
+      <a href={`/guides/${guide.slug}`} class="guide-card">
+        <span class="guide-icon">{guide.data.icon || '🍃'}</span>
+        <span class="guide-body">
+          <strong class="guide-title">{guide.data.title}</strong>
+          <span class="muted guide-desc">{guide.data.description}</span>
+          <span class="ac-badge guide-cta">Guide lesen →</span>
+        </span>
+      </a>
+    ))}
+  </section>
 </Layout>
 
 <style>
-.hero-leaf {
-    font-size: 3rem;
-    margin-bottom: 0.5rem;
-    animation: bounce 2s infinite ease-in-out;
-}
+  .back-btn { margin: var(--sp-4) 0 var(--sp-6); }
 
-@keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
-
-.guides-section {
-    max-width: 900px;
-    margin: 2rem auto 4rem;
-    padding: 0 1rem;
-}
-
-.guides-grid {
+  .guide-grid {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1.5rem;
-}
+    gap: var(--sp-5);
+    margin-bottom: var(--sp-12);
+  }
+  @media (min-width: 720px) { .guide-grid { grid-template-columns: repeat(2, 1fr); } }
 
-@media (min-width: 768px) {
-    .guides-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-.guide-card {
+  .guide-card {
+    display: flex;
+    gap: var(--sp-4);
+    align-items: flex-start;
+    padding: var(--sp-5);
     background: var(--ac-surface);
+    border: 2px solid var(--ac-border);
     border-radius: var(--radius-lg);
-    padding: 1.5rem;
     box-shadow: var(--ac-shadow);
     text-decoration: none;
-    display: flex;
-    gap: 1.25rem;
-    align-items: flex-start;
-    border: 2px solid transparent;
-    transition: transform 0.2s, border-color 0.2s;
-    color: inherit;
-}
-
-.guide-card:hover {
-    transform: translateY(-4px);
-    border-color: var(--ac-green-light);
-}
-
-.guide-card:active {
-    transform: scale(0.98);
-}
-
-.card-icon {
-    font-size: 2.2rem;
-    background: var(--ac-bg);
-    width: 60px;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--radius-md);
-    flex-shrink: 0;
-}
-
-.card-body {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-}
-
-.card-body h2 {
-    font-size: 1.2rem;
-    font-weight: 900;
     color: var(--ac-text);
-    margin: 0;
-    line-height: 1.2;
-}
+    transition: transform var(--t-base) var(--ease-spring), border-color var(--t-base), box-shadow var(--t-base);
+  }
+  .guide-card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: var(--ac-shadow-lg); }
+  .guide-card:active { transform: scale(0.98); }
 
-.card-body p {
-    font-size: 0.95rem;
-    color: var(--ac-text-muted);
-    margin: 0;
-    line-height: 1.4;
-}
-
-.read-more {
-    font-size: 0.85rem;
-    font-weight: 800;
-    color: var(--ac-green);
-    margin-top: 0.25rem;
-}
+  .guide-icon {
+    flex-shrink: 0;
+    display: grid; place-items: center;
+    width: 60px; height: 60px;
+    font-size: 2rem;
+    background: var(--accent-soft);
+    border-radius: var(--radius-md);
+    box-shadow: inset 0 -4px 0 rgba(0,0,0,0.05);
+  }
+  .guide-body { display: flex; flex-direction: column; gap: 6px; }
+  .guide-title { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; line-height: 1.2; }
+  .guide-desc { font-size: 0.92rem; line-height: 1.45; }
+  .guide-cta { align-self: flex-start; margin-top: 2px; }
 </style>

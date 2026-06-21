@@ -56,16 +56,19 @@ import PageHero from '../components/PageHero.astro';
 <script>
   const directusUrl = 'https://backend-nookipedia.2.godsize.info';
 
-  const getImageUrl = (path) => {
+  // Mirror src/lib/format.js getImageUrl: a bare file name is placed inside its
+  // implied category folder (museum/, materials/, …); a path that already
+  // carries its sub-folder is used as-is; a bare token without extension is a
+  // Directus asset ID.
+  const getImageUrl = (path, folder = '') => {
     if (!path) return '/assets/img/acnh/koeder.png';
     if (path.startsWith('http')) return path;
-    if (path.includes('/') || path.includes('.')) {
-      let clean = path.startsWith('/') ? path.slice(1) : path;
-      if (clean.startsWith('assets/')) clean = clean.slice(7);
-      if (clean.startsWith('img/acnh/')) clean = clean.slice(9);
-      return `/assets/img/acnh/${clean}`;
-    }
-    return `${directusUrl}/assets/${path}`;
+    let clean = path.replace(/^\/+/, '');
+    if (clean.startsWith('assets/')) clean = clean.slice(7);
+    if (clean.startsWith('img/acnh/')) clean = clean.slice(9);
+    if (!clean.includes('/') && !clean.includes('.')) return `${directusUrl}/assets/${clean}`;
+    if (clean.includes('/') || !folder) return `/assets/img/acnh/${clean}`;
+    return `/assets/img/acnh/${folder}/${clean}`;
   };
 
   const staticFallbackDB = [
@@ -111,8 +114,8 @@ import PageHero from '../components/PageHero.astro';
       flowers.forEach((f) => results.push({ title: f.name, subtitle: 'Zuchtblume', type: 'Flora', url: `/blumen/${f.id}/`, image: getImageUrl(f.image_path) }));
       diy.forEach((d) => results.push({ title: d.name, subtitle: d.source || 'Bastelanleitung', type: 'Rezept', url: '/items/', image: getImageUrl(d.image_path) }));
       cooking.forEach((ck) => results.push({ title: ck.name, subtitle: ck.source || 'Kochrezept', type: 'Rezept', url: '/items/', image: getImageUrl(ck.image_path) }));
-      artworks.forEach((art) => results.push({ title: art.name, subtitle: `Kunstwerk von ${art.artist}`, type: 'Kunst', url: `/museum/kunst/${art.id}`, image: getImageUrl(art.image_real) }));
-      fossils.forEach((f) => results.push({ title: f.name, subtitle: 'Dino-Fossil', type: 'Fossil', url: '/museum/fossilien', image: getImageUrl(f.image_path) }));
+      artworks.forEach((art) => results.push({ title: art.name, subtitle: `Kunstwerk von ${art.artist}`, type: 'Kunst', url: `/museum/kunst/${art.id}`, image: getImageUrl(art.image_real, 'museum') }));
+      fossils.forEach((f) => results.push({ title: f.name, subtitle: 'Dino-Fossil', type: 'Fossil', url: '/museum/fossilien', image: getImageUrl(f.image_path, 'museum') }));
     } catch (err) {
       console.warn('Directus search error, using static fallback.', err);
     }
