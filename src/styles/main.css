@@ -878,3 +878,57 @@
   body { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
   @layer components { footer { margin-bottom: var(--sp-8); } }
 }
+
+/* ════════════════════════════════════════════════════════════════
+   7 · POLISH · entrances · touch targets · breathing room · narrow
+   ════════════════════════════════════════════════════════════════ */
+
+/* — Purposeful staggered entrance: tiles "settle" like stickers.
+     `backwards` fill = hidden only before start, so hover/lift stays live. — */
+@media (prefers-reduced-motion: no-preference) {
+  .app-grid > *, .creature-grid > *, .entity-grid > * {
+    animation: bounce-in 0.55s var(--ease-spring) backwards;
+  }
+  .app-grid > :nth-child(2), .creature-grid > :nth-child(2), .entity-grid > :nth-child(2) { animation-delay: .06s; }
+  .app-grid > :nth-child(3), .creature-grid > :nth-child(3), .entity-grid > :nth-child(3) { animation-delay: .12s; }
+  .app-grid > :nth-child(4), .creature-grid > :nth-child(4), .entity-grid > :nth-child(4) { animation-delay: .18s; }
+  .app-grid > :nth-child(5), .creature-grid > :nth-child(5), .entity-grid > :nth-child(5) { animation-delay: .24s; }
+  .app-grid > :nth-child(6), .creature-grid > :nth-child(6), .entity-grid > :nth-child(6) { animation-delay: .30s; }
+  .app-grid > :nth-child(n+7), .creature-grid > :nth-child(n+7), .entity-grid > :nth-child(n+7) { animation-delay: .34s; }
+  .page-hero .hero-emoji, .hero-emoji.floating { will-change: transform; }
+}
+
+/* — Touch-target floor: every tappable pill is comfortably ≥44px — */
+.ac-btn, .tab-item, .tab-btn, .ac-checkbox, .btn-back { min-height: 44px; }
+.ac-chip, .ac-badge, .price-tag { min-height: 30px; }
+
+/* — Smoother, premium image reaction inside the home tiles — */
+.app-tile .tile-icon, .cat-card i { transition: transform var(--t-base) var(--ease-spring); }
+.app-tile:hover .tile-icon, .cat-card:hover i { transform: scale(1.06) rotate(-3deg); }
+
+/* — Narrow phones (<360px): shrink oversized elements, keep spacing safe — */
+@media (max-width: 360px) {
+  .container { padding-inline: var(--sp-4); }
+  .logo { font-size: 1.18rem; gap: var(--sp-1); }
+  .logo span:first-child { width: 32px; height: 32px; }
+
+  .app-grid, .category-selection { gap: var(--sp-4); }
+  .app-tile, .cat-card { gap: var(--sp-4); padding: var(--sp-4); }
+  .app-tile .tile-icon, .cat-card i { width: 56px; height: 56px; font-size: 1.75rem; }
+  .app-tile .tile-label, .cat-card span { font-size: 1.05rem; }
+  .app-tile .tile-sub { font-size: 0.8rem; }
+
+  .page-hero { padding: var(--sp-8) var(--sp-4) var(--sp-10); border-radius: var(--radius-lg); }
+  .hero { padding-top: var(--sp-8); }
+
+  .creature-card { padding: var(--sp-4); }
+  .creature-card .img-container { width: 74px; height: 74px; padding: 9px; }
+  .creature-card .name { font-size: 1.12rem; }
+
+  .tab-item, .tab-btn { padding: 0.6rem 0.95rem; font-size: 0.9rem; }
+  .filter-bar, .toolbar { padding: var(--sp-3) var(--sp-4); gap: var(--sp-3); }
+
+  /* keep the floating bar inside the viewport & evenly spaced */
+  .bottom-tab-bar { left: var(--sp-2); right: var(--sp-2); }
+  .bottom-tab-item { width: auto; flex: 1; min-width: 0; }
+}
