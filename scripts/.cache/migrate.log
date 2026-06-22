@@ -1,0 +1,17 @@
+── Plan ──
+{
+  total: 3114,
+  alreadyUuid: 726,
+  http: 0,
+  nul: 786,
+  missing: 1,
+  toMigrate: 1601
+}
+Fehlende Dateien (bleiben unverändert): 1
+   diy_recipes.image_path#323: diy/Housewares/Mush screen.png
+Eindeutige Dateien: 1276
+Backup geschrieben: .cache/img-migration-backup.json (1601 Einträge)
+
+Lade vorhandene Directus-Files …
+   25229 vorhandene Files.
+   Upload: neu 100, reused 0, fail 0   Upload: neu 200, reused 0, fail 0   Upload: neu 300, reused 0, fail 0   Upload: neu 400, reused 0, fail 0   Upload: neu 500, reused 0, fail 0   Upload: neu 600, reused 0, fail 0   Upload: neu 700, reused 0, fail 0
