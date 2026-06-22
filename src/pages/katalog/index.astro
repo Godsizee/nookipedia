@@ -7,9 +7,37 @@ import { getItemsCatalog, DEFAULT_DIRECTUS } from '../../lib/api.js';
 const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || DEFAULT_DIRECTUS;
 const items = await getItemsCatalog(directusUrl);
 
+// Englische Sheet-Kategorien → deutsche Anzeige-Labels.
+const CATEGORY_DE = {
+  Housewares: 'Möbel',
+  'Wall-mounted': 'Wandobjekte',
+  Wallpaper: 'Tapeten',
+  Floors: 'Böden',
+  Rugs: 'Teppiche',
+  'Ceiling Decor': 'Deckenobjekte',
+  Miscellaneous: 'Verschiedenes',
+  'Tools/Goods': 'Werkzeuge & Utensilien',
+  Tops: 'Oberteile',
+  Bottoms: 'Unterteile',
+  'Dress-Up': 'Kleider',
+  Headwear: 'Kopfbedeckungen',
+  Accessories: 'Accessoires',
+  Socks: 'Strümpfe',
+  Shoes: 'Schuhe',
+  Bags: 'Taschen',
+  Umbrellas: 'Schirme',
+  'Clothing Other': 'Sonstige Kleidung',
+  Music: 'Musiktitel',
+  Photos: 'Fotos',
+  Posters: 'Poster',
+  Fencing: 'Zäune',
+  Gyroids: 'Gyroiden',
+};
+const catLabel = (c) => CATEGORY_DE[c] || c;
+
 const byCategory = {};
 for (const it of items) (byCategory[it.category || 'Sonstiges'] ||= []).push(it);
-const categories = Object.keys(byCategory).sort((a, b) => a.localeCompare(b, 'de'));
+const categories = Object.keys(byCategory).sort((a, b) => catLabel(a).localeCompare(catLabel(b), 'de'));
 for (const c of categories) byCategory[c].sort((a, b) => (a.name_de || '').localeCompare(b.name_de || '', 'de'));
 ---
 
@@ -23,7 +51,7 @@ for (const c of categories) byCategory[c].sort((a, b) => (a.name_de || '').local
   <div class="stack stack-4" id="catalog">
     {categories.map((cat) => (
       <details class="cat-group ac-card accent-material" data-cat={cat}>
-        <summary><span class="cluster">📦 {cat} <span class="muted">({byCategory[cat].length})</span></span><span class="chevron">▾</span></summary>
+        <summary><span class="cluster">📦 {catLabel(cat)} <span class="muted">({byCategory[cat].length})</span></span><span class="chevron">▾</span></summary>
         <div class="grid-auto cat-items" style="--min: 150px; --gap: var(--sp-4); margin-top: var(--sp-4);">
           {byCategory[cat].map((it) => (
             <div class="cat-item" data-search={`${it.name_de || ''} ${it.name_en || ''}`.toLowerCase()}>
