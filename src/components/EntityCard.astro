@@ -11,11 +11,15 @@ interface Props {
   subtitle?: string;
   price?: number | null;
   accent?: string;
+  badges?: string[];
 }
-const { href, image, title, subtitle, price = null, accent } = Astro.props;
+const { href, image, title, subtitle, price = null, accent, badges = [] } = Astro.props;
 ---
 <a href={href} class={`entity-card ${accent ? `accent-${accent}` : ''}`}>
-  <span class="entity-img"><img src={getImageUrl(image)} alt={title} loading="lazy" onerror="this.src='/assets/img/acnh/koeder.png'" /></span>
+  <span class="entity-img">
+    <img src={getImageUrl(image)} alt={title} loading="lazy" onerror="this.src='/assets/img/acnh/koeder.png'" />
+    {badges.length > 0 && <span class="entity-badges">{badges.map((b) => <span class="entity-badge">{b}</span>)}</span>}
+  </span>
   <strong class="entity-name">{title}</strong>
   {subtitle && <span class="entity-sub muted">{subtitle}</span>}
   {price != null && <span class="price-tag">💰 {formatBells(price)}</span>}
@@ -24,7 +28,9 @@ const { href, image, title, subtitle, price = null, accent } = Astro.props;
 <style>
   .entity-card { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px; height: 100%; padding: var(--sp-4); background: var(--ac-surface); border: 2px solid var(--ac-border); border-radius: var(--radius-lg); box-shadow: var(--ac-shadow); text-decoration: none; color: var(--ac-text); transition: transform var(--t-base) var(--ease-spring), border-color var(--t-base), box-shadow var(--t-base); }
   .entity-card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: var(--ac-shadow-lg); }
-  .entity-img { display: grid; place-items: center; width: 96px; height: 96px; padding: 10px; background: var(--ac-surface-2); border-radius: var(--radius-md); box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.05); }
+  .entity-img { position: relative; display: grid; place-items: center; width: 96px; height: 96px; padding: 10px; background: var(--ac-surface-2); border-radius: var(--radius-md); box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.05); }
+  .entity-badges { position: absolute; top: -6px; right: -6px; display: flex; gap: 3px; }
+  .entity-badge { display: grid; place-items: center; width: 26px; height: 26px; font-size: 0.85rem; background: var(--ac-surface); border: 2px solid var(--accent); border-radius: 50%; box-shadow: var(--ac-shadow-sm); }
   .entity-img img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.12)); }
   .entity-name { font-family: var(--font-display); font-weight: 700; font-size: 1.02rem; line-height: 1.15; }
   .entity-sub { font-size: 0.82rem; }

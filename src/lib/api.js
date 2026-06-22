@@ -181,6 +181,28 @@ export async function getItemsWithVariants(directusUrl, fallback = []) {
   return items.map((it) => ({ ...it, variants: byItem.get(it.id) || [] }));
 }
 
+/* ── Items enriched with their crafting recipe (detail pages) ───────────── */
+/**
+ * Each item gets a `recipe` (its DIY/cooking recipe with joined materials) when
+ * one matches by German name (`recipe.name === item.name_de`) — the only stable
+ * key the recipe rows carry. ~92% of named recipes match; the rest fall back to
+ * no structured materials. Resilient: degrades to plain items, never throws.
+ */
+export async function getItemsWithRecipes(directusUrl) {
+  const [items, recipes] = await Promise.all([
+    getItemsWithVariants(directusUrl),
+    getRecipes(directusUrl),
+  ]);
+  if (!items.length) return items;
+  const norm = (s) => (s || '').toString().trim().toLowerCase();
+  const recipeByName = new Map();
+  for (const r of recipes) {
+    const k = norm(r.name);
+    if (k && !recipeByName.has(k)) recipeByName.set(k, r);
+  }
+  return items.map((it) => ({ ...it, recipe: recipeByName.get(norm(it.name_de)) || null }));
+}
+
 /* ── Items catalog: thin view derived from the full join (first image + count) */
 export async function getItemsCatalog(directusUrl) {
   const items = await getItemsWithVariants(directusUrl);

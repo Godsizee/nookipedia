@@ -134,6 +134,55 @@ export function categoryLabel(category) {
   return CATEGORY_DE[category] || category;
 }
 
+/**
+ * Map an item's English `source` to a German label. Sources can be
+ * "; "-separated (e.g. "Saharah; Saharah's Co-op"); each token is translated
+ * individually and unknown tokens pass through unchanged (Open-Closed). NPC
+ * proper names are only renamed when the German name is well-established.
+ */
+const SOURCE_DE = {
+  Crafting: 'Herstellung',
+  Cooking: 'Kochen',
+  "Nook's Cranny": 'Nooks Laden',
+  'Able Sisters': 'Schneiderei',
+  'High Friendship': 'Bewohner (hohe Freundschaft)',
+  Cyrus: 'Björn',
+  'Dig Spot': 'Fundstelle (graben)',
+  Gulliver: 'Gulliver',
+  Gullivarrr: 'Gulliver (Pirat)',
+  "Redd's Co-op Raffle": 'Reiner (Tombola)',
+  'Nook Shopping': 'Nook-Shopping',
+  'Nook Shopping Posters': 'Nook-Shopping (Poster)',
+  'Nook Shopping Promotion': 'Nook-Shopping (Aktion)',
+  'Nook Shopping Seasonal': 'Nook-Shopping (saisonal)',
+  'Nook Shopping Daily Selection': 'Nook-Shopping (Tagesangebot)',
+  'Nook Miles Redemption': 'Nook-Meilen-Prämie',
+};
+
+export function sourceLabel(source) {
+  if (!source) return null;
+  return String(source)
+    .split(/\s*;\s*/)
+    .map((s) => SOURCE_DE[s] || s)
+    .join(' · ');
+}
+
+/** Format a numeric exchange price with its currency, e.g. "1.200 Poki". */
+const CURRENCY_DE = {
+  Poki: 'Poki',
+  'Nook Miles': 'Meilen',
+  'Hotel Tickets': 'Hotel-Tickets',
+  'Nook Points': 'Nook-Punkte',
+  'Heart Crystals': 'Herzkristalle',
+};
+
+export function formatExchange(price, currency) {
+  if (price == null || price === '' || !currency) return null;
+  const n = Number(String(price).replace(/[^\d.-]/g, ''));
+  if (!Number.isFinite(n)) return null;
+  return `${new Intl.NumberFormat('de-DE').format(n)} ${CURRENCY_DE[currency] || currency}`;
+}
+
 /** Turn a shadow label ("Sehr Groß") into its size class ("shadow-sehr-groß"). */
 export function shadowClass(label) {
   if (!label) return '';

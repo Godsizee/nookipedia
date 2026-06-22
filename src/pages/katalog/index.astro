@@ -28,7 +28,7 @@ for (const c of categories) byCategory[c].sort((a, b) => (a.name_de || '').local
         <div class="grid-auto cat-items" style="--min: 150px; --gap: var(--sp-4); margin-top: var(--sp-4);">
           {byCategory[cat].map((it) => (
             <div class="cat-item" data-search={`${it.name_de || ''} ${it.name_en || ''}`.toLowerCase()}>
-              <EntityCard href={`/items/${it.id}/`} image={it.image_path} title={it.name_de} subtitle={it.variant_count > 1 ? `🎨 ${it.variant_count} Varianten` : (it.source || '')} price={it.sell_price} accent="material" />
+              <EntityCard href={`/items/${it.id}/`} image={it.image_path} title={it.name_de} subtitle={it.variant_count > 1 ? `🎨 ${it.variant_count} Varianten` : (it.source || '')} price={it.sell_price} accent="material" badges={[it.diy === 'Yes' && '🔨', (it.body_customize === 'Yes' || it.pattern_customize === 'Yes' || it.cyrus_customize_price) && '🎨'].filter(Boolean)} />
             </div>
           ))}
         </div>

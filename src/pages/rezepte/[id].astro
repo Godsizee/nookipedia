@@ -60,10 +60,10 @@ const materials = recipe.materials || [];
                     <div class="materials-header" style="font-weight:800; font-size:1.2rem; color:var(--ac-green); margin-bottom:1rem;">Benötigte Zutaten</div>
                     <div class="materials-list" style="display:flex; flex-wrap:wrap; gap:10px;">
                         {materials.map((mat) => (
-                            <div class="material-pill" style="display:flex; align-items:center; gap:8px; background:var(--ac-bg); padding:8px 12px; border-radius:var(--radius-sm); border:1px solid var(--ac-border);">
+                            <a href={`/materialien#mat-${mat.id}`} class="material-pill" style="display:flex; align-items:center; gap:8px; background:var(--ac-bg); padding:8px 12px; border-radius:var(--radius-sm); border:1px solid var(--ac-border); text-decoration:none; color:var(--ac-text);">
                                 <span style="font-weight:900; color:var(--ac-green);">{mat.amount}x</span>
                                 <span>{mat.name}</span>
-                            </div>
+                            </a>
                         ))}
                     </div>
                 </div>

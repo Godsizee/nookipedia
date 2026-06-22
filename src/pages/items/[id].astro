@@ -1,11 +1,11 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getItemsWithVariants, DEFAULT_DIRECTUS } from '../../lib/api.js';
-import { getImageUrl, formatBells, categoryLabel } from '../../lib/format.js';
+import { getItemsWithRecipes, DEFAULT_DIRECTUS } from '../../lib/api.js';
+import { getImageUrl, formatBells, categoryLabel, sourceLabel, formatExchange } from '../../lib/format.js';
 
 export async function getStaticPaths() {
   const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || DEFAULT_DIRECTUS;
-  const items = await getItemsWithVariants(directusUrl);
+  const items = await getItemsWithRecipes(directusUrl);
   return items.map((item) => ({
     params: { id: item.id.toString() },
     props: { item },
@@ -14,6 +14,11 @@ export async function getStaticPaths() {
 
 const { item } = Astro.props;
 const PLACEHOLDER = '/assets/img/acnh/placeholder.png';
+const toNum = (v) => {
+  if (v == null || v === '') return null;
+  const n = Number(String(v).replace(/[^\d.-]/g, ''));
+  return Number.isFinite(n) ? n : null;
+};
 
 const variants = item.variants || [];
 // Standard-Variante: erste mit Bild, sonst die erste überhaupt.
@@ -26,14 +31,33 @@ const heroImg = variantImg(variants[defaultIndex]);
 const heroLabel = variantLabel(variants[defaultIndex]);
 const catLabel = categoryLabel(item.category);
 
-// Insel-Akte: nur befüllte Zeilen.
+// ── Herstellung ──────────────────────────────────────────────────────────
+const recipe = item.recipe || null;
+const materials = recipe?.materials || [];
+
+// ── Umgestaltung (Björn / Cyrus) ───────────────────────────────────────────
+const canBody = item.body_customize === 'Yes';
+const canPattern = item.pattern_customize === 'Yes';
+const kitCost = item.customization_kit_cost ?? toNum(item.kit_cost);
+const cyrusPrice = toNum(item.cyrus_customize_price);
+const customize = [
+  { icon: '🎨', cls: 'icon-variants', label: 'Umfärbbar', value: canBody ? 'Ja' : null },
+  { icon: '🧵', cls: 'icon-cat', label: 'Muster änderbar', value: canPattern ? 'Ja' : null },
+  { icon: '🧰', cls: 'icon-buy', label: 'Umgestaltungssets', value: kitCost ? `${kitCost} ${kitCost === 1 ? 'Set' : 'Sets'}` : null },
+  { icon: '🐫', cls: 'icon-source', label: 'Umgestaltung bei Björn', value: cyrusPrice ? formatBells(cyrusPrice) : null },
+].filter((f) => f.value);
+
+// ── Insel-Akte: nur befüllte Zeilen ─────────────────────────────────────────
+const exchange = formatExchange(item.exchange_price, item.exchange_currency);
 const facts = [
   { icon: '💰', cls: 'icon-price', label: 'Verkaufspreis', value: item.sell_price != null ? formatBells(item.sell_price) : null },
-  { icon: '🛒', cls: 'icon-buy', label: 'Kaufpreis', value: item.buy_price != null ? formatBells(item.buy_price) : 'Nicht käuflich' },
+  { icon: '🛒', cls: 'icon-buy', label: 'Kaufpreis', value: item.buy_price > 0 ? formatBells(item.buy_price) : (exchange ? null : 'Nicht käuflich') },
+  { icon: '🎟️', cls: 'icon-variants', label: 'Tauschpreis', value: exchange },
   { icon: '📏', cls: 'icon-size', label: 'Größe', value: item.size },
   { icon: '📦', cls: 'icon-cat', label: 'Kategorie', value: catLabel },
   { icon: '🎨', cls: 'icon-variants', label: 'Varianten', value: variants.length ? `${variants.length}` : null },
-  { icon: '📍', cls: 'icon-source', label: 'Quelle', value: item.source },
+  { icon: '📍', cls: 'icon-source', label: 'Quelle', value: sourceLabel(item.source) },
+  { icon: '📝', cls: 'icon-source', label: 'Hinweis', value: item.source_notes },
 ].filter((f) => f.value);
 ---
 
@@ -93,6 +117,47 @@ const facts = [
           ))}
         </div>
       </section>
+
+      {recipe && (materials.length > 0 || recipe.materials_desc) && (
+        <section class="craft-section">
+          <h2 class="section-heading">🔨 Bauanleitung</h2>
+          {materials.length > 0 ? (
+            <div class="material-list">
+              {materials.map((m) => (
+                <a class="material-pill" href={`/materialien#mat-${m.id}`}>
+                  <span class="material-thumb">
+                    <img src={getImageUrl(m.image_path, { folder: 'materials' })} alt={m.name} loading="lazy" onerror={`this.src='${PLACEHOLDER}'`} />
+                  </span>
+                  <span class="material-amount">{m.amount}×</span>
+                  <span class="material-name">{m.name}</span>
+                </a>
+              ))}
+            </div>
+          ) : (
+            <p class="muted">{recipe.materials_desc}</p>
+          )}
+          <div class="craft-actions">
+            <a href={`/rezepte/${recipe.id}`} class="ac-btn ac-btn--primary accent-recipe">Zum Rezept →</a>
+          </div>
+        </section>
+      )}
+
+      {customize.length > 0 && (
+        <section class="customize-section">
+          <h2 class="section-heading">🎨 Umgestaltung</h2>
+          <div class="data-list">
+            {customize.map((f) => (
+              <div class="data-row">
+                <div class={`data-icon ${f.cls}`}>{f.icon}</div>
+                <div class="data-content">
+                  <span class="data-label">{f.label}</span>
+                  <span class="data-value">{f.value}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {variants.length === 0 && (
         <p class="empty-note muted">Für diesen Gegenstand sind noch keine Varianten hinterlegt.</p>
@@ -236,6 +301,24 @@ const facts = [
   .data-content { display: flex; flex-direction: column; }
   .data-label { font-size: 0.8rem; font-weight: 800; color: var(--ac-text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
   .data-value { font-size: 1.05rem; font-weight: 800; color: var(--ac-text); }
+
+  /* ── Bauanleitung (Materialien) ───────────────────────────────────────── */
+  .material-list { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
+  .material-pill {
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 14px 6px 6px;
+    background: var(--ac-surface-2);
+    border: 2px solid var(--ac-border);
+    border-radius: var(--radius-pill);
+    text-decoration: none; color: var(--ac-text);
+    transition: transform var(--t-fast) var(--ease-spring), border-color var(--t-fast), box-shadow var(--t-fast);
+  }
+  .material-pill:hover { transform: translateY(-2px); border-color: var(--accent); box-shadow: var(--ac-shadow-sm); }
+  .material-thumb { display: grid; place-items: center; width: 36px; height: 36px; padding: 4px; background: var(--ac-surface); border-radius: 50%; }
+  .material-thumb img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .material-amount { font-weight: 900; color: var(--accent-deep, var(--accent)); }
+  .material-name { font-weight: 800; font-size: 0.92rem; }
+  .craft-actions { margin-top: var(--sp-5); text-align: center; }
 
   .empty-note { text-align: center; }
   .item-actions { text-align: center; }
