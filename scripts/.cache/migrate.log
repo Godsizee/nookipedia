@@ -14,4 +14,7 @@ Backup geschrieben: .cache/img-migration-backup.json (1601 Einträge)
 
 Lade vorhandene Directus-Files …
    25229 vorhandene Files.
-   Upload: neu 100, reused 0, fail 0   Upload: neu 200, reused 0, fail 0   Upload: neu 300, reused 0, fail 0   Upload: neu 400, reused 0, fail 0   Upload: neu 500, reused 0, fail 0   Upload: neu 600, reused 0, fail 0   Upload: neu 700, reused 0, fail 0   Upload: neu 800, reused 0, fail 0   Upload: neu 900, reused 0, fail 0
+   Upload: neu 100, reused 0, fail 0   Upload: neu 200, reused 0, fail 0   Upload: neu 300, reused 0, fail 0   Upload: neu 400, reused 0, fail 0   Upload: neu 500, reused 0, fail 0   Upload: neu 600, reused 0, fail 0   Upload: neu 700, reused 0, fail 0   Upload: neu 800, reused 0, fail 0   Upload: neu 900, reused 0, fail 0   Upload: neu 1000, reused 0, fail 0   Upload: neu 1100, reused 0, fail 0   Upload: neu 1200, reused 0, fail 0   Upload fertig: neu 1276, reused 0, fail 0        
+   Patch: 200/1601   Patch: 400/1601   Patch: 600/1601   Patch: 800/1601   Patch: 1000/1601   Patch: 1200/1601   Patch: 1400/1601   Patch: 1600/1601   Patch fertig: 1601/1601 (fail 0, ohne-uuid 0)        
+
+✅ Migration fertig.
