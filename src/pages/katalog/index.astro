@@ -3,37 +3,10 @@ import Layout from '../../layouts/Layout.astro';
 import PageHero from '../../components/PageHero.astro';
 import EntityCard from '../../components/EntityCard.astro';
 import { getItemsCatalog, DEFAULT_DIRECTUS } from '../../lib/api.js';
+import { categoryLabel as catLabel } from '../../lib/format.js';
 
 const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || DEFAULT_DIRECTUS;
 const items = await getItemsCatalog(directusUrl);
-
-// Englische Sheet-Kategorien → deutsche Anzeige-Labels.
-const CATEGORY_DE = {
-  Housewares: 'Möbel',
-  'Wall-mounted': 'Wandobjekte',
-  Wallpaper: 'Tapeten',
-  Floors: 'Böden',
-  Rugs: 'Teppiche',
-  'Ceiling Decor': 'Deckenobjekte',
-  Miscellaneous: 'Verschiedenes',
-  'Tools/Goods': 'Werkzeuge & Utensilien',
-  Tops: 'Oberteile',
-  Bottoms: 'Unterteile',
-  'Dress-Up': 'Kleider',
-  Headwear: 'Kopfbedeckungen',
-  Accessories: 'Accessoires',
-  Socks: 'Strümpfe',
-  Shoes: 'Schuhe',
-  Bags: 'Taschen',
-  Umbrellas: 'Schirme',
-  'Clothing Other': 'Sonstige Kleidung',
-  Music: 'Musiktitel',
-  Photos: 'Fotos',
-  Posters: 'Poster',
-  Fencing: 'Zäune',
-  Gyroids: 'Gyroiden',
-};
-const catLabel = (c) => CATEGORY_DE[c] || c;
 
 const byCategory = {};
 for (const it of items) (byCategory[it.category || 'Sonstiges'] ||= []).push(it);

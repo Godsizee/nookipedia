@@ -166,22 +166,28 @@ export async function getFlowers(directusUrl) {
   }));
 }
 
-/* ── Items catalog: join the first variant image + variant count ────────── */
-export async function getItemsCatalog(directusUrl) {
+/* ── Items with their full variant list (detail pages) ──────────────────── */
+export async function getItemsWithVariants(directusUrl, fallback = []) {
   const [items, variants] = await Promise.all([
     fetchRows(`${directusUrl}/items/items?limit=-1`),
     fetchRows(`${directusUrl}/items/item_variants?limit=-1`),
   ]);
-  const firstImage = new Map();
-  const variantCount = new Map();
-  variants.forEach((v) => {
-    if (!firstImage.has(v.item_id)) firstImage.set(v.item_id, v.image_path);
-    variantCount.set(v.item_id, (variantCount.get(v.item_id) || 0) + 1);
-  });
-  return items.map((it) => ({
+  if (!items.length) return fallback;
+  const byItem = new Map();
+  for (const v of variants) {
+    if (!byItem.has(v.item_id)) byItem.set(v.item_id, []);
+    byItem.get(v.item_id).push(v);
+  }
+  return items.map((it) => ({ ...it, variants: byItem.get(it.id) || [] }));
+}
+
+/* ── Items catalog: thin view derived from the full join (first image + count) */
+export async function getItemsCatalog(directusUrl) {
+  const items = await getItemsWithVariants(directusUrl);
+  return items.map(({ variants, ...it }) => ({
     ...it,
-    image_path: firstImage.get(it.id) || null,
-    variant_count: variantCount.get(it.id) || 0,
+    image_path: variants.find((v) => v.image_path)?.image_path || variants[0]?.image_path || null,
+    variant_count: variants.length,
   }));
 }
 

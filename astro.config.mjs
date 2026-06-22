@@ -5,6 +5,11 @@ import { VitePWA } from 'vite-plugin-pwa';
 // https://astro.build/config
 export default defineConfig({
   output: 'static',
+  // /items ist jetzt der Item-Bereich (Detailseiten unter /items/<id>); die
+  // Übersicht lebt im Katalog. Alte /items-URL konsistent dorthin umleiten.
+  redirects: {
+    '/items': '/katalog/',
+  },
   integrations: [
     react({
       include: ['**/react/*'],

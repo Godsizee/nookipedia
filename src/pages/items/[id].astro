@@ -1,138 +1,280 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getRecipes } from '../../lib/api.js';
+import { getItemsWithVariants, DEFAULT_DIRECTUS } from '../../lib/api.js';
+import { getImageUrl, formatBells, categoryLabel } from '../../lib/format.js';
 
 export async function getStaticPaths() {
-  const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
-  const recipes = await getRecipes(directusUrl);
-
-
-  return recipes.map((recipe) => {
-    return {
-      params: { id: recipe.id.toString() },
-      props: { recipe },
-    };
-  });
+  const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || DEFAULT_DIRECTUS;
+  const items = await getItemsWithVariants(directusUrl);
+  return items.map((item) => ({
+    params: { id: item.id.toString() },
+    props: { item },
+  }));
 }
 
-const { recipe } = Astro.props;
-const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || 'https://backend-nookipedia.2.godsize.info';
+const { item } = Astro.props;
+const PLACEHOLDER = '/assets/img/acnh/placeholder.png';
 
-const getImageUrl = (path) => {
-  if (!path) return '/assets/img/acnh/koeder.png';
-  if (path.startsWith('http')) return path;
-  if (path.includes('/') || path.includes('.')) {
-    let clean = path.startsWith('/') ? path.slice(1) : path;
-    if (clean.startsWith('assets/')) clean = clean.slice(7);
-    if (clean.startsWith('img/acnh/')) clean = clean.slice(9);
-    return `/assets/img/acnh/${clean}`;
-  }
-  return `${directusUrl}/assets/${path}`;
-};
+const variants = item.variants || [];
+// Standard-Variante: erste mit Bild, sonst die erste überhaupt.
+const defaultIndex = Math.max(0, variants.findIndex((v) => v.image_path));
+const variantImg = (v) => getImageUrl(v?.image_path, { fallback: PLACEHOLDER });
+const variantLabel = (v) =>
+  [v?.variant_name_de, v?.pattern_name_de].filter(Boolean).join(' · ') || 'Normal';
 
-const imageUrl = getImageUrl(recipe.image_path);
-const materials = recipe.materials || [];
+const heroImg = variantImg(variants[defaultIndex]);
+const heroLabel = variantLabel(variants[defaultIndex]);
+const catLabel = categoryLabel(item.category);
+
+// Insel-Akte: nur befüllte Zeilen.
+const facts = [
+  { icon: '💰', cls: 'icon-price', label: 'Verkaufspreis', value: item.sell_price != null ? formatBells(item.sell_price) : null },
+  { icon: '🛒', cls: 'icon-buy', label: 'Kaufpreis', value: item.buy_price != null ? formatBells(item.buy_price) : 'Nicht käuflich' },
+  { icon: '📏', cls: 'icon-size', label: 'Größe', value: item.size },
+  { icon: '📦', cls: 'icon-cat', label: 'Kategorie', value: catLabel },
+  { icon: '🎨', cls: 'icon-variants', label: 'Varianten', value: variants.length ? `${variants.length}` : null },
+  { icon: '📍', cls: 'icon-source', label: 'Quelle', value: item.source },
+].filter((f) => f.value);
 ---
 
-<Layout title={`${recipe.name} - Basteln & Kochen`}>
-    <div class="hero" style="background: linear-gradient(135deg, #ffa726 0%, #fb8c00 100%);">
-        <div class="recipe-visual" transition:name={`recipe-img-${recipe.id}`}>
-            <img src={imageUrl} alt={recipe.name} onerror="this.src='/assets/img/acnh/placeholder.png'" />
+<Layout title={`${item.name_de || item.name_en} - Item-Katalog`}>
+  <article class="item-detail accent-material">
+    <header class="item-hero">
+      <div class="item-icon-wrap" transition:name={`item-img-${item.id}`}>
+        <img id="item-hero-img" src={heroImg} alt={item.name_de || item.name_en} onerror={`this.src='${PLACEHOLDER}'`} />
+      </div>
+      <h1 class="item-title">{item.name_de || item.name_en}</h1>
+      <div class="item-badges">
+        <span class="item-badge">📦 {catLabel}</span>
+        {variants.length > 1 && <span class="item-badge">🎨 {variants.length} Varianten</span>}
+      </div>
+      {variants.length > 0 && (
+        <div id="item-variant-label" class="item-variant-label">{heroLabel}</div>
+      )}
+    </header>
+
+    <div class="item-card">
+      {variants.length > 1 && (
+        <section class="variant-section">
+          <h2 class="section-heading">🎨 Varianten <span class="muted">({variants.length})</span></h2>
+          <div class="variant-grid" id="variant-grid">
+            {variants.map((v, i) => (
+              <button
+                type="button"
+                class={`variant-chip ${i === defaultIndex ? 'active' : ''}`}
+                data-img={variantImg(v)}
+                data-label={variantLabel(v)}
+                aria-label={variantLabel(v)}
+              >
+                <span class="variant-thumb">
+                  <img src={variantImg(v)} alt={variantLabel(v)} loading="lazy" onerror={`this.src='${PLACEHOLDER}'`} />
+                </span>
+                <span class="variant-cap">
+                  <strong>{v.variant_name_de || 'Normal'}</strong>
+                  {v.pattern_name_de && <span class="variant-pattern muted">{v.pattern_name_de}</span>}
+                </span>
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <section class="facts-section">
+        <h2 class="section-heading">📋 Insel-Akte</h2>
+        <div class="data-list">
+          {facts.map((f) => (
+            <div class="data-row">
+              <div class={`data-icon ${f.cls}`}>{f.icon}</div>
+              <div class="data-content">
+                <span class="data-label">{f.label}</span>
+                <span class="data-value">{f.value}</span>
+              </div>
+            </div>
+          ))}
         </div>
-        <h1>{recipe.name}</h1>
-        <p>Lass deiner Kreativität freien Lauf an der Werkbank und am Herd!</p>
+      </section>
+
+      {variants.length === 0 && (
+        <p class="empty-note muted">Für diesen Gegenstand sind noch keine Varianten hinterlegt.</p>
+      )}
+
+      <div class="item-actions">
+        <a href="/katalog/" class="ac-btn ac-btn--primary accent-material">← Zurück zum Katalog</a>
+      </div>
     </div>
-
-    <section class="recipe-section" style="max-width:800px; margin: 0 auto; padding: 2rem 1rem;">
-        <div class="recipe-card-premium" style="background: var(--ac-surface); padding: 2rem; border-radius: var(--radius-lg); box-shadow: var(--ac-shadow);">
-            <div class="recipe-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; border-bottom:1px solid rgba(0,0,0,0.05); padding-bottom:1rem;">
-                <h2 style="margin:0; font-size:1.8rem; font-weight:900;">{recipe.name}</h2>
-                {recipe.is_customizable && (
-                    <div class="badge-customizable">
-                        <span>🎨</span> Umgestaltbar
-                    </div>
-                )}
-            </div>
-
-            <div class="recipe-meta-tags" style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:2rem;">
-                {recipe.source && (
-                    <div class="meta-tag tag-source">
-                        <span>👤</span> <strong>Quelle:</strong> {recipe.source}
-                    </div>
-                )}
-                {recipe.sell_price && (
-                    <div class="meta-tag tag-price">
-                        <span>💰</span> <strong>Wert:</strong> {recipe.sell_price}
-                    </div>
-                )}
-                {recipe.durability && (
-                    <div class="meta-tag tag-durability">
-                        <span>🛠️</span> <strong>Haltbarkeit:</strong> {recipe.durability}
-                    </div>
-                )}
-            </div>
-
-            {materials.length > 0 ? (
-                <div class="recipe-materials-box">
-                    <div class="materials-header" style="font-weight:800; font-size:1.2rem; color:var(--ac-green); margin-bottom:1rem;">Benötigte Zutaten</div>
-                    <div class="materials-list" style="display:flex; flex-wrap:wrap; gap:10px;">
-                        {materials.map((mat) => (
-                            <div class="material-pill" style="display:flex; align-items:center; gap:8px; background:var(--ac-bg); padding:8px 12px; border-radius:var(--radius-sm); border:1px solid var(--ac-border);">
-                                <span style="font-weight:900; color:var(--ac-green);">{mat.amount}x</span>
-                                <span>{mat.name}</span>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            ) : recipe.materials_desc ? (
-                <div class="recipe-materials-box fallback-desc">
-                    <div class="materials-header">Zutaten</div>
-                    <p>{recipe.materials_desc}</p>
-                </div>
-            ) : null}
-        </div>
-    </section>
+  </article>
 </Layout>
 
 <style>
-.recipe-visual {
-    width: 120px;
-    height: 120px;
-    margin: 0 auto 1.5rem;
-    background: var(--ac-surface);
-    border-radius: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: var(--ac-shadow);
-}
+  .item-detail { display: block; }
 
-.recipe-visual img {
-    width: 80%;
-    height: 80%;
+  /* ── Hero ─────────────────────────────────────────────────────────────── */
+  .item-hero {
+    position: relative;
+    text-align: center;
+    padding: var(--sp-10) var(--sp-6) var(--sp-8);
+    margin-bottom: var(--sp-8);
+    border-radius: var(--radius-xl);
+    color: var(--on-accent, #fff);
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(255, 255, 255, 0.28), transparent 60%),
+      linear-gradient(150deg, var(--accent) 0%, var(--accent-deep) 100%);
+    box-shadow: var(--ac-shadow-lg);
+  }
+  .item-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.18) 2px, transparent 2px);
+    background-size: 24px 24px;
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  .item-icon-wrap {
+    position: relative;
+    z-index: 2;
+    width: 150px;
+    height: 150px;
+    margin: 0 auto var(--sp-5);
+    display: grid;
+    place-items: center;
+    background: rgba(255, 255, 255, 0.15);
+    border: 3px solid rgba(255, 255, 255, 0.4);
+    border-radius: 28px;
+    backdrop-filter: blur(12px) saturate(180%);
+    -webkit-backdrop-filter: blur(12px) saturate(180%);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25), inset 0 4px 10px rgba(255, 255, 255, 0.3);
+  }
+  .item-icon-wrap img {
+    width: 78%;
+    height: 78%;
     object-fit: contain;
-}
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.35));
+    transition: opacity var(--t-base), transform var(--t-base) var(--ease-spring);
+  }
+  .item-title {
+    position: relative;
+    z-index: 2;
+    color: #fff;
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    line-height: 1.1;
+    margin-bottom: var(--sp-3);
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+  .item-badges { position: relative; z-index: 2; display: flex; flex-wrap: wrap; gap: var(--sp-2); justify-content: center; }
+  .item-badge {
+    font-weight: 800; font-size: 0.85rem;
+    padding: 4px 14px; border-radius: var(--radius-pill);
+    background: rgba(0, 0, 0, 0.2); color: #fff;
+  }
+  .item-variant-label {
+    position: relative; z-index: 2;
+    margin-top: var(--sp-4);
+    display: inline-block;
+    padding: 6px 16px;
+    font-weight: 900; font-size: 0.9rem;
+    color: var(--accent-deep); background: #fff;
+    border-radius: var(--radius-pill);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18);
+  }
 
-.badge-customizable {
-    background: var(--ac-green-light);
-    color: var(--ac-green);
-    padding: 6px 12px;
-    border-radius: 100px;
-    font-weight: 800;
-    font-size: 0.85rem;
+  /* ── Content card ─────────────────────────────────────────────────────── */
+  .item-card {
+    max-width: 850px;
+    margin: 0 auto var(--sp-12);
+    padding: var(--sp-8) var(--sp-5);
+    background: var(--ac-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--ac-shadow);
     display: flex;
-    align-items: center;
-    gap: 4px;
-}
+    flex-direction: column;
+    gap: var(--sp-8);
+  }
+  .section-heading {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 1.2rem; font-weight: 900; color: var(--ac-text);
+    margin-bottom: var(--sp-4);
+  }
 
-.meta-tag {
-    background: var(--ac-bg);
-    border: 1px solid var(--ac-border);
-    padding: 8px 16px;
+  /* ── Variant gallery ──────────────────────────────────────────────────── */
+  .variant-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: var(--sp-3); }
+  .variant-chip {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    padding: var(--sp-3) var(--sp-2);
+    background: var(--ac-surface-2);
+    border: 2px solid var(--ac-border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    text-align: center;
+    transition: transform var(--t-base) var(--ease-spring), border-color var(--t-base), box-shadow var(--t-base);
+  }
+  .variant-chip:hover { transform: translateY(-3px); border-color: var(--accent); box-shadow: var(--ac-shadow-sm); }
+  .variant-chip.active { border-color: var(--accent); background: var(--accent-soft, var(--ac-surface-2)); box-shadow: 0 0 0 2px var(--accent) inset; }
+  .variant-thumb {
+    display: grid; place-items: center;
+    width: 72px; height: 72px; padding: 8px;
+    background: var(--ac-surface);
     border-radius: var(--radius-sm);
-    font-size: 0.95rem;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
+  }
+  .variant-thumb img { max-width: 100%; max-height: 100%; object-fit: contain; }
+  .variant-cap { display: flex; flex-direction: column; gap: 1px; font-size: 0.8rem; font-weight: 800; color: var(--ac-text); line-height: 1.15; }
+  .variant-pattern { font-size: 0.72rem; font-weight: 700; }
+
+  /* ── Insel-Akte (Daten-Liste) ─────────────────────────────────────────── */
+  .data-list { background: var(--ac-bg); border-radius: var(--radius-md); overflow: hidden; display: flex; flex-direction: column; }
+  .data-row { display: flex; align-items: center; gap: var(--sp-4); padding: var(--sp-4) var(--sp-5); border-bottom: 1px solid rgba(0, 0, 0, 0.04); }
+  .data-row:last-child { border-bottom: none; }
+  .data-icon { flex-shrink: 0; width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; font-size: 1.2rem; box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.4), 0 2px 6px rgba(0, 0, 0, 0.05); }
+  .icon-price { background: #fff5c2; color: #d39e00; }
+  .icon-buy { background: #e8f5e9; color: #2e7d32; }
+  .icon-size { background: #e3f2fd; color: #0277bd; }
+  .icon-cat { background: #f3e5f5; color: #7b1fa2; }
+  .icon-variants { background: #fce4ec; color: #c2185b; }
+  .icon-source { background: #fff3e0; color: #e65100; }
+  .data-content { display: flex; flex-direction: column; }
+  .data-label { font-size: 0.8rem; font-weight: 800; color: var(--ac-text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+  .data-value { font-size: 1.05rem; font-weight: 800; color: var(--ac-text); }
+
+  .empty-note { text-align: center; }
+  .item-actions { text-align: center; }
+
+  @media (min-width: 768px) {
+    .item-card { padding: var(--sp-10); }
+  }
+
+  [data-theme='dark'] .data-list { background: rgba(0, 0, 0, 0.2); }
+  [data-theme='dark'] .data-row { border-bottom-color: rgba(255, 255, 255, 0.05); }
+  [data-theme='dark'] .icon-price { background: rgba(211, 158, 0, 0.15); color: #f5cf66; }
+  [data-theme='dark'] .icon-buy { background: rgba(46, 125, 50, 0.15); color: #81c784; }
+  [data-theme='dark'] .icon-size { background: rgba(2, 119, 189, 0.15); color: #4fc3f7; }
+  [data-theme='dark'] .icon-cat { background: rgba(123, 31, 162, 0.15); color: #ce93d8; }
+  [data-theme='dark'] .icon-variants { background: rgba(194, 24, 91, 0.15); color: #f48fb1; }
+  [data-theme='dark'] .icon-source { background: rgba(230, 81, 0, 0.15); color: #ffb74d; }
 </style>
+
+<script is:inline>
+  function initItemVariants() {
+    const grid = document.getElementById('variant-grid');
+    const img = document.getElementById('item-hero-img');
+    const label = document.getElementById('item-variant-label');
+    if (!grid || !img || grid.dataset.init) return;
+    grid.dataset.init = '1';
+    grid.addEventListener('click', (e) => {
+      const chip = e.target.closest('.variant-chip');
+      if (!chip) return;
+      grid.querySelectorAll('.variant-chip').forEach((c) => c.classList.toggle('active', c === chip));
+      img.style.opacity = '0';
+      img.style.transform = 'scale(0.94)';
+      setTimeout(() => {
+        img.src = chip.dataset.img;
+        if (label) label.textContent = chip.dataset.label;
+        img.style.opacity = '1';
+        img.style.transform = 'scale(1)';
+      }, 160);
+    });
+  }
+  initItemVariants();
+  document.addEventListener('astro:after-swap', initItemVariants);
+</script>

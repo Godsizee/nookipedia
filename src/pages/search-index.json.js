@@ -10,19 +10,20 @@
  * the same resilience the rest of the site already gets from fetching
  * Directus at build time (see lib/api.js).
  */
-import { getCreatures, getFlowers, getRecipes, getArtworks, getFossils, DEFAULT_DIRECTUS } from '../lib/api.js';
-import { getImageUrl } from '../lib/format.js';
+import { getCreatures, getFlowers, getRecipes, getArtworks, getFossils, getItemsCatalog, DEFAULT_DIRECTUS } from '../lib/api.js';
+import { getImageUrl, categoryLabel } from '../lib/format.js';
 import creaturesFallback from '../data/creatures.json';
 
 export async function GET() {
   const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || DEFAULT_DIRECTUS;
 
-  const [creatures, flowers, recipes, artworks, fossils] = await Promise.all([
+  const [creatures, flowers, recipes, artworks, fossils, items] = await Promise.all([
     getCreatures(directusUrl, creaturesFallback),
     getFlowers(directusUrl),
     getRecipes(directusUrl),
     getArtworks(directusUrl),
     getFossils(directusUrl),
+    getItemsCatalog(directusUrl),
   ]);
 
   const entries = [
@@ -44,8 +45,15 @@ export async function GET() {
       title: r.name,
       subtitle: r.source || (r.type === 'diy' ? 'Bastelanleitung' : 'Kochrezept'),
       type: 'Rezept',
-      url: `/items/${r.id}/`,
+      url: `/rezepte/${r.id}/`,
       image: getImageUrl(r.image_path),
+    })),
+    ...items.map((it) => ({
+      title: it.name_de || it.name_en,
+      subtitle: categoryLabel(it.category),
+      type: 'Item',
+      url: `/items/${it.id}/`,
+      image: getImageUrl(it.image_path),
     })),
     ...artworks.map((a) => ({
       title: a.name,

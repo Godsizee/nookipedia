@@ -1,0 +1,125 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getRecipes, DEFAULT_DIRECTUS } from '../../lib/api.js';
+import { getImageUrl } from '../../lib/format.js';
+
+export async function getStaticPaths() {
+  const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || DEFAULT_DIRECTUS;
+  const recipes = await getRecipes(directusUrl);
+  return recipes.map((recipe) => ({
+    params: { id: recipe.id.toString() },
+    props: { recipe },
+  }));
+}
+
+const { recipe } = Astro.props;
+const imageUrl = getImageUrl(recipe.image_path);
+const materials = recipe.materials || [];
+---
+
+<Layout title={`${recipe.name} - Basteln & Kochen`}>
+    <div class="hero" style="background: linear-gradient(135deg, #ffa726 0%, #fb8c00 100%);">
+        <div class="recipe-visual" transition:name={`recipe-img-${recipe.id}`}>
+            <img src={imageUrl} alt={recipe.name} onerror="this.src='/assets/img/acnh/placeholder.png'" />
+        </div>
+        <h1>{recipe.name}</h1>
+        <p>Lass deiner Kreativität freien Lauf an der Werkbank und am Herd!</p>
+    </div>
+
+    <section class="recipe-section" style="max-width:800px; margin: 0 auto; padding: 2rem 1rem;">
+        <div class="recipe-card-premium" style="background: var(--ac-surface); padding: 2rem; border-radius: var(--radius-lg); box-shadow: var(--ac-shadow);">
+            <div class="recipe-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; border-bottom:1px solid rgba(0,0,0,0.05); padding-bottom:1rem;">
+                <h2 style="margin:0; font-size:1.8rem; font-weight:900;">{recipe.name}</h2>
+                {recipe.is_customizable && (
+                    <div class="badge-customizable">
+                        <span>🎨</span> Umgestaltbar
+                    </div>
+                )}
+            </div>
+
+            <div class="recipe-meta-tags" style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:2rem;">
+                {recipe.source && (
+                    <div class="meta-tag tag-source">
+                        <span>👤</span> <strong>Quelle:</strong> {recipe.source}
+                    </div>
+                )}
+                {recipe.sell_price && (
+                    <div class="meta-tag tag-price">
+                        <span>💰</span> <strong>Wert:</strong> {recipe.sell_price}
+                    </div>
+                )}
+                {recipe.durability && (
+                    <div class="meta-tag tag-durability">
+                        <span>🛠️</span> <strong>Haltbarkeit:</strong> {recipe.durability}
+                    </div>
+                )}
+            </div>
+
+            {materials.length > 0 ? (
+                <div class="recipe-materials-box">
+                    <div class="materials-header" style="font-weight:800; font-size:1.2rem; color:var(--ac-green); margin-bottom:1rem;">Benötigte Zutaten</div>
+                    <div class="materials-list" style="display:flex; flex-wrap:wrap; gap:10px;">
+                        {materials.map((mat) => (
+                            <div class="material-pill" style="display:flex; align-items:center; gap:8px; background:var(--ac-bg); padding:8px 12px; border-radius:var(--radius-sm); border:1px solid var(--ac-border);">
+                                <span style="font-weight:900; color:var(--ac-green);">{mat.amount}x</span>
+                                <span>{mat.name}</span>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            ) : recipe.materials_desc ? (
+                <div class="recipe-materials-box fallback-desc">
+                    <div class="materials-header">Zutaten</div>
+                    <p>{recipe.materials_desc}</p>
+                </div>
+            ) : null}
+
+            <div class="text-center" style="margin-top:2rem;">
+                <a href="/rezepte" class="ac-btn ac-btn--primary accent-recipe">← Zurück zur Rezepte-Werkbank</a>
+            </div>
+        </div>
+    </section>
+</Layout>
+
+<style>
+.recipe-visual {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 1.5rem;
+    background: var(--ac-surface);
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--ac-shadow);
+}
+
+.recipe-visual img {
+    width: 80%;
+    height: 80%;
+    object-fit: contain;
+}
+
+.badge-customizable {
+    background: var(--ac-green-light);
+    color: var(--ac-green);
+    padding: 6px 12px;
+    border-radius: 100px;
+    font-weight: 800;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.meta-tag {
+    background: var(--ac-bg);
+    border: 1px solid var(--ac-border);
+    padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+</style>

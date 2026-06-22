@@ -15,7 +15,7 @@ const currentPath = Astro.url.pathname;
         <span>🌷</span>
         <span>Blumen</span>
     </a>
-    <a href="/rezepte" class={`bottom-tab-item ${currentPath.startsWith('/items') || currentPath.startsWith('/rezepte') ? 'active' : ''}`} title="Möbel & Rezepte">
+    <a href="/rezepte" class={`bottom-tab-item ${currentPath.startsWith('/items') || currentPath.startsWith('/rezepte') || currentPath.startsWith('/katalog') ? 'active' : ''}`} title="Möbel & Rezepte">
         <span>🪓</span>
         <span>Items</span>
     </a>

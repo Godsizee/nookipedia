@@ -99,6 +99,41 @@ export function accentFor(key) {
   return CATEGORY_ACCENT[key] || 'guide';
 }
 
+/**
+ * Map an item-catalog category (the English master-sheet tab name) to its
+ * German display label. Single source of truth for the catalog and the item
+ * detail page. Unknown categories pass through unchanged.
+ */
+const CATEGORY_DE = {
+  Housewares: 'Möbel',
+  'Wall-mounted': 'Wandobjekte',
+  Wallpaper: 'Tapeten',
+  Floors: 'Böden',
+  Rugs: 'Teppiche',
+  'Ceiling Decor': 'Deckenobjekte',
+  Miscellaneous: 'Verschiedenes',
+  'Tools/Goods': 'Werkzeuge & Utensilien',
+  Tops: 'Oberteile',
+  Bottoms: 'Unterteile',
+  'Dress-Up': 'Kleider',
+  Headwear: 'Kopfbedeckungen',
+  Accessories: 'Accessoires',
+  Socks: 'Strümpfe',
+  Shoes: 'Schuhe',
+  Bags: 'Taschen',
+  Umbrellas: 'Schirme',
+  'Clothing Other': 'Sonstige Kleidung',
+  Music: 'Musiktitel',
+  Photos: 'Fotos',
+  Posters: 'Poster',
+  Fencing: 'Zäune',
+  Gyroids: 'Gyroiden',
+};
+
+export function categoryLabel(category) {
+  return CATEGORY_DE[category] || category;
+}
+
 /** Turn a shadow label ("Sehr Groß") into its size class ("shadow-sehr-groß"). */
 export function shadowClass(label) {
   if (!label) return '';
