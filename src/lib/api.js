@@ -233,12 +233,32 @@ export async function getArtworks(directusUrl, fallback = []) {
     });
 }
 
+/* ── Fossils: keep only displayable rows, fix single-fossil grouping ─────── */
+/**
+ * The `fossils` collection carries two parallel record shapes (same import
+ * quirk as artworks): display rows (German `name` + `price`) and metadata-only
+ * rows (`name_de`/`name_en`, no `name`/price). Only the display rows are real
+ * catalogue entries — the metadata rows are import artefacts that would render
+ * as nameless "0 Sternis" duplicates, so we drop them.
+ *
+ * Single fossils (`type === 'Einzel'`) carry the lowercase English internal name
+ * in `dinosaur_group` (e.g. "amber"), which the page would otherwise show as a
+ * group heading. They are not part of a multi-piece skeleton, so we clear that
+ * field to route them into the standalone "Einzelne Fossilien & Spuren" bucket.
+ */
+export async function getFossils(directusUrl, fallback = []) {
+  const rows = await fetchRows(`${directusUrl}/items/fossils?limit=-1`);
+  if (!rows.length) return fallback;
+  return rows
+    .filter((f) => f.name)
+    .map((f) => (f.type === 'Einzel' ? { ...f, dinosaur_group: null } : f));
+}
+
 /* ── Thin collection wrappers (Open-Closed extension point) ─────────────── */
 export const getEvents = (url, fb = []) => getCollection(url, 'events', fb);
 export const getVillagers = (url, fb = []) => getCollection(url, 'villagers', fb);
 export const getItems = (url, fb = []) => getCollection(url, 'items', fb);
 export const getItemVariants = (url, fb = []) => getCollection(url, 'item_variants', fb);
-export const getFossils = (url, fb = []) => getCollection(url, 'fossils', fb);
 export const getSpecialNpcs = (url, fb = []) => getCollection(url, 'special_npcs', fb);
 
 export { DEFAULT_DIRECTUS };
