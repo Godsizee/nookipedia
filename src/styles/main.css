@@ -308,6 +308,7 @@
     position: relative;
     text-align: center;
     padding: var(--sp-12) var(--sp-6) var(--sp-14);
+    margin-top: var(--sp-8);
     margin-bottom: var(--sp-10);
     color: var(--on-accent);
     border-radius: var(--radius-xl);
@@ -979,7 +980,7 @@
   .app-tile .tile-label, .cat-card span { font-size: 1.08rem; }
   .app-tile .tile-sub { font-size: 0.8rem; }
 
-  .page-hero { padding: var(--sp-10) var(--sp-4) var(--sp-12); border-radius: var(--radius-lg); }
+  .page-hero { padding: var(--sp-10) var(--sp-4) var(--sp-12); margin-top: var(--sp-6); border-radius: var(--radius-lg); }
   .page-hero h1 { font-size: clamp(1.7rem, 8vw, 2.1rem); }
   .page-hero p { font-size: 1.02rem; }
 
