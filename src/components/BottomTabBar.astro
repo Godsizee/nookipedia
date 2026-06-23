@@ -1,22 +1,28 @@
 ---
-// BottomTabBar.astro - PWA / Mobile app navigation bar
+// BottomTabBar.astro - PWA / Mobile app navigation bar (shown < 900px)
 const currentPath = Astro.url.pathname;
+const isHome = currentPath === '/';
+const startsWith = (...ps) => ps.some((p) => currentPath.startsWith(p));
 ---
 <nav class="bottom-tab-bar" aria-label="Mobile App Navigation">
-    <a href="/" class={`bottom-tab-item ${currentPath === '/' ? 'active' : ''}`} title="Home / Wiki">
+    <a href="/" class={`bottom-tab-item ${isHome ? 'active' : ''}`} title="Start">
         <span>🍃</span>
-        <span>Wiki</span>
+        <span>Start</span>
     </a>
-    <a href="/faunapaedie/" class={`bottom-tab-item ${currentPath.startsWith('/tier') || currentPath.startsWith('/faunapaedie') ? 'active' : ''}`} title="Faunapädie">
+    <a href="/museum/" class={`bottom-tab-item ${startsWith('/museum') ? 'active' : ''}`} title="Museum">
+        <span>🏛️</span>
+        <span>Museum</span>
+    </a>
+    <a href="/faunapaedie/" class={`bottom-tab-item ${startsWith('/tier', '/faunapaedie') ? 'active' : ''}`} title="Faunapädie">
         <span>🦋</span>
         <span>Fauna</span>
     </a>
-    <a href="/blumen/" class={`bottom-tab-item ${currentPath.startsWith('/blumen') ? 'active' : ''}`} title="Blumen & Zucht">
+    <a href="/blumen/" class={`bottom-tab-item ${startsWith('/blumen', '/guides') ? 'active' : ''}`} title="Pflanzen & Zucht">
         <span>🌷</span>
-        <span>Blumen</span>
+        <span>Pflanzen</span>
     </a>
-    <a href="/rezepte" class={`bottom-tab-item ${currentPath.startsWith('/items') || currentPath.startsWith('/rezepte') || currentPath.startsWith('/katalog') ? 'active' : ''}`} title="Möbel & Rezepte">
-        <span>🪓</span>
+    <a href="/katalog/" class={`bottom-tab-item ${startsWith('/items', '/rezepte', '/katalog', '/materialien') ? 'active' : ''}`} title="Items & Rezepte">
+        <span>🛋️</span>
         <span>Items</span>
     </a>
 </nav>

@@ -29,28 +29,31 @@ import PageHero from '../components/PageHero.astro';
   </section>
 </Layout>
 
-<style>
-  .search-form { display: flex; max-width: 500px; margin: var(--sp-6) auto 0; background: #fff; border-radius: var(--radius-pill); overflow: hidden; box-shadow: var(--ac-shadow); }
-  .search-form input { flex: 1; border: none; padding: 0.85rem 1.4rem; font: inherit; font-weight: 700; color: #1b2a21; outline: none; }
-  .search-form button { border: none; padding: 0 1.4rem; font-size: 1.2rem; color: #fff; background: var(--accent); cursor: pointer; transition: background var(--t-fast); }
-  .search-form button:hover { background: var(--accent-deep); }
-  .search-status { margin-top: var(--sp-4); font-weight: 700; color: rgba(255,255,255,0.95); }
-  .loader-spinner { width: 42px; height: 42px; margin: 0 auto var(--sp-4); border: 4px solid var(--ac-border); border-top-color: var(--ac-green); border-radius: 50%; animation: spin 1s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  .search-page-card { display: flex; align-items: center; gap: var(--sp-4); position: relative; padding: var(--sp-4); background: var(--ac-surface); border: 2px solid var(--ac-border); border-radius: var(--radius-lg); box-shadow: var(--ac-shadow); text-decoration: none; color: var(--ac-text); transition: transform var(--t-base) var(--ease-spring), border-color var(--t-base); }
-  .search-page-card:hover { transform: translateY(-3px); border-color: var(--ac-green); }
-  .search-page-img { flex-shrink: 0; display: grid; place-items: center; width: 60px; height: 60px; padding: 6px; background: var(--ac-surface-2); border-radius: var(--radius-sm); }
-  .search-page-img img { max-width: 100%; max-height: 100%; object-fit: contain; }
-  .sp-title { margin: 0 0 2px; font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; }
-  .sp-sub { font-size: 0.85rem; color: var(--ac-text-muted); font-weight: 700; }
-  .sp-badge { position: absolute; top: 12px; right: 12px; padding: 2px 10px; font-size: 0.72rem; font-weight: 800; color: #fff; background: var(--ac-green); border-radius: var(--radius-pill); }
+<!-- Result cards are injected via JS, so they need global (un-scoped) rules. -->
+<style is:global>
+  .search-page-card { display: flex; align-items: center; gap: var(--sp-4); position: relative; padding: var(--sp-4) var(--sp-5); background: var(--ac-surface); border: 1px solid var(--ac-border); border-radius: var(--radius-lg); box-shadow: var(--ac-shadow); text-decoration: none; color: var(--ac-text); transition: transform var(--t-base) var(--ease-spring), border-color var(--t-base), box-shadow var(--t-base); }
+  .search-page-card:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--ac-green) 55%, var(--ac-border)); box-shadow: var(--ac-shadow-lg); }
+  .search-page-img { flex-shrink: 0; display: grid; place-items: center; width: 64px; height: 64px; padding: 8px; background: var(--ac-surface-2); border-radius: var(--radius-md); }
+  .search-page-img img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.12)); }
+  .sp-title { margin: 0 0 2px; font-family: var(--font-display); font-weight: 600; font-size: 1.12rem; }
+  .sp-sub { font-size: 0.86rem; color: var(--ac-text-muted); font-weight: 600; }
+  .sp-badge { position: absolute; top: 14px; right: 14px; padding: 3px 11px; font-size: 0.72rem; font-weight: 800; color: #fff; background: var(--ac-green); border-radius: var(--radius-pill); }
   .sp-badge[data-type="Insekt"] { background: #63bb47; }
   .sp-badge[data-type="Fisch"] { background: #3d9be0; }
   .sp-badge[data-type="Meerestier"] { background: #9b6dc4; }
   .sp-badge[data-type="Flora"] { background: #ef74a7; }
   .sp-badge[data-type="Kunst"] { background: #c79a2b; }
   .sp-badge[data-type="Fossil"] { background: #a98253; }
+</style>
+
+<style>
+  .search-form { display: flex; max-width: 520px; margin: var(--sp-6) auto 0; background: var(--ac-surface); border-radius: var(--radius-pill); overflow: hidden; box-shadow: var(--ac-shadow-lg); }
+  .search-form input { flex: 1; border: none; padding: 0.9rem 1.5rem; font: inherit; font-weight: 600; color: var(--ac-text); background: transparent; outline: none; }
+  .search-form button { border: none; padding: 0 1.5rem; font-size: 1.2rem; color: #fff; background: var(--accent); cursor: pointer; transition: background var(--t-fast); }
+  .search-form button:hover { background: var(--accent-deep); }
+  .search-status { margin-top: var(--sp-4); font-weight: 600; color: rgba(255,255,255,0.95); }
+  .loader-spinner { width: 42px; height: 42px; margin: 0 auto var(--sp-4); border: 4px solid var(--ac-border); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 
 <script>

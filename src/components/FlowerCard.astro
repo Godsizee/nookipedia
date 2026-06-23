@@ -34,8 +34,8 @@ const slug = (c) => c.toLowerCase().trim().replace(/\s+/g, '-').replace('ß', 's
 </article>
 
 <style>
-  .flower-card { display: flex; flex-direction: column; gap: var(--sp-4); height: 100%; padding: var(--sp-5); background: var(--ac-surface); border: 2px solid var(--ac-border); border-radius: var(--radius-lg); box-shadow: var(--ac-shadow); transition: transform var(--t-base) var(--ease-spring), border-color var(--t-base), box-shadow var(--t-base); }
-  .flower-card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: var(--ac-shadow-lg); }
+  .flower-card { display: flex; flex-direction: column; gap: var(--sp-4); height: 100%; padding: var(--sp-5); background: var(--ac-surface); border: 1px solid var(--ac-border); border-radius: var(--radius-lg); box-shadow: var(--ac-shadow); transition: transform var(--t-base) var(--ease-spring), border-color var(--t-base), box-shadow var(--t-base); }
+  .flower-card:hover { transform: translateY(-5px); border-color: color-mix(in srgb, var(--accent) 55%, var(--ac-border)); box-shadow: var(--ac-shadow-lg); }
   .flower-desc { font-size: 0.94rem; line-height: 1.5; }
   .flower-color-label { display: block; margin-bottom: 8px; font-size: 0.78rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: var(--ac-text-muted); }
   .color-badge { padding: 0.25rem 0.65rem; border-radius: 8px; font-size: 0.75rem; font-weight: 800; border: 1px solid rgba(0, 0, 0, 0.06); }
@@ -49,5 +49,5 @@ const slug = (c) => c.toLowerCase().trim().replace(/\s+/g, '-').replace('ß', 's
   .color-blau { background: #bbdefb; color: #0d47a1; }
   .color-gruen, .color-grün { background: #c8e6c9; color: #2e7d32; }
   .color-gold { background: #fff59d; color: #f57f17; border-color: #fbc02d; }
-  .flower-card .name { font-family: var(--font-display); font-weight: 700; font-size: 1.35rem; }
+  .flower-card .name { font-family: var(--font-display); font-weight: 600; font-size: 1.3rem; }
 </style>

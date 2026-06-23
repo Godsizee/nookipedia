@@ -9,6 +9,31 @@ interface Props {
 }
 
 const { title = 'Nookipedia Next-Level' } = Astro.props;
+
+const path = Astro.url.pathname;
+// Primary desktop navigation. `match` prefixes mark the link active so a
+// detail page (e.g. /tier/…) still highlights its parent section.
+const navItems = [
+  { href: '/museum/',      emoji: '🏛️', label: 'Museum',      match: ['/museum'] },
+  { href: '/faunapaedie/', emoji: '🦋', label: 'Faunapädie',  match: ['/faunapaedie', '/tier'] },
+  { href: '/blumen/',      emoji: '🌷', label: 'Pflanzen',    match: ['/blumen', '/guides'] },
+  { href: '/events/',      emoji: '🎉', label: 'Events',      match: ['/events'] },
+  { href: '/katalog/',     emoji: '🛋️', label: 'Items',       match: ['/katalog', '/items', '/rezepte', '/materialien'] },
+  { href: '/villager/',    emoji: '🐾', label: 'Bewohner',    match: ['/villager'] },
+];
+const isActive = (m: string[]) => m.some((p) => path === p || path.startsWith(p + '/') || path.startsWith(p));
+
+const footerLinks = [
+  { href: '/museum/', label: 'Museum' },
+  { href: '/faunapaedie/', label: 'Faunapädie' },
+  { href: '/blumen/', label: 'Pflanzenwelt' },
+  { href: '/events/', label: 'Events' },
+  { href: '/materialien/', label: 'Materialien' },
+  { href: '/rezepte', label: 'Rezepte' },
+  { href: '/villager/', label: 'Bewohner' },
+  { href: '/katalog/', label: 'Item-Katalog' },
+  { href: '/guides/', label: 'Zucht-Guides' },
+];
 ---
 
 <!DOCTYPE html>
@@ -55,7 +80,15 @@ const { title = 'Nookipedia Next-Level' } = Astro.props;
                 <span>🍃</span> Nookipedia
             </a>
 
-            <div class="cluster">
+            <nav class="main-nav" aria-label="Hauptnavigation">
+                {navItems.map((item) => (
+                    <a href={item.href} class={`nav-link ${isActive(item.match) ? 'active' : ''}`}>
+                        <span class="nav-emoji" aria-hidden="true">{item.emoji}</span>{item.label}
+                    </a>
+                ))}
+            </nav>
+
+            <div class="header-actions">
                 <button id="search-trigger" class="icon-btn" title="Suche öffnen (Cmd/Ctrl + K)" aria-label="Suche öffnen">🔍</button>
                 <button id="theme-toggle" class="icon-btn" title="Design umschalten" aria-label="Hell/Dunkel umschalten">🌓</button>
             </div>
@@ -69,6 +102,9 @@ const { title = 'Nookipedia Next-Level' } = Astro.props;
     <footer>
         <div class="container">
             <p class="brand">🍃 Nookipedia Next-Level</p>
+            <nav class="footer-nav" aria-label="Alle Bereiche">
+                {footerLinks.map((l) => <a href={l.href}>{l.label}</a>)}
+            </nav>
             <p>
                 Alle Bilder und Daten stammen aus Animal Crossing: New Horizons.<br>
                 &copy; {new Date().getFullYear()} – Mit Liebe zum Detail entwickelt.
