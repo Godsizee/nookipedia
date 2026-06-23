@@ -49,14 +49,14 @@ allGuides.sort((a, b) => a.data.flowerId - b.data.flowerId);
     align-items: flex-start;
     padding: var(--sp-5);
     background: var(--ac-surface);
-    border: 2px solid var(--ac-border);
+    border: 1px solid var(--ac-border);
     border-radius: var(--radius-lg);
     box-shadow: var(--ac-shadow);
     text-decoration: none;
     color: var(--ac-text);
     transition: transform var(--t-base) var(--ease-spring), border-color var(--t-base), box-shadow var(--t-base);
   }
-  .guide-card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: var(--ac-shadow-lg); }
+  .guide-card:hover { transform: translateY(-5px); border-color: color-mix(in srgb, var(--accent) 55%, var(--ac-border)); box-shadow: var(--ac-shadow-lg); }
   .guide-card:active { transform: scale(0.98); }
 
   .guide-icon {
@@ -66,7 +66,6 @@ allGuides.sort((a, b) => a.data.flowerId - b.data.flowerId);
     font-size: 2rem;
     background: var(--accent-soft);
     border-radius: var(--radius-md);
-    box-shadow: inset 0 -4px 0 rgba(0,0,0,0.05);
   }
   .guide-body { display: flex; flex-direction: column; gap: 6px; }
   .guide-title { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; line-height: 1.2; }

@@ -18,50 +18,41 @@ const materials = recipe.materials || [];
 ---
 
 <Layout title={`${recipe.name} - Basteln & Kochen`}>
-    <div class="hero" style="background: linear-gradient(135deg, #ffa726 0%, #fb8c00 100%);">
+    <a href="/rezepte" class="ac-btn back-btn accent-recipe">← Rezepte-Werkbank</a>
+
+    <section class="page-hero accent-recipe recipe-hero">
         <div class="recipe-visual" transition:name={`recipe-img-${recipe.id}`}>
             <img src={imageUrl} alt={recipe.name} onerror="this.src='/assets/img/acnh/placeholder.png'" />
         </div>
         <h1>{recipe.name}</h1>
         <p>Lass deiner Kreativität freien Lauf an der Werkbank und am Herd!</p>
-    </div>
+    </section>
 
-    <section class="recipe-section" style="max-width:800px; margin: 0 auto; padding: 2rem 1rem;">
-        <div class="recipe-card-premium" style="background: var(--ac-surface); padding: 2rem; border-radius: var(--radius-lg); box-shadow: var(--ac-shadow);">
-            <div class="recipe-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem; border-bottom:1px solid rgba(0,0,0,0.05); padding-bottom:1rem;">
-                <h2 style="margin:0; font-size:1.8rem; font-weight:900;">{recipe.name}</h2>
-                {recipe.is_customizable && (
-                    <div class="badge-customizable">
-                        <span>🎨</span> Umgestaltbar
-                    </div>
-                )}
-            </div>
+    <section class="recipe-section accent-recipe">
+        <div class="ac-card recipe-card-premium">
+            {recipe.is_customizable && (
+                <div class="badge-customizable"><span>🎨</span> Umgestaltbar</div>
+            )}
 
-            <div class="recipe-meta-tags" style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:2rem;">
+            <div class="recipe-meta-tags">
                 {recipe.source && (
-                    <div class="meta-tag tag-source">
-                        <span>👤</span> <strong>Quelle:</strong> {recipe.source}
-                    </div>
+                    <div class="meta-tag"><span>👤</span> <strong>Quelle:</strong> {recipe.source}</div>
                 )}
                 {recipe.sell_price && (
-                    <div class="meta-tag tag-price">
-                        <span>💰</span> <strong>Wert:</strong> {recipe.sell_price}
-                    </div>
+                    <div class="meta-tag"><span>💰</span> <strong>Wert:</strong> {recipe.sell_price}</div>
                 )}
                 {recipe.durability && (
-                    <div class="meta-tag tag-durability">
-                        <span>🛠️</span> <strong>Haltbarkeit:</strong> {recipe.durability}
-                    </div>
+                    <div class="meta-tag"><span>🛠️</span> <strong>Haltbarkeit:</strong> {recipe.durability}</div>
                 )}
             </div>
 
             {materials.length > 0 ? (
                 <div class="recipe-materials-box">
-                    <div class="materials-header" style="font-weight:800; font-size:1.2rem; color:var(--ac-green); margin-bottom:1rem;">Benötigte Zutaten</div>
-                    <div class="materials-list" style="display:flex; flex-wrap:wrap; gap:10px;">
+                    <div class="materials-header">Benötigte Zutaten</div>
+                    <div class="materials-list">
                         {materials.map((mat) => (
-                            <a href={`/materialien#mat-${mat.id}`} class="material-pill" style="display:flex; align-items:center; gap:8px; background:var(--ac-bg); padding:8px 12px; border-radius:var(--radius-sm); border:1px solid var(--ac-border); text-decoration:none; color:var(--ac-text);">
-                                <span style="font-weight:900; color:var(--ac-green);">{mat.amount}x</span>
+                            <a href={`/materialien#mat-${mat.id}`} class="material-pill">
+                                <span class="material-amount">{mat.amount}×</span>
                                 <span>{mat.name}</span>
                             </a>
                         ))}
@@ -70,11 +61,11 @@ const materials = recipe.materials || [];
             ) : recipe.materials_desc ? (
                 <div class="recipe-materials-box fallback-desc">
                     <div class="materials-header">Zutaten</div>
-                    <p>{recipe.materials_desc}</p>
+                    <p class="muted">{recipe.materials_desc}</p>
                 </div>
             ) : null}
 
-            <div class="text-center" style="margin-top:2rem;">
+            <div class="text-center" style="margin-top: var(--sp-8);">
                 <a href="/rezepte" class="ac-btn ac-btn--primary accent-recipe">← Zurück zur Rezepte-Werkbank</a>
             </div>
         </div>
@@ -82,44 +73,64 @@ const materials = recipe.materials || [];
 </Layout>
 
 <style>
+.back-btn { margin: var(--sp-4) 0 var(--sp-6); }
+
+.recipe-hero { padding-block: var(--sp-10) var(--sp-12); }
 .recipe-visual {
-    width: 120px;
-    height: 120px;
-    margin: 0 auto 1.5rem;
+    width: 130px;
+    height: 130px;
+    margin: 0 auto var(--sp-5);
     background: var(--ac-surface);
-    border-radius: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    border-radius: var(--radius-lg);
+    display: grid;
+    place-items: center;
     box-shadow: var(--ac-shadow);
 }
+.recipe-visual img { width: 78%; height: 78%; object-fit: contain; }
 
-.recipe-visual img {
-    width: 80%;
-    height: 80%;
-    object-fit: contain;
-}
+.recipe-section { max-width: 800px; margin: 0 auto; padding: 0 var(--sp-1) var(--sp-8); }
+.recipe-card-premium { display: flex; flex-direction: column; gap: var(--sp-5); }
 
 .badge-customizable {
-    background: var(--ac-green-light);
-    color: var(--ac-green);
-    padding: 6px 12px;
-    border-radius: 100px;
-    font-weight: 800;
+    align-self: flex-start;
+    background: var(--accent-soft);
+    color: var(--accent-deep);
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    font-weight: 700;
     font-size: 0.85rem;
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 5px;
 }
 
+.recipe-meta-tags { display: flex; flex-wrap: wrap; gap: 10px; }
 .meta-tag {
-    background: var(--ac-bg);
+    background: var(--ac-surface-2);
     border: 1px solid var(--ac-border);
     padding: 8px 16px;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-pill);
     font-size: 0.95rem;
+    font-weight: 600;
     display: flex;
     align-items: center;
     gap: 6px;
 }
+.meta-tag strong { font-weight: 800; }
+
+.materials-header { font-family: var(--font-display); font-weight: 600; font-size: 1.2rem; color: var(--accent-deep); margin-bottom: var(--sp-3); }
+.materials-list { display: flex; flex-wrap: wrap; gap: 10px; }
+.recipe-card-premium .material-pill {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--ac-surface-2);
+    padding: 8px 14px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--ac-border);
+    text-decoration: none;
+    color: var(--ac-text);
+    font-weight: 600;
+    transition: transform var(--t-fast) var(--ease-spring), border-color var(--t-fast);
+}
+.recipe-card-premium .material-pill:hover { transform: translateY(-2px); border-color: var(--accent); }
+.material-amount { font-weight: 900; color: var(--accent-deep); }
 </style>

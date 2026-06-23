@@ -249,7 +249,7 @@
 
   /* Desktop primary navigation (hidden on mobile → bottom tab bar) */
   .main-nav { display: none; }
-  @media (min-width: 900px) {
+  @media (min-width: 960px) {
     .main-nav {
       display: flex;
       align-items: center;
@@ -927,10 +927,10 @@
 }
 
 /* Hide the floating bar on wider screens (header nav suffices) */
-@media (min-width: 900px) {
+@media (min-width: 960px) {
   @layer components { .bottom-tab-bar { display: none; } }
 }
-@media (max-width: 899px) {
+@media (max-width: 959px) {
   body { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
   @layer components { footer { margin-bottom: var(--sp-8); } }
 }
