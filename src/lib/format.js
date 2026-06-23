@@ -93,6 +93,7 @@ const CATEGORY_ACCENT = {
   material: 'material',
   villager: 'villager',
   fossil: 'fossil',
+  achievement: 'achievement',
 };
 
 export function accentFor(key) {

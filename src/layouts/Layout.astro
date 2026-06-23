@@ -20,6 +20,7 @@ const navItems = [
   { href: '/events/',      emoji: '🎉', label: 'Events',      match: ['/events'] },
   { href: '/katalog/',     emoji: '🛋️', label: 'Items',       match: ['/katalog', '/items', '/rezepte', '/materialien'] },
   { href: '/villager/',    emoji: '🐾', label: 'Bewohner',    match: ['/villager'] },
+  { href: '/erfolge/',     emoji: '🏅', label: 'Erfolge',     match: ['/erfolge'] },
 ];
 const isActive = (m: string[]) => m.some((p) => path === p || path.startsWith(p + '/') || path.startsWith(p));
 
@@ -33,6 +34,7 @@ const footerLinks = [
   { href: '/villager/', label: 'Bewohner' },
   { href: '/katalog/', label: 'Item-Katalog' },
   { href: '/guides/', label: 'Zucht-Guides' },
+  { href: '/erfolge/', label: 'Erfolge' },
 ];
 ---
 

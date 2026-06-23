@@ -381,4 +381,11 @@ export const getItems = (url, fb = []) => getCollection(url, 'items', fb);
 export const getItemVariants = (url, fb = []) => getCollection(url, 'item_variants', fb);
 export const getSpecialNpcs = (url, fb = []) => getCollection(url, 'special_npcs', fb);
 
+/**
+ * Nook-Meilen-Erfolge (achievements with collectible stamps). Reads the backend
+ * `achievements` collection when present, otherwise the bundled fallback — the
+ * full official list is regenerated from the data sheet via `npm run db:sync-data`.
+ */
+export const getAchievements = (url, fb = []) => getCollection(url, 'achievements', fb);
+
 export { DEFAULT_DIRECTUS };

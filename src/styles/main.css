@@ -129,6 +129,7 @@
   .accent-villager { --accent:#e0673d; --accent-deep:#c44e27; --accent-soft:#fbe3d9; }
   .accent-fossil   { --accent:#a98253; --accent-deep:#8a663b; --accent-soft:#f1e7d6; }
   .accent-guide    { --accent:#58b37b; --accent-deep:#3f9462; --accent-soft:#e3f3e8; }
+  .accent-achievement { --accent:#2bb3a3; --accent-deep:#1d9488; --accent-soft:#dbf3ef; }
 }
 
 /* ════════════════════════════════════════════════════════════════

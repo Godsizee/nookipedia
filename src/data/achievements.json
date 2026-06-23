@@ -1,0 +1,30 @@
+[
+  { "id": "fische-fangen",        "category": "Museum & Sammlung", "name": "Fische fangen",            "tiers": 5, "criteria": "Fange eine wachsende Zahl an Fischen – Stufe für Stufe bis zum Profi-Angler." },
+  { "id": "insekten-fangen",      "category": "Museum & Sammlung", "name": "Insekten fangen",          "tiers": 5, "criteria": "Schnappe dir mit dem Kescher immer mehr Insekten." },
+  { "id": "meerestiere-tauchen",  "category": "Museum & Sammlung", "name": "Meerestiere ertauchen",    "tiers": 5, "criteria": "Tauche nach immer mehr Meerestieren." },
+  { "id": "fossilien-spenden",    "category": "Museum & Sammlung", "name": "Fossilien ausgraben",      "tiers": 5, "criteria": "Grabe Fossilien aus und lasse sie bewerten." },
+  { "id": "kunst-spenden",        "category": "Museum & Sammlung", "name": "Kunstwerke spenden",       "tiers": 5, "criteria": "Spende echte Kunstwerke an das Museum." },
+  { "id": "museum-spenden",       "category": "Museum & Sammlung", "name": "Exponate spenden",         "tiers": 5, "criteria": "Spende Eugen immer mehr verschiedene Exponate." },
+
+  { "id": "inseltage",            "category": "Insel-Alltag",      "name": "Inseltage",                "tiers": 5, "criteria": "Besuche deine Insel an möglichst vielen Tagen." },
+  { "id": "fundsachen",           "category": "Insel-Alltag",      "name": "Versteckte Fundsachen",    "tiers": 5, "criteria": "Finde die täglich versteckten Items (Geld-Stein, vergrabene Fundstellen, Geschenk-Ballons)." },
+  { "id": "gespraeche",           "category": "Insel-Alltag",      "name": "Mit Bewohnern reden",      "tiers": 5, "criteria": "Sprich täglich mit deinen Inselnachbarn." },
+  { "id": "dehnuebungen",         "category": "Insel-Alltag",      "name": "Dehnübungen",              "tiers": 5, "criteria": "Mache Radio-Gymnastik bzw. Dehnübungen auf dem Festplatz." },
+  { "id": "ballons-abschiessen",  "category": "Insel-Alltag",      "name": "Ballons abschießen",       "tiers": 5, "criteria": "Hole dir die schwebenden Geschenk-Ballons mit der Schleuder herunter." },
+
+  { "id": "diy-basteln",          "category": "Handwerk & Insel",  "name": "DIY-Rezepte basteln",      "tiers": 5, "criteria": "Bastle immer mehr Gegenstände an der Werkbank." },
+  { "id": "werkzeug-benutzen",    "category": "Handwerk & Insel",  "name": "Werkzeuge abnutzen",       "tiers": 5, "criteria": "Benutze Werkzeuge so oft, bis sie kaputtgehen." },
+  { "id": "steine-schlagen",      "category": "Handwerk & Insel",  "name": "Steine bearbeiten",        "tiers": 5, "criteria": "Schlage mit Schaufel oder Axt auf Felsen und sammle Rohstoffe." },
+  { "id": "baeume-faellen",       "category": "Handwerk & Insel",  "name": "Bäume fällen",             "tiers": 5, "criteria": "Fälle Bäume mit der Axt für Holz und Stämme." },
+  { "id": "insel-bewertung",      "category": "Handwerk & Insel",  "name": "Insel-Bewertung",          "tiers": 5, "criteria": "Verbessere die Sterne-Bewertung deiner Insel." },
+
+  { "id": "blumen-giessen",       "category": "Gärtnern & Natur",  "name": "Blumen gießen",            "tiers": 5, "criteria": "Gieße deine Blumen, damit sie gedeihen und sich vermehren." },
+  { "id": "baeume-pflanzen",      "category": "Gärtnern & Natur",  "name": "Bäume & Setzlinge pflanzen","tiers": 5, "criteria": "Pflanze Bäume, Büsche und Setzlinge auf deiner Insel." },
+  { "id": "unkraut-jaeten",       "category": "Gärtnern & Natur",  "name": "Unkraut jäten",            "tiers": 5, "criteria": "Halte deine Insel sauber und zupfe Unkraut." },
+  { "id": "fruechte-ernten",      "category": "Gärtnern & Natur",  "name": "Früchte ernten",           "tiers": 5, "criteria": "Pflücke Früchte von den Bäumen deiner Insel." },
+
+  { "id": "sternis-verdienen",    "category": "Wirtschaft",        "name": "Sternis verdienen",        "tiers": 5, "criteria": "Verdiene über die Zeit immer mehr Sternis." },
+  { "id": "kredit-abbezahlen",    "category": "Wirtschaft",        "name": "Kredite abbezahlen",       "tiers": 5, "criteria": "Begleiche deine Hauskredite bei Tom Nook." },
+  { "id": "rueben-handel",        "category": "Wirtschaft",        "name": "Rübenhandel",              "tiers": 5, "criteria": "Verkaufe weiße Rüben mit Gewinn an der Börse." },
+  { "id": "katalog-bestellen",    "category": "Wirtschaft",        "name": "Im Katalog bestellen",     "tiers": 5, "criteria": "Bestelle Gegenstände über den Nook-Shopping-Katalog." }
+]
