@@ -7,13 +7,24 @@ import { getRecipes, DEFAULT_DIRECTUS } from '../lib/api.js';
 const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || DEFAULT_DIRECTUS;
 const recipes = await getRecipes(directusUrl);
 
-const groupBy = (list) => {
+const DIY_CATEGORY_ORDER = [
+  'Saisonale Bastelprojekte', 'Werkzeuge', 'Einrichtung', 'Kleinkram',
+  'Wanddeko', 'Deckendeko', 'Tapeten/Böden/Teppiche', 'Ausrüstung', 'Sonstiges',
+];
+const COOKING_CATEGORY_ORDER = ['Herzhaft', 'Süß'];
+
+const groupBy = (list, order) => {
   const grouped = {};
   list.forEach((r) => { (grouped[r.group_name] ||= []).push(r); });
-  return grouped;
+  return Object.fromEntries(
+    Object.entries(grouped).sort(([a], [b]) => {
+      const ia = order.indexOf(a), ib = order.indexOf(b);
+      return (ia === -1 ? order.length : ia) - (ib === -1 ? order.length : ib);
+    })
+  );
 };
-const groupedDiy = groupBy(recipes.filter((r) => r.type === 'diy'));
-const groupedCooking = groupBy(recipes.filter((r) => r.type === 'cooking'));
+const groupedDiy = groupBy(recipes.filter((r) => r.type === 'diy'), DIY_CATEGORY_ORDER);
+const groupedCooking = groupBy(recipes.filter((r) => r.type === 'cooking'), COOKING_CATEGORY_ORDER);
 
 const panels = [
   { key: 'diy',     icon: '📦', groups: groupedDiy },

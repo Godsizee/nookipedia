@@ -91,6 +91,25 @@ export async function getCreatures(directusUrl, fallback = []) {
   }));
 }
 
+// Recipe categories come from two sync sources (legacy German seed vs. the
+// English master sheet import), so the same ACNH category can show up under
+// either label. Normalize both to one German label per category.
+const RECIPE_CATEGORY_DE = {
+  Tools: 'Werkzeuge',
+  Equipment: 'Ausrüstung',
+  Housewares: 'Einrichtung',
+  Miscellaneous: 'Kleinkram',
+  'Wall-mounted': 'Wanddeko',
+  'Ceiling Decor': 'Deckendeko',
+  Wallpaper: 'Tapeten/Böden/Teppiche',
+  Floors: 'Tapeten/Böden/Teppiche',
+  Rugs: 'Tapeten/Böden/Teppiche',
+  Other: 'Sonstiges',
+  Savory: 'Herzhaft',
+  Sweet: 'Süß',
+};
+const toCategoryDe = (category) => RECIPE_CATEGORY_DE[category] || category;
+
 /* ── Recipes (DIY + cooking) with joined materials ──────────────────────── */
 export async function getRecipes(directusUrl) {
   const [diys, cookings, materials, itemMats] = await Promise.all([
@@ -121,7 +140,7 @@ export async function getRecipes(directusUrl) {
     ...r,
     id: `diy-${r.id}`,
     type: 'diy',
-    group_name: r.category_name || 'Bastelprojekte',
+    group_name: toCategoryDe(r.category) || 'Sonstiges',
     materials: diyMaterialsMap.get(r.id) || [],
   }));
 
@@ -129,7 +148,7 @@ export async function getRecipes(directusUrl) {
     ...r,
     id: `cooking-${r.id}`,
     type: 'cooking',
-    group_name: r.category_name || 'Kochrezepte',
+    group_name: toCategoryDe(r.category) || 'Sonstiges',
     materials: cookingMaterialsMap.get(r.id) || [],
   }));
 
