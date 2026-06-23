@@ -21,7 +21,11 @@ const startsWith = (...ps) => ps.some((p) => currentPath.startsWith(p));
         <span>🌷</span>
         <span>Pflanzen</span>
     </a>
-    <a href="/katalog/" class={`bottom-tab-item ${startsWith('/items', '/rezepte', '/katalog', '/materialien') ? 'active' : ''}`} title="Items & Rezepte">
+    <a href="/rezepte/" class={`bottom-tab-item ${startsWith('/rezepte') ? 'active' : ''}`} title="DIY">
+        <span>🛠️</span>
+        <span>DIY</span>
+    </a>
+    <a href="/katalog/" class={`bottom-tab-item ${startsWith('/items', '/katalog', '/materialien') ? 'active' : ''}`} title="Items">
         <span>🛋️</span>
         <span>Items</span>
     </a>
