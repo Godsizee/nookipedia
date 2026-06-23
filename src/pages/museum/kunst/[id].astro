@@ -24,15 +24,16 @@ const hasFake = !!art.image_fake;
 <Layout title={`${art.name} - Fälschungscheck`}>
   <section class="art-detail-head accent-museum">
     <h1>{art.name}</h1>
-    <p>„{art.real_world_name}" <span class="muted">von</span> {art.artist}</p>
+    <p>„{art.real_world_name}" <span class="muted">von</span> {art.artist_name || art.artist}</p>
   </section>
 
-  <div class="art-detail" style="max-width: 800px; margin: 0 auto var(--sp-12);">
+  <div class="art-detail" style="max-width: 900px; margin: 0 auto var(--sp-12);">
     <div class="compare-box">
-      <div class="image-frame">
+      <button type="button" id="zoom-trigger" class="image-frame" aria-label="Bild vergrößern">
         <img id="artwork-image" src={museumImage(art.image_real)} alt={`Original ${art.name}`} onerror="this.src='/assets/img/acnh/placeholder.png'" />
         {hasFake && <span id="view-badge" class="frame-badge real">ORIGINAL</span>}
-      </div>
+        <span class="zoom-hint">🔍 Zum Vergrößern tippen</span>
+      </button>
       {hasFake && (
         <button id="toggle-fake-btn" class="ac-btn toggle-art">
           <span id="toggle-icon">🔍</span> <span id="toggle-text">Fälschung einblenden</span>
@@ -43,7 +44,7 @@ const hasFake = !!art.image_fake;
     {hasFake ? (
       <div class="info-box accent-flower mt-8">
         <h2>🚨 Worauf musst du achten?</h2>
-        <p>{art.forgery_description || 'Achte genau auf Details – diese Fälschung weicht subtil vom Original ab.'}</p>
+        <p>{art.forgery_description || art.fake_description || 'Achte genau auf Details – diese Fälschung weicht subtil vom Original ab.'}</p>
       </div>
     ) : (
       <div class="info-box accent-insect mt-8 text-center">
@@ -55,22 +56,31 @@ const hasFake = !!art.image_fake;
       <a href="/museum/kunst" class="ac-btn ac-btn--primary accent-museum">← Zurück zur Galerie</a>
     </div>
   </div>
+
+  <div id="lightbox" class="lightbox">
+    <img id="lightbox-img" src="" alt="" />
+  </div>
 </Layout>
 
 <style>
-  .art-detail-head { text-align: center; padding: var(--sp-10) var(--sp-6); margin-bottom: var(--sp-8); color: var(--on-accent); border-radius: var(--radius-xl); background: linear-gradient(150deg, #2d1e18, #160d09); border: 2px solid var(--accent); box-shadow: var(--ac-shadow); }
+  .art-detail-head { text-align: center; padding: var(--sp-10) var(--sp-6); margin-top: var(--sp-8); margin-bottom: var(--sp-8); color: var(--on-accent); border-radius: var(--radius-xl); background: linear-gradient(150deg, #2d1e18, #160d09); border: 2px solid var(--accent); box-shadow: var(--ac-shadow); }
   .art-detail-head h1 { color: #f8f4e6; font-size: clamp(1.8rem, 5vw, 2.4rem); }
   .art-detail-head p { color: var(--accent); font-style: italic; font-weight: 700; margin-top: 6px; }
   .art-detail-head .muted { color: rgba(255,255,255,0.6); font-style: normal; }
 
   .compare-box { display: flex; flex-direction: column; align-items: center; gap: var(--sp-6); padding: var(--sp-8); background: #160d09; border: 3px solid #3c2a22; border-radius: var(--radius-lg); box-shadow: var(--ac-shadow-lg); }
-  .image-frame { position: relative; display: grid; place-items: center; width: 100%; max-width: 450px; aspect-ratio: 4/3; }
+  .image-frame { position: relative; display: grid; place-items: center; width: 100%; max-width: 640px; aspect-ratio: 4/3; padding: 0; background: none; border: none; cursor: zoom-in; }
   .image-frame img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.6)); transition: opacity 0.3s, transform 0.4s; }
   .frame-badge { position: absolute; top: 12px; right: 12px; padding: 4px 12px; font-size: 0.8rem; font-weight: 900; color: #fff; border-radius: var(--radius-pill); box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
   .frame-badge.real { background: #2e7d32; }
   .frame-badge.fake { background: #c2185b; }
+  .zoom-hint { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); padding: 4px 12px; font-size: 0.72rem; font-weight: 700; color: #fff; background: rgba(0,0,0,0.55); border-radius: var(--radius-pill); white-space: nowrap; }
   .toggle-art { background: var(--ac-bell); color: #160d09; border-color: var(--ac-bell-deep); font-weight: 700; }
   .toggle-art:hover { filter: brightness(1.05); }
+
+  .lightbox { position: fixed; inset: 0; z-index: 1000; display: none; place-items: center; padding: var(--sp-6); background: rgba(8,5,3,0.92); cursor: zoom-out; }
+  .lightbox.open { display: grid; }
+  .lightbox img { max-width: 95vw; max-height: 95vh; object-fit: contain; filter: drop-shadow(0 10px 30px rgba(0,0,0,0.7)); }
 </style>
 
 {hasFake && (
@@ -103,3 +113,24 @@ const hasFake = !!art.image_fake;
     initFakeToggler();
   </script>
 )}
+
+<script is:inline>
+  function initArtworkZoom() {
+    const trigger = document.getElementById('zoom-trigger');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    if (!trigger || !lightbox || trigger.dataset.init) return;
+    trigger.dataset.init = '1';
+    const open = () => {
+      lightboxImg.src = document.getElementById('artwork-image').src;
+      lightboxImg.alt = document.getElementById('artwork-image').alt;
+      lightbox.classList.add('open');
+    };
+    const close = () => lightbox.classList.remove('open');
+    trigger.addEventListener('click', open);
+    lightbox.addEventListener('click', close);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+  }
+  document.addEventListener('astro:page-load', initArtworkZoom);
+  initArtworkZoom();
+</script>

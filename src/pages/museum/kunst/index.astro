@@ -29,13 +29,13 @@ const typeLabel = { all: 'Alle Werke', 'Gemälde': 'Gemälde', 'Skulptur': 'Skul
     ))}
   </div>
 
-  <div class="grid-auto accent-museum" style="--min: 260px; margin-bottom: var(--sp-12);">
+  <div class="grid-auto accent-museum" style="--min: 300px; margin-bottom: var(--sp-12);">
     {artworks.map((art) => (
       <a href={`/museum/kunst/${art.id}`} class="art-card" data-type={art.type}>
         <span class="art-img"><img src={museumImage(art.image_real)} alt={art.name} loading="lazy" onerror="this.src='/assets/img/acnh/placeholder.png'" /><span class="art-type">{art.type}</span></span>
         <div class="art-body">
           <strong class="art-title">{art.name}</strong>
-          <span class="art-artist">{art.artist}</span>
+          <span class="art-artist">{art.artist_name || art.artist}</span>
           <div class="between art-foot">
             {art.image_fake
               ? <span class="art-flag fake">⚠️ Fälschung möglich</span>

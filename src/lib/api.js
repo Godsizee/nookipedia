@@ -214,16 +214,87 @@ export async function getItemsCatalog(directusUrl) {
 }
 
 /* ── Artworks joined with their (German) forgery hints ──────────────────── */
+// `fake_description` in Directus is an English art-history blurb about the
+// real-world piece (Wikipedia-style), not a description of the forgery tell —
+// so it's never shown. These are the actual real-vs-fake differences per
+// artwork id, in German (source: Nookipedia/community forgery guides).
+const FORGERY_TELL_DE = {
+  1: 'Auf der Fälschung ist oben rechts ein großer Kaffeefleck zu sehen.',
+  2: 'Der Mann in der Mitte trägt auf der Fälschung keinen Hut.',
+  3: 'Die Fälschung hat zwei Antennen am Kopf, die dem Original fehlen.',
+  4: 'Auf der Fälschung hat der Junge einen durchgehenden Pony; im Original fehlt dieser.',
+  5: 'Die Fälschung trägt eine Perlenkette um den Hals.',
+  8: 'Die Blumen auf der Fälschung sind lila statt blau.',
+  11: 'Auf der Fälschung sind die Augenbrauen der Mona Lisa stark nach oben gezogen.',
+  13: 'Die Fälschung hält ein Buch unter dem Arm; das Original hat leere Hände.',
+  15: 'Im Original ist die Frau kleiner und blickt nach rechts; auf der Fälschung ist sie größer und blickt nach links.',
+  17: 'Die Fälschung ist blau gefärbt; das Original ist dunkelgrau.',
+  18: 'Bei der Fälschung fehlt die Knospe an der Brust des Gemüsemanns.',
+  20: 'Die Wölfin streckt auf der Fälschung die Zunge heraus; im Original ist ihr Maul geschlossen.',
+  21: 'Auf der Fälschung fehlen die Bäume oben rechts im Bild.',
+  23: 'Die Fälschung trägt einen Ohrring am rechten Ohr; das Original ist ohne Ohrring.',
+  27: 'Auf der Fälschung schießt ein dicker Milchstrahl aus dem Krug; im Original ist es nur ein dünner Strahl.',
+  28: 'Die Fälschung trägt eine Armbanduhr; das Original hat ein nacktes Handgelenk.',
+  29: 'Die Fälschung lächelt leicht; das Original hat einen neutralen, ernsten Ausdruck.',
+  30: 'Im Original blickt die Figur wütend mit nach unten gezogenen Augenbrauen; auf der Fälschung sind sie anders geneigt.',
+  31: 'Im Original sind drei Jäger im Vordergrund zu sehen; auf der Fälschung ist nur einer übrig.',
+  32: 'Das Hermelin (Tier) ist im Original weiß; auf der Fälschung ist es braun.',
+  34: 'Im Original berührt die Hand des Mannes im Hintergrund die Tür; auf der Fälschung ist sein Arm erhoben.',
+  35: 'Die Fälschung hat einen Deckel mit Griff; das Original ist oben offen.',
+  37: 'Im Original tritt die Statue mit dem rechten Bein vor; auf der Fälschung mit dem linken.',
+  39: 'Die Fälschung hält eine Schaufel in der Hand; dem Original fehlt sie.',
+  40: 'Im Original ist die Gottheit hell gefärbt; auf der Fälschung ist sie grün/dunkel.',
+  41: 'Im Original ist die Gottheit grün/dunkel gefärbt; auf der Fälschung ist sie hell.',
+  42: 'Auf der Fälschung ist der Perlenohrring sternförmig statt rund.',
+};
+
+// `real_world_name` is the English title of the real-world piece. German
+// titles for these (mostly famous, public-domain) works, keyed by artwork id.
+const REAL_WORLD_NAME_DE = {
+  1: 'Der vitruvianische Mensch',
+  2: 'Die Nachtwache',
+  3: 'Dogū-Figur „Shakōki-dogū" (Jōmon-Zeit)',
+  4: 'Der blaue Junge',
+  5: 'Venus von Milo',
+  6: 'Ein Sonntagnachmittag auf der Insel La Grande Jatte',
+  7: 'Die Ährenleserinnen',
+  9: 'Die große Welle vor Kanagawa',
+  10: 'Der Denker',
+  12: 'Sonnenblumen',
+  14: 'Die kämpfende Temeraire',
+  15: 'Schöne, die sich umblickt',
+  16: 'König Kamehameha I.',
+  17: 'Stein von Rosette',
+  18: 'Der Sommer',
+  19: 'Der Sämann',
+  20: 'Kapitolinische Wölfin',
+  21: 'Die Geburt der Venus',
+  22: 'Die Toteninsel',
+  23: 'Nofretete-Büste',
+  24: 'Der Pfeifer',
+  25: 'Äpfel und Orangen',
+  26: 'Die Bar in den Folies-Bergère',
+  27: 'Das Milchmädchen',
+  28: 'Diskuswerfer',
+  29: 'Olmekischer Kolossalkopf',
+  30: 'Ōtani Oniji III. als Yakko Edobei',
+  31: 'Die Jäger im Schnee',
+  32: 'Dame mit dem Hermelin',
+  36: 'Die Sternennacht',
+  37: 'Nike von Samothrake',
+  38: 'Die bekleidete Maja',
+  39: 'Terrakotta-Armee',
+  40: 'Wandschirm der Windgott- und Donnergott-Bilder (links)',
+  41: 'Wandschirm der Windgott- und Donnergott-Bilder (rechts)',
+  42: 'Das Mädchen mit dem Perlenohrring',
+  43: 'Die Freiheit führt das Volk',
+};
+
 /**
  * Returns only *displayable* artworks (those with a name + real image), each
- * enriched with `forgery_description` / `always_genuine` from the
- * artwork_forgeries collection (joined on name_en). Stub rows that only carry
- * a name_en — an import artefact — are dropped so the gallery stays clean.
- *
- * NOTE: today most German catalogue rows have `name_en = null`, so the forgery
- * join is a no-op for them and we fall back to the row's own `fake_description`.
- * The moment `name_en` is populated on those rows in Directus, the German
- * forgery hints light up automatically — no code change needed.
+ * enriched with a German `forgery_description` and `real_world_name` (falling
+ * back to the artwork_forgeries collection / the raw English fields for any
+ * id not covered above) plus `always_genuine`.
  */
 export async function getArtworks(directusUrl, fallback = []) {
   const [artworks, forgeries] = await Promise.all([
@@ -254,7 +325,9 @@ export async function getArtworks(directusUrl, fallback = []) {
       const f = forgeryByDeName.get(norm(a.name));
       return {
         ...a,
-        forgery_description: f?.forgery_description || a.fake_description || null,
+        forgery_description: FORGERY_TELL_DE[a.id] || f?.forgery_description || null,
+        real_world_name: REAL_WORLD_NAME_DE[a.id] || a.real_world_name,
+        artist_name: (a.artist || '').split(',')[0].trim() || null,
         // An artwork is forgeable iff the game ships a fake image for it.
         always_genuine: !has(a.image_fake),
       };
