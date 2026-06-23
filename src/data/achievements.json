@@ -1,30 +1,1191 @@
 [
-  { "id": "fische-fangen",        "category": "Museum & Sammlung", "name": "Fische fangen",            "tiers": 5, "criteria": "Fange eine wachsende Zahl an Fischen – Stufe für Stufe bis zum Profi-Angler." },
-  { "id": "insekten-fangen",      "category": "Museum & Sammlung", "name": "Insekten fangen",          "tiers": 5, "criteria": "Schnappe dir mit dem Kescher immer mehr Insekten." },
-  { "id": "meerestiere-tauchen",  "category": "Museum & Sammlung", "name": "Meerestiere ertauchen",    "tiers": 5, "criteria": "Tauche nach immer mehr Meerestieren." },
-  { "id": "fossilien-spenden",    "category": "Museum & Sammlung", "name": "Fossilien ausgraben",      "tiers": 5, "criteria": "Grabe Fossilien aus und lasse sie bewerten." },
-  { "id": "kunst-spenden",        "category": "Museum & Sammlung", "name": "Kunstwerke spenden",       "tiers": 5, "criteria": "Spende echte Kunstwerke an das Museum." },
-  { "id": "museum-spenden",       "category": "Museum & Sammlung", "name": "Exponate spenden",         "tiers": 5, "criteria": "Spende Eugen immer mehr verschiedene Exponate." },
-
-  { "id": "inseltage",            "category": "Insel-Alltag",      "name": "Inseltage",                "tiers": 5, "criteria": "Besuche deine Insel an möglichst vielen Tagen." },
-  { "id": "fundsachen",           "category": "Insel-Alltag",      "name": "Versteckte Fundsachen",    "tiers": 5, "criteria": "Finde die täglich versteckten Items (Geld-Stein, vergrabene Fundstellen, Geschenk-Ballons)." },
-  { "id": "gespraeche",           "category": "Insel-Alltag",      "name": "Mit Bewohnern reden",      "tiers": 5, "criteria": "Sprich täglich mit deinen Inselnachbarn." },
-  { "id": "dehnuebungen",         "category": "Insel-Alltag",      "name": "Dehnübungen",              "tiers": 5, "criteria": "Mache Radio-Gymnastik bzw. Dehnübungen auf dem Festplatz." },
-  { "id": "ballons-abschiessen",  "category": "Insel-Alltag",      "name": "Ballons abschießen",       "tiers": 5, "criteria": "Hole dir die schwebenden Geschenk-Ballons mit der Schleuder herunter." },
-
-  { "id": "diy-basteln",          "category": "Handwerk & Insel",  "name": "DIY-Rezepte basteln",      "tiers": 5, "criteria": "Bastle immer mehr Gegenstände an der Werkbank." },
-  { "id": "werkzeug-benutzen",    "category": "Handwerk & Insel",  "name": "Werkzeuge abnutzen",       "tiers": 5, "criteria": "Benutze Werkzeuge so oft, bis sie kaputtgehen." },
-  { "id": "steine-schlagen",      "category": "Handwerk & Insel",  "name": "Steine bearbeiten",        "tiers": 5, "criteria": "Schlage mit Schaufel oder Axt auf Felsen und sammle Rohstoffe." },
-  { "id": "baeume-faellen",       "category": "Handwerk & Insel",  "name": "Bäume fällen",             "tiers": 5, "criteria": "Fälle Bäume mit der Axt für Holz und Stämme." },
-  { "id": "insel-bewertung",      "category": "Handwerk & Insel",  "name": "Insel-Bewertung",          "tiers": 5, "criteria": "Verbessere die Sterne-Bewertung deiner Insel." },
-
-  { "id": "blumen-giessen",       "category": "Gärtnern & Natur",  "name": "Blumen gießen",            "tiers": 5, "criteria": "Gieße deine Blumen, damit sie gedeihen und sich vermehren." },
-  { "id": "baeume-pflanzen",      "category": "Gärtnern & Natur",  "name": "Bäume & Setzlinge pflanzen","tiers": 5, "criteria": "Pflanze Bäume, Büsche und Setzlinge auf deiner Insel." },
-  { "id": "unkraut-jaeten",       "category": "Gärtnern & Natur",  "name": "Unkraut jäten",            "tiers": 5, "criteria": "Halte deine Insel sauber und zupfe Unkraut." },
-  { "id": "fruechte-ernten",      "category": "Gärtnern & Natur",  "name": "Früchte ernten",           "tiers": 5, "criteria": "Pflücke Früchte von den Bäumen deiner Insel." },
-
-  { "id": "sternis-verdienen",    "category": "Wirtschaft",        "name": "Sternis verdienen",        "tiers": 5, "criteria": "Verdiene über die Zeit immer mehr Sternis." },
-  { "id": "kredit-abbezahlen",    "category": "Wirtschaft",        "name": "Kredite abbezahlen",       "tiers": 5, "criteria": "Begleiche deine Hauskredite bei Tom Nook." },
-  { "id": "rueben-handel",        "category": "Wirtschaft",        "name": "Rübenhandel",              "tiers": 5, "criteria": "Verkaufe weiße Rüben mit Gewinn an der Börse." },
-  { "id": "katalog-bestellen",    "category": "Wirtschaft",        "name": "Im Katalog bestellen",     "tiers": 5, "criteria": "Bestelle Gegenstände über den Nook-Shopping-Katalog." }
+  {
+    "id": "angling-for-perfection",
+    "category": "Angeln & Strand",
+    "name": "Anglerglück",
+    "name_en": "Angling for Perfection!",
+    "tiers": 5,
+    "amounts": [
+      10,
+      100,
+      500,
+      2000,
+      5000
+    ],
+    "miles": 6800,
+    "criteria": "Gesamtzahl gefangener Fische."
+  },
+  {
+    "id": "island-ichthyologist",
+    "category": "Angeln & Strand",
+    "name": "Insel-Ichthyologe",
+    "name_en": "Island Ichthyologist",
+    "tiers": 5,
+    "amounts": [
+      10,
+      20,
+      40,
+      60,
+      80
+    ],
+    "miles": 6800,
+    "criteria": "Zahl unterschiedlicher gefangener Fischarten."
+  },
+  {
+    "id": "go-ahead-be-shellfish",
+    "category": "Angeln & Strand",
+    "name": "Muschelsammler",
+    "name_en": "Go Ahead. Be Shellfish!",
+    "tiers": 5,
+    "amounts": [
+      10,
+      50,
+      200,
+      500,
+      1000
+    ],
+    "miles": 6800,
+    "criteria": "Zahl der an den Laden verkauften Muscheln."
+  },
+  {
+    "id": "clam-and-collected",
+    "category": "Angeln & Strand",
+    "name": "Muschelgräber",
+    "name_en": "Clam and Collected",
+    "tiers": 5,
+    "amounts": [
+      5,
+      20,
+      50,
+      100,
+      200
+    ],
+    "miles": 6800,
+    "criteria": "Zahl ausgegrabener Venusmuscheln."
+  },
+  {
+    "id": "fishing-tourney",
+    "category": "Angeln & Strand",
+    "name": "Angelturnier",
+    "name_en": "Fishing Tourney!",
+    "tiers": 4,
+    "amounts": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "miles": 3800,
+    "criteria": "Erstmals ein Angelturnier in jeder Jahreszeit besucht."
+  },
+  {
+    "id": "trash-fishin",
+    "category": "Angeln & Strand",
+    "name": "Müllangler",
+    "name_en": "Trash Fishin'",
+    "tiers": 3,
+    "amounts": [
+      3,
+      10,
+      20
+    ],
+    "miles": 1800,
+    "criteria": "Zahl angeangelter Müll-Items (Dosen, Reifen, Stiefel)."
+  },
+  {
+    "id": "cast-master",
+    "category": "Angeln & Strand",
+    "name": "Angel-Profi",
+    "name_en": "Cast Master",
+    "tiers": 3,
+    "amounts": [
+      10,
+      50,
+      100
+    ],
+    "miles": 1800,
+    "criteria": "Zahl der Fische, die du in Folge ohne Verlust gefangen hast."
+  },
+  {
+    "id": "you-ve-got-the-bug",
+    "category": "Insekten",
+    "name": "Vom Fangfieber gepackt",
+    "name_en": "You've Got the Bug",
+    "tiers": 5,
+    "amounts": [
+      10,
+      100,
+      500,
+      2000,
+      5000
+    ],
+    "miles": 6800,
+    "criteria": "Gesamtzahl gefangener Insekten."
+  },
+  {
+    "id": "bugs-don-t-bug-me",
+    "category": "Insekten",
+    "name": "Krabbel-Kenner",
+    "name_en": "Bugs Don't Bug Me",
+    "tiers": 5,
+    "amounts": [
+      10,
+      20,
+      40,
+      60,
+      80
+    ],
+    "miles": 6800,
+    "criteria": "Zahl unterschiedlicher gefangener Insektenarten."
+  },
+  {
+    "id": "bug-off",
+    "category": "Insekten",
+    "name": "Insektikus",
+    "name_en": "Bug-Off!",
+    "tiers": 4,
+    "amounts": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "miles": 3800,
+    "criteria": "Erstmals ein Insektenturnier in jeder Jahreszeit besucht."
+  },
+  {
+    "id": "flea-flicker",
+    "category": "Insekten",
+    "name": "Flohfänger",
+    "name_en": "Flea Flicker",
+    "tiers": 3,
+    "amounts": [
+      1,
+      5,
+      10
+    ],
+    "miles": 1800,
+    "criteria": "Wie oft du Flöhe von einem Bewohner gefangen hast."
+  },
+  {
+    "id": "cicada-memories",
+    "category": "Insekten",
+    "name": "Zikadenhaut",
+    "name_en": "Cicada Memories",
+    "tiers": 1,
+    "amounts": [
+      1
+    ],
+    "miles": 1000,
+    "criteria": "Erstmals eine Zikadenhaut gefangen."
+  },
+  {
+    "id": "netting-better",
+    "category": "Insekten",
+    "name": "Wespen-Profi",
+    "name_en": "Netting Better!",
+    "tiers": 1,
+    "amounts": [
+      1
+    ],
+    "miles": 1000,
+    "criteria": "Erstmals fünf Wespen in Folge gefangen, ohne gestochen zu werden."
+  },
+  {
+    "id": "golden-milestone",
+    "category": "Zuhause & Werkzeug",
+    "name": "Goldener Meilenstein",
+    "name_en": "Golden Milestone",
+    "tiers": 6,
+    "amounts": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "miles": 11800,
+    "criteria": "Für jedes einzigartige goldene Werkzeug, das du ausgerüstet hast (Schaufel, Kescher, Angel, Gießkanne, Axt, Schleuder)."
+  },
+  {
+    "id": "trashed-tools",
+    "category": "Zuhause & Werkzeug",
+    "name": "Werkzeug-Verschleiß",
+    "name_en": "Trashed Tools",
+    "tiers": 5,
+    "amounts": [
+      1,
+      20,
+      50,
+      100,
+      200
+    ],
+    "miles": 6800,
+    "criteria": "Zahl kaputtgegangener Werkzeuge."
+  },
+  {
+    "id": "fossil-assessment",
+    "category": "Zuhause & Werkzeug",
+    "name": "Fossil-Gutachten",
+    "name_en": "Fossil Assessment",
+    "tiers": 5,
+    "amounts": [
+      5,
+      30,
+      100,
+      300,
+      500
+    ],
+    "miles": 6800,
+    "criteria": "Zahl der von Eugen begutachteten Fossilien."
+  },
+  {
+    "id": "rock-splitting-champ",
+    "category": "Zuhause & Werkzeug",
+    "name": "Felsbrocken-Champion",
+    "name_en": "Rock-Splitting Champ",
+    "tiers": 1,
+    "amounts": [
+      1
+    ],
+    "miles": 500,
+    "criteria": "Erstmals 8 Erze/Steine aus einem Felsen geschlagen."
+  },
+  {
+    "id": "bona-fide-bone-finder",
+    "category": "Zuhause & Werkzeug",
+    "name": "Fossilienfinder",
+    "name_en": "Bona Fide Bone Finder!",
+    "tiers": 1,
+    "amounts": [
+      1
+    ],
+    "miles": 300,
+    "criteria": "Erstmals ein Fossil ausgegraben."
+  },
+  {
+    "id": "pit-y-party",
+    "category": "Zuhause & Werkzeug",
+    "name": "Fallgruben-Bauer",
+    "name_en": "Pit-y Party!",
+    "tiers": 1,
+    "amounts": [
+      1
+    ],
+    "miles": 300,
+    "criteria": "Erstmals eine Fallgrube vergraben."
+  },
+  {
+    "id": "fruit-roots",
+    "category": "Gärtnern & Natur",
+    "name": "Obstbaum-Sammler",
+    "name_en": "Fruit Roots",
+    "tiers": 6,
+    "amounts": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "miles": 2800,
+    "criteria": "Für jede einzigartige Obstbaumart, die du gepflanzt hast (Kirsche, Orange, Birne, Pfirsich, Apfel, Kokos)."
+  },
+  {
+    "id": "greedy-weeder",
+    "category": "Gärtnern & Natur",
+    "name": "Unkraut-Jäger",
+    "name_en": "Greedy Weeder",
+    "tiers": 5,
+    "amounts": [
+      50,
+      200,
+      1000,
+      2000,
+      3000
+    ],
+    "miles": 6800,
+    "criteria": "Zahl der an den Laden verkauften Unkraut-Büschel."
+  },
+  {
+    "id": "flower-power",
+    "category": "Gärtnern & Natur",
+    "name": "Blütenpracht",
+    "name_en": "Flower Power",
+    "tiers": 5,
+    "amounts": [
+      10,
+      50,
+      100,
+      200,
+      300
+    ],
+    "miles": 6800,
+    "criteria": "Zahl gepflanzter Blumensamen (kein Umpflanzen vorhandener Blumen)."
+  },
+  {
+    "id": "flower-tender",
+    "category": "Gärtnern & Natur",
+    "name": "Blumengießer",
+    "name_en": "Flower Tender",
+    "tiers": 5,
+    "amounts": [
+      10,
+      50,
+      100,
+      500,
+      1000
+    ],
+    "miles": 6800,
+    "criteria": "Zahl gegossener Blumen."
+  },
+  {
+    "id": "pick-of-the-bunch",
+    "category": "Gärtnern & Natur",
+    "name": "Obsternte",
+    "name_en": "Pick of the Bunch",
+    "tiers": 5,
+    "amounts": [
+      20,
+      100,
+      500,
+      1000,
+      3000
+    ],
+    "miles": 6800,
+    "criteria": "Zahl der an den Laden verkauften Früchte."
+  },
+  {
+    "id": "shady-shakedown",
+    "category": "Gärtnern & Natur",
+    "name": "Baumschüttler",
+    "name_en": "Shady Shakedown",
+    "tiers": 5,
+    "amounts": [
+      1,
+      10,
+      20,
+      50,
+      100
+    ],
+    "miles": 11300,
+    "criteria": "Zahl der durch Schütteln von Bäumen gefundenen Möbel."
+  },
+  {
+    "id": "tomorrow-s-trees-today",
+    "category": "Gärtnern & Natur",
+    "name": "Bäume für morgen",
+    "name_en": "Tomorrow's Trees Today",
+    "tiers": 3,
+    "amounts": [
+      5,
+      10,
+      30
+    ],
+    "miles": 1800,
+    "criteria": "Zahl gepflanzter Baumsetzlinge (kein Pflanzen von Früchten/Umpflanzen)."
+  },
+  {
+    "id": "shrubbery-hubbubbery",
+    "category": "Gärtnern & Natur",
+    "name": "Strauchwerk",
+    "name_en": "Shrubbery Hubbubbery",
+    "tiers": 3,
+    "amounts": [
+      1,
+      2,
+      20
+    ],
+    "miles": 1800,
+    "criteria": "Zahl gepflanzter Strauchsetzlinge."
+  },
+  {
+    "id": "have-a-nice-diy",
+    "category": "Basteln & Handwerk",
+    "name": "Heimwerker-Herz",
+    "name_en": "Have a Nice DIY!",
+    "tiers": 5,
+    "amounts": [
+      10,
+      50,
+      100,
+      150,
+      200
+    ],
+    "miles": 6800,
+    "criteria": "Zahl gesammelter DIY-Rezepte."
+  },
+  {
+    "id": "diy-tools",
+    "category": "Basteln & Handwerk",
+    "name": "Werkzeug-Schmied",
+    "name_en": "DIY Tools",
+    "tiers": 5,
+    "amounts": [
+      5,
+      50,
+      200,
+      1000,
+      3000
+    ],
+    "miles": 6800,
+    "criteria": "Zahl selbst gebastelter Werkzeuge."
+  },
+  {
+    "id": "diy-furniture",
+    "category": "Basteln & Handwerk",
+    "name": "Möbel-Bastler",
+    "name_en": "DIY Furniture",
+    "tiers": 5,
+    "amounts": [
+      5,
+      50,
+      200,
+      1000,
+      3000
+    ],
+    "miles": 6800,
+    "criteria": "Zahl selbst gebastelter Möbelstücke."
+  },
+  {
+    "id": "furniture-freshener",
+    "category": "Basteln & Handwerk",
+    "name": "Möbel-Verschönerer",
+    "name_en": "Furniture Freshener",
+    "tiers": 5,
+    "amounts": [
+      5,
+      20,
+      50,
+      100,
+      200
+    ],
+    "miles": 6800,
+    "criteria": "Zahl der an der Werkbank umgestalteten Möbel."
+  },
+  {
+    "id": "rough-hewn",
+    "category": "Basteln & Handwerk",
+    "name": "Holzfäller",
+    "name_en": "Rough-hewn",
+    "tiers": 5,
+    "amounts": [
+      20,
+      100,
+      500,
+      2000,
+      5000
+    ],
+    "miles": 6800,
+    "criteria": "Wie oft du Holz aus Bäumen geschlagen hast."
+  },
+  {
+    "id": "it-s-raining-treasure",
+    "category": "Inselgestaltung",
+    "name": "Geschenkeregen",
+    "name_en": "It's Raining Treasure!",
+    "tiers": 5,
+    "amounts": [
+      5,
+      20,
+      50,
+      100,
+      300
+    ],
+    "miles": 6800,
+    "criteria": "Zahl der mit der Schleuder abgeschossenen Ballons."
+  },
+  {
+    "id": "snowmaestro",
+    "category": "Inselgestaltung",
+    "name": "Schneemann-Meister",
+    "name_en": "Snowmaestro",
+    "tiers": 3,
+    "amounts": [
+      1,
+      10,
+      20
+    ],
+    "miles": 1800,
+    "criteria": "Zahl gebauter perfekter Schneemänner."
+  },
+  {
+    "id": "wishes-come-true",
+    "category": "Inselgestaltung",
+    "name": "Wünsche werden wahr",
+    "name_en": "Wishes Come True",
+    "tiers": 3,
+    "amounts": [
+      1,
+      30,
+      200
+    ],
+    "miles": 3300,
+    "criteria": "Zahl der Sternschnuppen, denen du etwas gewünscht hast."
+  },
+  {
+    "id": "island-designer",
+    "category": "Inselgestaltung",
+    "name": "Insel-Designer",
+    "name_en": "Island Designer",
+    "tiers": 3,
+    "amounts": [
+      1,
+      2,
+      3
+    ],
+    "miles": 2500,
+    "criteria": "Erstmals mit der Insel-Designer-App einen Weg gelegt, Wasser verändert und eine Klippe gebaut/abgetragen."
+  },
+  {
+    "id": "island-name-icons",
+    "category": "Inselgestaltung",
+    "name": "Insel-Wahrzeichen",
+    "name_en": "(island name) Icons",
+    "tiers": 2,
+    "amounts": [
+      1,
+      2
+    ],
+    "miles": 1000,
+    "criteria": "Erstmals Inselmelodie und Inselflagge geändert."
+  },
+  {
+    "id": "fun-with-fences",
+    "category": "Inselgestaltung",
+    "name": "Zaun-Freude",
+    "name_en": "Fun with Fences",
+    "tiers": 1,
+    "amounts": [
+      20
+    ],
+    "miles": 500,
+    "criteria": "Erstmals einen Zaun aufgestellt."
+  },
+  {
+    "id": "exterior-decorator",
+    "category": "Inselgestaltung",
+    "name": "Außen-Dekorateur",
+    "name_en": "Exterior Decorator",
+    "tiers": 1,
+    "amounts": [
+      10
+    ],
+    "miles": 300,
+    "criteria": "Erstmals Möbel im Freien aufgestellt."
+  },
+  {
+    "id": "shop-to-it",
+    "category": "NookPhone & Katalog",
+    "name": "Shopping-Tour",
+    "name_en": "Shop to It",
+    "tiers": 5,
+    "amounts": [
+      1,
+      20,
+      50,
+      100,
+      200
+    ],
+    "miles": 6800,
+    "criteria": "Wie oft du im Nook-Shopping-Katalog bestellt hast."
+  },
+  {
+    "id": "growing-collection",
+    "category": "NookPhone & Katalog",
+    "name": "Wachsende Sammlung",
+    "name_en": "Growing Collection",
+    "tiers": 5,
+    "amounts": [
+      100,
+      200,
+      300,
+      400,
+      500
+    ],
+    "miles": 6800,
+    "criteria": "Zahl unterschiedlicher Möbel in deinem Katalog."
+  },
+  {
+    "id": "nook-miles-for-miles",
+    "category": "NookPhone & Katalog",
+    "name": "Meilen über Meilen",
+    "name_en": "Nook Miles for Miles!",
+    "tiers": 5,
+    "amounts": [
+      5,
+      50,
+      200,
+      1000,
+      3000
+    ],
+    "miles": 6800,
+    "criteria": "Zahl abgeschlossener Nook-Meilen+-Aufgaben."
+  },
+  {
+    "id": "island-shutterbug",
+    "category": "NookPhone & Katalog",
+    "name": "Insel-Fotograf",
+    "name_en": "Island Shutterbug",
+    "tiers": 1,
+    "amounts": [
+      1
+    ],
+    "miles": 300,
+    "criteria": "Erstmals ein Foto mit der Kamera-App des NookPhones gemacht."
+  },
+  {
+    "id": "edit-credit",
+    "category": "NookPhone & Katalog",
+    "name": "Pass-Gestalter",
+    "name_en": "Edit Credit",
+    "tiers": 1,
+    "amounts": [
+      1
+    ],
+    "miles": 300,
+    "criteria": "Erstmals deinen Pass bearbeitet (Titel, Kommentar oder Foto)."
+  },
+  {
+    "id": "nookphone-life",
+    "category": "NookPhone & Katalog",
+    "name": "NookPhone-Leben",
+    "name_en": "NookPhone Life",
+    "tiers": 1,
+    "amounts": [
+      10
+    ],
+    "miles": 300,
+    "criteria": "Das NookPhone zum 10. Mal geöffnet."
+  },
+  {
+    "id": "that-s-one-smart-phone",
+    "category": "NookPhone & Katalog",
+    "name": "Cleveres Smartphone",
+    "name_en": "That's One Smart Phone",
+    "tiers": 1,
+    "amounts": [
+      1000
+    ],
+    "miles": 1000,
+    "criteria": "Das NookPhone zum 1.000. Mal geöffnet."
+  },
+  {
+    "id": "bell-ringer",
+    "category": "Wirtschaft",
+    "name": "Großausgeber",
+    "name_en": "Bell Ringer",
+    "tiers": 5,
+    "amounts": [
+      5000,
+      50000,
+      500000,
+      2000000,
+      5000000
+    ],
+    "miles": 6800,
+    "criteria": "Gesamtzahl der in Läden ausgegebenen Sternis."
+  },
+  {
+    "id": "cornering-the-stalk-market",
+    "category": "Wirtschaft",
+    "name": "Rüben-Tycoon",
+    "name_en": "Cornering the Stalk Market",
+    "tiers": 5,
+    "amounts": [
+      1000,
+      10000,
+      100000,
+      1000000,
+      10000000
+    ],
+    "miles": 6800,
+    "criteria": "Gesamtgewinn (Sternis) aus dem Rübenverkauf."
+  },
+  {
+    "id": "first-time-buyer",
+    "category": "Wirtschaft",
+    "name": "Erster Einkauf",
+    "name_en": "First-Time Buyer",
+    "tiers": 1,
+    "amounts": [
+      1
+    ],
+    "miles": 300,
+    "criteria": "Erstmals einen Gegenstand im Laden gekauft."
+  },
+  {
+    "id": "seller-of-unwanted-stuff",
+    "category": "Wirtschaft",
+    "name": "Erster Verkauf",
+    "name_en": "Seller of Unwanted Stuff",
+    "tiers": 1,
+    "amounts": [
+      1
+    ],
+    "miles": 300,
+    "criteria": "Erstmals einen Gegenstand im Laden verkauft."
+  },
+  {
+    "id": "moving-fees-paid",
+    "category": "Wirtschaft",
+    "name": "Umzugsgebühr bezahlt",
+    "name_en": "Moving Fees Paid!",
+    "tiers": 1,
+    "amounts": [
+      1
+    ],
+    "miles": 500,
+    "criteria": "Den Anfangskredit mit Nook-Meilen abbezahlt."
+  },
+  {
+    "id": "miles-for-stalkholders",
+    "category": "Wirtschaft",
+    "name": "Rüben-Einstieg",
+    "name_en": "Miles for Stalkholders",
+    "tiers": 1,
+    "amounts": [
+      1
+    ],
+    "miles": 300,
+    "criteria": "Erstmals Rüben gekauft."
+  },
+  {
+    "id": "no-more-loan-payments",
+    "category": "Wirtschaft",
+    "name": "Schuldenfrei",
+    "name_en": "No More Loan Payments!",
+    "tiers": 1,
+    "amounts": [
+      1
+    ],
+    "miles": 1000,
+    "criteria": "Ersten Hauskredit mit Sternis abbezahlt."
+  },
+  {
+    "id": "paydirt",
+    "category": "Wirtschaft",
+    "name": "Geldgrube",
+    "name_en": "Paydirt!",
+    "tiers": 1,
+    "amounts": [
+      1
+    ],
+    "miles": 300,
+    "criteria": "Erstmals Sternis aus einer leuchtenden Stelle ausgegraben."
+  },
+  {
+    "id": "island-togetherness",
+    "category": "Gemeinschaft",
+    "name": "Inselgemeinschaft",
+    "name_en": "Island Togetherness",
+    "tiers": 5,
+    "amounts": [
+      1,
+      10,
+      20,
+      30,
+      50
+    ],
+    "miles": 6800,
+    "criteria": "Anzahl Tage, an denen du mit allen Bewohnern gesprochen hast."
+  },
+  {
+    "id": "smile-isle",
+    "category": "Gemeinschaft",
+    "name": "Insel des Lächelns",
+    "name_en": "Smile Isle",
+    "tiers": 5,
+    "amounts": [
+      1,
+      10,
+      50,
+      100,
+      300
+    ],
+    "miles": 6800,
+    "criteria": "Zahl erfüllter Bewohner-Bitten (z. B. verlorene Dinge zurückbringen)."
+  },
+  {
+    "id": "reaction-ruler",
+    "category": "Gemeinschaft",
+    "name": "Reaktions-Meister",
+    "name_en": "Reaction Ruler",
+    "tiers": 5,
+    "amounts": [
+      1,
+      10,
+      20,
+      30,
+      42
+    ],
+    "miles": 6800,
+    "criteria": "Zahl gelernter Reaktionen."
+  },
+  {
+    "id": "popular-pen-pal",
+    "category": "Gemeinschaft",
+    "name": "Fleißiger Briefeschreiber",
+    "name_en": "Popular Pen Pal",
+    "tiers": 5,
+    "amounts": [
+      5,
+      20,
+      50,
+      100,
+      200
+    ],
+    "miles": 6800,
+    "criteria": "Zahl versendeter Briefe."
+  },
+  {
+    "id": "k-k-mania",
+    "category": "Gemeinschaft",
+    "name": "K.K.-Fan",
+    "name_en": "K.K. Mania",
+    "tiers": 5,
+    "amounts": [
+      1,
+      10,
+      30,
+      60,
+      100
+    ],
+    "miles": 6800,
+    "criteria": "Zahl besuchter K.K.-Konzerte."
+  },
+  {
+    "id": "wispy-island-secrets",
+    "category": "Gemeinschaft",
+    "name": "Buhus Seelensplitter",
+    "name_en": "Wispy Island Secrets",
+    "tiers": 3,
+    "amounts": [
+      1,
+      10,
+      20
+    ],
+    "miles": 1800,
+    "criteria": "Wie oft du Buhu geholfen hast, seine Seelensplitter zu finden."
+  },
+  {
+    "id": "gulliver-s-travails",
+    "category": "Gemeinschaft",
+    "name": "Gullivers Pannen",
+    "name_en": "Gulliver's Travails",
+    "tiers": 3,
+    "amounts": [
+      1,
+      10,
+      20
+    ],
+    "miles": 1800,
+    "criteria": "Wie oft du Gulliver geholfen hast, seinen Kommunikator zu reparieren."
+  },
+  {
+    "id": "true-patron-of-the-arts",
+    "category": "Gemeinschaft",
+    "name": "Kunstkenner",
+    "name_en": "True Patron of the Arts",
+    "tiers": 3,
+    "amounts": [
+      1,
+      10,
+      20
+    ],
+    "miles": 1800,
+    "criteria": "Wie oft du Kunst gekauft hast, die sich als echt herausstellte."
+  },
+  {
+    "id": "true-friends",
+    "category": "Gemeinschaft",
+    "name": "Echte Freunde",
+    "name_en": "True Friends",
+    "tiers": 3,
+    "amounts": [
+      1,
+      2,
+      3
+    ],
+    "miles": 1800,
+    "criteria": "Zahl der Bewohner, mit denen du dich angefreundet hast."
+  },
+  {
+    "id": "birthday-celebration",
+    "category": "Gemeinschaft",
+    "name": "Geburtstagsgast",
+    "name_en": "Birthday Celebration",
+    "tiers": 3,
+    "amounts": [
+      1,
+      10,
+      20
+    ],
+    "miles": 1800,
+    "criteria": "Zahl besuchter Bewohner-Geburtstage."
+  },
+  {
+    "id": "island-and-yourland",
+    "category": "Gemeinschaft",
+    "name": "Inselhopping",
+    "name_en": "Island and Yourland",
+    "tiers": 3,
+    "amounts": [
+      1,
+      5,
+      10
+    ],
+    "miles": 1800,
+    "criteria": "Wie oft du die Insel anderer Spieler besucht hast (ohne Meilenticket-Inseln)."
+  },
+  {
+    "id": "host-the-most",
+    "category": "Gemeinschaft",
+    "name": "Gastgeber",
+    "name_en": "Host the Most",
+    "tiers": 3,
+    "amounts": [
+      1,
+      5,
+      10
+    ],
+    "miles": 1800,
+    "criteria": "Zahl anderer Spieler, die deine Insel besucht haben."
+  },
+  {
+    "id": "bulletin-board-benefit",
+    "category": "Gemeinschaft",
+    "name": "Schwarzes Brett",
+    "name_en": "Bulletin-Board Benefit",
+    "tiers": 1,
+    "amounts": [
+      1
+    ],
+    "miles": 300,
+    "criteria": "Erstmals eine Nachricht am Schwarzen Brett gepostet."
+  },
+  {
+    "id": "dream-house",
+    "category": "Inselleben & Meilensteine",
+    "name": "Traumhaus",
+    "name_en": "Dream House",
+    "tiers": 5,
+    "amounts": [
+      1,
+      2,
+      5,
+      6,
+      7
+    ],
+    "miles": 11500,
+    "criteria": "Wie oft du dein Haus erweitert hast."
+  },
+  {
+    "id": "hoard-reward",
+    "category": "Inselleben & Meilensteine",
+    "name": "Möbel-Hortung",
+    "name_en": "Hoard Reward",
+    "tiers": 5,
+    "amounts": [
+      5,
+      15,
+      30,
+      100,
+      150
+    ],
+    "miles": 11300,
+    "criteria": "Zahl der in deinem Haus platzierten Möbel."
+  },
+  {
+    "id": "good-things-in-store",
+    "category": "Inselleben & Meilensteine",
+    "name": "Gut eingelagert",
+    "name_en": "Good Things in Store!",
+    "tiers": 5,
+    "amounts": [
+      20,
+      50,
+      100,
+      200,
+      300
+    ],
+    "miles": 11300,
+    "criteria": "Zahl der in deinem Hauslager verstauten Items."
+  },
+  {
+    "id": "active-island-resident",
+    "category": "Inselleben & Meilensteine",
+    "name": "Aktiver Inselbewohner",
+    "name_en": "Active Island Resident",
+    "tiers": 5,
+    "amounts": [
+      3,
+      20,
+      50,
+      100,
+      300
+    ],
+    "miles": 6800,
+    "criteria": "Gesamtzahl einzigartiger Spieltage."
+  },
+  {
+    "id": "remarkable-remodeler",
+    "category": "Inselleben & Meilensteine",
+    "name": "Fassaden-Umbauer",
+    "name_en": "Remarkable Remodeler",
+    "tiers": 3,
+    "amounts": [
+      1,
+      3,
+      5
+    ],
+    "miles": 3500,
+    "criteria": "Wie oft du das Äußere deines Hauses umgestaltet hast."
+  },
+  {
+    "id": "island-name-miles",
+    "category": "Inselleben & Meilensteine",
+    "name": "Meilenstart",
+    "name_en": "(island name) Miles!",
+    "tiers": 1,
+    "amounts": [
+      1
+    ],
+    "miles": 500,
+    "criteria": "Wird verliehen, sobald das Nook-Meilen-Programm freigeschaltet ist."
+  },
+  {
+    "id": "decorated-decorator",
+    "category": "Inselleben & Meilensteine",
+    "name": "Preisgekrönter Einrichter",
+    "name_en": "Decorated Decorator",
+    "tiers": 1,
+    "amounts": [
+      1
+    ],
+    "miles": 1000,
+    "criteria": "Erstmals ein „S\"-Ranking der HKA erhalten."
+  },
+  {
+    "id": "happy-birthday",
+    "category": "Inselleben & Meilensteine",
+    "name": "Alles Gute!",
+    "name_en": "Happy Birthday!",
+    "tiers": 1,
+    "amounts": [
+      1
+    ],
+    "miles": 2000,
+    "criteria": "Erstmals am Geburtstag deines Charakters gespielt."
+  },
+  {
+    "id": "countdown-celebration",
+    "category": "Inselleben & Meilensteine",
+    "name": "Silvester-Countdown",
+    "name_en": "Countdown Celebration",
+    "tiers": 1,
+    "amounts": [
+      1
+    ],
+    "miles": 1000,
+    "criteria": "Am Neujahrs-Event teilgenommen."
+  },
+  {
+    "id": "making-a-change",
+    "category": "Mode & Design",
+    "name": "Outfit-Wechsel",
+    "name_en": "Making a Change",
+    "tiers": 1,
+    "amounts": [
+      1
+    ],
+    "miles": 500,
+    "criteria": "Erstmals über einen Kleiderschrank das Outfit gewechselt."
+  },
+  {
+    "id": "first-custom-design",
+    "category": "Mode & Design",
+    "name": "Erstes eigenes Design",
+    "name_en": "First Custom Design!",
+    "tiers": 1,
+    "amounts": [
+      1
+    ],
+    "miles": 500,
+    "criteria": "Erstmals die Design-App genutzt, um ein Muster zu erstellen/bearbeiten."
+  },
+  {
+    "id": "custom-design-pro",
+    "category": "Mode & Design",
+    "name": "Profi-Design",
+    "name_en": "Custom Design Pro!",
+    "tiers": 1,
+    "amounts": [
+      1
+    ],
+    "miles": 300,
+    "criteria": "Erstmals die Profi-Design-App genutzt."
+  },
+  {
+    "id": "taking-the-sting-out",
+    "category": "Pech & Pannen",
+    "name": "Aua, Wespen!",
+    "name_en": "Taking the Sting Out",
+    "tiers": 1,
+    "amounts": [
+      1
+    ],
+    "miles": 300,
+    "criteria": "Erstmals von einer Wespe gestochen worden."
+  },
+  {
+    "id": "faint-of-heart",
+    "category": "Pech & Pannen",
+    "name": "Umgehauen",
+    "name_en": "Faint of Heart",
+    "tiers": 1,
+    "amounts": [
+      1
+    ],
+    "miles": 300,
+    "criteria": "Erstmals von einem Skorpion oder einer Vogelspinne k. o. geschlagen worden."
+  },
+  {
+    "id": "overcoming-pitfalls",
+    "category": "Pech & Pannen",
+    "name": "Reingefallen",
+    "name_en": "Overcoming Pitfalls",
+    "tiers": 1,
+    "amounts": [
+      1
+    ],
+    "miles": 300,
+    "criteria": "Erstmals in eine Fallgrube gefallen."
+  },
+  {
+    "id": "faked-out",
+    "category": "Pech & Pannen",
+    "name": "Auf Fälschung reingefallen",
+    "name_en": "Faked Out!",
+    "tiers": 1,
+    "amounts": [
+      1
+    ],
+    "miles": 500,
+    "criteria": "Ein gefälschtes Kunstwerk gespendet."
+  },
+  {
+    "id": "lost-treasure",
+    "category": "Pech & Pannen",
+    "name": "Versunkener Schatz",
+    "name_en": "Lost Treasure",
+    "tiers": 1,
+    "amounts": [
+      1
+    ],
+    "miles": 500,
+    "criteria": "Erstmals ist ein abgeschossenes Ballongeschenk ins Wasser gefallen."
+  }
 ]

@@ -82,11 +82,25 @@ function slugify(s) {
         .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 }
 
+// Internal sheet category → German group label used on the Erfolge page.
+const ACH_CATEGORY_DE = {
+    Event: 'Inselleben & Meilensteine', Fish: 'Angeln & Strand', Insect: 'Insekten',
+    Communication: 'Gemeinschaft', DIY: 'Basteln & Handwerk', HHA: 'Zuhause & Werkzeug',
+    Plant: 'Gärtnern & Natur', Smartphone: 'NookPhone & Katalog', Money: 'Wirtschaft',
+    Negative: 'Pech & Pannen', LandMaking: 'Inselgestaltung', MyDesign: 'Mode & Design',
+};
+
 /**
  * Achievements ("Nook-Meilen-Erfolge") need their own mapper because the page
- * expects a clean shape ({ id, category, name, name_en, tiers, criteria, miles })
- * rather than the raw sheet columns. Falls back gracefully on missing columns so
- * a sheet layout change never produces a broken achievements.json.
+ * expects a clean shape ({ id, category, name, name_en, tiers, amounts, miles,
+ * criteria }) rather than the raw sheet columns. `amounts` are the per-tier
+ * thresholds (Tier 1..5); "for each unique X" achievements carry no thresholds,
+ * so we derive [1..tiers].
+ *
+ * The German `name`/`criteria`/`category` are hand-curated in achievements.json.
+ * The sheet only ships English, so we MERGE: existing German fields are kept by
+ * id and only the numeric data (tiers/amounts/miles) is refreshed — re-running
+ * the sync never regresses the translations.
  */
 async function downloadAchievements() {
     const dataUrl = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=Achievements`;
@@ -112,28 +126,39 @@ async function downloadAchievements() {
             return null;
         };
 
+        const outputPath = path.join(process.cwd(), 'src', 'data', 'achievements.json');
+        // Existing curated German data, keyed by id, to merge over.
+        const existingById = {};
+        try {
+            JSON.parse(fs.readFileSync(outputPath, 'utf8')).forEach(a => { existingById[a.id] = a; });
+        } catch { /* first run: no file yet */ }
+
         const achievements = parsedData.data
             .filter(row => row['Name'])
             .map(row => {
                 const nameEn = row['Name'].toString().trim();
-                // Sum all per-tier Nook-Mile rewards if present.
-                const miles = Object.keys(row)
-                    .filter(k => /reward/i.test(k))
-                    .reduce((sum, k) => sum + (Number(row[k]) || 0), 0) || null;
+                const id = slugify(nameEn);
+                const tiers = Number(pick(row, 'Num of Tiers', 'Number of Tiers', 'Tiers')) || 0;
+                let amounts = [1, 2, 3, 4, 5].map(i => Number(row['Tier ' + i]) || 0).slice(0, tiers);
+                if (amounts.every(x => x === 0)) amounts = Array.from({ length: tiers }, (_, i) => i + 1);
+                const miles = [1, 2, 3, 4, 5, 6]
+                    .slice(0, tiers)
+                    .reduce((sum, i) => sum + (Number(row['Reward Tier ' + i]) || 0), 0) || null;
+                const prev = existingById[id] || {};
                 return {
-                    id: slugify(nameEn),
-                    category: pick(row, 'Internal Category', 'Category') || 'Sonstige Erfolge',
-                    name: translationMap[nameEn.toLowerCase()] || nameEn,
+                    id,
+                    category: prev.category || ACH_CATEGORY_DE[pick(row, 'Internal Category', 'Category')] || 'Sonstige Erfolge',
+                    name: prev.name || translationMap[nameEn.toLowerCase()] || nameEn,
                     name_en: nameEn,
-                    tiers: Number(pick(row, 'Num of Tiers', 'Number of Tiers', 'Tiers')) || null,
-                    criteria: pick(row, 'Achievement Criteria', 'Criteria', 'Description'),
+                    tiers,
+                    amounts,
                     miles,
+                    criteria: prev.criteria || pick(row, 'Award Criteria', 'Achievement Criteria', 'Criteria'),
                 };
             });
 
-        const outputPath = path.join(process.cwd(), 'src', 'data', 'achievements.json');
         fs.mkdirSync(path.dirname(outputPath), { recursive: true });
-        fs.writeFileSync(outputPath, JSON.stringify(achievements, null, 2));
+        fs.writeFileSync(outputPath, JSON.stringify(achievements, null, 2) + '\n');
         console.log(`💾 Erfolgreich gespeichert: ${outputPath} (${achievements.length} Erfolge)`);
     } catch (error) {
         console.error('❌ Fehler bei Achievements:', error.message);

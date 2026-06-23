@@ -15,9 +15,8 @@ Offene Punkte aus dem Bild-Platzhalter-Fix (Branch `claude/image-placeholder-iss
 
 Erfolge / Nook-Meilen-Stempel (Branch `claude/acnh-stamp-achievements-0jiiu7`).
 
-- [ ] `npm run db:sync-data` in einer Umgebung mit Google-Sheets-Zugriff
-      ausführen, um `src/data/achievements.json` mit der vollständigen,
-      offiziellen Erfolgsliste (inkl. DE-Übersetzungen) zu überschreiben –
-      die mitgelieferte JSON ist nur eine kuratierte Vorschau (Sandbox: 403).
-- [ ] Spaltennamen des „Achievements"-Tabs gegen `downloadAchievements()` in
-      `scripts/fetch-data.js` prüfen (Num of Tiers / Criteria / Reward-Spalten).
+- [x] `src/data/achievements.json` enthält alle 84 Erfolge inkl. Stufen-
+      Schwellen (`amounts`), Meilen und deutscher Namen/Kriterien.
+- [ ] Optional: `npm run db:sync-data` in einer Umgebung mit Google-Sheets-
+      Zugriff laufen lassen, um Zahlen (Stufen/Meilen) bei Spiel-Updates zu
+      aktualisieren. Der Sync merged per id und behält die DE-Übersetzungen.
