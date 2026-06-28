@@ -5,7 +5,7 @@
  * the shared format helpers. Carries data-* attributes so the faunapaedie
  * client filter can read straight off the card.
  */
-import { getImageUrl, formatBells, MONTHS_SHORT, accentFor, shadowClass } from '../lib/format.js';
+import { getImageUrl, formatBells, MONTHS_SHORT, accentFor, shadowClass, shadowImage, shadowLabel, weatherLabel } from '../lib/format.js';
 
 interface Props { creature: any; }
 const { creature: c } = Astro.props;
@@ -37,11 +37,16 @@ const months = c.months_northern || [];
     {c.shadow_image && (
       <div class="info-row">
         <span class="info-label">👤 Schatten</span>
-        <span class="info-value"><span class={`shadow-circle ${shadowClass(c.shadow_image)}`}></span>{c.shadow_image}</span>
+        <span class="info-value">
+          {shadowImage(c.shadow_image)
+            ? <img class="shadow-icon" src={shadowImage(c.shadow_image)} alt={shadowLabel(c.shadow_image)} loading="lazy" />
+            : <span class={`shadow-circle ${shadowClass(c.shadow_image)}`}></span>}
+          {shadowLabel(c.shadow_image)}
+        </span>
       </div>
     )}
     {c.speed && <div class="info-row"><span class="info-label">💨 Tempo</span><span class="info-value">{c.speed}</span></div>}
-    {c.weather && <div class="info-row"><span class="info-label">🌦️ Wetter</span><span class="info-value">{c.weather}</span></div>}
+    <div class="info-row"><span class="info-label">🌦️ Wetter</span><span class="info-value">{weatherLabel(c.weather)}</span></div>
   </div>
 
   {c.catchphrase && <div class="ac-bubble">„{c.catchphrase}"</div>}

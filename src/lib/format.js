@@ -189,3 +189,34 @@ export function shadowClass(label) {
   if (!label) return '';
   return 'shadow-' + String(label).toLowerCase().trim().replace(/\s+/g, '-');
 }
+
+/** True when a shadow value is a path/file reference (fish carry an image) rather
+ *  than a bare size label (sea creatures keep the CSS-circle treatment). */
+function isShadowPath(value) {
+  const s = String(value || '').trim();
+  return s.includes('/') || /\.\w+$/.test(s);
+}
+
+/** Resolve a shadow image URL, or null when the value is a bare size label. */
+export function shadowImage(value) {
+  return value && isShadowPath(value) ? getImageUrl(value) : null;
+}
+
+/** Human-readable shadow label, derived from a file path when needed
+ *  ("…/Sehr-groß-mit-Rückenflosse.png" → "Sehr groß mit Rückenflosse"). */
+export function shadowLabel(value) {
+  if (!value) return '';
+  let s = String(value).trim();
+  if (isShadowPath(value)) s = s.split('/').pop().replace(/\.\w+$/, '');
+  s = s.replace(/[-_]+/g, ' ').trim();
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+/** Weather a creature appears in. Fish & sea carry no weather restriction
+ *  (null/"Jedes") → any weather; insects may be Sun- or Rain-only. */
+export function weatherLabel(value) {
+  const w = String(value || '').trim().toLowerCase();
+  if (w === 'sonne') return '☀️ Sonne';
+  if (w === 'regen') return '🌧️ Regen';
+  return '☀️🌧️ Sonne & Regen';
+}

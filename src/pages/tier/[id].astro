@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCreatures } from '../../lib/api.js';
+import { shadowClass, shadowImage, shadowLabel, weatherLabel } from '../../lib/format.js';
 import creaturesFallback from '../../data/creatures.json';
 
 export async function getStaticPaths() {
@@ -97,10 +98,10 @@ const activeMonths = creature.months_northern || [];
                             <div class="data-content">
                                 <span class="data-label">Schatten</span>
                                 <span class="data-value" style="display: flex; align-items: center; gap: 8px;">
-                                    {creature.shadow_image && (
-                                        <span class={`shadow-circle shadow-${creature.shadow_image.toLowerCase().replace(' ', '-')}`}></span>
-                                    )}
-                                    {creature.shadow_image || 'N/A'}
+                                    {shadowImage(creature.shadow_image)
+                                        ? <img class="shadow-icon" src={shadowImage(creature.shadow_image)} alt={shadowLabel(creature.shadow_image)} loading="lazy" />
+                                        : creature.shadow_image && <span class={`shadow-circle ${shadowClass(creature.shadow_image)}`}></span>}
+                                    {shadowLabel(creature.shadow_image) || 'N/A'}
                                 </span>
                             </div>
                         </div>
@@ -116,15 +117,13 @@ const activeMonths = creature.months_northern || [];
                         </div>
                     )}
 
-                    {creature.weather && (
-                        <div class="data-row">
-                            <div class="data-icon icon-weather">🌦️</div>
-                            <div class="data-content">
-                                <span class="data-label">Wetter-Bedingung</span>
-                                <span class="data-value">{creature.weather}</span>
-                            </div>
+                    <div class="data-row">
+                        <div class="data-icon icon-weather">🌦️</div>
+                        <div class="data-content">
+                            <span class="data-label">Wetter-Bedingung</span>
+                            <span class="data-value">{weatherLabel(creature.weather)}</span>
                         </div>
-                    )}
+                    </div>
                 </div>
             </div>
 
