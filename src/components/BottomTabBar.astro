@@ -1,32 +1,21 @@
 ---
-// BottomTabBar.astro - PWA / Mobile app navigation bar (shown < 900px)
-const currentPath = Astro.url.pathname;
-const isHome = currentPath === '/';
-const startsWith = (...ps) => ps.some((p) => currentPath.startsWith(p));
+// BottomTabBar.astro · mobile app navigation (shown < 960px).
+// Rendered from the same `navItems` source as the desktop nav (passed in
+// from Layout) so both navigations stay in sync. Uses the compact `short`
+// label to fit the seven sections on narrow phones.
+interface NavItem {
+  href: string;
+  emoji: string;
+  short: string;
+  active: boolean;
+}
+const { items = [] as NavItem[] } = Astro.props;
 ---
 <nav class="bottom-tab-bar" aria-label="Mobile App Navigation">
-    <a href="/" class={`bottom-tab-item ${isHome ? 'active' : ''}`} title="Start">
-        <span>🍃</span>
-        <span>Start</span>
-    </a>
-    <a href="/museum/" class={`bottom-tab-item ${startsWith('/museum') ? 'active' : ''}`} title="Museum">
-        <span>🏛️</span>
-        <span>Museum</span>
-    </a>
-    <a href="/faunapaedie/" class={`bottom-tab-item ${startsWith('/tier', '/faunapaedie') ? 'active' : ''}`} title="Faunapädie">
-        <span>🦋</span>
-        <span>Fauna</span>
-    </a>
-    <a href="/blumen/" class={`bottom-tab-item ${startsWith('/blumen', '/guides') ? 'active' : ''}`} title="Pflanzen & Zucht">
-        <span>🌷</span>
-        <span>Pflanzen</span>
-    </a>
-    <a href="/rezepte/" class={`bottom-tab-item ${startsWith('/rezepte') ? 'active' : ''}`} title="DIY">
-        <span>🛠️</span>
-        <span>DIY</span>
-    </a>
-    <a href="/katalog/" class={`bottom-tab-item ${startsWith('/items', '/katalog', '/materialien') ? 'active' : ''}`} title="Items">
-        <span>🛋️</span>
-        <span>Items</span>
-    </a>
+    {items.map((item: NavItem) => (
+        <a href={item.href} class={`bottom-tab-item ${item.active ? 'active' : ''}`} title={item.short}>
+            <span aria-hidden="true">{item.emoji}</span>
+            <span class="bottom-tab-label">{item.short}</span>
+        </a>
+    ))}
 </nav>

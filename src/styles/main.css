@@ -844,13 +844,14 @@
   }
   .bottom-tab-item {
     display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
-    flex: 1; min-width: 0; height: 100%;
+    flex: 1; min-width: 0; height: 100%; padding-inline: 2px;
     color: var(--ac-text-muted);
-    font-weight: 700; font-size: 0.7rem;
+    font-weight: 700; font-size: 0.5rem; letter-spacing: -0.02em;
     text-decoration: none;
     transition: color var(--t-fast), transform var(--t-fast) var(--ease-spring);
   }
-  .bottom-tab-item i, .bottom-tab-item span:first-child { font-size: 1.4rem; font-style: normal; line-height: 1; }
+  .bottom-tab-item i, .bottom-tab-item span:first-child { font-size: 1.3rem; font-style: normal; line-height: 1; }
+  .bottom-tab-label { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .bottom-tab-item.active { color: var(--accent); }
   .bottom-tab-item.active span:first-child { animation: pop-in 0.4s var(--ease-spring); }
   .bottom-tab-item:active { transform: scale(0.9); }
@@ -995,5 +996,8 @@
 
   /* keep the floating bar inside the viewport & evenly spaced */
   .bottom-tab-bar { left: var(--sp-2); right: var(--sp-2); }
-  .bottom-tab-item span:not(:first-child) { font-size: 0.64rem; }
+  .bottom-tab-bar { gap: 0; }
+  .bottom-tab-item { gap: 2px; padding-inline: 0; }
+  .bottom-tab-item i, .bottom-tab-item span:first-child { font-size: 1.2rem; }
+  .bottom-tab-label { font-size: 0.48rem; }
 }

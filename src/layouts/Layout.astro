@@ -11,18 +11,23 @@ interface Props {
 const { title = 'Nookipedia Next-Level' } = Astro.props;
 
 const path = Astro.url.pathname;
-// Primary desktop navigation. `match` prefixes mark the link active so a
-// detail page (e.g. /tier/…) still highlights its parent section.
+// Single source of truth for the primary navigation. Both the desktop top
+// nav and the mobile bottom tab bar are rendered from this list so they
+// always expose the same sections, order, icons and active-state. `label`
+// is the desktop text, `short` the compact label for the bottom bar.
+// `match` prefixes mark a link active so detail pages (e.g. /tier/…) still
+// highlight their parent section.
 const navItems = [
-  { href: '/museum/',      emoji: '🏛️', label: 'Museum',      match: ['/museum'] },
-  { href: '/faunapaedie/', emoji: '🦋', label: 'Faunapädie',  match: ['/faunapaedie', '/tier'] },
-  { href: '/blumen/',      emoji: '🌷', label: 'Pflanzen',    match: ['/blumen', '/guides'] },
-  { href: '/events/',      emoji: '🎉', label: 'Events',      match: ['/events'] },
-  { href: '/katalog/',     emoji: '🛋️', label: 'Items',       match: ['/katalog', '/items', '/rezepte', '/materialien'] },
-  { href: '/villager/',    emoji: '🐾', label: 'Bewohner',    match: ['/villager'] },
-  { href: '/erfolge/',     emoji: '🏅', label: 'Erfolge',     match: ['/erfolge'] },
+  { href: '/museum/',      emoji: '🏛️', label: 'Museum',      short: 'Museum',   match: ['/museum'] },
+  { href: '/faunapaedie/', emoji: '🦋', label: 'Faunapädie',  short: 'Fauna',    match: ['/faunapaedie', '/tier'] },
+  { href: '/blumen/',      emoji: '🌷', label: 'Pflanzen',    short: 'Pflanzen', match: ['/blumen', '/guides'] },
+  { href: '/events/',      emoji: '🎉', label: 'Events',      short: 'Events',   match: ['/events'] },
+  { href: '/katalog/',     emoji: '🛋️', label: 'Items',       short: 'Items',    match: ['/katalog', '/items', '/rezepte', '/materialien'] },
+  { href: '/villager/',    emoji: '🐾', label: 'Bewohner',    short: 'Bewohner', match: ['/villager'] },
+  { href: '/erfolge/',     emoji: '🏅', label: 'Erfolge',     short: 'Erfolge',  match: ['/erfolge'] },
 ];
 const isActive = (m: string[]) => m.some((p) => path === p || path.startsWith(p + '/') || path.startsWith(p));
+const navWithActive = navItems.map((item) => ({ ...item, active: isActive(item.match) }));
 
 const footerLinks = [
   { href: '/museum/', label: 'Museum' },
@@ -83,8 +88,8 @@ const footerLinks = [
             </a>
 
             <nav class="main-nav" aria-label="Hauptnavigation">
-                {navItems.map((item) => (
-                    <a href={item.href} class={`nav-link ${isActive(item.match) ? 'active' : ''}`}>
+                {navWithActive.map((item) => (
+                    <a href={item.href} class={`nav-link ${item.active ? 'active' : ''}`}>
                         <span class="nav-emoji" aria-hidden="true">{item.emoji}</span>{item.label}
                     </a>
                 ))}
@@ -117,8 +122,8 @@ const footerLinks = [
     <!-- Search Modal Island -->
     <SearchIsland />
 
-    <!-- Bottom App Navigation Bar -->
-    <BottomTabBar />
+    <!-- Bottom App Navigation Bar (same sections as the desktop nav) -->
+    <BottomTabBar items={navWithActive} />
 
     <!-- Theme toggler logic hooked into Page Transitions -->
     <script>
