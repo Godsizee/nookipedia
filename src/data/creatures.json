@@ -1748,7 +1748,7 @@
     "location_name": "Meer",
     "shadow_image": "faunapedia/fish/Schatten/winzig.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 82,
@@ -1769,7 +1769,7 @@
     "location_name": "Meer",
     "shadow_image": "faunapedia/fish/Schatten/groß.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 83,
@@ -1789,7 +1789,7 @@
     "location_name": "Fluss",
     "shadow_image": "faunapedia/fish/Schatten/riesig.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 84,
@@ -1809,7 +1809,7 @@
     "location_name": "Fluss",
     "shadow_image": "faunapedia/fish/Schatten/groß.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 85,
@@ -1828,7 +1828,7 @@
     "location_name": "Fluss",
     "shadow_image": "faunapedia/fish/Schatten/mittel.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 86,
@@ -1847,7 +1847,7 @@
     "location_name": "Fluss",
     "shadow_image": "faunapedia/fish/Schatten/klein.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 87,
@@ -1875,7 +1875,7 @@
     "location_name": "Fluss",
     "shadow_image": "faunapedia/fish/Schatten/groß.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 88,
@@ -1896,7 +1896,7 @@
     "location_name": "Fluss",
     "shadow_image": "faunapedia/fish/Schatten/winzig.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 89,
@@ -1924,7 +1924,7 @@
     "location_name": "Fluss",
     "shadow_image": "faunapedia/fish/Schatten/winzig.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 90,
@@ -1946,7 +1946,7 @@
     "location_name": "Meer",
     "shadow_image": "faunapedia/fish/Schatten/klein.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 91,
@@ -1966,7 +1966,7 @@
     "location_name": "Fluss",
     "shadow_image": "faunapedia/fish/Schatten/groß.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 92,
@@ -1994,7 +1994,7 @@
     "location_name": "Meer",
     "shadow_image": "faunapedia/fish/Schatten/sehr-groß.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 93,
@@ -2016,7 +2016,7 @@
     "location_name": "Fluss",
     "shadow_image": "faunapedia/fish/Schatten/mittel.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 94,
@@ -2044,7 +2044,7 @@
     "location_name": "Fluss",
     "shadow_image": "faunapedia/fish/Schatten/klein.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 95,
@@ -2066,7 +2066,7 @@
     "location_name": "Teich",
     "shadow_image": "faunapedia/fish/Schatten/klein.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 96,
@@ -2086,7 +2086,7 @@
     "location_name": "Teich",
     "shadow_image": "faunapedia/fish/Schatten/klein.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 97,
@@ -2114,7 +2114,7 @@
     "location_name": "Meer",
     "shadow_image": "faunapedia/fish/Schatten/klein.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 98,
@@ -2136,7 +2136,7 @@
     "location_name": "Fluss (Plateau)",
     "shadow_image": "faunapedia/fish/Schatten/mittel.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 99,
@@ -2164,7 +2164,7 @@
     "location_name": "Teich",
     "shadow_image": "faunapedia/fish/Schatten/winzig.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 100,
@@ -2186,7 +2186,7 @@
     "location_name": "Steg",
     "shadow_image": "faunapedia/fish/Schatten/sehr-groß.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 101,
@@ -2210,7 +2210,7 @@
     "location_name": "Fluss",
     "shadow_image": "faunapedia/fish/Schatten/winzig.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 102,
@@ -2230,7 +2230,7 @@
     "location_name": "Meer",
     "shadow_image": "faunapedia/fish/Schatten/Sehr-groß-mit-Rückenflosse.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 103,
@@ -2250,7 +2250,7 @@
     "location_name": "Meer",
     "shadow_image": "faunapedia/fish/Schatten/Sehr-groß-mit-Rückenflosse.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 104,
@@ -2278,7 +2278,7 @@
     "location_name": "Fluss",
     "shadow_image": "faunapedia/fish/Schatten/mittel.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 105,
@@ -2298,7 +2298,7 @@
     "location_name": "Fluss",
     "shadow_image": "faunapedia/fish/Schatten/sehr-groß.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 106,
@@ -2318,7 +2318,7 @@
     "location_name": "Fluss (Plateau)",
     "shadow_image": "faunapedia/fish/Schatten/sehr-groß.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 107,
@@ -2337,7 +2337,7 @@
     "location_name": "Meer",
     "shadow_image": "faunapedia/fish/Schatten/mittel.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 108,
@@ -2365,7 +2365,7 @@
     "location_name": "Meer",
     "shadow_image": "faunapedia/fish/Schatten/groß.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 109,
@@ -2390,7 +2390,7 @@
     "location_name": "Meer",
     "shadow_image": "faunapedia/fish/Schatten/mittel.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 110,
@@ -2412,7 +2412,7 @@
     "location_name": "Fluss",
     "shadow_image": "faunapedia/fish/Schatten/klein.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 111,
@@ -2440,7 +2440,7 @@
     "location_name": "Fluss",
     "shadow_image": "faunapedia/fish/Schatten/klein.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 112,
@@ -2468,7 +2468,7 @@
     "location_name": "Teich",
     "shadow_image": "faunapedia/fish/Schatten/groß.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 113,
@@ -2490,7 +2490,7 @@
     "location_name": "Teich",
     "shadow_image": "faunapedia/fish/Schatten/groß.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 114,
@@ -2511,7 +2511,7 @@
     "location_name": "Teich",
     "shadow_image": "faunapedia/fish/Schatten/winzig.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 115,
@@ -2532,7 +2532,7 @@
     "location_name": "Teich",
     "shadow_image": "faunapedia/fish/Schatten/winzig.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 116,
@@ -2555,7 +2555,7 @@
     "location_name": "Meer",
     "shadow_image": "faunapedia/fish/Schatten/mittel.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 117,
@@ -2575,7 +2575,7 @@
     "location_name": "Teich",
     "shadow_image": "faunapedia/fish/Schatten/riesig.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 118,
@@ -2592,7 +2592,7 @@
     "location_name": "Flussmündung",
     "shadow_image": "faunapedia/fish/Schatten/sehr-groß.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 119,
@@ -2620,7 +2620,7 @@
     "location_name": "Teich",
     "shadow_image": "faunapedia/fish/Schatten/groß.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 120,
@@ -2640,7 +2640,7 @@
     "location_name": "Meer",
     "shadow_image": "faunapedia/fish/Schatten/mittel.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 121,
@@ -2657,7 +2657,7 @@
     "location_name": "Flussmündung",
     "shadow_image": "faunapedia/fish/Schatten/groß.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 122,
@@ -2672,12 +2672,12 @@
       8,
       9
     ],
-    "time_active": "16:00 – 09:00",
+    "time_active": "04:00 – 21:00",
     "created_at": "2026-03-24T10:07:32",
     "location_name": "Fluss",
     "shadow_image": "faunapedia/fish/Schatten/sehr-groß.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 123,
@@ -2705,7 +2705,7 @@
     "location_name": "Meer",
     "shadow_image": "faunapedia/fish/Schatten/klein.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 124,
@@ -2730,7 +2730,7 @@
     "location_name": "Steg",
     "shadow_image": "faunapedia/fish/Schatten/riesig.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 125,
@@ -2743,16 +2743,17 @@
       3,
       4,
       5,
+      6,
       9,
       10,
       11
     ],
-    "time_active": "Variiert",
+    "time_active": "16:00 – 09:00",
     "created_at": "2026-03-24T10:07:32",
     "location_name": "Fluss (Plateau)",
     "shadow_image": "faunapedia/fish/Schatten/mittel.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 126,
@@ -2771,7 +2772,7 @@
     "location_name": "Meer",
     "shadow_image": "faunapedia/fish/Schatten/Sehr-groß-mit-Rückenflosse.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 127,
@@ -2790,7 +2791,7 @@
     "location_name": "Meer",
     "shadow_image": "faunapedia/fish/Schatten/schmal.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 128,
@@ -2808,7 +2809,7 @@
     "location_name": "Meer",
     "shadow_image": "faunapedia/fish/Schatten/riesig.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 129,
@@ -2818,6 +2819,8 @@
     "catchphrase": "Eine Nasenmuräne! Kannst du damit auch riechen?",
     "image_path": "faunapedia/fish/Ribbon Eel.png",
     "months_northern": [
+      6,
+      7,
       8,
       9,
       10
@@ -2827,7 +2830,7 @@
     "location_name": "Meer",
     "shadow_image": "faunapedia/fish/Schatten/schmal.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 130,
@@ -2851,7 +2854,7 @@
     "location_name": "Fluss",
     "shadow_image": "faunapedia/fish/Schatten/winzig.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 131,
@@ -2873,7 +2876,7 @@
     "location_name": "Meer",
     "shadow_image": "faunapedia/fish/Schatten/klein.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 132,
@@ -2893,7 +2896,7 @@
     "location_name": "Fluss",
     "shadow_image": "faunapedia/fish/Schatten/klein.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 133,
@@ -2921,7 +2924,7 @@
     "location_name": "Meer",
     "shadow_image": "faunapedia/fish/Schatten/riesig.png",
     "speed": null,
-    "weather": null
+    "weather": "Regen"
   },
   {
     "id": 134,
@@ -2949,7 +2952,7 @@
     "location_name": "Teich",
     "shadow_image": "faunapedia/fish/Schatten/klein.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 135,
@@ -2971,7 +2974,7 @@
     "location_name": "Fluss",
     "shadow_image": "faunapedia/fish/Schatten/winzig.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 136,
@@ -2993,7 +2996,7 @@
     "location_name": "Meer",
     "shadow_image": "faunapedia/fish/Schatten/riesig.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 137,
@@ -3013,7 +3016,7 @@
     "location_name": "Meer",
     "shadow_image": "faunapedia/fish/Schatten/sehr-groß.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 138,
@@ -3037,7 +3040,7 @@
     "location_name": "Meer",
     "shadow_image": "faunapedia/fish/Schatten/mittel.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 139,
@@ -3057,7 +3060,7 @@
     "location_name": "Meer",
     "shadow_image": "faunapedia/fish/Schatten/Sehr-groß-mit-Rückenflosse.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 140,
@@ -3070,16 +3073,17 @@
       3,
       4,
       5,
+      6,
       9,
       10,
       11
     ],
-    "time_active": "Variiert",
+    "time_active": "16:00 – 09:00",
     "created_at": "2026-03-24T10:07:32",
     "location_name": "Fluss (Plateau)",
     "shadow_image": "faunapedia/fish/Schatten/mittel.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 141,
@@ -3107,7 +3111,7 @@
     "location_name": "Meer",
     "shadow_image": "faunapedia/fish/Schatten/klein.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 142,
@@ -3128,7 +3132,7 @@
     "location_name": "Fluss",
     "shadow_image": "faunapedia/fish/Schatten/winzig.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 143,
@@ -3148,7 +3152,7 @@
     "location_name": "Meer",
     "shadow_image": "faunapedia/fish/Schatten/Sehr-groß-mit-Rückenflosse.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 144,
@@ -3173,7 +3177,7 @@
     "location_name": "Meer",
     "shadow_image": "faunapedia/fish/Schatten/mittel.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 145,
@@ -3196,7 +3200,7 @@
     "location_name": "Fluss",
     "shadow_image": "faunapedia/fish/Schatten/groß.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 146,
@@ -3215,7 +3219,7 @@
     "location_name": "Teich",
     "shadow_image": "faunapedia/fish/Schatten/groß.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 147,
@@ -3243,7 +3247,7 @@
     "location_name": "Meer",
     "shadow_image": "faunapedia/fish/Schatten/sehr-groß.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 148,
@@ -3263,7 +3267,7 @@
     "location_name": "Meer",
     "shadow_image": "faunapedia/fish/Schatten/winzig.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 149,
@@ -3287,7 +3291,7 @@
     "location_name": "Meer",
     "shadow_image": "faunapedia/fish/Schatten/winzig.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 150,
@@ -3309,7 +3313,7 @@
     "location_name": "Fluss",
     "shadow_image": "faunapedia/fish/Schatten/klein.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 151,
@@ -3337,7 +3341,7 @@
     "location_name": "Fluss",
     "shadow_image": "faunapedia/fish/Schatten/klein.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 152,
@@ -3359,7 +3363,7 @@
     "location_name": "Steg",
     "shadow_image": "faunapedia/fish/Schatten/sehr-groß.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 153,
@@ -3378,7 +3382,7 @@
     "location_name": "Fluss",
     "shadow_image": "faunapedia/fish/Schatten/klein.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 154,
@@ -3401,7 +3405,7 @@
     "location_name": "Flussmündung",
     "shadow_image": "faunapedia/fish/Schatten/riesig.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 155,
@@ -3429,7 +3433,7 @@
     "location_name": "Teich",
     "shadow_image": "faunapedia/fish/Schatten/winzig.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 156,
@@ -3451,7 +3455,7 @@
     "location_name": "Steg",
     "shadow_image": "faunapedia/fish/Schatten/riesig.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 157,
@@ -3472,7 +3476,7 @@
     "location_name": "Fluss",
     "shadow_image": "faunapedia/fish/Schatten/mittel.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 158,
@@ -3492,7 +3496,7 @@
     "location_name": "Meer",
     "shadow_image": "faunapedia/fish/Schatten/Sehr-groß-mit-Rückenflosse.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 159,
@@ -3510,7 +3514,7 @@
     "location_name": "Fluss",
     "shadow_image": "faunapedia/fish/Schatten/groß.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 160,
@@ -3529,7 +3533,7 @@
     "location_name": "Fluss",
     "shadow_image": "faunapedia/fish/Schatten/klein.png",
     "speed": null,
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 161,
@@ -3551,7 +3555,7 @@
     "location_name": null,
     "shadow_image": "klein",
     "speed": "langsam",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 162,
@@ -3579,7 +3583,7 @@
     "location_name": null,
     "shadow_image": "klein",
     "speed": "langsam",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 163,
@@ -3601,7 +3605,7 @@
     "location_name": null,
     "shadow_image": "klein",
     "speed": "langsam",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 164,
@@ -3629,7 +3633,7 @@
     "location_name": null,
     "shadow_image": "klein",
     "speed": "mittelschnell",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 165,
@@ -3651,7 +3655,7 @@
     "location_name": null,
     "shadow_image": "mittel",
     "speed": "mittelschnell",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 166,
@@ -3672,7 +3676,7 @@
     "location_name": null,
     "shadow_image": "mittel",
     "speed": "schnell",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 167,
@@ -3693,7 +3697,7 @@
     "location_name": null,
     "shadow_image": "sehr groß",
     "speed": "sehr schnell",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 168,
@@ -3714,7 +3718,7 @@
     "location_name": null,
     "shadow_image": "mittel",
     "speed": "mittelschnell",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 169,
@@ -3735,7 +3739,7 @@
     "location_name": null,
     "shadow_image": "groß",
     "speed": "schnell",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 170,
@@ -3763,7 +3767,7 @@
     "location_name": null,
     "shadow_image": "mittel",
     "speed": "langsam",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 171,
@@ -3784,7 +3788,7 @@
     "location_name": null,
     "shadow_image": "groß",
     "speed": "sehr schnell",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 172,
@@ -3804,7 +3808,7 @@
     "location_name": null,
     "shadow_image": "klein",
     "speed": "bewegungslos",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 173,
@@ -3824,7 +3828,7 @@
     "location_name": null,
     "shadow_image": "klein",
     "speed": "mittelschnell",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 174,
@@ -3843,7 +3847,7 @@
     "location_name": null,
     "shadow_image": "groß",
     "speed": "schnell",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 175,
@@ -3863,7 +3867,7 @@
     "location_name": null,
     "shadow_image": "winzig",
     "speed": "langsam",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 176,
@@ -3881,7 +3885,7 @@
     "location_name": null,
     "shadow_image": "winzig",
     "speed": "sehr langsam",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 177,
@@ -3904,7 +3908,7 @@
     "location_name": null,
     "shadow_image": "klein",
     "speed": "langsam",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 178,
@@ -3932,7 +3936,7 @@
     "location_name": null,
     "shadow_image": "winzig",
     "speed": "sehr langsam",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 179,
@@ -3951,7 +3955,7 @@
     "location_name": null,
     "shadow_image": "klein",
     "speed": "sehr langsam",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 180,
@@ -3979,7 +3983,7 @@
     "location_name": null,
     "shadow_image": "mittel",
     "speed": "langsam",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 181,
@@ -4002,7 +4006,7 @@
     "location_name": null,
     "shadow_image": "mittel",
     "speed": "mittelschnell",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 182,
@@ -4015,6 +4019,7 @@
       3,
       4,
       5,
+      6,
       9,
       10,
       11
@@ -4024,7 +4029,7 @@
     "location_name": null,
     "shadow_image": "mittel",
     "speed": "mittelschnell",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 183,
@@ -4052,7 +4057,7 @@
     "location_name": null,
     "shadow_image": "klein",
     "speed": "mittelschnell",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 184,
@@ -4071,7 +4076,7 @@
     "location_name": null,
     "shadow_image": "mittel",
     "speed": "mittelschnell",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 185,
@@ -4093,7 +4098,7 @@
     "location_name": null,
     "shadow_image": "klein",
     "speed": "schnell",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 186,
@@ -4113,7 +4118,7 @@
     "location_name": null,
     "shadow_image": "mittel",
     "speed": "sehr schnell",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 187,
@@ -4131,7 +4136,7 @@
     "location_name": null,
     "shadow_image": "sehr groß",
     "speed": "sehr schnell",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 188,
@@ -4153,7 +4158,7 @@
     "location_name": null,
     "shadow_image": "klein",
     "speed": "langsam",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 189,
@@ -4175,7 +4180,7 @@
     "location_name": null,
     "shadow_image": "groß",
     "speed": "schnell",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 190,
@@ -4195,7 +4200,7 @@
     "location_name": null,
     "shadow_image": "klein",
     "speed": "sehr schnell",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 191,
@@ -4216,7 +4221,7 @@
     "location_name": null,
     "shadow_image": "klein",
     "speed": "langsam",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 192,
@@ -4244,7 +4249,7 @@
     "location_name": null,
     "shadow_image": "groß",
     "speed": "bewegungslos",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 193,
@@ -4266,7 +4271,7 @@
     "location_name": null,
     "shadow_image": "mittel",
     "speed": "sehr langsam",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 194,
@@ -4287,7 +4292,7 @@
     "location_name": null,
     "shadow_image": "klein",
     "speed": "langsam",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 195,
@@ -4311,7 +4316,7 @@
     "location_name": null,
     "shadow_image": "mittel",
     "speed": "mittelschnell",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 196,
@@ -4339,7 +4344,7 @@
     "location_name": null,
     "shadow_image": "winzig",
     "speed": "bewegungslos",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 197,
@@ -4367,7 +4372,7 @@
     "location_name": null,
     "shadow_image": "klein",
     "speed": "sehr langsam",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 198,
@@ -4390,7 +4395,7 @@
     "location_name": null,
     "shadow_image": "klein",
     "speed": "langsam",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 199,
@@ -4410,7 +4415,7 @@
     "location_name": null,
     "shadow_image": "mittel",
     "speed": "sehr schnell",
-    "weather": null
+    "weather": "Jedes"
   },
   {
     "id": 200,
@@ -4436,6 +4441,6 @@
     "location_name": null,
     "shadow_image": "groß",
     "speed": "bewegungslos",
-    "weather": null
+    "weather": "Jedes"
   }
 ]

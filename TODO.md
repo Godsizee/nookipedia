@@ -12,3 +12,11 @@ Offene Punkte aus dem Bild-Platzhalter-Fix (Branch `claude/image-placeholder-iss
       finden — bisher in keinem erreichbaren Datensatz vorhanden.
 - [ ] Entscheiden, ob für den Branch `claude/image-placeholder-issue-c2ao0y`
       ein Pull Request erstellt werden soll.
+
+Erfolge / Nook-Meilen-Stempel (Branch `claude/acnh-stamp-achievements-0jiiu7`).
+
+- [x] `src/data/achievements.json` enthält alle 84 Erfolge inkl. Stufen-
+      Schwellen (`amounts`), Meilen und deutscher Namen/Kriterien.
+- [ ] Optional: `npm run db:sync-data` in einer Umgebung mit Google-Sheets-
+      Zugriff laufen lassen, um Zahlen (Stufen/Meilen) bei Spiel-Updates zu
+      aktualisieren. Der Sync merged per id und behält die DE-Übersetzungen.
