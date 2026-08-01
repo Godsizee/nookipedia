@@ -1,5 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import CatchToggle from '../../components/CatchToggle.astro';
+import CaughtBootstrap from '../../components/CaughtBootstrap.astro';
 import { getCreatures } from '../../lib/api.js';
 import { shadowClass, shadowImage, shadowLabel, weatherLabel } from '../../lib/format.js';
 import creaturesFallback from '../../data/creatures.json';
@@ -55,6 +57,9 @@ const activeMonths = creature.months_northern || [];
         <h1 class="detail-title">{creature.name}</h1>
         <div class="detail-subtitle"><span>{catIcon}</span> {catName}</div>
         <div id="live-badge" class="detail-live hide"><span class="dot"></span> Jetzt fangbar!</div>
+        <div class="detail-catch">
+            <CatchToggle id={creature.id} name={creature.name} size="lg" />
+        </div>
     </div>
 
     <div class={`detail-content-card accent-${accentKey}`}>
@@ -128,7 +133,7 @@ const activeMonths = creature.months_northern || [];
             </div>
 
             <div>
-                <h3 class="section-heading">📅 Saison-Planer <span style="font-size:0.8rem; color:var(--ac-text-muted); font-weight:700;">(Nord)</span></h3>
+                <h3 class="section-heading">📅 Saison-Planer <span id="hemisphere-label" style="font-size:0.8rem; color:var(--ac-text-muted); font-weight:700;">(Nord)</span></h3>
                 <div class="month-grid-premium">
                     {allMonths.map((monthName, index) => {
                         const monthNum = index + 1;
@@ -155,6 +160,8 @@ const activeMonths = creature.months_northern || [];
             </a>
         </div>
     </div>
+
+    <CaughtBootstrap />
 </Layout>
 
 <style>
@@ -481,27 +488,44 @@ const activeMonths = creature.months_northern || [];
 [data-theme='dark'] .detail-live { background: var(--ac-surface-2); color: var(--ac-text); }
 </style>
 
-<script is:inline>
-  function initLiveBadge() {
+<script>
+  // Same catch-window module the Faunapädie and /sammlung/ use — no second
+  // implementation of the time-window parsing living on this page any more.
+  import { isCatchableNow, monthsFor } from '../../lib/catch-window.js';
+  import { getHemisphere, subscribe } from '../../lib/collection.js';
+  import '../../scripts/collection-ui.js';
+
+  let unsubscribe = null;
+
+  function paintDetail() {
     const hero = document.querySelector('.detail-hero[data-months]');
     const badge = document.getElementById('live-badge');
     if (!hero || !badge) return;
-    const months = hero.dataset.months ? hero.dataset.months.split(',').map(Number) : [];
-    const t = (hero.dataset.time || '').toLowerCase();
-    const now = new Date(), month = now.getMonth() + 1, hour = now.getHours();
-    let live = !months.length || months.includes(month);
-    if (live && t && !/immer|ganz|all/.test(t)) {
-      const h = (t.match(/(\d{1,2}):/g) || []).map((x) => parseInt(x, 10));
-      if (h.length >= 2) {
-        live = false;
-        for (let i = 0; i + 1 < h.length; i += 2) {
-          const s = h[i], e = h[i + 1];
-          if (s < e ? (hour >= s && hour < e) : (hour >= s || hour < e)) { live = true; break; }
-        }
-      }
-    }
-    badge.classList.toggle('hide', !live);
+
+    const creature = {
+      months_northern: hero.dataset.months ? hero.dataset.months.split(',').map(Number) : [],
+      time_active: hero.dataset.time || '',
+    };
+    const hemisphere = getHemisphere();
+    badge.classList.toggle('hide', !isCatchableNow(creature, new Date(), hemisphere));
+
+    // The season planner follows the chosen hemisphere (south = +6 months).
+    const months = monthsFor(creature, hemisphere);
+    document.querySelectorAll('.month-pill').forEach((pill, index) => {
+      const active = months.includes(index + 1);
+      pill.classList.toggle('active', active);
+      pill.classList.toggle('inactive', !active);
+    });
+    const label = document.getElementById('hemisphere-label');
+    if (label) label.textContent = hemisphere === 'south' ? '(Süd)' : '(Nord)';
   }
-  initLiveBadge();
-  document.addEventListener('astro:after-swap', initLiveBadge);
+
+  function initDetail() {
+    if (unsubscribe) { unsubscribe(); unsubscribe = null; }
+    if (!document.querySelector('.detail-hero[data-months]')) return;
+    paintDetail();
+    unsubscribe = subscribe(paintDetail);
+  }
+
+  document.addEventListener('astro:page-load', initDetail);
 </script>

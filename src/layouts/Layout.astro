@@ -24,6 +24,7 @@ const navItems = [
   { href: '/events/',      emoji: '🎉', label: 'Events',      short: 'Events',   match: ['/events'] },
   { href: '/katalog/',     emoji: '🛋️', label: 'Items',       short: 'Items',    match: ['/katalog', '/items', '/rezepte', '/materialien'] },
   { href: '/villager/',    emoji: '🐾', label: 'Bewohner',    short: 'Bewohner', match: ['/villager'] },
+  { href: '/sammlung/',    emoji: '🎣', label: 'Sammlung',    short: 'Sammlung', match: ['/sammlung'] },
   { href: '/erfolge/',     emoji: '🏅', label: 'Erfolge',     short: 'Erfolge',  match: ['/erfolge'] },
 ];
 const isActive = (m: string[]) => m.some((p) => path === p || path.startsWith(p + '/') || path.startsWith(p));
@@ -37,6 +38,7 @@ const footerLinks = [
   { href: '/materialien/', label: 'Materialien' },
   { href: '/rezepte', label: 'Rezepte' },
   { href: '/villager/', label: 'Bewohner' },
+  { href: '/sammlung/', label: 'Meine Sammlung' },
   { href: '/katalog/', label: 'Item-Katalog' },
   { href: '/guides/', label: 'Zucht-Guides' },
   { href: '/erfolge/', label: 'Erfolge' },

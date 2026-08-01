@@ -1,6 +1,10 @@
 # Modul-Plan — „Meine Sammlung" (Fang-Tracker für die Faunapädie)
 
-**Stand:** 2026-08-01 · **Branch:** `claude/nookipedia-fauna-tracker-3ik8lw` · **Status:** geplant, nicht implementiert
+**Stand:** 2026-08-01 · **Status:** ✅ vollständig umgesetzt (M1–M4), auf `main` gemergt
+
+**Entscheidungen von Basti (2026-08-01):** eigener Nav-Eintrag „Sammlung" · Nordhalbkugel
+als Standard · „gefangen" und „gespendet" werden **nicht** getrennt → das reservierte Feld
+`donated` ist ersatzlos aus dem Datenmodell gestrichen.
 
 Ziel: In der Faunapädie ankreuzen, welche Tiere schon gefangen sind — und daraus
 automatisch die Antwort auf die einzige Frage bekommen, die im Spiel wirklich zählt:
@@ -38,7 +42,7 @@ Herz des Moduls — alles andere ist Beiwerk.
 | # | Entscheidung | Begründung |
 |---|---|---|
 | E1 | **Rein clientseitig**, `localStorage`, kein Login, kein Backend-Schreibpfad | Frictionless: Häkchen ohne Account. Directus bleibt read-only, kein neuer Angriffs-/Wartungspfad, funktioniert offline in der PWA. |
-| E2 | **Ein Zustand: „gefangen"** (Feld `donated` im Schema reserviert, UI später) | KISS. Zwei Häkchen pro Tier (gefangen/gespendet) verdoppeln die Reibung; der Museums-Aspekt kommt als Ausbaustufe, ohne späteres Datenmigrations-Problem. |
+| E2 | **Ein Zustand: „gefangen"** — kein zweiter Zustand, auch nicht reserviert (Basti-Entscheid) | KISS. Zwei Häkchen pro Tier verdoppeln die Reibung. Die Museums-Listen zeigen denselben einen Zustand an. |
 | E3 | **Südhalbkugel = Nordhalbkugel + 6 Monate** (berechnet, nicht gespeichert) | Entspricht exakt der ACNH-Regel; Zeitfenster sind hemisphärenunabhängig. Spart ein Backend-Feld (`months_southern` existiert heute nicht). |
 | E4 | **Sync per Code statt per Konto** | 200 Tiere = 200 Bits = ~34 Zeichen Base64URL. Handy↔PC teilen per Link/QR, ohne Server. |
 | E5 | **Zeitlogik in ein eigenes Modul extrahieren** (`catch-window.js`) | Die Fensterlogik liegt heute dupliziert inline in `faunapaedie.astro` und `tier/[id].astro`. Das Modul braucht sie ein drittes Mal — jetzt ist der richtige Moment für eine Single Source of Truth. |
@@ -54,7 +58,6 @@ Herz des Moduls — alles andere ist Beiwerk.
   "v": 1,
   "hemisphere": "north",        // "north" | "south"
   "caught":   [1, 4, 17, 88],   // Kreatur-IDs, aufsteigend
-  "donated":  [],               // reserviert (E2), heute immer leer
   "updated":  "2026-08-01T09:12:00.000Z"
 }
 ```
@@ -78,6 +81,8 @@ Herz des Moduls — alles andere ist Beiwerk.
 | `src/components/CatchToggle.astro` | Ein Button pro Karte („Gefangen"-Häkchen), rein Markup + `data-creature-id`. Kein eigenes JS. |
 | `src/components/ProgressRing.astro` | SVG-Ring mit Prozentwert, akzentgefärbt (`--accent`), animierbar über `stroke-dashoffset`. |
 | `src/scripts/collection-ui.js` | Bindeglied: hängt Klick-Handler an alle `[data-creature-id]`, spiegelt den Store in CSS-Klassen (`.is-caught`), aktualisiert Zähler/Ringe, zeigt Undo-Toast. Wird von den Seiten per gebündeltem `<script>` importiert. |
+| `src/lib/sync-code.js` | **Kodierung des Sammlungsstands** als Bitmaske + Fingerprint. Kennt weder Storage noch DOM. |
+| `src/components/CaughtBootstrap.astro` | Inline-Skript, das den gefangen-Zustand vor dem ersten Paint setzt (kein Flackern). |
 | `src/pages/sammlung.astro` | Die neue Seite (§6). |
 
 ### Geändert
@@ -90,7 +95,8 @@ Herz des Moduls — alles andere ist Beiwerk.
 | `src/layouts/Layout.astro` | Nav-Eintrag `{ href:'/sammlung/', emoji:'🎣', label:'Sammlung', short:'Sammlung', match:['/sammlung'] }` + Footer-Link. |
 | `src/components/BottomTabBar.astro` | Achter Eintrag → auf schmalen Phones horizontal scrollbar machen (`overflow-x:auto`, `scroll-snap`), statt Labels zu kürzen. |
 | `src/styles/main.css` | Neuer Akzent `.accent-collection`; Komponenten: `.is-caught`-Zustand, `.catch-toggle`, `.progress-ring`, `.urgency-card`, `.year-matrix`, `.toast`. |
-| `src/pages/museum/*.astro` | Optional in M4: gefangene Tiere in den Museums-Listen markieren (nur Anzeige, gleicher Store). |
+| `src/pages/museum/{fische,insekten,meerestiere}.astro` | Gefangene Tiere markiert, Stand pro Ausstellung, Offline-Fallback ergänzt. |
+| `src/components/EntityCard.astro` | Optionales `creatureId` → Häkchen-Badge und Anbindung an den Fang-Log. |
 
 ---
 
@@ -104,7 +110,8 @@ isCatchableNow(creature, now, hemi)  // Monat ∧ Stunde
 isLastChance(creature, now, hemi)    // verfügbar diesen Monat, nicht nächsten
 isNewThisMonth(creature, now, hemi)  // verfügbar diesen Monat, nicht letzten
 nextAvailability(creature, now, hemi)// → { month, monthsAway } | null (wenn ganzjährig)
-hoursLeftToday(creature, now)        // → Zahl | null (bei Ganztägig)
+currentWindowEnd(creature, now)      // → Stunde | null → "noch bis 19:00 Uhr"
+nextWindowStart(creature, now)       // → Stunde | null → "ab 16:00 Uhr"
 daysLeftInMonth(now)                 // für den Countdown der Dringlichkeitskarten
 ```
 
@@ -114,12 +121,18 @@ isCaught(id) → boolean
 toggle(id)   → { caught: boolean, undo: () => void }
 stats(creatures, now, hemisphere) → {
   total, caught, byCategory: { fish:{caught,total}, insect:{…}, sea:{…} },
-  missingNow: [], lastChance: [], newThisMonth: [], byNextMonth: Map<month, []>,
-  perMonthMissing: number[12]          // Futter für die Jahres-Matrix
+  missingNow: [], laterToday: [], lastChance: [], newThisMonth: [],
+  byNextMonth: Map<month, []>, sortedNextMonths: [], missingOther: [],
+  matrix: { fish: number[12], insect: number[12], sea: number[12] }
 }
-subscribe(fn) → unsubscribe
-exportCode() → "AC1-<base64url-bitmask>-<hash4>"
-importCode(code) → { ok, added, skipped, reason? }
+subscribe(fn) → unsubscribe · setMany(ids, value) → { changed, undo }
+getHemisphere() / setHemisphere('north' | 'south')
+```
+
+```js
+// sync-code.js — Kodierung, ohne Storage-Zugriff
+encode(allIds, caughtIds) → "AC1-<base64url-bitmask>-<fingerprint>"
+decode(code, allIds)      → { ok: true, ids } | { ok: false, reason }
 ```
 
 `stats()` ist bewusst **eine** Funktion, die alle Sichten aus einem Durchlauf ableitet —
@@ -183,37 +196,61 @@ Blickfeld. Das ist der Unterschied zu einer Checkliste.
 
 ---
 
-## 9 · Inkremente (jedes einzeln shipbar)
+## 9 · Inkremente — alle umgesetzt
 
-### M1 · Fundament & Abhaken *(~3–4 h)*
-- [ ] `catch-window.js` extrahieren, `faunapaedie.astro` + `tier/[id].astro` darauf umstellen (Verhalten unverändert).
-- [ ] `collection.js` inkl. In-Memory-Fallback.
-- [ ] `CatchToggle` in `CreatureCard` + Detailseite, `collection-ui.js`, Toast mit Undo.
-- [ ] Filter-Chips „Nur fehlende / Nur gefangene" + Fortschrittszeile in der Faunapädie.
-- **Akzeptanz:** Häkchen überlebt Reload und Seitenwechsel; kein Flackern beim Laden;
-  bestehende Filter/Planer-Funktionen unverändert; `npm run build` grün.
+### M1 · Fundament & Abhaken ✅
+- [x] `catch-window.js` extrahiert; `faunapaedie.astro` und `tier/[id].astro` nutzen es
+      (die beiden Inline-Kopien der Zeitfenster-Logik sind weg).
+- [x] `collection.js` inkl. In-Memory-Fallback und Tab-Sync über das `storage`-Event.
+- [x] `CatchToggle` in `CreatureCard` und auf der Detailseite, `collection-ui.js`,
+      Toast mit Rückgängig, Meilensteine bei 25/50/75/100 %.
+- [x] Segment-Filter „Alle / Fehlend / Gefangen" und Fortschrittszeile in der Faunapädie.
 
-### M2 · Die Seite `/sammlung/` *(~4–5 h)*
-- [ ] Seite mit Sektionen 1–4 (Ringe, Letzte Chance, Jetzt fangbar, Neu diesen Monat).
-- [ ] `stats()` als einzige Ableitungsstelle; Nav- und Footer-Einträge.
-- **Akzeptanz:** Bei 0 Häkchen zeigt „Letzte Chance" im August genau die 29 Tiere, die im
-  September fehlen; nach Abhaken verschwinden sie live aus der Liste.
+### M2 · Die Seite `/sammlung/` ✅
+- [x] Ringe (gesamt + drei Kategorien), „Letzte Chance" mit Countdown, „Jetzt fangbar",
+      „Neu diesen Monat" — plus die im Plan noch fehlende Klasse **„Heute noch"**
+      (richtiger Monat, falsche Uhrzeit), damit kein fehlendes Tier durchs Raster fällt.
+- [x] `stats()` als einzige Ableitungsstelle; Nav- und Footer-Eintrag.
 
-### M3 · Planung über das Jahr *(~3–4 h)*
-- [ ] Sektion 5 (nächste Gelegenheit, gruppiert) + Sektion 6 (Jahres-Matrix, klickbar).
-- [ ] Hemisphären-Umschalter (E3), wirkt auf alle Sektionen **und** die Faunapädie-Filter.
-- **Akzeptanz:** Umschalten auf Süd verschiebt jede Monatsangabe um exakt 6 Monate;
-  Summe aller Gruppen + ganzjährige = Anzahl fehlender Tiere.
+### M3 · Planung über das Jahr ✅
+- [x] „Nächste Gelegenheit", nach Nähe sortiert und gruppiert.
+- [x] Jahres-Matrix (3 Kategorien × 12 Monate, aktueller Monat hervorgehoben).
+- [x] Hemisphären-Umschalter auf `/sammlung/` **und** als Kurz-Umschalter in der
+      Faunapädie; wirkt auf Filter, Monatsraster der Karten und den Saison-Planer
+      der Detailseite.
 
-### M4 · Teilen & Ausbau *(~3 h)*
-- [ ] Sync-Code Export/Import inkl. `#code=`-Import-Link, Reset mit Bestätigung.
-- [ ] Meilenstein-Feedback, Long-press-Massenerfassung, Museums-Listen markieren.
-- **Akzeptanz:** Code aus Browser A in Browser B importiert ergibt identische Statistik;
-  manipulierter Code wird abgelehnt statt teilweise importiert.
+### M4 · Teilen & Ausbau ✅
+- [x] Sync-Code (`sync-code.js`): 200 Tiere → 43 Zeichen, mit Fingerprint gegen
+      Codes aus einem anderen Datenbestand. Code kopieren, Link kopieren, einlesen.
+- [x] Import über `#code=` — beim Laden **und** wenn der Link auf einer bereits
+      offenen Seite landet (reiner Hash-Wechsel löst kein Laden aus).
+- [x] Zurücksetzen mit Rückfrage, Kategorie-Massenerfassung, langer Druck auf die
+      Schnellauswahl-Kacheln.
+- [x] Museums-Listen (Fische, Insekten, Meerestiere) markieren gefangene Tiere und
+      zeigen den Stand pro Ausstellung.
 
-**Gesamt: ~13–16 h.** M1+M2 allein liefern bereits den vollen Kernnutzen.
+### Abweichungen vom ursprünglichen Plan
 
----
+- **„Heute noch" ergänzt** — ohne diesen Bucket wären fehlende Tiere unsichtbar
+  gewesen, die zwar diesen Monat da sind, aber gerade außerhalb ihrer Uhrzeit.
+- **`donated` gestrichen** statt reserviert (Basti-Entscheid E2).
+- **Museums-Seiten bekamen den Offline-Fallback** (`creaturesFallback`), den die
+  übrigen Seiten schon hatten — ohne ihn sind die Listen bei nicht erreichbarem
+  Backend leer, und damit wäre auch die neue Markierung wirkungslos.
+
+### Prüfstand
+
+- `src/lib/catch-window.js` gegen alle 20 im Datenbestand vorkommenden Zeitstrings
+  sowie Fenstergrenzen, Mitternachtsüberlauf und Hemisphären-Verschiebung geprüft.
+- `stats()`: jedes fehlende Tier liegt in genau einem Bucket (103 + 44 + 53 = 200
+  bei leerem Log), Zeitstrahl-Gruppen nie im aktuellen Monat.
+- `sync-code.js`: Round-Trip, leerer und voller Stand, Ablehnung von Müll, falschem
+  Präfix, falschem Fingerprint, fremdem Datenbestand und abgeschnittenem Payload.
+- Browser-Durchlauf (Chromium, 420 px und 1280 px): Abhaken, Zähler, Filter,
+  Rückgängig, Persistenz über Reload ohne Flackern, Hemisphären-Verschiebung auf
+  Karte und Detailseite, alle Sektionen, Massenerfassung, Sync-Code zwischen zwei
+  getrennten Browser-Profilen, Museums-Markierung, langer Druck, kein
+  horizontaler Überlauf, keine JS-Fehler.
 
 ## 10 · Ausdrücklich nicht geplant
 
@@ -227,11 +264,20 @@ Blickfeld. Das ist der Unterschied zu einer Checkliste.
 
 ---
 
-## 11 · Offene Punkte für Basti
+## 11 · Geklärte Punkte
 
-1. **Einstiegspunkt:** eigener Nav-Eintrag „Sammlung" (Vorschlag) — oder lieber als
-   vierter Tab innerhalb der Faunapädie, damit die Navigation bei sieben Einträgen bleibt?
-2. **Hemisphäre:** Bist du auf der Nordhalbkugel unterwegs? Wenn ja, kommt der Umschalter
-   nach M3 und die Standardeinstellung bleibt Nord.
-3. **Museum:** Soll „gefangen" später in „gefangen / gespendet" aufgeteilt werden? Wenn ja,
-   bleibt das Feld reserviert (E2) — die Antwort ändert nichts an M1–M3.
+1. **Einstiegspunkt:** eigener Nav-Eintrag „Sammlung" ✅ — die Bottom-Bar trägt jetzt
+   acht Einträge und scrollt auf schmalen Phones horizontal; der aktive Eintrag wird
+   beim Laden in den sichtbaren Bereich geholt.
+2. **Hemisphäre:** Nord ist Standard ✅ — der Umschalter existiert trotzdem
+   (`/sammlung/` und Faunapädie), kostet als reine Rechenregel nichts.
+3. **Museum:** keine Trennung „gefangen / gespendet" ✅ — `donated` ist gestrichen,
+   die Museums-Listen zeigen denselben einen Zustand.
+
+## 12 · Was als Nächstes sinnvoll wäre
+
+- Tracking auf Fossilien, Kunstwerke und Bewohner ausweiten — `collection.js` ist mit
+  ID-Mengen dafür offen, braucht aber einen zweiten Namensraum pro Domäne.
+- Automatisierte Tests dauerhaft im Repo verankern: die Prüfskripte aus §9 laufen
+  bisher nur ad hoc (kein Test-Runner im Projekt).
+- Sync-Code als QR-Code anzeigen — Handy↔PC ohne Tippen.

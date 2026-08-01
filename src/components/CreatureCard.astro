@@ -6,6 +6,7 @@
  * client filter can read straight off the card.
  */
 import { getImageUrl, formatBells, MONTHS_SHORT, accentFor, shadowClass, shadowImage, shadowLabel, weatherLabel } from '../lib/format.js';
+import CatchToggle from './CatchToggle.astro';
 
 interface Props { creature: any; }
 const { creature: c } = Astro.props;
@@ -19,8 +20,11 @@ const months = c.months_northern || [];
   data-name={(c.name || '').toLowerCase()}
   data-months={months.join(',')}
   data-time={c.time_active || ''}
+  data-creature-id={c.id}
+  data-collection-item
 >
   <span class="now-badge"><span class="dot"></span>Jetzt fangbar</span>
+  <span class="caught-badge">✓ Gefangen</span>
   <div class="card-content-top">
     <div class="img-container" transition:name={`creature-img-${c.id}`}>
       <img src={getImageUrl(c.image_path)} alt={c.name} loading="lazy" onerror="this.src='/assets/img/acnh/koeder.png'" />
@@ -57,5 +61,8 @@ const months = c.months_northern || [];
     ))}
   </div>
 
-  <a href={`/tier/${c.id}/`} class="ac-btn ac-btn--primary ac-btn--block">Akte öffnen →</a>
+  <div class="card-actions">
+    <CatchToggle id={c.id} name={c.name} />
+    <a href={`/tier/${c.id}/`} class="ac-btn ac-btn--primary">Akte →</a>
+  </div>
 </article>

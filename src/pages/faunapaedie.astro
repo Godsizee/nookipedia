@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import PageHero from '../components/PageHero.astro';
 import InfoBox from '../components/InfoBox.astro';
 import CreatureCard from '../components/CreatureCard.astro';
+import CaughtBootstrap from '../components/CaughtBootstrap.astro';
 import { getCreatures, DEFAULT_DIRECTUS } from '../lib/api.js';
 import { getImageUrl } from '../lib/format.js';
 import creaturesFallback from '../data/creatures.json';
@@ -49,6 +50,16 @@ const seaTips = [
     ))}
   </div>
 
+  <!-- Collection progress · entry point into the Sammlung module -->
+  <div class="fauna-progress" data-collection-total={creatures.length}>
+    <div class="fauna-progress__meter" data-collection-bar role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Sammlungsfortschritt"><span></span></div>
+    <p class="fauna-progress__text">
+      <strong><span data-collection-count="caught">0</span> / {creatures.length}</strong> gefangen ·
+      noch <strong><span data-collection-count="missing">{creatures.length}</span></strong> offen
+    </p>
+    <a href="/sammlung/" class="ac-btn">🎣 Meine Sammlung</a>
+  </div>
+
   <!-- Tab-specific intro + tips -->
   <InfoBox id="info-fish" accent="fish" emoji="🐟" title="Petri Heil!" tips={fishTips}>
     <p>Vollständige Übersicht aller {fishList.length} Fische. Zücke deine <strong>Angel</strong> – aber renne nicht direkt ans Wasser, sonst verscheuchst du deine Beute!</p>
@@ -66,6 +77,11 @@ const seaTips = [
     <div class="cluster">
       <label class="ac-checkbox"><input type="checkbox" id="filter-month" /> 📅 Diesen Monat</label>
       <label class="ac-checkbox"><input type="checkbox" id="filter-now" /> ⏰ Jetzt fangbar</label>
+    </div>
+    <div class="seg" role="group" aria-label="Nach Sammlungsstand filtern">
+      <button type="button" class="seg-btn active" data-collection-filter="all">Alle</button>
+      <button type="button" class="seg-btn" data-collection-filter="missing">🎯 Fehlend</button>
+      <button type="button" class="seg-btn" data-collection-filter="caught">✅ Gefangen</button>
     </div>
     <button id="clear-filters" class="ac-btn">🧹 Zurücksetzen</button>
   </div>
@@ -87,6 +103,7 @@ const seaTips = [
         {Array.from({ length: 24 }, (_, h) => <option value={h}>{String(h).padStart(2, '0')}:00 Uhr</option>)}
       </select>
     </label>
+    <button type="button" id="hemisphere-toggle" class="ac-btn" title="Zwischen Nord- und Südhalbkugel umschalten">🌍 Nord</button>
     <span class="planner-hint" id="plan-hint"></span>
   </div>
 
@@ -97,7 +114,7 @@ const seaTips = [
         <div class="mini-grid-head"><span>{t.emoji}</span> Schnellauswahl · {t.label}</div>
         <div class="mini-grid">
           {t.list.map((c) => (
-            <a href={`#creature-${c.id}`} class="mini-card" data-id={c.id} data-name={(c.name || '').toLowerCase()} data-months={c.months_northern ? c.months_northern.join(',') : ''} data-time={c.time_active || ''} title={c.name}>
+            <a href={`#creature-${c.id}`} class="mini-card" data-id={c.id} data-creature-id={c.id} data-name={(c.name || '').toLowerCase()} data-months={c.months_northern ? c.months_northern.join(',') : ''} data-time={c.time_active || ''} title={c.name}>
               <img src={getImageUrl(c.image_path)} alt={c.name} loading="lazy" onerror="this.src='/assets/img/acnh/koeder.png'" />
             </a>
           ))}
@@ -117,23 +134,27 @@ const seaTips = [
     <span class="emoji">🏜️</span>
     Keine Kreaturen erfüllen diese Filterkriterien…
   </div>
+
+  <CaughtBootstrap />
 </Layout>
 
-<script is:inline>
-  const MONTHS_LONG = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+<script>
+  // Catch-window maths and the catch log both come from shared modules, so this
+  // page, the detail page and /sammlung/ can never disagree about a creature.
+  import { MONTHS_LONG, isActiveAtHour, monthsFor } from '../lib/catch-window.js';
+  import { isCaught, subscribe, getHemisphere, setHemisphere, toggle } from '../lib/collection.js';
+  import { showToast } from '../scripts/collection-ui.js';
+
   const CAT_LABEL = { fish: 'Fische', insect: 'Insekten', sea: 'Meerestiere' };
 
-  // Is the creature active during a given hour? (parses one-or-more time windows)
-  function isActiveAtHour(timeStr, hour) {
-    const t = (timeStr || '').toLowerCase();
-    if (/immer|ganz|all/.test(t) || !t) return true;
-    const hrs = (t.match(/(\d{1,2}):/g) || []).map((h) => parseInt(h, 10));
-    if (hrs.length < 2) return true;
-    for (let i = 0; i + 1 < hrs.length; i += 2) {
-      const s = hrs[i], e = hrs[i + 1];
-      if (s < e ? (hour >= s && hour < e) : (hour >= s || hour < e)) return true;
-    }
-    return false;
+  /** Repaint a card's month calendar for the active hemisphere. */
+  function paintMonthGrid(card, months) {
+    const boxes = card.querySelectorAll('.month-box');
+    boxes.forEach((box, index) => {
+      const active = months.includes(index + 1);
+      box.classList.toggle('active', active);
+      box.classList.toggle('inactive', !active);
+    });
   }
 
   // Is a creature catchable right now? (month + time-of-day windows)
@@ -149,7 +170,12 @@ const seaTips = [
     return true;
   }
 
+  // Held across View-Transition swaps so a re-init never stacks subscriptions
+  // on top of the previous page's (detached) DOM.
+  let unsubscribe = null;
+
   function initFaunapedia() {
+    if (unsubscribe) { unsubscribe(); unsubscribe = null; }
     const tabs = document.querySelectorAll('.tab-btn');
     const infoBoxes = document.querySelectorAll('.info-box');
     const miniGrids = document.querySelectorAll('.mini-grid-wrap');
@@ -163,7 +189,12 @@ const seaTips = [
     const planMonth = document.getElementById('plan-month');
     const planHour = document.getElementById('plan-hour');
     const planHint = document.getElementById('plan-hint');
+    const segButtons = document.querySelectorAll('[data-collection-filter]');
+    const hemisphereBtn = document.getElementById('hemisphere-toggle');
     if (!tabs.length || !filterMonth) return;
+
+    // 'all' | 'missing' | 'caught' — global, not per category
+    let collectionFilter = localStorage.getItem('nook_collection_filter') || 'all';
 
     // Restore planner selection (global across categories)
     if (planMonth) planMonth.value = localStorage.getItem('nook_plan_month') || '';
@@ -186,20 +217,29 @@ const seaTips = [
       localStorage.setItem('nook_plan_month', planMonth ? planMonth.value : '');
       localStorage.setItem('nook_plan_hour', planHour ? planHour.value : '');
 
+      const hemisphere = getHemisphere();
+      if (hemisphereBtn) hemisphereBtn.textContent = hemisphere === 'south' ? '🌍 Süd' : '🌍 Nord';
+
       let visibleCount = 0;
       creatureCards.forEach((card) => {
         if (card.dataset.category !== activeCategory) { card.style.display = 'none'; return; }
 
-        const months = card.dataset.months ? card.dataset.months.split(',').map(Number) : [];
+        const northern = card.dataset.months ? card.dataset.months.split(',').map(Number) : [];
+        const months = monthsFor({ months_northern: northern }, hemisphere);
+        paintMonthGrid(card, months);
         const timeStr = card.dataset.time || '';
         const liveNow = isCatchableNow(months, timeStr, currentMonth, currentHour);
         card.classList.toggle('is-now', liveNow);
+
+        const caught = isCaught(card.dataset.creatureId);
 
         let visible = true;
         if (term && !(card.dataset.name || '').includes(term)) visible = false;
         if (visible && filterMonth.checked && months.length && !months.includes(currentMonth)) visible = false;
         if (visible && filterNow.checked && !liveNow) visible = false;
         if (visible && planActive && !matchesQuery(months, timeStr, qMonth, qHour)) visible = false;
+        if (visible && collectionFilter === 'missing' && caught) visible = false;
+        if (visible && collectionFilter === 'caught' && !caught) visible = false;
 
         const mCard = document.querySelector(`.mini-card[data-id="${card.id.split('-')[1]}"]`);
         if (mCard) { mCard.classList.toggle('faded', !visible); mCard.classList.toggle('is-now', liveNow); }
@@ -247,11 +287,52 @@ const seaTips = [
       filterMonth.checked = false; filterNow.checked = false; search.value = '';
       if (planMonth) planMonth.value = '';
       if (planHour) planHour.value = '';
+      setCollectionFilter('all');
+    });
+
+    function setCollectionFilter(mode) {
+      collectionFilter = mode;
+      localStorage.setItem('nook_collection_filter', mode);
+      segButtons.forEach((b) => b.classList.toggle('active', b.dataset.collectionFilter === mode));
+      applyFilters();
+    }
+    segButtons.forEach((b) => b.addEventListener('click', () => setCollectionFilter(b.dataset.collectionFilter)));
+    setCollectionFilter(collectionFilter);
+
+    hemisphereBtn?.addEventListener('click', () => {
+      setHemisphere(getHemisphere() === 'south' ? 'north' : 'south');
       applyFilters();
     });
 
+    // Re-filter whenever a creature is ticked off — cards leave the list live.
+    unsubscribe = subscribe(applyFilters);
+
+    // Long-press a quick-select tile to tick it off — turns the first-time
+    // setup from 200 taps into a few seconds of thumb work.
     document.querySelectorAll('.mini-card').forEach((card) => {
+      let pressTimer = null;
+      let longPressed = false;
+
+      const startPress = () => {
+        longPressed = false;
+        clearTimeout(pressTimer);
+        pressTimer = setTimeout(() => {
+          longPressed = true;
+          const { caught, undo } = toggle(card.dataset.creatureId);
+          navigator.vibrate?.(15);
+          showToast(`${card.getAttribute('title') || 'Kreatur'} ${caught ? 'eingetragen' : 'wieder offen'}`, undo);
+        }, 450);
+      };
+      const cancelPress = () => clearTimeout(pressTimer);
+
+      card.addEventListener('pointerdown', startPress);
+      card.addEventListener('pointerup', cancelPress);
+      card.addEventListener('pointerleave', cancelPress);
+      card.addEventListener('pointercancel', cancelPress);
+      card.addEventListener('contextmenu', (e) => { if (longPressed) e.preventDefault(); });
+
       card.addEventListener('click', (e) => {
+        if (longPressed) { e.preventDefault(); longPressed = false; return; }
         const href = card.getAttribute('href');
         if (!href || !href.startsWith('#')) return;
         e.preventDefault();

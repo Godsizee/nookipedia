@@ -1,0 +1,21 @@
+---
+/**
+ * CatchToggle · the "gefangen"-Häkchen on a creature.
+ * Pure markup — state and behaviour come from collection-ui.js, which binds
+ * every [data-catch-toggle] on the page through one delegated listener.
+ */
+interface Props { id: number | string; name?: string; size?: 'sm' | 'lg'; }
+const { id, name = '', size = 'sm' } = Astro.props;
+---
+<button
+  type="button"
+  class={`catch-toggle catch-toggle--${size}`}
+  data-catch-toggle
+  data-creature-id={id}
+  data-creature-name={name}
+  aria-pressed="false"
+  title="Als gefangen markieren"
+>
+  <span class="catch-toggle__box" aria-hidden="true"></span>
+  <span class="catch-toggle__label">Gefangen</span>
+</button>

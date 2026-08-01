@@ -1,0 +1,36 @@
+---
+/**
+ * ProgressRing · SVG completion ring, themed by the surrounding .accent-*.
+ * Renders at 0 % on the server (no storage at build time); collection-ui.js
+ * fills in the real value from the catch log before the first paint.
+ */
+interface Props {
+  ringKey: string;          // 'total' | 'fish' | 'insect' | 'sea'
+  total: number;
+  label: string;
+  emoji?: string;
+  size?: number;
+}
+const { ringKey, total, label, emoji = '', size = 96 } = Astro.props;
+
+const stroke = size >= 140 ? 12 : 9;
+const radius = (size - stroke) / 2;
+const circumference = +(2 * Math.PI * radius).toFixed(2);
+---
+<div class="progress-ring" data-ring={ringKey} data-total={total} style={`--ring-size:${size}px`}>
+  <svg viewBox={`0 0 ${size} ${size}`} width={size} height={size} aria-hidden="true">
+    <circle class="progress-ring__track" cx={size / 2} cy={size / 2} r={radius} stroke-width={stroke} />
+    <circle
+      class="progress-ring__value"
+      cx={size / 2} cy={size / 2} r={radius} stroke-width={stroke}
+      stroke-dasharray={circumference}
+      stroke-dashoffset={circumference}
+      data-circumference={circumference}
+    />
+  </svg>
+  <div class="progress-ring__center">
+    {emoji && <span class="progress-ring__emoji" aria-hidden="true">{emoji}</span>}
+    <strong class="progress-ring__count"><span data-ring-caught>0</span>/{total}</strong>
+  </div>
+  <span class="progress-ring__label">{label}</span>
+</div>

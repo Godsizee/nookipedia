@@ -1,0 +1,26 @@
+---
+/**
+ * CaughtBootstrap · anti-FOUC for the catch log.
+ * Place directly after the markup it applies to: this runs synchronously while
+ * the browser is still parsing, so caught creatures never flash "not caught"
+ * before the module script boots. Same trick the theme switch already uses —
+ * hence the duplicated storage key, which is the one place it may appear twice.
+ */
+---
+<script is:inline>
+  (function () {
+    try {
+      var raw = localStorage.getItem('nook_collection_v1');
+      if (!raw) return;
+      var ids = (JSON.parse(raw) || {}).caught || [];
+      var caught = Object.create(null);
+      for (var i = 0; i < ids.length; i++) caught[ids[i]] = true;
+      var nodes = document.querySelectorAll('[data-creature-id]');
+      for (var j = 0; j < nodes.length; j++) {
+        if (!caught[nodes[j].getAttribute('data-creature-id')]) continue;
+        nodes[j].classList.add('is-caught');
+        if (nodes[j].hasAttribute('data-catch-toggle')) nodes[j].setAttribute('aria-pressed', 'true');
+      }
+    } catch (e) { /* storage blocked → module script takes over */ }
+  })();
+</script>
