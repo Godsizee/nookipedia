@@ -2,7 +2,8 @@
 // BottomTabBar.astro · mobile app navigation (shown < 960px).
 // Rendered from the same `navItems` source as the desktop nav (passed in
 // from Layout) so both navigations stay in sync. Uses the compact `short`
-// label to fit the seven sections on narrow phones.
+// label; beyond seven sections the bar scrolls horizontally rather than
+// squeezing the labels into unreadable stumps.
 interface NavItem {
   href: string;
   emoji: string;
@@ -19,3 +20,12 @@ const { items = [] as NavItem[] } = Astro.props;
         </a>
     ))}
 </nav>
+<script is:inline>
+  // With more tabs than fit, make sure the current section is the one in view.
+  (function () {
+    var bar = document.querySelector('.bottom-tab-bar');
+    var active = bar && bar.querySelector('.bottom-tab-item.active');
+    if (!active) return;
+    bar.scrollLeft = Math.max(0, active.offsetLeft - (bar.clientWidth - active.clientWidth) / 2);
+  })();
+</script>

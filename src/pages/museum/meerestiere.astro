@@ -2,16 +2,26 @@
 import Layout from '../../layouts/Layout.astro';
 import PageHero from '../../components/PageHero.astro';
 import EntityCard from '../../components/EntityCard.astro';
+import CaughtBootstrap from '../../components/CaughtBootstrap.astro';
 import { getCreatures, DEFAULT_DIRECTUS } from '../../lib/api.js';
+import creaturesFallback from '../../data/creatures.json';
 
 const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || DEFAULT_DIRECTUS;
-const creatures = (await getCreatures(directusUrl)).filter((c) => c.category === 'sea');
+const creatures = (await getCreatures(directusUrl, creaturesFallback)).filter((c) => c.category === 'sea');
 ---
 <Layout title="Meerestiere-Aquarium - Eugens Museum">
   <PageHero accent="sea" emoji="🐙" title="Meerestiere-Aquarium" subtitle="Bestaune die bizarren Wunder vom Grund des Ozeans." />
+  <p class="museum-progress" data-collection-total={creatures.length}>
+    Du hast <strong><span data-collection-count="caught">0</span> von <span data-collection-count="total">{creatures.length}</span></strong> Meerestiere gefangen · <a href="/sammlung/">Was fehlt noch?</a>
+  </p>
   <div class="grid-auto" style="--min: 180px; margin-bottom: var(--sp-12);">
     {creatures.map((c) => (
-      <EntityCard href={`/tier/${c.id}/`} image={c.image_path} title={c.name} subtitle={`📍 ${c.location_name || 'Meeresgrund'}`} price={c.price} accent="sea" />
+      <EntityCard creatureId={c.id} href={`/tier/${c.id}/`} image={c.image_path} title={c.name} subtitle={`📍 ${c.location_name || 'Meeresgrund'}`} price={c.price} accent="sea" />
     ))}
   </div>
+  <CaughtBootstrap />
 </Layout>
+
+<script>
+  import '../../scripts/collection-ui.js';
+</script>

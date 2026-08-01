@@ -1,0 +1,459 @@
+---
+/**
+ * Meine Sammlung · the catch tracker.
+ *
+ * Renders the shell on the server and the (personal, browser-local) sections on
+ * the client — the catch log never leaves the device, so there is nothing to
+ * pre-render per user. The full creature payload is embedded once as JSON so
+ * the page needs no extra request and works offline in the PWA.
+ */
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import InfoBox from '../components/InfoBox.astro';
+import ProgressRing from '../components/ProgressRing.astro';
+import { getCreatures, DEFAULT_DIRECTUS } from '../lib/api.js';
+import { getImageUrl } from '../lib/format.js';
+import creaturesFallback from '../data/creatures.json';
+
+const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || DEFAULT_DIRECTUS;
+const creatures = await getCreatures(directusUrl, creaturesFallback);
+
+// Slim payload: only what the sections actually render. Image URLs are resolved
+// here so the client never needs the Directus base URL.
+const payload = creatures.map((c) => ({
+  id: c.id,
+  name: c.name,
+  category: c.category,
+  img: getImageUrl(c.image_path),
+  months: c.months_northern || [],
+  time: c.time_active || '',
+  price: c.price || 0,
+  location: c.location_name || '',
+}));
+
+const counts = {
+  fish: creatures.filter((c) => c.category === 'fish').length,
+  insect: creatures.filter((c) => c.category === 'insect').length,
+  sea: creatures.filter((c) => c.category === 'sea').length,
+};
+---
+
+<Layout title="Meine Sammlung - Fang-Tracker">
+  <PageHero accent="collection" emoji="🎣" title="Meine Sammlung" subtitle="Was du schon hast — und vor allem: was dir noch fehlt." />
+
+  <script type="application/json" id="creature-payload" set:html={JSON.stringify(payload).replace(/</g, '\\u003c')}></script>
+
+  <!-- Progress · one big ring, three category rings -->
+  <section class="ac-card accent-collection collection-hero" data-collection-total={creatures.length}>
+    <ProgressRing ringKey="total" total={creatures.length} label="Gesamt" size={150} />
+    <div class="collection-hero__cats">
+      <div class="accent-fish"><ProgressRing ringKey="fish" total={counts.fish} label="Fische" emoji="🐟" /></div>
+      <div class="accent-insect"><ProgressRing ringKey="insect" total={counts.insect} label="Insekten" emoji="🦋" /></div>
+      <div class="accent-sea"><ProgressRing ringKey="sea" total={counts.sea} label="Meerestiere" emoji="🐙" /></div>
+    </div>
+    <div class="hemisphere">
+      <span class="hemisphere__label">🌍 Insel-Halbkugel</span>
+      <div class="seg" role="group" aria-label="Halbkugel wählen">
+        <button type="button" class="seg-btn active" data-hemisphere="north">Nord</button>
+        <button type="button" class="seg-btn" data-hemisphere="south">Süd</button>
+      </div>
+    </div>
+  </section>
+
+  <p class="storage-warning hide" id="storage-warning">
+    ⚠️ Dieser Browser lässt kein dauerhaftes Speichern zu — deine Auswahl gilt nur bis zum Neuladen.
+  </p>
+
+  <!-- Urgency first: what disappears at the end of the month -->
+  <section class="collection-section accent-collection" id="section-last-chance">
+    <div class="collection-section__head">
+      <h2>⏳ Letzte Chance <span class="badge" data-count>0</span></h2>
+      <p class="muted" data-subline></p>
+    </div>
+    <div class="collection-list" data-list></div>
+    <p class="collection-empty" data-empty>Nichts läuft dir diesen Monat davon. 🎉</p>
+  </section>
+
+  <section class="collection-section accent-fish" id="section-now">
+    <div class="collection-section__head">
+      <h2>🎯 Jetzt fangbar <span class="badge" data-count>0</span></h2>
+      <p class="muted" data-subline></p>
+    </div>
+    <div class="collection-list" data-list></div>
+    <p class="collection-empty" data-empty>Gerade ist nichts Fehlendes unterwegs — schau später nochmal rein.</p>
+  </section>
+
+  <section class="collection-section accent-sea" id="section-later">
+    <div class="collection-section__head">
+      <h2>🕗 Heute noch <span class="badge" data-count>0</span></h2>
+      <p class="muted">Diesen Monat da, aber gerade außerhalb ihrer Uhrzeit.</p>
+    </div>
+    <div class="collection-list" data-list></div>
+    <p class="collection-empty" data-empty>Heute kommt nichts mehr dazu.</p>
+  </section>
+
+  <section class="collection-section accent-insect" id="section-new">
+    <div class="collection-section__head">
+      <h2>🆕 Neu diesen Monat <span class="badge" data-count>0</span></h2>
+      <p class="muted">Seit Monatsanfang wieder auf der Insel.</p>
+    </div>
+    <div class="collection-list" data-list></div>
+    <p class="collection-empty" data-empty>Diesen Monat ist nichts Neues aufgetaucht.</p>
+  </section>
+
+  <!-- The "wann sind sie zu fangen" answer for everything else -->
+  <section class="collection-section accent-collection" id="section-timeline">
+    <div class="collection-section__head">
+      <h2>📅 Nächste Gelegenheit <span class="badge" data-count>0</span></h2>
+      <p class="muted">Alles Fehlende, das diesen Monat nicht da ist — sortiert danach, wann es zurückkommt.</p>
+    </div>
+    <div class="timeline" data-timeline></div>
+    <p class="collection-empty" data-empty>Alles, was dir fehlt, ist diesen Monat erreichbar.</p>
+  </section>
+
+  <!-- Year planner -->
+  <section class="collection-section accent-collection" id="section-matrix">
+    <div class="collection-section__head">
+      <h2>🗓️ Dein Jahr</h2>
+      <p class="muted">Wie viele fehlende Tiere in welchem Monat verfügbar sind. Je voller der Balken, desto lohnender der Monat.</p>
+    </div>
+    <div class="year-matrix" data-matrix></div>
+  </section>
+
+  <InfoBox accent="collection" emoji="🔄" title="Auf ein anderes Gerät übertragen">
+    <p>Dein Fang-Log liegt <strong>nur in diesem Browser</strong> — kein Konto, kein Server, funktioniert offline. Zum Mitnehmen gibt es einen kurzen Code: hier kopieren, auf dem anderen Gerät einfügen. Der Link tut dasselbe in einem Schritt.</p>
+    <div class="sync-box">
+      <input type="text" class="ac-input" id="sync-code" readonly aria-label="Dein Sammlungs-Code" />
+      <button type="button" class="ac-btn ac-btn--primary" id="copy-code">📋 Code kopieren</button>
+      <button type="button" class="ac-btn" id="copy-link">🔗 Link kopieren</button>
+    </div>
+    <div class="sync-box">
+      <input type="text" class="ac-input" id="import-code" placeholder="Code von einem anderen Gerät einfügen…" aria-label="Code einlesen" />
+      <button type="button" class="ac-btn" id="apply-code">📥 Einlesen</button>
+    </div>
+    <p class="sync-hint muted" id="sync-hint"></p>
+  </InfoBox>
+
+  <InfoBox accent="collection" emoji="⚙️" title="Schnell-Aktionen">
+    <p>Schon fast alles gefangen? Kategorie komplett abhaken und danach nur die Lücken wieder abwählen. In der Faunapädie geht das auch pro Tier per <strong>langem Druck</strong> auf ein Bild in der Schnellauswahl.</p>
+    <div class="collection-tools">
+      <button type="button" class="ac-btn" data-bulk="fish">🐟 Fische alle abhaken</button>
+      <button type="button" class="ac-btn" data-bulk="insect">🦋 Insekten alle abhaken</button>
+      <button type="button" class="ac-btn" data-bulk="sea">🐙 Meerestiere alle abhaken</button>
+      <button type="button" class="ac-btn" id="reset-collection">🗑️ Alles zurücksetzen</button>
+    </div>
+  </InfoBox>
+</Layout>
+
+<script>
+  import {
+    stats, subscribe, setMany, reset, isPersistent, CATEGORIES,
+    getHemisphere, setHemisphere, caughtIds,
+  } from '../lib/collection.js';
+  import { MONTHS_LONG, currentWindowEnd, nextWindowStart, daysLeftInMonth, isAllDay } from '../lib/catch-window.js';
+  import { encode, decode } from '../lib/sync-code.js';
+  import { updateRing, showToast, initCollectionUI } from '../scripts/collection-ui.js';
+
+  const CAT_EMOJI = { fish: '🐟', insect: '🦋', sea: '🐙' };
+  const hh = (h) => `${String(h).padStart(2, '0')}:00`;
+
+  let creatures = [];
+  let hourTimer = null;
+  let unsubscribe = null;
+  let renderedHour = -1;
+
+  /** One compact tile per creature — built with DOM APIs, never innerHTML. */
+  function tile(creature, note) {
+    const el = document.createElement('article');
+    el.className = `collection-tile accent-${creature.category}`;
+    el.dataset.creatureId = creature.id;
+
+    const link = document.createElement('a');
+    link.className = 'collection-tile__main';
+    link.href = `/tier/${creature.id}/`;
+
+    const img = document.createElement('img');
+    img.src = creature.img;
+    img.alt = creature.name;
+    img.loading = 'lazy';
+    img.addEventListener('error', () => { img.src = '/assets/img/acnh/koeder.png'; });
+
+    const text = document.createElement('div');
+    const name = document.createElement('strong');
+    name.textContent = creature.name;
+    const sub = document.createElement('span');
+    sub.className = 'collection-tile__note';
+    sub.textContent = note || creature.location || '';
+    text.append(name, sub);
+    link.append(img, text);
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'catch-toggle catch-toggle--sm';
+    btn.dataset.catchToggle = '';
+    btn.dataset.creatureId = creature.id;
+    btn.dataset.creatureName = creature.name;
+    btn.setAttribute('aria-pressed', 'false');
+    btn.title = 'Als gefangen markieren';
+    const box = document.createElement('span');
+    box.className = 'catch-toggle__box';
+    box.setAttribute('aria-hidden', 'true');
+    const label = document.createElement('span');
+    label.className = 'catch-toggle__label';
+    label.textContent = 'Gefangen';
+    btn.append(box, label);
+
+    el.append(link, btn);
+    return el;
+  }
+
+  function fillSection(id, list, noteFn, subline) {
+    const section = document.getElementById(id);
+    if (!section) return;
+    const target = section.querySelector('[data-list]');
+    const count = section.querySelector('[data-count]');
+    const empty = section.querySelector('[data-empty]');
+    const sub = section.querySelector('[data-subline]');
+
+    if (count) count.textContent = String(list.length);
+    if (sub && subline != null) sub.textContent = subline;
+    target.replaceChildren(...list.map((c) => tile(c, noteFn ? noteFn(c) : '')));
+    empty?.classList.toggle('hide', list.length > 0);
+    section.classList.toggle('is-empty', list.length === 0);
+  }
+
+  function renderTimeline(s) {
+    const section = document.getElementById('section-timeline');
+    const host = section.querySelector('[data-timeline]');
+    const total = s.sortedNextMonths.reduce((n, m) => n + s.byNextMonth.get(m).length, 0) + s.missingOther.length;
+    section.querySelector('[data-count]').textContent = String(total);
+    section.querySelector('[data-empty]').classList.toggle('hide', total > 0);
+
+    const groups = s.sortedNextMonths.map((month) => {
+      const list = s.byNextMonth.get(month);
+      const details = document.createElement('details');
+      details.className = 'timeline-group';
+      details.open = month === s.sortedNextMonths[0];
+
+      const summary = document.createElement('summary');
+      const title = document.createElement('span');
+      title.textContent = `Ab ${MONTHS_LONG[month - 1]}`;
+      const badge = document.createElement('span');
+      badge.className = 'badge';
+      badge.textContent = String(list.length);
+      summary.append(title, badge);
+
+      const body = document.createElement('div');
+      body.className = 'collection-list';
+      body.append(...list.map((c) => tile(c, `${CAT_EMOJI[c.category] || ''} ${c.time || 'Ganztägig'}`)));
+
+      details.append(summary, body);
+      return details;
+    });
+
+    if (s.missingOther.length) {
+      const details = document.createElement('details');
+      details.className = 'timeline-group';
+      const summary = document.createElement('summary');
+      const title = document.createElement('span');
+      title.textContent = 'Ohne feste Saison';
+      const badge = document.createElement('span');
+      badge.className = 'badge';
+      badge.textContent = String(s.missingOther.length);
+      summary.append(title, badge);
+      const body = document.createElement('div');
+      body.className = 'collection-list';
+      body.append(...s.missingOther.map((c) => tile(c, c.time || 'Ganztägig')));
+      details.append(summary, body);
+      groups.push(details);
+    }
+
+    host.replaceChildren(...groups);
+  }
+
+  function renderMatrix(s, currentMonth) {
+    const host = document.querySelector('[data-matrix]');
+    const peak = Math.max(1, ...CATEGORIES.flatMap((cat) => s.matrix[cat]));
+
+    const rows = CATEGORIES.map((cat) => {
+      const row = document.createElement('div');
+      row.className = `year-matrix__row accent-${cat}`;
+
+      const label = document.createElement('span');
+      label.className = 'year-matrix__label';
+      label.textContent = CAT_EMOJI[cat];
+      row.appendChild(label);
+
+      for (let m = 1; m <= 12; m++) {
+        const value = s.matrix[cat][m - 1];
+        const cell = document.createElement('span');
+        cell.className = 'year-matrix__cell';
+        cell.style.setProperty('--fill', String(value / peak));
+        cell.classList.toggle('is-current', m === currentMonth);
+        cell.title = `${MONTHS_LONG[m - 1]}: ${value} fehlende ${CAT_EMOJI[cat]}`;
+        cell.textContent = value > 0 ? String(value) : '';
+        row.appendChild(cell);
+      }
+      return row;
+    });
+
+    const header = document.createElement('div');
+    header.className = 'year-matrix__row year-matrix__row--head';
+    header.appendChild(document.createElement('span'));
+    for (let m = 1; m <= 12; m++) {
+      const cell = document.createElement('span');
+      cell.className = 'year-matrix__month';
+      cell.classList.toggle('is-current', m === currentMonth);
+      cell.textContent = MONTHS_LONG[m - 1].slice(0, 3);
+      header.appendChild(cell);
+    }
+
+    host.replaceChildren(header, ...rows);
+  }
+
+  function render() {
+    if (!creatures.length) return;
+    const now = new Date();
+    renderedHour = now.getHours();
+    const s = stats(creatures, now);
+
+    const totalRing = document.querySelector('[data-ring="total"]');
+    if (totalRing) updateRing(totalRing, s.caught, s.total);
+    for (const cat of CATEGORIES) {
+      const ring = document.querySelector(`[data-ring="${cat}"]`);
+      if (ring) updateRing(ring, s.byCategory[cat].caught, s.byCategory[cat].total);
+    }
+
+    const days = daysLeftInMonth(now);
+    fillSection('section-last-chance', s.lastChance,
+      (c) => `${CAT_EMOJI[c.category] || ''} ${c.time || 'Ganztägig'}`,
+      `Verschwindet Ende ${MONTHS_LONG[now.getMonth()]} — noch ${days} ${days === 1 ? 'Tag' : 'Tage'}.`);
+
+    fillSection('section-now', s.missingNow, (c) => {
+      if (isAllDay(c.time)) return `${CAT_EMOJI[c.category] || ''} ganztägig · ${c.location || ''}`.trim();
+      const end = currentWindowEnd(c, now);
+      return `${CAT_EMOJI[c.category] || ''} noch bis ${hh(end)} Uhr`;
+    }, `${s.missingNow.length} von ${s.missing} fehlenden Tieren sind gerade unterwegs.`);
+
+    fillSection('section-later', s.laterToday, (c) => {
+      const start = nextWindowStart(c, now);
+      return start == null ? c.time : `${CAT_EMOJI[c.category] || ''} ab ${hh(start)} Uhr`;
+    });
+
+    fillSection('section-new', s.newThisMonth, (c) => `${CAT_EMOJI[c.category] || ''} ${c.time || 'Ganztägig'}`);
+
+    renderTimeline(s);
+    renderMatrix(s, now.getMonth() + 1);
+
+    const hemisphere = getHemisphere();
+    document.querySelectorAll('[data-hemisphere]').forEach((btn) => {
+      btn.classList.toggle('active', btn.dataset.hemisphere === hemisphere);
+    });
+
+    const codeField = document.getElementById('sync-code');
+    if (codeField) codeField.value = encode(creatures.map((c) => c.id), caughtIds());
+
+    document.getElementById('storage-warning')?.classList.toggle('hide', isPersistent());
+    initCollectionUI();     // paints caught state on the freshly built tiles
+  }
+
+  /* ── Sync code: share the log without an account ───────────────────────── */
+
+  function setHint(message, ok = true) {
+    const hint = document.getElementById('sync-hint');
+    if (!hint) return;
+    hint.textContent = message;
+    hint.classList.toggle('is-error', !ok);
+  }
+
+  async function copy(text, label) {
+    try {
+      await navigator.clipboard.writeText(text);
+      setHint(`${label} kopiert.`);
+    } catch {
+      setHint('Kopieren hat der Browser abgelehnt — markier den Code und kopier ihn von Hand.', false);
+    }
+  }
+
+  function applyCode(code, { silent = false } = {}) {
+    const result = decode(code, creatures.map((c) => c.id));
+    if (!result.ok) { setHint(result.reason, false); return false; }
+
+    const label = `${result.ids.length} gefangene Tiere aus dem Code übernehmen? Dein aktueller Stand wird damit überschrieben.`;
+    if (!silent && !confirm(label)) return false;
+
+    const all = creatures.map((c) => c.id);
+    setMany(all, false);
+    setMany(result.ids, true);
+    setHint(`${result.ids.length} Einträge übernommen.`);
+    showToast(`${result.ids.length} Einträge übernommen`);
+    return true;
+  }
+
+  let hashBound = false;
+
+  function initSyncTools() {
+    document.getElementById('copy-code')?.addEventListener('click', () => {
+      copy(document.getElementById('sync-code').value, 'Code');
+    });
+    document.getElementById('copy-link')?.addEventListener('click', () => {
+      const code = document.getElementById('sync-code').value;
+      copy(`${location.origin}/sammlung/#code=${code}`, 'Link');
+    });
+    document.getElementById('apply-code')?.addEventListener('click', () => {
+      applyCode(document.getElementById('import-code').value);
+    });
+
+    // A shared link carries the code in the hash — offer it once, then clean up.
+    // Also handle the hash arriving while the page is already open (pasting the
+    // link into the address bar only fires hashchange, never a page load).
+    const consumeHash = () => {
+      const fromLink = new URLSearchParams(location.hash.slice(1)).get('code');
+      if (!fromLink) return;
+      applyCode(fromLink);
+      history.replaceState(null, '', location.pathname);
+    };
+    if (!hashBound) { hashBound = true; window.addEventListener('hashchange', consumeHash); }
+    consumeHash();
+  }
+
+  function initCollectionPage() {
+    if (unsubscribe) { unsubscribe(); unsubscribe = null; }
+    clearInterval(hourTimer);
+
+    const payload = document.getElementById('creature-payload');
+    if (!payload) return;   // navigated away — teardown above already happened
+    creatures = JSON.parse(payload.textContent).map((c) => ({ ...c, months_northern: c.months, time_active: c.time }));
+
+    document.querySelectorAll('[data-bulk]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const cat = btn.dataset.bulk;
+        const ids = creatures.filter((c) => c.category === cat).map((c) => c.id);
+        const { changed, undo } = setMany(ids, true);
+        showToast(changed.length ? `${changed.length} Einträge ergänzt` : 'Da war schon alles abgehakt', changed.length ? undo : null);
+      });
+    });
+
+    document.querySelectorAll('[data-hemisphere]').forEach((btn) => {
+      btn.addEventListener('click', () => setHemisphere(btn.dataset.hemisphere));
+    });
+
+    initSyncTools();
+
+    document.getElementById('reset-collection')?.addEventListener('click', () => {
+      if (!confirm('Wirklich die komplette Sammlung zurücksetzen? Das lässt sich nicht rückgängig machen.')) return;
+      reset();
+      showToast('Sammlung zurückgesetzt');
+    });
+
+    unsubscribe = subscribe(render);
+    render();
+
+    // "Jetzt fangbar" is only true for this hour — re-render when it rolls over.
+    hourTimer = setInterval(() => {
+      if (new Date().getHours() !== renderedHour) render();
+    }, 60 * 1000);
+  }
+
+  document.addEventListener('astro:page-load', initCollectionPage);
+</script>

@@ -12,11 +12,19 @@ interface Props {
   price?: number | null;
   accent?: string;
   badges?: string[];
+  /** Set for creatures: links the tile to the catch log ("schon gefangen"). */
+  creatureId?: number | string;
 }
-const { href, image, title, subtitle, price = null, accent, badges = [] } = Astro.props;
+const { href, image, title, subtitle, price = null, accent, badges = [], creatureId } = Astro.props;
 ---
-<a href={href} class={`entity-card ${accent ? `accent-${accent}` : ''}`}>
+<a
+  href={href}
+  class={`entity-card ${accent ? `accent-${accent}` : ''}`}
+  data-creature-id={creatureId}
+  data-collection-item={creatureId != null ? '' : undefined}
+>
   <span class="entity-img">
+    {creatureId != null && <span class="entity-caught" aria-hidden="true">✓</span>}
     <img src={getImageUrl(image)} alt={title} loading="lazy" onerror="this.src='/assets/img/acnh/koeder.png'" />
     {badges.length > 0 && <span class="entity-badges">{badges.map((b) => <span class="entity-badge">{b}</span>)}</span>}
   </span>
@@ -36,4 +44,9 @@ const { href, image, title, subtitle, price = null, accent, badges = [] } = Astr
   .entity-name { font-family: var(--font-display); font-weight: 600; font-size: 1.04rem; line-height: 1.18; }
   .entity-sub { font-size: 0.82rem; }
   .entity-card .price-tag { margin-top: auto; }
+
+  /* "Schon gefangen" — same green as the catch toggle, in every accent context. */
+  .entity-caught { position: absolute; top: -8px; left: -8px; z-index: 2; display: none; place-items: center; width: 26px; height: 26px; font-size: 0.85rem; font-weight: 900; color: #fff; background: var(--caught); border: 2px solid var(--ac-surface); border-radius: 50%; }
+  .entity-card.is-caught .entity-caught { display: grid; }
+  .entity-card.is-caught .entity-img img { opacity: 0.5; }
 </style>
