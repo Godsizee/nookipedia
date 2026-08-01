@@ -1,6 +1,7 @@
 # Modul-Plan — „Meine Sammlung" (Fang-Tracker für die Faunapädie)
 
-**Stand:** 2026-08-01 · **Status:** ✅ vollständig umgesetzt (M1–M4), auf `main` gemergt
+**Stand:** 2026-08-01 · **Status:** ✅ umgesetzt (M1–M4) + Überarbeitung auf Arten-Trennung
+und Zeitreise-Tauglichkeit, auf `main`
 
 **Entscheidungen von Basti (2026-08-01):** eigener Nav-Eintrag „Sammlung" · Nordhalbkugel
 als Standard · „gefangen" und „gespendet" werden **nicht** getrennt → das reservierte Feld
@@ -25,7 +26,7 @@ Zeitfenster (`time_active`). Bisher wird das nur als Filter genutzt. Aus „gefa
 | Was kann ich **jetzt sofort** fangen? | Fehlende Tiere, gefiltert auf Monat **und** aktuelle Stunde |
 | Was ist **dringend**? | „Letzte Chance" — fehlt mir und verschwindet Ende des Monats |
 | Was ist **neu**? | Seit Monatsanfang erstmals wieder verfügbar |
-| Und der Rest? | Zeitstrahl „nächste Gelegenheit": ab welchem Monat wieder fangbar |
+| Und der Rest? | Fang-Plan Januar → Dezember, je Art, mit Uhrzeit, Wetter und Fundort |
 | Wann lohnt sich Grind? | Jahres-Matrix: wie viele fehlende Tiere pro Monat verfügbar sind |
 
 Zahlen aus dem echten Datenbestand für August (belegt die Relevanz der „Letzte Chance"-
@@ -142,26 +143,35 @@ kein verstreuter Filter-Code in vier Templates.
 
 ## 6 · Die Seite `/sammlung/` — Aufbau von oben nach unten
 
-1. **Hero mit Gesamtfortschritt** — großer Ring „137 / 200", darunter drei kleine Ringe
-   (🐟 / 🦋 / 🐙) in ihren Kategorie-Akzenten. Hemisphären-Umschalter Nord/Süd rechts.
-2. **⏳ Letzte Chance im August** *(die Kernsektion)* — nur fehlende Tiere, die Ende des
-   Monats verschwinden. Kopfzeile mit Countdown „noch 30 Tage". Karten zeigen zusätzlich
-   „heute noch bis 19:00 Uhr" bzw. „läuft gerade". Leer = grüne Erfolgsmeldung statt leerer Kasten.
-3. **🎯 Jetzt fangbar** — fehlend ∧ Monat ∧ aktuelle Stunde. Aktualisiert sich per
-   `setInterval` zur vollen Stunde (kein Reload nötig).
-4. **🆕 Neu diesen Monat** — fehlend ∧ erst seit diesem Monat wieder da.
-5. **📅 Nächste Gelegenheit** — restliche fehlende Tiere, gruppiert nach dem Monat ihres
-   nächsten Auftauchens („Ab September (12)", „Ab November (5)"), Gruppen eingeklappt.
-6. **🗓️ Jahres-Matrix** — 12 Spalten × 3 Kategorie-Zeilen, Zellenintensität = Anzahl noch
-   fehlender Tiere in diesem Monat. Klick auf eine Zelle filtert Sektion 5. Zeigt auf einen
-   Blick, welcher Monat der Grind-Monat wird.
-7. **⚙️ Daten** — Sync-Code kopieren/einfügen, „Alles zurücksetzen" (mit Bestätigung),
-   Hinweis, dass die Daten lokal im Browser liegen.
+Die Seite ist nach der **Art** gegliedert, nicht nach der Uhrzeit: Fische, Insekten und
+Meerestiere werden getrennt geplant, weil sie unterschiedliche Fangbedingungen haben.
+Der Fang-Plan läuft immer von **Januar bis Dezember** — die Systemzeit bestimmt nur,
+welcher Monat hervorgehoben und aufgeklappt ist.
 
-Alle Sektionen sind **fehlend-zentriert**: Was schon gefangen ist, verschwindet aus dem
-Blickfeld. Das ist der Unterschied zu einer Checkliste.
+1. **Hero mit Gesamtfortschritt** — großer Ring, drei Kategorie-Ringe, Hemisphären-Umschalter.
+2. **Kategorie-Leiste** (Fische / Insekten / Meerestiere) mit der Anzahl noch fehlender Tiere
+   je Art. Sticky, damit sie beim Scrollen erreichbar bleibt; die Auswahl steuert die ganze Seite.
+3. **Fang-Plan** *(die Kernsektion)* — zwölf aufklappbare Monatsgruppen, Januar zuerst.
+   Jede Zeile eines Tiers nennt **Uhrzeit · Wetter · Fundort** und dazu, was pro Art
+   wirklich unterscheidet:
+   - **Fische:** Fundort (Meer / Fluss / Teich / Steg / Flussmündung / Fluss-Plateau) + Schattengröße
+   - **Insekten:** der konkrete Fundort (an Bäumen, auf Blumen, an Palmen, …) — 24 verschiedene
+   - **Meerestiere:** „Beim Tauchen" (die Daten führen keinen Ort), dafür Schatten **und** Tempo
 
----
+   Ganzjährig verfügbare Tiere tragen ein `ganzjährig`-Kürzel und stehen in jedem Monat, weil
+   ein Zeitreisender pro Zielmonat die vollständige Liste braucht. Sortierung innerhalb eines
+   Monats: alphabetisch. Zeilen entstehen erst beim Aufklappen — zwölf volle Listen auf einmal
+   wären mehrere tausend DOM-Knoten ohne Nutzen.
+
+   **Gefangene ein-/ausblenden** schaltet die Sicht um: standardmäßig zeigt der Plan nur
+   Offenes; eingeblendet stehen gefangene Tiere ausgegraut mit Haken dazwischen und der
+   Monats-Badge wechselt von „13" auf „13 von 31". Die Einstellung gilt für alle drei Arten
+   und überlebt den Reload.
+4. **Letzte Chance** und **Gerade fangbar** — die uhrzeitbasierten Sichten für alle, die mit
+   dem echten Datum spielen. Beide zeigen nur die aktive Art.
+5. **Dein Jahr** — 12 Monate × 3 Arten, Zellenintensität = Anzahl fehlender Tiere. Die aktive
+   Zeile ist hervorgehoben, ein Klick auf das Art-Symbol schaltet die Kategorie um.
+6. **Daten & Werkzeuge** — Sync-Code kopieren/einlesen, Kategorie-Massenerfassung, Zurücksetzen.
 
 ## 7 · Interaktion & Feinschliff (das „frictionless")
 
@@ -228,6 +238,19 @@ Blickfeld. Das ist der Unterschied zu einer Checkliste.
       Schnellauswahl-Kacheln.
 - [x] Museums-Listen (Fische, Insekten, Meerestiere) markieren gefangene Tiere und
       zeigen den Stand pro Ausstellung.
+
+### Überarbeitung nach dem ersten Durchlauf (2026-08-01)
+
+Der erste Wurf war zu sehr auf „jetzt gerade" gebaut. Umgestellt auf:
+
+- **Trennung nach Art** — Fische, Insekten und Meerestiere haben eine eigene Kategorie-Leiste
+  und je eigene Angaben (s. §6.3). Alle Sektionen der Seite folgen der gewählten Art.
+- **Zeitreise-tauglich** — der Fang-Plan läuft stur Januar → Dezember, unabhängig von der
+  Systemzeit, mit Uhrzeit, Wetter und Fundort an jedem Tier. Wer die Datums-Synchro der
+  Switch abgeschaltet hat, springt damit gezielt auf Monat und Stunde.
+- **Ersetzt** wurden dadurch die Sektionen „Heute noch", „Neu diesen Monat" und
+  „Nächste Gelegenheit" — der Monatsplan beantwortet dieselben Fragen vollständiger.
+- **Gefangene ein-/ausblenden** als Umschalter im Plan (Wunsch aus dem Review).
 
 ### Abweichungen vom ursprünglichen Plan
 
