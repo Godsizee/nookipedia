@@ -6,40 +6,54 @@
  * the client — the catch log never leaves the device, so there is nothing to
  * pre-render per user. The full creature payload is embedded once as JSON so
  * the page needs no extra request and works offline in the PWA.
+ *
+ * The page is organised the way the game is played: first pick a category
+ * (fish / insects / sea creatures — each carries different catch data), then
+ * read the year plan from January to December. That order deliberately ignores
+ * the system clock, because players with date sync switched off jump between
+ * days and times and need every month, not just "right now".
  */
 import Layout from '../layouts/Layout.astro';
 import PageHero from '../components/PageHero.astro';
 import InfoBox from '../components/InfoBox.astro';
 import ProgressRing from '../components/ProgressRing.astro';
 import { getCreatures, DEFAULT_DIRECTUS } from '../lib/api.js';
-import { getImageUrl } from '../lib/format.js';
+import { getImageUrl, weatherLabel, shadowLabel } from '../lib/format.js';
 import creaturesFallback from '../data/creatures.json';
 
 const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || DEFAULT_DIRECTUS;
 const creatures = await getCreatures(directusUrl, creaturesFallback);
 
-// Slim payload: only what the sections actually render. Image URLs are resolved
-// here so the client never needs the Directus base URL.
+// Sea creatures carry no location in the dataset — they are all found the same
+// way, so the constant belongs here rather than in 40 empty table cells.
+const DIVING = 'Beim Tauchen';
+
+// Slim payload: only what the sections render. Labels are resolved here so the
+// client needs neither the Directus base URL nor the formatting helpers.
 const payload = creatures.map((c) => ({
   id: c.id,
   name: c.name,
   category: c.category,
   img: getImageUrl(c.image_path),
   months: c.months_northern || [],
-  time: c.time_active || '',
+  time: c.time_active || 'Ganztägig',
+  weather: weatherLabel(c.weather),
+  location: c.location_name || (c.category === 'sea' ? DIVING : 'Inselweit'),
+  shadow: shadowLabel(c.shadow_image),
+  speed: c.speed || '',
   price: c.price || 0,
-  location: c.location_name || '',
 }));
 
-const counts = {
-  fish: creatures.filter((c) => c.category === 'fish').length,
-  insect: creatures.filter((c) => c.category === 'insect').length,
-  sea: creatures.filter((c) => c.category === 'sea').length,
-};
+const CATS = [
+  { key: 'fish',   emoji: '🐟', label: 'Fische' },
+  { key: 'insect', emoji: '🦋', label: 'Insekten' },
+  { key: 'sea',    emoji: '🐙', label: 'Meerestiere' },
+];
+const counts = Object.fromEntries(CATS.map((c) => [c.key, creatures.filter((x) => x.category === c.key).length]));
 ---
 
 <Layout title="Meine Sammlung - Fang-Tracker">
-  <PageHero accent="collection" emoji="🎣" title="Meine Sammlung" subtitle="Was du schon hast — und vor allem: was dir noch fehlt." />
+  <PageHero accent="collection" emoji="🎣" title="Meine Sammlung" subtitle="Was dir noch fehlt — Monat für Monat, mit Uhrzeit, Wetter und Fundort." />
 
   <script type="application/json" id="creature-payload" set:html={JSON.stringify(payload).replace(/</g, '\\u003c')}></script>
 
@@ -47,9 +61,9 @@ const counts = {
   <section class="ac-card accent-collection collection-hero" data-collection-total={creatures.length}>
     <ProgressRing ringKey="total" total={creatures.length} label="Gesamt" size={150} />
     <div class="collection-hero__cats">
-      <div class="accent-fish"><ProgressRing ringKey="fish" total={counts.fish} label="Fische" emoji="🐟" /></div>
-      <div class="accent-insect"><ProgressRing ringKey="insect" total={counts.insect} label="Insekten" emoji="🦋" /></div>
-      <div class="accent-sea"><ProgressRing ringKey="sea" total={counts.sea} label="Meerestiere" emoji="🐙" /></div>
+      {CATS.map((c) => (
+        <div class={`accent-${c.key}`}><ProgressRing ringKey={c.key} total={counts[c.key]} label={c.label} emoji={c.emoji} /></div>
+      ))}
     </div>
     <div class="hemisphere">
       <span class="hemisphere__label">🌍 Insel-Halbkugel</span>
@@ -64,8 +78,30 @@ const counts = {
     ⚠️ Dieser Browser lässt kein dauerhaftes Speichern zu — deine Auswahl gilt nur bis zum Neuladen.
   </p>
 
-  <!-- Urgency first: what disappears at the end of the month -->
-  <section class="collection-section accent-collection" id="section-last-chance">
+  <!-- Category rail · each type is planned on its own -->
+  <div class="fauna-tabs" id="cat-tabs">
+    {CATS.map((c, i) => (
+      <button class={`tab-btn accent-${c.key} ${i === 0 ? 'active' : ''}`} data-cat-tab={c.key}>
+        <span>{c.emoji}</span> {c.label} <span class="count" data-cat-missing={c.key}>0</span>
+      </button>
+    ))}
+  </div>
+
+  <!-- The core: the whole year, January first, independent of the system clock -->
+  <section class="collection-section" id="section-plan">
+    <div class="collection-section__head collection-section__head--split">
+      <div>
+        <h2>📅 Fang-Plan <span class="badge" data-count>0</span></h2>
+        <p class="muted" data-subline></p>
+      </div>
+      <button type="button" class="ac-btn" id="toggle-caught" aria-pressed="false">👁️ Gefangene einblenden</button>
+    </div>
+    <div class="plan" data-plan></div>
+    <p class="collection-empty hide" data-empty>Diese Kategorie ist komplett — nichts mehr zu tun. 🏆</p>
+  </section>
+
+  <!-- Secondary, clock-based views for players running the real date -->
+  <section class="collection-section" id="section-last-chance">
     <div class="collection-section__head">
       <h2>⏳ Letzte Chance <span class="badge" data-count>0</span></h2>
       <p class="muted" data-subline></p>
@@ -74,51 +110,27 @@ const counts = {
     <p class="collection-empty" data-empty>Nichts läuft dir diesen Monat davon. 🎉</p>
   </section>
 
-  <section class="collection-section accent-fish" id="section-now">
+  <section class="collection-section" id="section-now">
     <div class="collection-section__head">
-      <h2>🎯 Jetzt fangbar <span class="badge" data-count>0</span></h2>
+      <h2>🎯 Gerade fangbar <span class="badge" data-count>0</span></h2>
       <p class="muted" data-subline></p>
     </div>
     <div class="collection-list" data-list></div>
-    <p class="collection-empty" data-empty>Gerade ist nichts Fehlendes unterwegs — schau später nochmal rein.</p>
-  </section>
-
-  <section class="collection-section accent-sea" id="section-later">
-    <div class="collection-section__head">
-      <h2>🕗 Heute noch <span class="badge" data-count>0</span></h2>
-      <p class="muted">Diesen Monat da, aber gerade außerhalb ihrer Uhrzeit.</p>
-    </div>
-    <div class="collection-list" data-list></div>
-    <p class="collection-empty" data-empty>Heute kommt nichts mehr dazu.</p>
-  </section>
-
-  <section class="collection-section accent-insect" id="section-new">
-    <div class="collection-section__head">
-      <h2>🆕 Neu diesen Monat <span class="badge" data-count>0</span></h2>
-      <p class="muted">Seit Monatsanfang wieder auf der Insel.</p>
-    </div>
-    <div class="collection-list" data-list></div>
-    <p class="collection-empty" data-empty>Diesen Monat ist nichts Neues aufgetaucht.</p>
-  </section>
-
-  <!-- The "wann sind sie zu fangen" answer for everything else -->
-  <section class="collection-section accent-collection" id="section-timeline">
-    <div class="collection-section__head">
-      <h2>📅 Nächste Gelegenheit <span class="badge" data-count>0</span></h2>
-      <p class="muted">Alles Fehlende, das diesen Monat nicht da ist — sortiert danach, wann es zurückkommt.</p>
-    </div>
-    <div class="timeline" data-timeline></div>
-    <p class="collection-empty" data-empty>Alles, was dir fehlt, ist diesen Monat erreichbar.</p>
+    <p class="collection-empty" data-empty>Zu dieser Uhrzeit ist hier nichts Fehlendes unterwegs.</p>
   </section>
 
   <!-- Year planner -->
   <section class="collection-section accent-collection" id="section-matrix">
     <div class="collection-section__head">
       <h2>🗓️ Dein Jahr</h2>
-      <p class="muted">Wie viele fehlende Tiere in welchem Monat verfügbar sind. Je voller der Balken, desto lohnender der Monat.</p>
+      <p class="muted">Wie viele fehlende Tiere in welchem Monat verfügbar sind. Je kräftiger die Zelle, desto lohnender der Monat.</p>
     </div>
     <div class="year-matrix" data-matrix></div>
   </section>
+
+  <InfoBox accent="collection" emoji="⏱️" title="Für Zeitreisende gebaut">
+    <p>Der Fang-Plan geht <strong>immer von Januar bis Dezember</strong> — unabhängig davon, welches Datum deine Switch gerade zeigt. Zu jedem fehlenden Tier stehen <strong>Uhrzeit, Wetter und Fundort</strong> dabei, damit du gezielt auf den passenden Tag und die passende Stunde springen kannst. Was pro Art wirklich zählt, steht auch dran: bei Fischen die <strong>Schattengröße</strong>, bei Meerestieren zusätzlich das <strong>Tempo</strong>, bei Insekten der genaue <strong>Fundort</strong>.</p>
+  </InfoBox>
 
   <InfoBox accent="collection" emoji="🔄" title="Auf ein anderes Gerät übertragen">
     <p>Dein Fang-Log liegt <strong>nur in diesem Browser</strong> — kein Konto, kein Server, funktioniert offline. Zum Mitnehmen gibt es einen kurzen Code: hier kopieren, auf dem anderen Gerät einfügen. Der Link tut dasselbe in einem Schritt.</p>
@@ -137,9 +149,7 @@ const counts = {
   <InfoBox accent="collection" emoji="⚙️" title="Schnell-Aktionen">
     <p>Schon fast alles gefangen? Kategorie komplett abhaken und danach nur die Lücken wieder abwählen. In der Faunapädie geht das auch pro Tier per <strong>langem Druck</strong> auf ein Bild in der Schnellauswahl.</p>
     <div class="collection-tools">
-      <button type="button" class="ac-btn" data-bulk="fish">🐟 Fische alle abhaken</button>
-      <button type="button" class="ac-btn" data-bulk="insect">🦋 Insekten alle abhaken</button>
-      <button type="button" class="ac-btn" data-bulk="sea">🐙 Meerestiere alle abhaken</button>
+      {CATS.map((c) => <button type="button" class="ac-btn" data-bulk={c.key}>{c.emoji} {c.label} alle abhaken</button>)}
       <button type="button" class="ac-btn" id="reset-collection">🗑️ Alles zurücksetzen</button>
     </div>
   </InfoBox>
@@ -147,46 +157,44 @@ const counts = {
 
 <script>
   import {
-    stats, subscribe, setMany, reset, isPersistent, CATEGORIES,
+    stats, subscribe, setMany, reset, isPersistent, isCaught, CATEGORIES,
     getHemisphere, setHemisphere, caughtIds,
   } from '../lib/collection.js';
-  import { MONTHS_LONG, currentWindowEnd, nextWindowStart, daysLeftInMonth, isAllDay } from '../lib/catch-window.js';
+  import {
+    MONTHS_LONG, monthsFor, currentWindowEnd, daysLeftInMonth, isAllDay, isYearRound,
+  } from '../lib/catch-window.js';
   import { encode, decode } from '../lib/sync-code.js';
   import { updateRing, showToast, initCollectionUI } from '../scripts/collection-ui.js';
 
-  const CAT_EMOJI = { fish: '🐟', insect: '🦋', sea: '🐙' };
+  const CAT_LABEL = { fish: 'Fische', insect: 'Insekten', sea: 'Meerestiere' };
   const hh = (h) => `${String(h).padStart(2, '0')}:00`;
 
   let creatures = [];
+  let activeCategory = 'fish';
+  let showCaught = false;        // der Plan zeigt standardmäßig nur, was fehlt
+  let openMonths = new Set();
   let hourTimer = null;
   let unsubscribe = null;
   let renderedHour = -1;
 
-  /** One compact tile per creature — built with DOM APIs, never innerHTML. */
-  function tile(creature, note) {
-    const el = document.createElement('article');
-    el.className = `collection-tile accent-${creature.category}`;
-    el.dataset.creatureId = creature.id;
+  /* ── Row building ────────────────────────────────────────────────────────
+     Each category shows the data that actually distinguishes its animals:
+     fish → Ort + Schattengröße · Insekten → Ort · Meerestiere → Schatten +
+     Tempo. Weather is always shown because the player asked for it, even
+     where the dataset only ever says "any". */
 
-    const link = document.createElement('a');
-    link.className = 'collection-tile__main';
-    link.href = `/tier/${creature.id}/`;
+  function chips(creature) {
+    const out = [
+      ['⏰', creature.time],
+      ['🌦️', creature.weather.replace(/^[^\p{L}]+/u, '')],   // chip carries its own icon
+      ['📍', creature.location],
+    ];
+    if (creature.shadow) out.push(['👤', creature.shadow]);   // Fische & Meerestiere
+    if (creature.speed) out.push(['💨', creature.speed]);     // nur Meerestiere
+    return out;
+  }
 
-    const img = document.createElement('img');
-    img.src = creature.img;
-    img.alt = creature.name;
-    img.loading = 'lazy';
-    img.addEventListener('error', () => { img.src = '/assets/img/acnh/koeder.png'; });
-
-    const text = document.createElement('div');
-    const name = document.createElement('strong');
-    name.textContent = creature.name;
-    const sub = document.createElement('span');
-    sub.className = 'collection-tile__note';
-    sub.textContent = note || creature.location || '';
-    text.append(name, sub);
-    link.append(img, text);
-
+  function catchToggleButton(creature) {
     const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'catch-toggle catch-toggle--sm';
@@ -202,100 +210,201 @@ const counts = {
     label.className = 'catch-toggle__label';
     label.textContent = 'Gefangen';
     btn.append(box, label);
+    return btn;
+  }
 
-    el.append(link, btn);
+  function image(creature) {
+    const img = document.createElement('img');
+    img.src = creature.img;
+    img.alt = creature.name;
+    img.loading = 'lazy';
+    img.addEventListener('error', () => { img.src = '/assets/img/acnh/koeder.png'; });
+    return img;
+  }
+
+  /** A full plan row: picture, name, and the catch conditions as chips. */
+  function planRow(creature, { yearRound = false } = {}) {
+    const row = document.createElement('article');
+    row.className = `plan-row accent-${creature.category}`;
+    row.dataset.creatureId = creature.id;
+
+    const link = document.createElement('a');
+    link.className = 'plan-row__head';
+    link.href = `/tier/${creature.id}/`;
+    const title = document.createElement('div');
+    const name = document.createElement('strong');
+    name.textContent = creature.name;
+    title.appendChild(name);
+    if (yearRound) {
+      const tag = document.createElement('span');
+      tag.className = 'plan-tag';
+      tag.textContent = 'ganzjährig';
+      title.appendChild(tag);
+    }
+    link.append(image(creature), title);
+
+    const facts = document.createElement('div');
+    facts.className = 'plan-row__facts';
+    for (const [icon, value] of chips(creature)) {
+      if (!value) continue;
+      const chip = document.createElement('span');
+      chip.className = 'plan-chip';
+      const i = document.createElement('span');
+      i.className = 'plan-chip__icon';
+      i.setAttribute('aria-hidden', 'true');
+      i.textContent = icon;
+      const v = document.createElement('span');
+      v.textContent = value;
+      chip.append(i, v);
+      facts.appendChild(chip);
+    }
+
+    row.append(link, facts, catchToggleButton(creature));
+    return row;
+  }
+
+  /** Compact tile for the two clock-based sections. */
+  function tile(creature, note) {
+    const el = document.createElement('article');
+    el.className = `collection-tile accent-${creature.category}`;
+    el.dataset.creatureId = creature.id;
+
+    const link = document.createElement('a');
+    link.className = 'collection-tile__main';
+    link.href = `/tier/${creature.id}/`;
+    const text = document.createElement('div');
+    const name = document.createElement('strong');
+    name.textContent = creature.name;
+    const sub = document.createElement('span');
+    sub.className = 'collection-tile__note';
+    sub.textContent = note || creature.location;
+    text.append(name, sub);
+    link.append(image(creature), text);
+
+    el.append(link, catchToggleButton(creature));
     return el;
   }
 
-  function fillSection(id, list, noteFn, subline) {
-    const section = document.getElementById(id);
-    if (!section) return;
-    const target = section.querySelector('[data-list]');
-    const count = section.querySelector('[data-count]');
-    const empty = section.querySelector('[data-empty]');
-    const sub = section.querySelector('[data-subline]');
+  /* ── The year plan ───────────────────────────────────────────────────── */
 
-    if (count) count.textContent = String(list.length);
-    if (sub && subline != null) sub.textContent = subline;
-    target.replaceChildren(...list.map((c) => tile(c, noteFn ? noteFn(c) : '')));
-    empty?.classList.toggle('hide', list.length > 0);
-    section.classList.toggle('is-empty', list.length === 0);
+  /**
+   * Creatures of one category, bucketed per month (index 0 = Januar).
+   * Caught animals are left out unless the player asks to see them — the plan
+   * is about what is still open.
+   */
+  function monthBuckets(category, hemisphere) {
+    const buckets = Array.from({ length: 12 }, () => []);
+    const shown = creatures.filter((c) => c.category === category && (showCaught || !isCaught(c.id)));
+    for (const creature of shown) {
+      const months = monthsFor(creature, hemisphere);
+      const active = months.length ? months : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+      for (const m of active) buckets[m - 1].push(creature);
+    }
+    for (const bucket of buckets) bucket.sort((a, b) => a.name.localeCompare(b.name, 'de'));
+    return buckets;
   }
 
-  function renderTimeline(s) {
-    const section = document.getElementById('section-timeline');
-    const host = section.querySelector('[data-timeline]');
-    const total = s.sortedNextMonths.reduce((n, m) => n + s.byNextMonth.get(m).length, 0) + s.missingOther.length;
-    section.querySelector('[data-count]').textContent = String(total);
-    section.querySelector('[data-empty]').classList.toggle('hide', total > 0);
+  function renderPlan(hemisphere, currentMonth) {
+    const section = document.getElementById('section-plan');
+    const host = section.querySelector('[data-plan]');
+    const buckets = monthBuckets(activeCategory, hemisphere);
+    const missingTotal = creatures.filter((c) => c.category === activeCategory && !isCaught(c.id)).length;
 
-    const groups = s.sortedNextMonths.map((month) => {
-      const list = s.byNextMonth.get(month);
+    section.className = `collection-section accent-${activeCategory}`;
+    section.querySelector('[data-count]').textContent = String(missingTotal);
+    section.querySelector('[data-subline]').textContent = missingTotal
+      ? `${missingTotal} fehlende ${CAT_LABEL[activeCategory]} · jeder Monat mit Uhrzeit, Wetter und Fundort.`
+      : '';
+    section.querySelector('[data-empty]').classList.toggle('hide', missingTotal > 0 || showCaught);
+
+    const btn = document.getElementById('toggle-caught');
+    if (btn) {
+      btn.textContent = showCaught
+        ? `🙈 Gefangene ${CAT_LABEL[activeCategory]} ausblenden`
+        : `👁️ Gefangene ${CAT_LABEL[activeCategory]} einblenden`;
+      btn.setAttribute('aria-pressed', String(showCaught));
+      btn.classList.toggle('ac-btn--primary', showCaught);
+    }
+
+    // January → December, always. A time-traveller's month is not "now".
+    const groups = buckets.map((list, index) => {
+      const month = index + 1;
       const details = document.createElement('details');
-      details.className = 'timeline-group';
-      details.open = month === s.sortedNextMonths[0];
+      details.className = 'plan-month';
+      details.dataset.month = String(month);
+      if (month === currentMonth) details.classList.add('is-current');
+      details.open = openMonths.has(month);
 
       const summary = document.createElement('summary');
       const title = document.createElement('span');
-      title.textContent = `Ab ${MONTHS_LONG[month - 1]}`;
+      title.className = 'plan-month__name';
+      title.textContent = MONTHS_LONG[index];
+      summary.appendChild(title);
+      if (month === currentMonth) {
+        const now = document.createElement('span');
+        now.className = 'plan-month__now';
+        now.textContent = 'aktueller Monat';
+        summary.appendChild(now);
+      }
+      // The badge always counts what is still open, even when caught animals
+      // are visible — otherwise the number would stop meaning "to do".
+      const openCount = list.filter((c) => !isCaught(c.id)).length;
       const badge = document.createElement('span');
       badge.className = 'badge';
-      badge.textContent = String(list.length);
-      summary.append(title, badge);
+      badge.textContent = showCaught ? `${openCount} von ${list.length}` : String(openCount);
+      summary.appendChild(badge);
+      details.appendChild(summary);
 
       const body = document.createElement('div');
-      body.className = 'collection-list';
-      body.append(...list.map((c) => tile(c, `${CAT_EMOJI[c.category] || ''} ${c.time || 'Ganztägig'}`)));
+      body.className = 'plan-rows';
+      details.appendChild(body);
 
-      details.append(summary, body);
+      // Rows are built only for open months — twelve full lists at once would
+      // put thousands of nodes into the page for no benefit.
+      if (details.open) fillMonth(details, list, hemisphere);
+
+      details.addEventListener('toggle', () => {
+        if (details.open) { openMonths.add(month); fillMonth(details, list, hemisphere); }
+        else { openMonths.delete(month); }
+      });
+
       return details;
     });
 
-    if (s.missingOther.length) {
-      const details = document.createElement('details');
-      details.className = 'timeline-group';
-      const summary = document.createElement('summary');
-      const title = document.createElement('span');
-      title.textContent = 'Ohne feste Saison';
-      const badge = document.createElement('span');
-      badge.className = 'badge';
-      badge.textContent = String(s.missingOther.length);
-      summary.append(title, badge);
-      const body = document.createElement('div');
-      body.className = 'collection-list';
-      body.append(...s.missingOther.map((c) => tile(c, c.time || 'Ganztägig')));
-      details.append(summary, body);
-      groups.push(details);
-    }
-
     host.replaceChildren(...groups);
+  }
+
+  function fillMonth(details, list, hemisphere) {
+    const body = details.querySelector('.plan-rows');
+    if (body.childElementCount) return;              // already built
+    if (!list.length) {
+      const empty = document.createElement('p');
+      empty.className = 'plan-empty';
+      empty.textContent = 'In diesem Monat fehlt dir hier nichts.';
+      body.appendChild(empty);
+      return;
+    }
+    body.append(...list.map((c) => planRow(c, { yearRound: isYearRound(c, hemisphere) })));
+    initCollectionUI();
+  }
+
+  /* ── Clock-based sections (unchanged in spirit, now per category) ────── */
+
+  function fillSection(id, list, noteFn, subline) {
+    const section = document.getElementById(id);
+    section.className = `collection-section accent-${activeCategory}`;
+    const target = section.querySelector('[data-list]');
+    section.querySelector('[data-count]').textContent = String(list.length);
+    const sub = section.querySelector('[data-subline]');
+    if (sub && subline != null) sub.textContent = subline;
+    target.replaceChildren(...list.map((c) => tile(c, noteFn ? noteFn(c) : '')));
+    section.querySelector('[data-empty]').classList.toggle('hide', list.length > 0);
+    section.classList.toggle('is-empty', list.length === 0);
   }
 
   function renderMatrix(s, currentMonth) {
     const host = document.querySelector('[data-matrix]');
     const peak = Math.max(1, ...CATEGORIES.flatMap((cat) => s.matrix[cat]));
-
-    const rows = CATEGORIES.map((cat) => {
-      const row = document.createElement('div');
-      row.className = `year-matrix__row accent-${cat}`;
-
-      const label = document.createElement('span');
-      label.className = 'year-matrix__label';
-      label.textContent = CAT_EMOJI[cat];
-      row.appendChild(label);
-
-      for (let m = 1; m <= 12; m++) {
-        const value = s.matrix[cat][m - 1];
-        const cell = document.createElement('span');
-        cell.className = 'year-matrix__cell';
-        cell.style.setProperty('--fill', String(value / peak));
-        cell.classList.toggle('is-current', m === currentMonth);
-        cell.title = `${MONTHS_LONG[m - 1]}: ${value} fehlende ${CAT_EMOJI[cat]}`;
-        cell.textContent = value > 0 ? String(value) : '';
-        row.appendChild(cell);
-      }
-      return row;
-    });
 
     const header = document.createElement('div');
     header.className = 'year-matrix__row year-matrix__row--head';
@@ -308,53 +417,88 @@ const counts = {
       header.appendChild(cell);
     }
 
+    const rows = CATEGORIES.map((cat) => {
+      const row = document.createElement('div');
+      row.className = `year-matrix__row accent-${cat}`;
+      row.classList.toggle('is-active', cat === activeCategory);
+
+      const label = document.createElement('button');
+      label.type = 'button';
+      label.className = 'year-matrix__label';
+      label.dataset.catTab = cat;                     // doubles as a category switch
+      label.title = CAT_LABEL[cat];
+      label.textContent = { fish: '🐟', insect: '🦋', sea: '🐙' }[cat];
+      row.appendChild(label);
+
+      for (let m = 1; m <= 12; m++) {
+        const value = s.matrix[cat][m - 1];
+        const cell = document.createElement('span');
+        cell.className = 'year-matrix__cell';
+        cell.style.setProperty('--fill', String(value / peak));
+        cell.classList.toggle('is-current', m === currentMonth);
+        cell.title = `${MONTHS_LONG[m - 1]}: ${value} fehlende ${CAT_LABEL[cat]}`;
+        cell.textContent = value > 0 ? String(value) : '';
+        row.appendChild(cell);
+      }
+      return row;
+    });
+
     host.replaceChildren(header, ...rows);
   }
+
+  /* ── Render ──────────────────────────────────────────────────────────── */
 
   function render() {
     if (!creatures.length) return;
     const now = new Date();
     renderedHour = now.getHours();
-    const s = stats(creatures, now);
+    const currentMonth = now.getMonth() + 1;
+    const hemisphere = getHemisphere();
+    const s = stats(creatures, now, hemisphere);
 
     const totalRing = document.querySelector('[data-ring="total"]');
     if (totalRing) updateRing(totalRing, s.caught, s.total);
     for (const cat of CATEGORIES) {
       const ring = document.querySelector(`[data-ring="${cat}"]`);
       if (ring) updateRing(ring, s.byCategory[cat].caught, s.byCategory[cat].total);
+      const tab = document.querySelector(`[data-cat-missing="${cat}"]`);
+      if (tab) tab.textContent = String(s.byCategory[cat].total - s.byCategory[cat].caught);
     }
-
-    const days = daysLeftInMonth(now);
-    fillSection('section-last-chance', s.lastChance,
-      (c) => `${CAT_EMOJI[c.category] || ''} ${c.time || 'Ganztägig'}`,
-      `Verschwindet Ende ${MONTHS_LONG[now.getMonth()]} — noch ${days} ${days === 1 ? 'Tag' : 'Tage'}.`);
-
-    fillSection('section-now', s.missingNow, (c) => {
-      if (isAllDay(c.time)) return `${CAT_EMOJI[c.category] || ''} ganztägig · ${c.location || ''}`.trim();
-      const end = currentWindowEnd(c, now);
-      return `${CAT_EMOJI[c.category] || ''} noch bis ${hh(end)} Uhr`;
-    }, `${s.missingNow.length} von ${s.missing} fehlenden Tieren sind gerade unterwegs.`);
-
-    fillSection('section-later', s.laterToday, (c) => {
-      const start = nextWindowStart(c, now);
-      return start == null ? c.time : `${CAT_EMOJI[c.category] || ''} ab ${hh(start)} Uhr`;
+    document.querySelectorAll('[data-cat-tab]').forEach((btn) => {
+      btn.classList.toggle('active', btn.dataset.catTab === activeCategory);
     });
 
-    fillSection('section-new', s.newThisMonth, (c) => `${CAT_EMOJI[c.category] || ''} ${c.time || 'Ganztägig'}`);
+    renderPlan(hemisphere, currentMonth);
 
-    renderTimeline(s);
-    renderMatrix(s, now.getMonth() + 1);
+    const ofCategory = (list) => list.filter((c) => c.category === activeCategory);
+    const days = daysLeftInMonth(now);
+    fillSection('section-last-chance', ofCategory(s.lastChance),
+      (c) => `⏰ ${c.time}`,
+      `Verschwindet Ende ${MONTHS_LONG[now.getMonth()]} — noch ${days} ${days === 1 ? 'Tag' : 'Tage'}.`);
 
-    const hemisphere = getHemisphere();
+    fillSection('section-now', ofCategory(s.missingNow), (c) => {
+      if (isAllDay(c.time)) return `⏰ ganztägig · 📍 ${c.location}`;
+      return `⏰ noch bis ${hh(currentWindowEnd(c, now))} Uhr · 📍 ${c.location}`;
+    }, `Nach der Uhr dieses Geräts (${hh(now.getHours())} Uhr, ${MONTHS_LONG[now.getMonth()]}).`);
+
+    renderMatrix(s, currentMonth);
+
     document.querySelectorAll('[data-hemisphere]').forEach((btn) => {
       btn.classList.toggle('active', btn.dataset.hemisphere === hemisphere);
     });
-
     const codeField = document.getElementById('sync-code');
     if (codeField) codeField.value = encode(creatures.map((c) => c.id), caughtIds());
-
     document.getElementById('storage-warning')?.classList.toggle('hide', isPersistent());
-    initCollectionUI();     // paints caught state on the freshly built tiles
+
+    initCollectionUI();
+  }
+
+  function setCategory(category) {
+    if (!CAT_LABEL[category]) return;
+    activeCategory = category;
+    localStorage.setItem('nook_sammlung_cat', category);
+    openMonths = new Set([new Date().getMonth() + 1]);   // start on the current month
+    render();
   }
 
   /* ── Sync code: share the log without an account ───────────────────────── */
@@ -375,15 +519,12 @@ const counts = {
     }
   }
 
-  function applyCode(code, { silent = false } = {}) {
+  function applyCode(code) {
     const result = decode(code, creatures.map((c) => c.id));
     if (!result.ok) { setHint(result.reason, false); return false; }
+    if (!confirm(`${result.ids.length} gefangene Tiere aus dem Code übernehmen? Dein aktueller Stand wird damit überschrieben.`)) return false;
 
-    const label = `${result.ids.length} gefangene Tiere aus dem Code übernehmen? Dein aktueller Stand wird damit überschrieben.`;
-    if (!silent && !confirm(label)) return false;
-
-    const all = creatures.map((c) => c.id);
-    setMany(all, false);
+    setMany(creatures.map((c) => c.id), false);
     setMany(result.ids, true);
     setHint(`${result.ids.length} Einträge übernommen.`);
     showToast(`${result.ids.length} Einträge übernommen`);
@@ -397,15 +538,14 @@ const counts = {
       copy(document.getElementById('sync-code').value, 'Code');
     });
     document.getElementById('copy-link')?.addEventListener('click', () => {
-      const code = document.getElementById('sync-code').value;
-      copy(`${location.origin}/sammlung/#code=${code}`, 'Link');
+      copy(`${location.origin}/sammlung/#code=${document.getElementById('sync-code').value}`, 'Link');
     });
     document.getElementById('apply-code')?.addEventListener('click', () => {
       applyCode(document.getElementById('import-code').value);
     });
 
     // A shared link carries the code in the hash — offer it once, then clean up.
-    // Also handle the hash arriving while the page is already open (pasting the
+    // Also covers the hash arriving while the page is already open (pasting the
     // link into the address bar only fires hashchange, never a page load).
     const consumeHash = () => {
       const fromLink = new URLSearchParams(location.hash.slice(1)).get('code');
@@ -425,6 +565,29 @@ const counts = {
     if (!payload) return;   // navigated away — teardown above already happened
     creatures = JSON.parse(payload.textContent).map((c) => ({ ...c, months_northern: c.months, time_active: c.time }));
 
+    activeCategory = localStorage.getItem('nook_sammlung_cat') || 'fish';
+    showCaught = localStorage.getItem('nook_sammlung_show_caught') === 'true';
+    openMonths = new Set([new Date().getMonth() + 1]);
+
+    document.querySelectorAll('[data-cat-tab]').forEach((btn) => {
+      btn.addEventListener('click', () => setCategory(btn.dataset.catTab));
+    });
+    document.querySelector('[data-matrix]')?.addEventListener('click', (e) => {
+      const label = e.target.closest('[data-cat-tab]');
+      if (label) setCategory(label.dataset.catTab);
+    });
+    document.querySelectorAll('[data-hemisphere]').forEach((btn) => {
+      btn.addEventListener('click', () => setHemisphere(btn.dataset.hemisphere));
+    });
+
+    document.getElementById('toggle-caught')?.addEventListener('click', () => {
+      showCaught = !showCaught;
+      localStorage.setItem('nook_sammlung_show_caught', String(showCaught));
+      render();
+    });
+
+    initSyncTools();
+
     document.querySelectorAll('[data-bulk]').forEach((btn) => {
       btn.addEventListener('click', () => {
         const cat = btn.dataset.bulk;
@@ -433,12 +596,6 @@ const counts = {
         showToast(changed.length ? `${changed.length} Einträge ergänzt` : 'Da war schon alles abgehakt', changed.length ? undo : null);
       });
     });
-
-    document.querySelectorAll('[data-hemisphere]').forEach((btn) => {
-      btn.addEventListener('click', () => setHemisphere(btn.dataset.hemisphere));
-    });
-
-    initSyncTools();
 
     document.getElementById('reset-collection')?.addEventListener('click', () => {
       if (!confirm('Wirklich die komplette Sammlung zurücksetzen? Das lässt sich nicht rückgängig machen.')) return;
@@ -449,7 +606,7 @@ const counts = {
     unsubscribe = subscribe(render);
     render();
 
-    // "Jetzt fangbar" is only true for this hour — re-render when it rolls over.
+    // "Gerade fangbar" is only true for this hour — re-render when it rolls over.
     hourTimer = setInterval(() => {
       if (new Date().getHours() !== renderedHour) render();
     }, 60 * 1000);
