@@ -1400,7 +1400,10 @@
     background: var(--ac-surface); border: 1px solid var(--ac-border);
     border-radius: var(--radius-md); box-shadow: var(--ac-shadow);
     padding: var(--sp-4); max-width: min(22rem, calc(100vw - 2rem));
-    z-index: 1010;
+    /* Same overlay level as .collection-toast: must clear the floating
+       .bottom-tab-bar (z-index: var(--z-overlay)) on phones/tablets, where
+       both are position:fixed and would otherwise fight for the same layer. */
+    z-index: calc(var(--z-overlay) + 1);
   }
   .loc-pop__header {
     display: flex; justify-content: space-between; align-items: flex-start;
@@ -1440,14 +1443,16 @@
       position: fixed !important;
       left: var(--sp-3) !important;
       right: var(--sp-3) !important;
-      bottom: var(--sp-3) !important;
+      /* Clears the floating .bottom-tab-bar (fixed, ~96px incl. its own
+         bottom offset) instead of sitting behind/under it. */
+      bottom: calc(96px + env(safe-area-inset-bottom, 0px)) !important;
       top: auto !important;
       max-width: none !important;
     }
     .loc-pop__scrim {
       position: fixed; inset: 0;
       background: rgba(0, 0, 0, 0.4);
-      z-index: 1005;
+      z-index: var(--z-overlay);
     }
   }
 }

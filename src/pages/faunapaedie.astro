@@ -141,7 +141,7 @@ const seaTips = [
 <script>
   // Catch-window maths and the catch log both come from shared modules, so this
   // page, the detail page and /sammlung/ can never disagree about a creature.
-  import { MONTHS_LONG, isCatchableNow as isCatchable, isActiveAt, isActiveAtAnyMonth, isAvailableInMonth, monthsFor } from '../lib/catch-window.js';
+  import { MONTHS_LONG, isCatchableNow as isCatchable, isActiveAt, isActiveAtAnyMonth, isAvailableInMonth, monthsFor, timeLines, hasVaryingTime } from '../lib/catch-window.js';
   import { isCaught, subscribe, getHemisphere, setHemisphere, toggle } from '../lib/collection.js';
   import { showToast } from '../scripts/collection-ui.js';
   import { initLocationPopover } from '../scripts/location-popover.js';
@@ -156,6 +156,16 @@ const seaTips = [
       box.classList.toggle('active', active);
       box.classList.toggle('inactive', !active);
     });
+  }
+
+  /** Repaint a card's ⏰-Zeit lines for the active hemisphere (only creatures with more than one time segment need this). */
+  function paintTimeCell(card, creature, hemisphere) {
+    if (!hasVaryingTime(creature)) return;
+    const cell = card.querySelector('[data-time-cell]');
+    if (!cell) return;
+    cell.innerHTML = timeLines(creature, hemisphere)
+      .map((l) => `<span class="time-line"><b class="time-line__months">${l.months}: </b>${l.time}</span>`)
+      .join('');
   }
 
   // Held across View-Transition swaps so a re-init never stacks subscriptions
@@ -219,6 +229,7 @@ const seaTips = [
         };
         const months = monthsFor(creatureMock, hemisphere);
         paintMonthGrid(card, months);
+        paintTimeCell(card, creatureMock, hemisphere);
         const liveNow = isCatchable(creatureMock, now, hemisphere);
         card.classList.toggle('is-now', liveNow);
 

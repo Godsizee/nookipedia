@@ -4,15 +4,19 @@
  */
 import { locationInfo } from '../lib/locations.js';
 
+// Module-scope singleton state: the listeners below are attached to `document`
+// exactly once and outlive every Astro view-transition swap (the document
+// itself persists across those), so `initLocationPopover()` must stay a no-op
+// after the first call rather than re-arming — re-adding the same listeners
+// on every page's init function would stack duplicate handlers forever.
 let initialized = false;
+let popover = null;
+let scrim = null;
+let currentTrigger = null;
 
 export function initLocationPopover() {
   if (initialized) return;
   initialized = true;
-
-  let popover = null;
-  let scrim = null;
-  let currentTrigger = null;
 
   const closePopover = () => {
     if (!popover) return;
@@ -101,6 +105,5 @@ export function initLocationPopover() {
 
   document.addEventListener('astro:before-swap', () => {
     closePopover();
-    initialized = false;
   });
 }
