@@ -37,6 +37,7 @@ const payload = creatures.map((c) => ({
   img: getImageUrl(c.image_path),
   months: c.months_northern || [],
   time: c.time_active || 'Ganztägig',
+  time_segments: c.time_segments || null,
   weather: weatherLabel(c.weather),
   location: c.location_name || (c.category === 'sea' ? DIVING : 'Inselweit'),
   shadow: shadowLabel(c.shadow_image),
@@ -161,10 +162,11 @@ const counts = Object.fromEntries(CATS.map((c) => [c.key, creatures.filter((x) =
     getHemisphere, setHemisphere, caughtIds,
   } from '../lib/collection.js';
   import {
-    MONTHS_LONG, monthsFor, currentWindowEnd, daysLeftInMonth, isAllDay, isYearRound,
+    MONTHS_LONG, monthsFor, currentWindowEnd, daysLeftInMonth, isAllDay, isYearRound, timeLines, hasVaryingTime
   } from '../lib/catch-window.js';
   import { encode, decode } from '../lib/sync-code.js';
   import { updateRing, showToast, initCollectionUI } from '../scripts/collection-ui.js';
+  import { initLocationPopover } from '../scripts/location-popover.js';
 
   const CAT_LABEL = { fish: 'Fische', insect: 'Insekten', sea: 'Meerestiere' };
   const hh = (h) => `${String(h).padStart(2, '0')}:00`;
@@ -183,14 +185,26 @@ const counts = Object.fromEntries(CATS.map((c) => [c.key, creatures.filter((x) =
      Tempo. Weather is always shown because the player asked for it, even
      where the dataset only ever says "any". */
 
-  function chips(creature) {
-    const out = [
-      ['⏰', creature.time],
-      ['🌦️', creature.weather.replace(/^[^\p{L}]+/u, '')],   // chip carries its own icon
-      ['📍', creature.location],
-    ];
-    if (creature.shadow) out.push(['👤', creature.shadow]);   // Fische & Meerestiere
-    if (creature.speed) out.push(['💨', creature.speed]);     // nur Meerestiere
+  function chips(creature, hemisphere) {
+    const out = [];
+    if (hasVaryingTime(creature)) {
+      const lines = timeLines(creature, hemisphere);
+      const timeDiv = document.createElement('div');
+      timeDiv.className = 'time-lines';
+      lines.forEach(l => {
+        const span = document.createElement('span');
+        span.className = 'time-line';
+        span.innerHTML = `<b class="time-line__months">${l.months}: </b>${l.time}`;
+        timeDiv.appendChild(span);
+      });
+      out.push(['⏰', timeDiv]);
+    } else {
+      out.push(['⏰', creature.time]);
+    }
+    out.push(['🌦️', creature.weather.replace(/^[^\p{L}]+/u, '')]);
+    out.push(['📍', creature.location, true]);
+    if (creature.shadow) out.push(['👤', creature.shadow]);
+    if (creature.speed) out.push(['💨', creature.speed]);
     return out;
   }
 
@@ -223,7 +237,7 @@ const counts = Object.fromEntries(CATS.map((c) => [c.key, creatures.filter((x) =
   }
 
   /** A full plan row: picture, name, and the catch conditions as chips. */
-  function planRow(creature, { yearRound = false } = {}) {
+  function planRow(creature, hemisphere, { yearRound = false } = {}) {
     const row = document.createElement('article');
     row.className = `plan-row accent-${creature.category}`;
     row.dataset.creatureId = creature.id;
@@ -245,16 +259,37 @@ const counts = Object.fromEntries(CATS.map((c) => [c.key, creatures.filter((x) =
 
     const facts = document.createElement('div');
     facts.className = 'plan-row__facts';
-    for (const [icon, value] of chips(creature)) {
+    for (const [icon, value, isLocation] of chips(creature, hemisphere)) {
       if (!value) continue;
-      const chip = document.createElement('span');
-      chip.className = 'plan-chip';
+      
+      const chip = document.createElement(isLocation ? 'button' : 'span');
+      if (isLocation) {
+        chip.type = 'button';
+        chip.className = 'plan-chip loc-info';
+        chip.dataset.location = value;
+      } else {
+        chip.className = 'plan-chip';
+      }
+      
       const i = document.createElement('span');
       i.className = 'plan-chip__icon';
       i.setAttribute('aria-hidden', 'true');
       i.textContent = icon;
+      
       const v = document.createElement('span');
-      v.textContent = value;
+      if (typeof value === 'string') {
+        v.textContent = value;
+      } else {
+        v.appendChild(value);
+      }
+      
+      if (isLocation) {
+        const mark = document.createElement('span');
+        mark.className = 'loc-info__mark';
+        mark.textContent = 'ⓘ';
+        v.appendChild(mark);
+      }
+      
       chip.append(i, v);
       facts.appendChild(chip);
     }
@@ -384,7 +419,7 @@ const counts = Object.fromEntries(CATS.map((c) => [c.key, creatures.filter((x) =
       body.appendChild(empty);
       return;
     }
-    body.append(...list.map((c) => planRow(c, { yearRound: isYearRound(c, hemisphere) })));
+    body.append(...list.map((c) => planRow(c, hemisphere, { yearRound: isYearRound(c, hemisphere) })));
     initCollectionUI();
   }
 
@@ -610,6 +645,8 @@ const counts = Object.fromEntries(CATS.map((c) => [c.key, creatures.filter((x) =
     hourTimer = setInterval(() => {
       if (new Date().getHours() !== renderedHour) render();
     }, 60 * 1000);
+    
+    initLocationPopover();
   }
 
   document.addEventListener('astro:page-load', initCollectionPage);

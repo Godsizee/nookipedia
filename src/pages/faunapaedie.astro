@@ -114,7 +114,7 @@ const seaTips = [
         <div class="mini-grid-head"><span>{t.emoji}</span> Schnellauswahl · {t.label}</div>
         <div class="mini-grid">
           {t.list.map((c) => (
-            <a href={`#creature-${c.id}`} class="mini-card" data-id={c.id} data-creature-id={c.id} data-name={(c.name || '').toLowerCase()} data-months={c.months_northern ? c.months_northern.join(',') : ''} data-time={c.time_active || ''} title={c.name}>
+            <a href={`#creature-${c.id}`} class="mini-card" data-id={c.id} data-creature-id={c.id} data-name={(c.name || '').toLowerCase()} data-months={c.months_northern ? c.months_northern.join(',') : ''} data-time={c.time_active || ''} data-time-segments={c.time_segments ? JSON.stringify(c.time_segments) : undefined} title={c.name}>
               <img src={getImageUrl(c.image_path)} alt={c.name} loading="lazy" onerror="this.src='/assets/img/acnh/koeder.png'" />
             </a>
           ))}
@@ -141,9 +141,10 @@ const seaTips = [
 <script>
   // Catch-window maths and the catch log both come from shared modules, so this
   // page, the detail page and /sammlung/ can never disagree about a creature.
-  import { MONTHS_LONG, isActiveAtHour, monthsFor } from '../lib/catch-window.js';
+  import { MONTHS_LONG, isCatchableNow as isCatchable, isActiveAt, isActiveAtAnyMonth, isAvailableInMonth, monthsFor } from '../lib/catch-window.js';
   import { isCaught, subscribe, getHemisphere, setHemisphere, toggle } from '../lib/collection.js';
   import { showToast } from '../scripts/collection-ui.js';
+  import { initLocationPopover } from '../scripts/location-popover.js';
 
   const CAT_LABEL = { fish: 'Fische', insect: 'Insekten', sea: 'Meerestiere' };
 
@@ -155,19 +156,6 @@ const seaTips = [
       box.classList.toggle('active', active);
       box.classList.toggle('inactive', !active);
     });
-  }
-
-  // Is a creature catchable right now? (month + time-of-day windows)
-  function isCatchableNow(months, timeStr, month, hour) {
-    if (months.length && !months.includes(month)) return false;
-    return isActiveAtHour(timeStr, hour);
-  }
-
-  // Does a creature match the planner query? null = "egal" (ignored)
-  function matchesQuery(months, timeStr, qMonth, qHour) {
-    if (qMonth !== null && months.length && !months.includes(qMonth)) return false;
-    if (qHour !== null && !isActiveAtHour(timeStr, qHour)) return false;
-    return true;
   }
 
   // Held across View-Transition swaps so a re-init never stacks subscriptions
@@ -224,20 +212,32 @@ const seaTips = [
       creatureCards.forEach((card) => {
         if (card.dataset.category !== activeCategory) { card.style.display = 'none'; return; }
 
-        const northern = card.dataset.months ? card.dataset.months.split(',').map(Number) : [];
-        const months = monthsFor({ months_northern: northern }, hemisphere);
+        const creatureMock = {
+          months_northern: card.dataset.months ? card.dataset.months.split(',').map(Number) : [],
+          time_active: card.dataset.time || '',
+          time_segments: card.dataset.timeSegments ? JSON.parse(card.dataset.timeSegments) : null
+        };
+        const months = monthsFor(creatureMock, hemisphere);
         paintMonthGrid(card, months);
-        const timeStr = card.dataset.time || '';
-        const liveNow = isCatchableNow(months, timeStr, currentMonth, currentHour);
+        const liveNow = isCatchable(creatureMock, now, hemisphere);
         card.classList.toggle('is-now', liveNow);
 
         const caught = isCaught(card.dataset.creatureId);
 
         let visible = true;
         if (term && !(card.dataset.name || '').includes(term)) visible = false;
-        if (visible && filterMonth.checked && months.length && !months.includes(currentMonth)) visible = false;
+        if (visible && filterMonth.checked && !isAvailableInMonth(creatureMock, currentMonth, hemisphere)) visible = false;
         if (visible && filterNow.checked && !liveNow) visible = false;
-        if (visible && planActive && !matchesQuery(months, timeStr, qMonth, qHour)) visible = false;
+        if (visible && planActive) {
+          if (qMonth !== null && !isAvailableInMonth(creatureMock, qMonth, hemisphere)) visible = false;
+          if (qHour !== null) {
+            if (qMonth !== null) {
+              if (!isActiveAt(creatureMock, qMonth, qHour, hemisphere)) visible = false;
+            } else {
+              if (!isActiveAtAnyMonth(creatureMock, qHour, hemisphere)) visible = false;
+            }
+          }
+        }
         if (visible && collectionFilter === 'missing' && caught) visible = false;
         if (visible && collectionFilter === 'caught' && !caught) visible = false;
 
@@ -348,6 +348,7 @@ const seaTips = [
     });
 
     switchTab(activeCategory);
+    initLocationPopover();
   }
 
   initFaunapedia();

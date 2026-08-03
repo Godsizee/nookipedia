@@ -1,0 +1,16 @@
+---
+/**
+ * LocationValue · zeigt einen Fundort und macht ihn antippbar, sofern es dazu
+ * eine Erklärung gibt. Unbekannte Werte bleiben schlichter Text (fail-safe).
+ */
+import { locationInfo } from '../lib/locations.js';
+interface Props { name: string; }
+const { name } = Astro.props;
+const info = locationInfo(name);
+---
+{info
+  ? <button type="button" class="loc-info" data-location={name} aria-expanded="false">
+      {name}<span class="loc-info__mark" aria-hidden="true">ⓘ</span>
+      <span class="sr-only">— Erklärung anzeigen</span>
+    </button>
+  : <Fragment>{name}</Fragment>}

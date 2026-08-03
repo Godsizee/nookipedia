@@ -64,6 +64,38 @@ export async function getCollection(directusUrl, name, fallback = []) {
 }
 
 /* ── Creatures (fish / insects / sea) with their 1:N detail joins ───────── */
+/**
+ * Kreaturen, deren aktive Uhrzeit sich mit der Jahreszeit ändert — im Datensatz
+ * steht dafür nur "Variiert", was ein einzelnes Feld nicht besser abbilden kann.
+ * Monate sind Nordhalbkugel-Nummern, genau wie `months_northern`.
+ * Quelle: Nookipedia (ACNH). Open-Closed: neue Ausnahme = ein Eintrag hier.
+ */
+const TIME_SEGMENTS = {
+  125: [                                        // Masulachs (Cherry Salmon)
+    { months: [3, 4, 5, 6], time: '16:00 – 09:00' },
+    { months: [9, 10, 11], time: 'Ganztägig' },
+  ],
+  140: [                                        // Saibling (Char)
+    { months: [3, 4, 5, 6], time: '16:00 – 09:00' },
+    { months: [9, 10, 11], time: 'Ganztägig' },
+  ],
+};
+
+/**
+ * Hängt `time_segments` an und repariert `months_northern` aus der Vereinigung
+ * der Segment-Monate (dem Live-Backend fehlt bei beiden Fischen der Juni).
+ * `time_active` bleibt unangetastet — eine noch nicht umgestellte Anzeige zeigt
+ * damit weiter "Variiert" statt einer *falschen* Uhrzeit.
+ */
+function withTimeSegments(list) {
+  return list.map((c) => {
+    const segments = TIME_SEGMENTS[c.id];
+    if (!segments) return c;
+    const months = [...new Set(segments.flatMap((s) => s.months))].sort((a, b) => a - b);
+    return { ...c, months_northern: months, time_segments: segments };
+  });
+}
+
 export async function getCreatures(directusUrl, fallback = []) {
   const [creatures, locations, shadows, speeds, weathers] = await Promise.all([
     fetchRows(`${directusUrl}/items/creatures?limit=-1`),
@@ -75,20 +107,20 @@ export async function getCreatures(directusUrl, fallback = []) {
 
   // Backend unreachable → keep the build alive with the bundled fallback, which
   // already carries the joined location/shadow/speed/weather fields.
-  if (!creatures.length) return fallback;
+  if (!creatures.length) return withTimeSegments(fallback);
 
   const locationsMap = new Map(locations.map((i) => [i.creature_id, i.location_name]));
   const shadowsMap = new Map(shadows.map((i) => [i.creature_id, i.shadow_image]));
   const speedsMap = new Map(speeds.map((i) => [i.creature_id, i.speed]));
   const weathersMap = new Map(weathers.map((i) => [i.creature_id, i.weather]));
 
-  return creatures.map((c) => ({
+  return withTimeSegments(creatures.map((c) => ({
     ...c,
     location_name: locationsMap.get(c.id) || null,
     shadow_image: shadowsMap.get(c.id) || null,
     speed: speedsMap.get(c.id) || null,
     weather: weathersMap.get(c.id) || null,
-  }));
+  })));
 }
 
 // Recipe categories come from two sync sources (legacy German seed vs. the

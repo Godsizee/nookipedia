@@ -7,6 +7,8 @@
  */
 import { getImageUrl, formatBells, MONTHS_SHORT, accentFor, shadowClass, shadowImage, shadowLabel, weatherLabel } from '../lib/format.js';
 import CatchToggle from './CatchToggle.astro';
+import { timeLines, hasVaryingTime } from '../lib/catch-window.js';
+import LocationValue from './LocationValue.astro';
 
 interface Props { creature: any; }
 const { creature: c } = Astro.props;
@@ -20,6 +22,7 @@ const months = c.months_northern || [];
   data-name={(c.name || '').toLowerCase()}
   data-months={months.join(',')}
   data-time={c.time_active || ''}
+  data-time-segments={c.time_segments ? JSON.stringify(c.time_segments) : undefined}
   data-creature-id={c.id}
   data-collection-item
 >
@@ -36,8 +39,17 @@ const months = c.months_northern || [];
   </div>
 
   <div class="creature-info-list">
-    <div class="info-row"><span class="info-label">📍 Ort</span><span class="info-value">{c.location_name || 'Inselweit'}</span></div>
-    <div class="info-row"><span class="info-label">⏰ Zeit</span><span class="info-value">{c.time_active || 'Ganztägig'}</span></div>
+    <div class="info-row"><span class="info-label">📍 Ort</span><span class="info-value"><LocationValue name={c.location_name || 'Inselweit'} /></span></div>
+    <div class="info-row">
+      <span class="info-label">⏰ Zeit</span>
+      <span class="info-value time-lines" data-time-cell>
+        {timeLines(c).map((l) => (
+          <span class="time-line">
+            {hasVaryingTime(c) && <b class="time-line__months">{l.months}: </b>}{l.time}
+          </span>
+        ))}
+      </span>
+    </div>
     {c.shadow_image && (
       <div class="info-row">
         <span class="info-label">👤 Schatten</span>

@@ -886,6 +886,7 @@
   .floating { animation: float 5s var(--ease-soft) infinite; display: inline-block; }
   .wobble-hover:hover { animation: wobble 0.5s ease-in-out; }
   .faded { opacity: 0.28; filter: grayscale(1); }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
 }
 
 /* ════════════════════════════════════════════════════════════════
@@ -1384,6 +1385,40 @@
   }
   .plan-chip__icon { font-size: 0.8rem; line-height: 1; }
 
+  /* ── Fundort-Popover & Time-Lines ─────────────────────────── */
+  .loc-info {
+    background: none; border: none; padding: 0; font: inherit; color: inherit;
+    cursor: pointer; text-align: left; transition: color var(--t-fast);
+  }
+  .loc-info:hover, .loc-info:focus-visible { color: var(--accent-deep); }
+  .loc-info:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+  .loc-info__mark { color: var(--ac-text-muted); font-size: 0.85em; margin-left: 4px; }
+  
+  .plan-chip.loc-info { cursor: pointer; }
+  
+  .loc-pop {
+    background: var(--ac-surface); border: 1px solid var(--ac-border);
+    border-radius: var(--radius-md); box-shadow: var(--ac-shadow);
+    padding: var(--sp-4); max-width: min(22rem, calc(100vw - 2rem));
+    z-index: 1010;
+  }
+  .loc-pop__header {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: var(--sp-2);
+  }
+  .loc-pop__header strong { color: var(--ac-text); font-family: var(--font-display); font-size: 1.1rem; }
+  .loc-pop__close {
+    background: none; border: none; padding: 4px; color: var(--ac-text-muted);
+    cursor: pointer; font-size: 1.2rem; line-height: 1;
+    border-radius: 50%;
+  }
+  .loc-pop__close:hover { color: var(--ac-text); background: var(--ac-surface-2); }
+  .loc-pop__body { color: var(--ac-text-muted); font-size: 0.95rem; line-height: 1.5; }
+  
+  .time-lines { display: flex; flex-direction: column; gap: 2px; }
+  .time-line__months { color: var(--accent-deep); font-size: 0.8em; margin-right: 6px; }
+
+
   /* The active category's row in the year matrix, and its label as a switch */
   .year-matrix__label {
     font: inherit; font-size: 1.05rem; text-align: center;
@@ -1400,6 +1435,20 @@
   @layer components {
     .plan-row > .catch-toggle .catch-toggle__label { display: none; }
     .plan-row > .catch-toggle { padding: 0.4rem; }
+
+    .loc-pop {
+      position: fixed !important;
+      left: var(--sp-3) !important;
+      right: var(--sp-3) !important;
+      bottom: var(--sp-3) !important;
+      top: auto !important;
+      max-width: none !important;
+    }
+    .loc-pop__scrim {
+      position: fixed; inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 1005;
+    }
   }
 }
 
