@@ -1,42 +1,170 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import PageHero from '../../components/PageHero.astro';
-import EntityCard from '../../components/EntityCard.astro';
+import ItemCard from '../../components/ItemCard.astro';
 import { getItemsCatalog, DEFAULT_DIRECTUS } from '../../lib/api.js';
-import { categoryLabel as catLabel } from '../../lib/format.js';
+import {
+  categoryLabel as catLabel,
+  categoryEmoji,
+  categoryFamily,
+  sourceLabel,
+  CATALOG_FAMILIES,
+} from '../../lib/format.js';
 
 const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || DEFAULT_DIRECTUS;
 const items = await getItemsCatalog(directusUrl);
 
-const byCategory = {};
-for (const it of items) (byCategory[it.category || 'Sonstiges'] ||= []).push(it);
-const categories = Object.keys(byCategory).sort((a, b) => catLabel(a).localeCompare(catLabel(b), 'de'));
-for (const c of categories) byCategory[c].sort((a, b) => (a.name_de || '').localeCompare(b.name_de || '', 'de'));
+/** Selbst herstellbar? Das Master-Sheet-Feld gewinnt, sonst verrät es die Quelle. */
+const isDiy = (it) => it.diy === 'Yes' || /^(crafting|cooking)$/i.test((it.source || '').trim());
+/** Umgestaltbar bei Björn oder per Set — je nachdem welche Felder gepflegt sind. */
+const isCustomizable = (it) =>
+  it.body_customize === 'Yes' || it.pattern_customize === 'Yes' ||
+  it.is_customizable === true || it.is_cyrus_customizable === true ||
+  it.cyrus_customize_price != null;
+
+// Ein Ansichts-Modell pro Item — die Kachel bekommt nur noch fertige Werte.
+const tiles = items.map((it) => ({
+  id: it.id,
+  name: it.name_de || it.name_en || 'Unbenannt',
+  nameEn: it.name_en,
+  image: it.image_path,
+  category: it.category || 'Miscellaneous',
+  price: it.sell_price ?? null,
+  variants: it.variant_count || 1,
+  meta: sourceLabel(it.source) || it.size || null,
+  diy: isDiy(it),
+  customizable: isCustomizable(it),
+}));
+tiles.sort((a, b) => a.name.localeCompare(b.name, 'de'));
+
+// Kategorie-Chips: Reihenfolge = Familie, dann deutsches Label.
+const familyOrder = CATALOG_FAMILIES.map((f) => f.key);
+const counts = {};
+for (const t of tiles) counts[t.category] = (counts[t.category] || 0) + 1;
+const categories = Object.keys(counts)
+  .map((c) => ({ key: c, label: catLabel(c), emoji: categoryEmoji(c), family: categoryFamily(c), count: counts[c] }))
+  .sort((a, b) =>
+    familyOrder.indexOf(a.family) - familyOrder.indexOf(b.family) ||
+    a.label.localeCompare(b.label, 'de'));
+
+const familyTabs = CATALOG_FAMILIES.map((f) => ({
+  ...f,
+  count: tiles.filter((t) => categoryFamily(t.category) === f.key).length,
+})).filter((f) => f.count > 0);
+
+const totalVariants = tiles.reduce((sum, t) => sum + t.variants, 0);
+const diyCount = tiles.filter((t) => t.diy).length;
+
+const PAGE_SIZE = 72;
 ---
 
-<Layout title="Item-Katalog - Möbel & Gegenstände">
-  <PageHero accent="material" emoji="🛋️" title="Item-Katalog" subtitle={`Durchstöbere ${items.length} Möbel, Kleidung und Gegenstände deiner Insel.`} />
+<Layout title="Item-Katalog - Möbel, Mode & Gegenstände">
+  <PageHero
+    accent="material"
+    emoji="🛋️"
+    title="Item-Katalog"
+    subtitle="Stöbere durch das komplette Sortiment deiner Insel — von der Couch bis zum Regenschirm."
+  >
+    <div class="hero-stats">
+      <span class="hero-stat"><b>{items.length.toLocaleString('de-DE')}</b> Gegenstände</span>
+      <span class="hero-stat"><b>{categories.length}</b> Kategorien</span>
+      <span class="hero-stat"><b>{totalVariants.toLocaleString('de-DE')}</b> Varianten</span>
+      <span class="hero-stat"><b>{diyCount.toLocaleString('de-DE')}</b> selbst baubar</span>
+    </div>
+  </PageHero>
 
-  <div class="toolbar accent-material">
-    <input type="search" id="catalog-search" class="ac-input" placeholder="🔍 Gegenstand suchen… (öffnet passende Kategorien)" />
+  <div id="catalog-root" class="accent-material" data-page-size={PAGE_SIZE}>
+    <!-- Familien-Reiter: Einrichtung · Mode · Sonstiges -->
+    <div class="catalog-tabs" role="group" aria-label="Sortiment">
+      <button type="button" class="tab-btn active" data-fam="all" aria-pressed="true">
+        <span aria-hidden="true">🗂️</span> Alles <span class="count">{tiles.length}</span>
+      </button>
+      {familyTabs.map((f) => (
+        <button type="button" class="tab-btn" data-fam={f.key} aria-pressed="false">
+          <span aria-hidden="true">{f.emoji}</span> {f.label} <span class="count">{f.count}</span>
+        </button>
+      ))}
+    </div>
+
+    <!-- Suche, Sortierung & Schnellfilter -->
+    <div class="filter-bar catalog-toolbar mb-4">
+      <input
+        type="search"
+        id="catalog-search"
+        class="ac-input"
+        placeholder="🔍 Gegenstand suchen… (deutsch oder englisch)"
+        autocomplete="off"
+        aria-label="Gegenstand suchen"
+      />
+      <label class="catalog-sort">
+        <span class="sr-only">Sortierung</span>
+        <select id="catalog-sort" class="ac-input" aria-label="Sortierung">
+          <option value="name">🔤 Name A–Z</option>
+          <option value="name-desc">🔤 Name Z–A</option>
+          <option value="price-desc">💰 Teuerste zuerst</option>
+          <option value="price-asc">🪙 Günstigste zuerst</option>
+          <option value="variants">🌈 Meiste Varianten</option>
+        </select>
+      </label>
+      <div class="cluster" role="group" aria-label="Schnellfilter">
+        <button type="button" class="ac-chip filter-toggle" data-flag="diy" aria-pressed="false">🔨 Selbst baubar</button>
+        <button type="button" class="ac-chip filter-toggle" data-flag="custom" aria-pressed="false">🎨 Umgestaltbar</button>
+        <button type="button" class="ac-chip filter-toggle" data-flag="variants" aria-pressed="false">🌈 Mit Varianten</button>
+      </div>
+      <button type="button" id="catalog-random" class="ac-btn" title="Zeig mir irgendwas Schönes">🎲 Überrasch mich</button>
+      <button type="button" id="catalog-reset" class="ac-btn">🧹 Zurücksetzen</button>
+    </div>
+
+    <!-- Kategorie-Schiene -->
+    <div class="cat-rail" role="group" aria-label="Kategorie">
+      <button type="button" class="cat-chip active" data-cat="all" data-fam="all" aria-pressed="true">📦 Alle Kategorien <span class="cat-chip__count">{tiles.length}</span></button>
+      {categories.map((c) => (
+        <button type="button" class="cat-chip" data-cat={c.key} data-fam={c.family} aria-pressed="false">
+          <span aria-hidden="true">{c.emoji}</span> {c.label} <span class="cat-chip__count">{c.count}</span>
+        </button>
+      ))}
+    </div>
+
+    <p class="result-count" aria-live="polite">
+      Zeige <b id="catalog-shown">0</b> von <b id="catalog-count">{tiles.length}</b> Gegenständen
+      <span id="catalog-scope" class="muted"></span>
+    </p>
+
+    <!-- Ohne JS bleibt der ganze Katalog sichtbar (siehe <noscript> unten). -->
+    <div class="grid-auto item-grid" id="item-grid" style="--min: 158px; --gap: var(--sp-4);">
+      {tiles.map((t, i) => (
+        <ItemCard
+          hidden={i >= PAGE_SIZE}
+          id={t.id}
+          name={t.name}
+          nameEn={t.nameEn}
+          image={t.image}
+          category={t.category}
+          categoryLabel={catLabel(t.category)}
+          categoryEmoji={categoryEmoji(t.category)}
+          family={categoryFamily(t.category)}
+          price={t.price}
+          variants={t.variants}
+          meta={t.meta}
+          diy={t.diy}
+          customizable={t.customizable}
+        />
+      ))}
+    </div>
+
+    <noscript>
+      <style>.item-tile.hide { display: flex !important; } .load-more, .catalog-toolbar, .cat-rail, .catalog-tabs { display: none !important; }</style>
+    </noscript>
+
+    <div id="catalog-sentinel" aria-hidden="true"></div>
+    <div class="load-more">
+      <button type="button" id="catalog-more" class="ac-btn ac-btn--primary">Mehr laden</button>
+    </div>
+
+    <div id="catalog-empty" class="empty-state hide mt-8">
+      <span class="emoji">🔍</span> Nichts gefunden — probier einen anderen Suchbegriff oder wirf die Filter raus.
+    </div>
   </div>
-
-  <div class="stack stack-4" id="catalog">
-    {categories.map((cat) => (
-      <details class="cat-group ac-card accent-material" data-cat={cat}>
-        <summary><span class="cluster">📦 {catLabel(cat)} <span class="muted">({byCategory[cat].length})</span></span><span class="chevron">▾</span></summary>
-        <div class="grid-auto cat-items" style="--min: 150px; --gap: var(--sp-4); margin-top: var(--sp-4);">
-          {byCategory[cat].map((it) => (
-            <div class="cat-item" data-search={`${it.name_de || ''} ${it.name_en || ''}`.toLowerCase()}>
-              <EntityCard href={`/items/${it.id}/`} image={it.image_path} title={it.name_de} subtitle={it.variant_count > 1 ? `🎨 ${it.variant_count} Varianten` : (it.source || '')} price={it.sell_price} accent="material" badges={[it.diy === 'Yes' && '🔨', (it.body_customize === 'Yes' || it.pattern_customize === 'Yes' || it.cyrus_customize_price) && '🎨'].filter(Boolean)} />
-            </div>
-          ))}
-        </div>
-      </details>
-    ))}
-  </div>
-
-  <div id="catalog-empty" class="empty-state hide mt-8"><span class="emoji">🔍</span> Keine Gegenstände gefunden.</div>
 
   {items.length === 0 && (
     <div class="empty-state"><span class="emoji">🛋️</span> Noch keine Katalog-Daten verfügbar.</div>
@@ -44,38 +172,310 @@ for (const c of categories) byCategory[c].sort((a, b) => (a.name_de || '').local
 </Layout>
 
 <style>
-  .cat-group summary { display: flex; align-items: center; justify-content: space-between; cursor: pointer; list-style: none; font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; }
-  .cat-group summary::-webkit-details-marker { display: none; }
-  .cat-group .chevron { color: var(--ac-text-muted); transition: transform var(--t-base); }
-  .cat-group[open] .chevron { transform: rotate(180deg); }
+  /* — Kennzahlen im Hero — */
+  .hero-stats { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--sp-2) var(--sp-3); margin-top: var(--sp-5); }
+  .hero-stat {
+    padding: 0.35rem 0.9rem;
+    font-weight: 700; font-size: 0.88rem;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.18);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: var(--radius-pill);
+    backdrop-filter: blur(4px);
+  }
+  .hero-stat b { font-family: var(--font-display); font-size: 1rem; }
+
+  /* — Familien-Reiter (klebt unter der Navigation) — */
+  .catalog-tabs {
+    position: sticky; top: calc(var(--nav-height) + var(--sp-2)); z-index: 50;
+    display: flex; flex-wrap: wrap; justify-content: center; gap: var(--sp-2);
+    padding: var(--sp-2);
+    margin-bottom: var(--sp-4);
+    background: color-mix(in srgb, var(--ac-bg) 94%, transparent);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-radius: var(--radius-pill);
+    box-shadow: var(--ac-shadow-sm);
+  }
+
+  .catalog-toolbar { gap: var(--sp-3); }
+  .catalog-sort { display: inline-flex; }
+  .filter-toggle { cursor: pointer; transition: color var(--t-fast), background var(--t-fast), border-color var(--t-fast), transform var(--t-fast) var(--ease-spring); }
+  .filter-toggle:hover { transform: translateY(-2px); border-color: var(--accent); }
+  .filter-toggle[aria-pressed='true'] {
+    color: var(--on-accent);
+    background: var(--accent);
+    border-color: transparent;
+    box-shadow: 0 5px 13px color-mix(in srgb, var(--accent) 36%, transparent);
+  }
+
+  /* — Kategorie-Schiene — */
+  .cat-rail {
+    display: flex; gap: var(--sp-2);
+    padding: var(--sp-1) var(--sp-1) var(--sp-3);
+    margin-bottom: var(--sp-3);
+    overflow-x: auto;
+    scrollbar-width: thin;
+    scroll-snap-type: x proximity;
+  }
+  .cat-chip {
+    flex: 0 0 auto;
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 0.48rem 0.9rem;
+    font-family: var(--font-body); font-weight: 700; font-size: 0.86rem;
+    color: var(--ac-text);
+    background: var(--ac-surface);
+    border: 1px solid var(--ac-border-ink);
+    border-radius: var(--radius-pill);
+    white-space: nowrap;
+    cursor: pointer;
+    scroll-snap-align: start;
+    transition: color var(--t-fast), background var(--t-fast), border-color var(--t-fast), transform var(--t-fast) var(--ease-spring);
+  }
+  .cat-chip:hover { transform: translateY(-2px); border-color: var(--accent); }
+  .cat-chip.active {
+    color: var(--on-accent);
+    background: var(--accent);
+    border-color: transparent;
+    box-shadow: 0 5px 13px color-mix(in srgb, var(--accent) 34%, transparent);
+  }
+  .cat-chip__count {
+    display: inline-grid; place-items: center; min-width: 20px; height: 20px;
+    padding: 0 5px;
+    font-size: 0.68rem; font-weight: 800; line-height: 1;
+    color: var(--accent-deep); background: var(--accent-soft);
+    border-radius: var(--radius-pill);
+  }
+  .cat-chip.active .cat-chip__count { color: var(--accent-deep); background: rgba(255, 255, 255, 0.92); }
+
+  .item-grid { margin-bottom: var(--sp-6); }
+  .load-more { display: flex; justify-content: center; margin-bottom: var(--sp-12); }
+  #catalog-sentinel { height: 1px; }
+
+  @media (max-width: 640px) {
+    /* Reiter bleiben eine Zeile und scrollen seitwärts — sonst frisst die
+       klebende Leiste den halben Bildschirm. */
+    .catalog-tabs {
+      flex-wrap: nowrap; justify-content: flex-start;
+      gap: var(--sp-2); padding: var(--sp-1);
+      overflow-x: auto; scrollbar-width: none;
+    }
+    .catalog-tabs::-webkit-scrollbar { display: none; }
+    .item-grid { --min: 132px !important; --gap: var(--sp-3) !important; }
+    /* Kennzahlen als 2×2-Raster statt vier gestapelter Zeilen. */
+    .hero-stats { display: grid; grid-template-columns: 1fr 1fr; }
+    .hero-stat { font-size: 0.8rem; }
+    .hero-stat b { font-size: 0.92rem; }
+  }
+
+  /* — Sehr schmale Displays (Foldable-Frontdisplay, ~344 px) — */
+  @media (max-width: 360px) {
+    .item-grid { --min: 112px !important; --gap: var(--sp-2) !important; }
+    .hero-stats { gap: var(--sp-2); }
+    .hero-stat { padding: 0.28rem 0.55rem; font-size: 0.72rem; }
+    .hero-stat b { font-size: 0.84rem; }
+    .catalog-toolbar { padding: var(--sp-3); }
+    .catalog-toolbar .ac-input { min-width: 0; }
+    .catalog-sort, .catalog-sort .ac-input { width: 100%; }
+    .catalog-toolbar .cluster { gap: var(--sp-2); width: 100%; }
+    .filter-toggle { flex: 1 1 auto; justify-content: center; padding: 0.4rem 0.55rem; font-size: 0.78rem; }
+    .catalog-toolbar .ac-btn { flex: 1 1 46%; padding: 0.6rem 0.8rem; font-size: 0.9rem; }
+    .cat-chip { padding: 0.42rem 0.7rem; font-size: 0.8rem; }
+    .result-count { font-size: 0.85rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cat-chip:hover, .filter-toggle:hover { transform: none; }
+  }
 </style>
 
 <script is:inline>
   function initCatalog() {
-    const search = document.getElementById('catalog-search');
-    const groups = Array.from(document.querySelectorAll('.cat-group'));
-    const empty = document.getElementById('catalog-empty');
-    if (!search) return;
+    const root = document.getElementById('catalog-root');
+    const grid = document.getElementById('item-grid');
+    if (!root || !grid) return;
 
-    function apply() {
-      const q = search.value.trim().toLowerCase();
-      let total = 0;
-      groups.forEach((g) => {
-        let visible = 0;
-        g.querySelectorAll('.cat-item').forEach((item) => {
-          const show = !q || item.dataset.search.includes(q);
-          item.classList.toggle('hide', !show);
-          if (show) visible++;
-        });
-        g.classList.toggle('hide', visible === 0);
-        if (q) g.open = visible > 0; else g.open = false;
-        total += visible;
-      });
-      empty && empty.classList.toggle('hide', total !== 0 || !q);
+    const PAGE = Number(root.dataset.pageSize) || 72;
+    const tiles = Array.from(grid.querySelectorAll('.item-tile'));
+    const entries = tiles.map((el) => ({
+      el,
+      search: el.dataset.search || '',
+      name: el.dataset.name || '',
+      cat: el.dataset.cat || '',
+      fam: el.dataset.fam || '',
+      price: Number(el.dataset.price) || 0,
+      variants: Number(el.dataset.variants) || 1,
+      flags: (el.dataset.flags || '').split(' ').filter(Boolean),
+    }));
+
+    const searchEl = document.getElementById('catalog-search');
+    const sortEl = document.getElementById('catalog-sort');
+    const shownEl = document.getElementById('catalog-shown');
+    const countEl = document.getElementById('catalog-count');
+    const scopeEl = document.getElementById('catalog-scope');
+    const emptyEl = document.getElementById('catalog-empty');
+    const moreBtn = document.getElementById('catalog-more');
+    const moreWrap = moreBtn && moreBtn.parentElement;
+    const sentinel = document.getElementById('catalog-sentinel');
+    const famBtns = Array.from(root.querySelectorAll('[data-fam].tab-btn'));
+    const catChips = Array.from(root.querySelectorAll('.cat-chip'));
+    const flagBtns = Array.from(root.querySelectorAll('.filter-toggle'));
+
+    const SORTS = {
+      name: (a, b) => a.name.localeCompare(b.name, 'de'),
+      'name-desc': (a, b) => b.name.localeCompare(a.name, 'de'),
+      'price-desc': (a, b) => b.price - a.price || a.name.localeCompare(b.name, 'de'),
+      'price-asc': (a, b) => a.price - b.price || a.name.localeCompare(b.name, 'de'),
+      variants: (a, b) => b.variants - a.variants || a.name.localeCompare(b.name, 'de'),
+    };
+
+    const state = { q: '', fam: 'all', cat: 'all', sort: 'name', flags: [], limit: PAGE };
+    // Startzustand spiegeln: der Server rendert bereits nur die erste Seite sichtbar.
+    let visible = new Set(tiles.filter((el) => !el.classList.contains('hide')));
+    let matched = [];
+
+    /** Nur die Differenz umschalten — das hält den Filter auch bei tausenden Kacheln flott. */
+    function paint(next) {
+      visible.forEach((el) => { if (!next.has(el)) el.classList.add('hide'); });
+      next.forEach((el) => { if (!visible.has(el)) el.classList.remove('hide'); });
+      visible = next;
     }
 
-    search.addEventListener('input', apply);
+    function render() {
+      matched = entries.filter((e) =>
+        (state.fam === 'all' || e.fam === state.fam) &&
+        (state.cat === 'all' || e.cat === state.cat) &&
+        (!state.q || e.search.includes(state.q)) &&
+        state.flags.every((f) => e.flags.indexOf(f) !== -1));
+      matched.sort(SORTS[state.sort] || SORTS.name);
+
+      const shown = matched.slice(0, state.limit);
+      paint(new Set(shown.map((e) => e.el)));
+
+      // Sichtbare Kacheln in Sortierreihenfolge einhängen (versteckte bleiben liegen).
+      const frag = document.createDocumentFragment();
+      shown.forEach((e) => frag.appendChild(e.el));
+      grid.appendChild(frag);
+
+      if (shownEl) shownEl.textContent = shown.length.toLocaleString('de-DE');
+      if (countEl) countEl.textContent = matched.length.toLocaleString('de-DE');
+      if (scopeEl) {
+        const chip = catChips.find((c) => c.classList.contains('active') && c.dataset.cat !== 'all');
+        scopeEl.textContent = chip ? '· ' + chip.textContent.replace(/\s+\d[\d.]*$/, '').trim() : '';
+      }
+      if (emptyEl) emptyEl.classList.toggle('hide', matched.length > 0);
+      if (moreWrap) moreWrap.classList.toggle('hide', matched.length <= state.limit);
+      if (moreBtn) {
+        const rest = matched.length - shown.length;
+        moreBtn.textContent = '⬇️ ' + Math.min(rest, PAGE) + ' weitere anzeigen (' + rest.toLocaleString('de-DE') + ' übrig)';
+      }
+      syncUrl();
+    }
+
+    function syncUrl() {
+      const p = new URLSearchParams();
+      if (state.q) p.set('q', state.q);
+      if (state.fam !== 'all') p.set('bereich', state.fam);
+      if (state.cat !== 'all') p.set('kategorie', state.cat);
+      const qs = p.toString();
+      history.replaceState(null, '', qs ? '?' + qs : location.pathname);
+    }
+
+    function setFamily(fam) {
+      state.fam = fam;
+      state.limit = PAGE;
+      famBtns.forEach((b) => {
+        const on = b.dataset.fam === fam;
+        b.classList.toggle('active', on);
+        b.setAttribute('aria-pressed', String(on));
+      });
+      // Chips fremder Familien ausblenden; passt die Kategorie nicht mehr, zurück auf "Alle".
+      catChips.forEach((c) => {
+        const fits = fam === 'all' || c.dataset.cat === 'all' || c.dataset.fam === fam;
+        c.classList.toggle('hide', !fits);
+      });
+      if (state.cat !== 'all') {
+        const chip = catChips.find((c) => c.dataset.cat === state.cat);
+        if (chip && chip.classList.contains('hide')) setCategory('all', true);
+      }
+    }
+
+    function setCategory(cat, quiet) {
+      state.cat = cat;
+      state.limit = PAGE;
+      catChips.forEach((c) => {
+        const on = c.dataset.cat === cat;
+        c.classList.toggle('active', on);
+        c.setAttribute('aria-pressed', String(on));
+      });
+      if (!quiet) render();
+    }
+
+    // — Bedienelemente —
+    let timer;
+    searchEl && searchEl.addEventListener('input', () => {
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        state.q = searchEl.value.trim().toLowerCase();
+        state.limit = PAGE;
+        render();
+      }, 140);
+    });
+
+    sortEl && sortEl.addEventListener('change', () => { state.sort = sortEl.value; render(); });
+
+    famBtns.forEach((b) => b.addEventListener('click', () => { setFamily(b.dataset.fam); render(); }));
+    catChips.forEach((c) => c.addEventListener('click', () => setCategory(c.dataset.cat)));
+
+    flagBtns.forEach((b) => b.addEventListener('click', () => {
+      const flag = b.dataset.flag;
+      const on = b.getAttribute('aria-pressed') !== 'true';
+      b.setAttribute('aria-pressed', String(on));
+      state.flags = on ? state.flags.concat(flag) : state.flags.filter((f) => f !== flag);
+      state.limit = PAGE;
+      render();
+    }));
+
+    moreBtn && moreBtn.addEventListener('click', () => { state.limit += PAGE; render(); });
+
+    const resetBtn = document.getElementById('catalog-reset');
+    resetBtn && resetBtn.addEventListener('click', () => {
+      if (searchEl) searchEl.value = '';
+      if (sortEl) sortEl.value = 'name';
+      flagBtns.forEach((b) => b.setAttribute('aria-pressed', 'false'));
+      state.q = ''; state.sort = 'name'; state.flags = []; state.limit = PAGE;
+      setFamily('all');
+      setCategory('all', true);
+      render();
+    });
+
+    const randomBtn = document.getElementById('catalog-random');
+    randomBtn && randomBtn.addEventListener('click', () => {
+      const pool = matched.length ? matched : entries;
+      if (!pool.length) return;
+      location.href = pool[Math.floor(Math.random() * pool.length)].el.href;
+    });
+
+    // Nachladen, sobald das Ende der Liste in Sicht kommt.
+    if (sentinel && 'IntersectionObserver' in window) {
+      new IntersectionObserver((obs) => {
+        if (obs.some((o) => o.isIntersecting) && matched.length > state.limit) {
+          state.limit += PAGE;
+          render();
+        }
+      }, { rootMargin: '600px' }).observe(sentinel);
+    }
+
+    // — Deep-Links (?q= / ?bereich= / ?kategorie=) —
+    const params = new URLSearchParams(location.search);
+    const q = params.get('q');
+    const fam = params.get('bereich');
+    const cat = params.get('kategorie');
+    if (q && searchEl) { searchEl.value = q; state.q = q.trim().toLowerCase(); }
+    setFamily(fam && famBtns.some((b) => b.dataset.fam === fam) ? fam : 'all');
+    if (cat && catChips.some((c) => c.dataset.cat === cat)) setCategory(cat, true);
+
+    render();
   }
+
   initCatalog();
   document.addEventListener('astro:after-swap', initCatalog);
 </script>

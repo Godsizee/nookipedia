@@ -136,6 +136,53 @@ export function categoryLabel(category) {
 }
 
 /**
+ * Katalog-Sortiment: jede Item-Kategorie bekommt ein Emoji und eine Familie
+ * (Einrichtung / Mode / Sonstiges) — genau wie der Katalog im Spiel.
+ * Open-Closed: eine neue Kategorie = ein Eintrag hier, der Katalog baut Reiter,
+ * Chips und Kachel-Icons daraus automatisch.
+ */
+const CATEGORY_META = {
+  Housewares:      { emoji: '🛋️', family: 'home' },
+  'Wall-mounted':  { emoji: '🖼️', family: 'home' },
+  'Ceiling Decor': { emoji: '🏮', family: 'home' },
+  Rugs:            { emoji: '🧶', family: 'home' },
+  Wallpaper:       { emoji: '🧱', family: 'home' },
+  Floors:          { emoji: '🪵', family: 'home' },
+  Fencing:         { emoji: '🚧', family: 'home' },
+  Gyroids:         { emoji: '🗿', family: 'home' },
+  Tops:            { emoji: '👕', family: 'clothing' },
+  Bottoms:         { emoji: '👖', family: 'clothing' },
+  'Dress-Up':      { emoji: '👗', family: 'clothing' },
+  Headwear:        { emoji: '🎩', family: 'clothing' },
+  Accessories:     { emoji: '🕶️', family: 'clothing' },
+  Socks:           { emoji: '🧦', family: 'clothing' },
+  Shoes:           { emoji: '👟', family: 'clothing' },
+  Bags:            { emoji: '🎒', family: 'clothing' },
+  Umbrellas:       { emoji: '☂️', family: 'clothing' },
+  'Clothing Other': { emoji: '🧣', family: 'clothing' },
+  'Tools/Goods':   { emoji: '🧰', family: 'other' },
+  Music:           { emoji: '🎵', family: 'other' },
+  Photos:          { emoji: '📸', family: 'other' },
+  Posters:         { emoji: '📜', family: 'other' },
+  Miscellaneous:   { emoji: '🎲', family: 'other' },
+};
+
+/** Die drei Katalog-Familien in Anzeigereihenfolge (Reiter im Katalog). */
+export const CATALOG_FAMILIES = [
+  { key: 'home',     emoji: '🏡', label: 'Einrichtung' },
+  { key: 'clothing', emoji: '👕', label: 'Mode' },
+  { key: 'other',    emoji: '🎁', label: 'Sonstiges' },
+];
+
+export function categoryEmoji(category) {
+  return CATEGORY_META[category]?.emoji || '📦';
+}
+
+export function categoryFamily(category) {
+  return CATEGORY_META[category]?.family || 'other';
+}
+
+/**
  * Map an item's English `source` to a German label. Sources can be
  * "; "-separated (e.g. "Saharah; Saharah's Co-op"); each token is translated
  * individually and unknown tokens pass through unchanged (Open-Closed). NPC
