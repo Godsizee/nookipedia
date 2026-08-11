@@ -1,9 +1,10 @@
 ---
 // BottomTabBar.astro · mobile app navigation (shown < 960px).
 // Rendered from the same `navItems` source as the desktop nav (passed in
-// from Layout) so both navigations stay in sync. Uses the compact `short`
-// label; beyond seven sections the bar scrolls horizontally rather than
-// squeezing the labels into unreadable stumps.
+// from Layout) so both navigations stay in sync — apart from entries the
+// Layout marks `mobileOnly`, which only this bar shows. Uses the compact
+// `short` label; beyond seven sections the bar scrolls horizontally rather
+// than squeezing the labels into unreadable stumps.
 interface NavItem {
   href: string;
   emoji: string;
