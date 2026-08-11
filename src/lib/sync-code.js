@@ -11,6 +11,7 @@
  */
 
 const PREFIX = 'AC1';
+const PREFIX_STATES = 'AC2';   // two bits per entry, for the art log
 
 /** FNV-1a over the sorted id list — 4 chars, enough to catch a mismatch. */
 export function fingerprint(ids) {
@@ -69,4 +70,52 @@ export function decode(code, allIds) {
     return { ok: false, reason: 'Der Code hat die falsche Länge.' };
   }
   return { ok: true, ids: ids.filter((_, index) => bytes[index >> 3] & (1 << (index % 8))) };
+}
+
+/* ── Tri-state codes (art log) ───────────────────────────────────────────────
+   Open-Closed: the same idea one bit wider. Two bits per entry carry 0–3, which
+   covers the art states (fehlt / Besitz / gespendet) without touching the
+   creature format above — an AC1 code stays an AC1 code forever.
+
+   Format: AC2-<base64url 2-bit-mask>-<fingerprint>                            */
+
+/** Build a shareable code from a `id → 0|1|2` lookup. */
+export function encodeStates(allIds, stateOf) {
+  const ids = [...allIds].sort((a, b) => a - b);
+  const bytes = new Uint8Array(Math.ceil(ids.length / 4));
+  ids.forEach((id, index) => {
+    const value = Number(stateOf(id)) & 0b11;
+    bytes[index >> 2] |= value << ((index % 4) * 2);
+  });
+  return `${PREFIX_STATES}-${toBase64Url(bytes)}-${fingerprint(ids)}`;
+}
+
+/**
+ * Read a tri-state code back.
+ * → { ok: true, states: Map<id, 0|1|2> } · { ok: false, reason } — never partial.
+ */
+export function decodeStates(code, allIds) {
+  const parts = String(code || '').trim().split('-');
+  if (parts.length !== 3 || parts[0] !== PREFIX_STATES) {
+    return { ok: false, reason: 'Das sieht nicht nach einem Kunst-Code aus.' };
+  }
+  const ids = [...allIds].sort((a, b) => a - b);
+  if (parts[2] !== fingerprint(ids)) {
+    return { ok: false, reason: 'Der Code stammt aus einem anderen Datenbestand und passt nicht zu dieser Kunstliste.' };
+  }
+  let bytes;
+  try {
+    bytes = fromBase64Url(parts[1]);
+  } catch {
+    return { ok: false, reason: 'Der Code ist beschädigt.' };
+  }
+  if (bytes.length !== Math.ceil(ids.length / 4)) {
+    return { ok: false, reason: 'Der Code hat die falsche Länge.' };
+  }
+  const states = new Map();
+  ids.forEach((id, index) => {
+    const value = (bytes[index >> 2] >> ((index % 4) * 2)) & 0b11;
+    if (value === 1 || value === 2) states.set(id, value);
+  });
+  return { ok: true, states };
 }

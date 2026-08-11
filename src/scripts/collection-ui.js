@@ -7,6 +7,10 @@
  */
 
 import { toggle, isCaught, subscribe, isPersistent, caughtCount } from '../lib/collection.js';
+import { showToast, updateRing } from './ui-kit.js';
+
+// Re-exported so every page that already imports them from here keeps working.
+export { showToast, updateRing };
 
 const MILESTONES = [25, 50, 75, 100];
 let bound = false;
@@ -47,56 +51,6 @@ function updateCounters(root = document) {
     el.style.setProperty('--pct', `${pct}%`);
     el.setAttribute('aria-valuenow', String(pct));
   });
-}
-
-/** Fill a ProgressRing with real numbers (used by the Sammlung page). */
-export function updateRing(el, caught, total) {
-  const circle = el.querySelector('.progress-ring__value');
-  const label = el.querySelector('[data-ring-caught]');
-  if (label) label.textContent = String(caught);
-  if (!circle) return;
-  const circumference = Number(circle.dataset.circumference) || 0;
-  const ratio = total > 0 ? Math.min(caught / total, 1) : 0;
-  circle.style.strokeDashoffset = String(circumference * (1 - ratio));
-  el.classList.toggle('is-complete', total > 0 && caught >= total);
-}
-
-/* ── Toast with undo ─────────────────────────────────────────────────────── */
-
-let toastTimer = null;
-
-export function showToast(message, undo) {
-  let toast = document.getElementById('collection-toast');
-  if (!toast) {
-    toast = document.createElement('div');
-    toast.id = 'collection-toast';
-    toast.className = 'collection-toast';
-    toast.setAttribute('role', 'status');
-    toast.setAttribute('aria-live', 'polite');
-    document.body.appendChild(toast);
-  }
-
-  toast.replaceChildren();
-  const text = document.createElement('span');
-  text.textContent = message;              // never innerHTML: names come from the DB
-  toast.appendChild(text);
-
-  if (undo) {
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'collection-toast__undo';
-    btn.textContent = 'Rückgängig';
-    btn.addEventListener('click', () => { undo(); hideToast(); });
-    toast.appendChild(btn);
-  }
-
-  toast.classList.add('is-visible');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(hideToast, 5000);
-}
-
-function hideToast() {
-  document.getElementById('collection-toast')?.classList.remove('is-visible');
 }
 
 /* ── Milestones (quiet by default, loud at the round numbers) ────────────── */

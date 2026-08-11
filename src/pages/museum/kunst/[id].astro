@@ -1,19 +1,14 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
+import ArtStatusToggle from '../../../components/ArtStatusToggle.astro';
+import ArtBootstrap from '../../../components/ArtBootstrap.astro';
 import { getArtworks, DEFAULT_DIRECTUS } from '../../../lib/api.js';
 import { museumImage } from '../../../lib/format.js';
+import artworksFallback from '../../../data/artworks.json';
 
 export async function getStaticPaths() {
-  const FALLBACK_ART = [
-    { id: 1, name: 'Gemüsegemälde', type: 'Gemälde', real_world_name: 'Der Sommer', artist: 'Giuseppe Arcimboldo', image_real: 'Gemuesegemaelde_real.png', image_fake: 'Gemuesegemaelde_fake.png', fake_description: 'Bei der Fälschung fehlt die Knospe an der Brust des Gemüsemanns.' },
-    { id: 2, name: 'Altertumsgemälde', type: 'Gemälde', real_world_name: 'Die Nachtwache', artist: 'Rembrandt van Rijn', image_real: 'Altertumsgemaelde_real.png', image_fake: 'Altertumsgemaelde_fake.png', fake_description: 'Der Mann im Vordergrund trägt auf der Fälschung keinen Hut.' },
-    { id: 3, name: 'Blumengemälde', type: 'Gemälde', real_world_name: 'Sonnenblumen', artist: 'Vincent van Gogh', image_real: 'Blumengemaelde.png', image_fake: null, fake_description: null },
-    { id: 4, name: 'Perlengemälde', type: 'Gemälde', real_world_name: 'Das Mädchen mit dem Perlenohrring', artist: 'Johannes Vermeer', image_real: 'Perlengemaelde_real.png', image_fake: 'Perlengemaelde_fake.png', fake_description: 'Auf der Fälschung ist der Perlenohrring sternförmig statt rund.' },
-    { id: 5, name: 'Detailgemälde', type: 'Gemälde', real_world_name: 'Ajisai Sōki-zu', artist: 'Itō Jakuchū', image_real: 'Detailgemaelde_real.png', image_fake: 'Detailgemaelde_fake.png', fake_description: 'Die Blumen auf der Fälschung sind lila statt blau.' },
-    { id: 6, name: 'Eleganzstatue', type: 'Skulptur', real_world_name: 'Venus von Milo', artist: 'Alexandros von Antiochia', image_real: 'Eleganzstatue_real.png', image_fake: 'Eleganzstatue_fake.png', fake_description: 'Die Fälschung trägt eine Perlenkette um den Hals.' },
-  ];
   const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || DEFAULT_DIRECTUS;
-  const artworks = await getArtworks(directusUrl, FALLBACK_ART);
+  const artworks = await getArtworks(directusUrl, artworksFallback);
   return artworks.map((art) => ({ params: { id: art.id.toString() }, props: { art } }));
 }
 
@@ -41,6 +36,13 @@ const hasFake = !!art.image_fake;
       )}
     </div>
 
+    <!-- Same three states as the tracker, so the log can be kept right here. -->
+    <div class="art-track" data-art-id={art.id} data-art-name={art.name} data-art-status="0">
+      <span class="art-track__label">Dein Stand: <strong data-art-state-label>Fehlt</strong></span>
+      <ArtStatusToggle id={art.id} name={art.name} size="lg" />
+      <a class="art-track__link" href="/kunstsammlung/">🖼️ Zur Kunstsammlung</a>
+    </div>
+
     {hasFake ? (
       <div class="info-box accent-flower mt-8">
         <h2>🚨 Worauf musst du achten?</h2>
@@ -60,7 +62,13 @@ const hasFake = !!art.image_fake;
   <div id="lightbox" class="lightbox">
     <img id="lightbox-img" src="" alt="" />
   </div>
+
+  <ArtBootstrap />
 </Layout>
+
+<script>
+  import '../../../scripts/art-collection-ui.js';
+</script>
 
 <style>
   .art-detail-head { text-align: center; padding: var(--sp-10) var(--sp-6); margin-top: var(--sp-8); margin-bottom: var(--sp-8); color: var(--on-accent); border-radius: var(--radius-xl); background: linear-gradient(150deg, #2d1e18, #160d09); border: 2px solid var(--accent); box-shadow: var(--ac-shadow); }
@@ -77,6 +85,17 @@ const hasFake = !!art.image_fake;
   .zoom-hint { position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%); padding: 4px 12px; font-size: 0.72rem; font-weight: 700; color: #fff; background: rgba(0,0,0,0.55); border-radius: var(--radius-pill); white-space: nowrap; }
   .toggle-art { background: var(--ac-bell); color: #160d09; border-color: var(--ac-bell-deep); font-weight: 700; }
   .toggle-art:hover { filter: brightness(1.05); }
+
+  .art-track {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--sp-4);
+    margin-top: var(--sp-6); padding: var(--sp-4) var(--sp-5);
+    background: var(--ac-surface); border: 1px solid var(--ac-border);
+    border-radius: var(--radius-lg); box-shadow: var(--ac-shadow-sm);
+  }
+  .art-track__label { font-weight: 700; color: var(--ac-text-muted); }
+  .art-track__label strong { color: var(--ac-text); }
+  .art-track__link { font-weight: 800; font-size: 0.88rem; color: var(--accent-deep); text-decoration: none; }
+  .art-track__link:hover { text-decoration: underline; }
 
   .lightbox { position: fixed; inset: 0; z-index: 1000; display: none; place-items: center; padding: var(--sp-6); background: rgba(8,5,3,0.92); cursor: zoom-out; }
   .lightbox.open { display: grid; }

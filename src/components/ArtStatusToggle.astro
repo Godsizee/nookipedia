@@ -1,0 +1,32 @@
+---
+/**
+ * ArtStatusToggle · the Fehlt / Besitz / Museum control for one artwork.
+ * Pure markup — state and behaviour come from art-collection-ui.js, which binds
+ * every [data-art-set] on the page through one delegated listener.
+ *
+ * `size="sm"` is the grid variant (emoji only, label via title/aria);
+ * `size="lg"` is the detail-page variant with written-out labels.
+ */
+interface Props { id: number | string; name?: string; size?: 'sm' | 'lg'; }
+const { id, name = '', size = 'sm' } = Astro.props;
+
+const SEGMENTS = [
+  { value: 0, emoji: '⬜', label: 'Fehlt',     hint: 'Habe ich noch nicht' },
+  { value: 1, emoji: '🎁', label: 'Besitz',    hint: 'Gekauft, noch nicht gespendet' },
+  { value: 2, emoji: '🏛️', label: 'Museum',    hint: 'Ans Museum gespendet' },
+];
+---
+<div class={`art-status art-status--${size}`} role="group" aria-label={`Status von ${name}`}>
+  {SEGMENTS.map((s) => (
+    <button
+      type="button"
+      class="art-status__seg"
+      data-art-set={s.value}
+      aria-pressed="false"
+      title={`${s.label} — ${s.hint}`}
+    >
+      <span class="art-status__emoji" aria-hidden="true">{s.emoji}</span>
+      <span class="art-status__text">{s.label}</span>
+    </button>
+  ))}
+</div>

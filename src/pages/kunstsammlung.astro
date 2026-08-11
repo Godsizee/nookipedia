@@ -1,0 +1,442 @@
+---
+/**
+ * Meine Kunstsammlung · the art tracker.
+ *
+ * Sibling of /sammlung, but built the other way round: the art catalogue is
+ * small and completely static, so the whole wall is rendered on the server and
+ * the client only filters and mirrors the (browser-local) art log into it.
+ * That gives a real page for search engines, an instant first paint, and no
+ * JSON payload to ship.
+ *
+ * The page follows how art is actually collected in the game: Reiner sells it,
+ * sometimes fake, then Eugen wants it for the museum. Hence three states
+ * instead of a checkbox — and hence the Reiner-Check, which lists exactly the
+ * missing pieces that can be sold as forgeries, with the tell to look for.
+ */
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import InfoBox from '../components/InfoBox.astro';
+import ProgressRing from '../components/ProgressRing.astro';
+import ArtStatusToggle from '../components/ArtStatusToggle.astro';
+import ArtBootstrap from '../components/ArtBootstrap.astro';
+import { getArtworks, DEFAULT_DIRECTUS } from '../lib/api.js';
+import { museumImage } from '../lib/format.js';
+import artworksFallback from '../data/artworks.json';
+
+const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || DEFAULT_DIRECTUS;
+const artworks = await getArtworks(directusUrl, artworksFallback);
+
+// One shaped list for the whole page — the wall, the Reiner-Check and the
+// counters all read the same rows, so they can never disagree.
+const pieces = artworks.map((art) => {
+  const artist = art.artist_name || art.artist || '';
+  const tell = art.forgery_description || art.fake_description || '';
+  return {
+    id: art.id,
+    name: art.name,
+    type: art.type || 'Sonstige',
+    artist,
+    realName: art.real_world_name || '',
+    real: museumImage(art.image_real),
+    fake: art.image_fake ? museumImage(art.image_fake) : null,
+    // "Fälschbar" is defined by the game shipping a fake image for the piece.
+    forgeable: art.always_genuine === undefined ? !!art.image_fake : !art.always_genuine,
+    tell: tell || 'Vergleiche das Bild genau mit dem Original — die Fälschung weicht nur in einem Detail ab.',
+    search: [art.name, art.real_world_name, artist, art.type].filter(Boolean).join(' ').toLowerCase(),
+  };
+});
+
+const TYPES = [...new Set(pieces.map((p) => p.type))];
+const TYPE_EMOJI = { 'Gemälde': '🎨', 'Skulptur': '🗿' };
+const TYPE_PLURAL = { 'Gemälde': 'Gemälde', 'Skulptur': 'Skulpturen' };
+const countOf = (type) => pieces.filter((p) => p.type === type).length;
+const forgeable = pieces.filter((p) => p.forgeable);
+
+const STATUS_TABS = [
+  { key: 'all', emoji: '🖼️', label: 'Alle', count: 'total' },
+  { key: '0', emoji: '⬜', label: 'Fehlt', count: 'missing' },
+  { key: '1', emoji: '🎁', label: 'Im Besitz', count: 'owned' },
+  { key: '2', emoji: '🏛️', label: 'Gespendet', count: 'donated' },
+];
+---
+
+<Layout title="Meine Kunstsammlung - Kunst-Tracker">
+  <PageHero
+    accent="museum"
+    emoji="🖼️"
+    title="Meine Kunstsammlung"
+    subtitle="Welches Kunstwerk hast du schon, welches fehlt noch — und welches könnte dir Reiner als Fälschung andrehen?"
+  />
+
+  <!-- Progress · the museum wing at a glance -->
+  <section class="art-hero accent-museum">
+    <div class="art-hero__ring">
+      <ProgressRing ringKey="art-total" total={pieces.length} label="Im Museum" size={150} />
+    </div>
+
+    <div class="art-hero__types">
+      {TYPES.map((type) => (
+        <ProgressRing ringKey={`art-type-${type}`} total={countOf(type)} label={type} emoji={TYPE_EMOJI[type] || '🖼️'} />
+      ))}
+    </div>
+
+    <dl class="art-tally">
+      <div><dt>Fehlt</dt><dd data-art-count="missing">0</dd></div>
+      <div class="is-owned"><dt>Im Besitz</dt><dd data-art-count="owned">0</dd></div>
+      <div class="is-donated"><dt>Gespendet</dt><dd data-art-count="donated">0</dd></div>
+    </dl>
+  </section>
+
+  <p class="storage-warning hide" id="art-storage-warning">
+    ⚠️ Dieser Browser lässt kein dauerhaftes Speichern zu — deine Auswahl gilt nur bis zum Neuladen.
+  </p>
+
+  <!-- Filter rail -->
+  <div class="art-toolbar accent-museum">
+    <div class="fauna-tabs" role="group" aria-label="Nach Status filtern">
+      {STATUS_TABS.map((tab, i) => (
+        <button type="button" class={`tab-btn ${i === 0 ? 'active' : ''}`} data-art-filter={tab.key}>
+          <span aria-hidden="true">{tab.emoji}</span> {tab.label}
+          <span class="count" data-art-count={tab.count}>0</span>
+        </button>
+      ))}
+    </div>
+
+    <div class="art-toolbar__row">
+      <div class="seg" role="group" aria-label="Nach Art filtern">
+        <button type="button" class="seg-btn active" data-art-type-filter="all">Alle</button>
+        {TYPES.map((type) => (
+          <button type="button" class="seg-btn" data-art-type-filter={type}>{TYPE_EMOJI[type] || '🖼️'} {type}</button>
+        ))}
+      </div>
+      <input
+        type="search"
+        class="ac-input art-search"
+        id="art-search"
+        placeholder="Nach Werk, Künstler oder Originaltitel suchen…"
+        aria-label="Kunstwerke durchsuchen"
+      />
+    </div>
+  </div>
+
+  <!-- The wall -->
+  <section class="art-wall accent-museum" aria-label="Alle Kunstwerke">
+    {pieces.map((p) => (
+      <article
+        class="art-frame"
+        data-art-item
+        data-art-id={p.id}
+        data-art-name={p.name}
+        data-art-type={p.type}
+        data-art-status="0"
+        data-search={p.search}
+      >
+        <div class="art-frame__canvas">
+          <img
+            class="art-frame__img"
+            src={p.real}
+            alt={p.name}
+            loading="lazy"
+            data-art-real={p.real}
+            data-art-fake={p.fake}
+            onerror="this.src='/assets/img/acnh/placeholder.png'"
+          />
+          <span class="art-frame__ribbon" data-art-state-label>Fehlt</span>
+          {p.fake && (
+            <button type="button" class="art-frame__peek" data-art-peek aria-pressed="false">
+              <span aria-hidden="true">🔍</span> Fälschung
+            </button>
+          )}
+        </div>
+
+        <div class="art-frame__plaque">
+          <a class="art-frame__title" href={`/museum/kunst/${p.id}`}>{p.name}</a>
+          <span class="art-frame__meta">
+            {p.realName && <em>„{p.realName}“</em>}
+            {p.realName && p.artist && ' · '}
+            {p.artist}
+          </span>
+          {p.forgeable
+            ? <span class="art-frame__tell">⚠️ {p.tell}</span>
+            : <span class="art-frame__tell is-safe">✅ Von diesem Werk gibt es keine Fälschung.</span>}
+        </div>
+
+        <ArtStatusToggle id={p.id} name={p.name} size="sm" />
+      </article>
+    ))}
+  </section>
+
+  <p class="collection-empty hide" id="art-empty">Kein Kunstwerk passt zu diesem Filter.</p>
+
+  <!-- The part you actually plan around: what Reiner could still fake on you -->
+  {forgeable.length > 0 && (
+    <section class="collection-section accent-museum" id="reiner-check">
+      <div class="collection-section__head">
+        <h2>🦊 Reiner-Check <span class="badge" data-reiner-count>0</span></h2>
+        <p class="muted">
+          Diese Werke fehlen dir noch <strong>und</strong> gibt es als Fälschung. Merk dir das Detail,
+          bevor du bei Reiner zuschlägst — eine Fälschung nimmt Eugen nicht an.
+        </p>
+      </div>
+      <ul class="reiner-list">
+        {forgeable.map((p) => (
+          <li class="reiner-row" data-art-id={p.id} data-reiner-row>
+            <a class="reiner-row__head" href={`/museum/kunst/${p.id}`}>
+              <img src={p.real} alt="" loading="lazy" onerror="this.src='/assets/img/acnh/placeholder.png'" />
+              <span>
+                <strong>{p.name}</strong>
+                <em>{p.type}</em>
+              </span>
+            </a>
+            <p class="reiner-row__tell">{p.tell}</p>
+          </li>
+        ))}
+      </ul>
+      <p class="collection-empty hide" data-reiner-empty>
+        🎉 Kein offenes Werk mehr, bei dem du auf eine Fälschung hereinfallen könntest.
+      </p>
+    </section>
+  )}
+
+  <InfoBox accent="museum" emoji="🏛️" title="Warum drei Zustände?">
+    <p>
+      Kunst läuft in zwei Schritten: erst <strong>bei Reiner kaufen</strong>, dann <strong>bei Eugen abgeben</strong>.
+      Deshalb hat jedes Werk hier drei Stufen — <strong>Fehlt</strong>, <strong>Im Besitz</strong> (gekauft, liegt noch
+      zu Hause) und <strong>Gespendet</strong> (im Museum angekommen). Der große Ring zeigt den Museumsfortschritt,
+      also nur das, was Eugen wirklich schon hat.
+    </p>
+  </InfoBox>
+
+  <InfoBox accent="museum" emoji="🔄" title="Auf ein anderes Gerät übertragen">
+    <p>
+      Dein Kunst-Log liegt <strong>nur in diesem Browser</strong> — kein Konto, kein Server, funktioniert offline.
+      Zum Mitnehmen gibt es einen kurzen Code: hier kopieren, auf dem anderen Gerät einfügen. Der Link tut dasselbe
+      in einem Schritt.
+    </p>
+    <div class="sync-box">
+      <input type="text" class="ac-input" id="art-sync-code" readonly aria-label="Dein Kunst-Code" />
+      <button type="button" class="ac-btn ac-btn--primary" id="art-copy-code">📋 Code kopieren</button>
+      <button type="button" class="ac-btn" id="art-copy-link">🔗 Link kopieren</button>
+    </div>
+    <div class="sync-box">
+      <input type="text" class="ac-input" id="art-import-code" placeholder="Code von einem anderen Gerät einfügen…" aria-label="Code einlesen" />
+      <button type="button" class="ac-btn" id="art-apply-code">📥 Einlesen</button>
+    </div>
+    <p class="sync-hint muted" id="art-sync-hint"></p>
+  </InfoBox>
+
+  <InfoBox accent="museum" emoji="⚙️" title="Schnell-Aktionen">
+    <p>Schon fast alles abgegeben? Hier gehts in einem Rutsch — jede Aktion lässt sich per Toast zurücknehmen.</p>
+    <div class="collection-tools">
+      <button type="button" class="ac-btn" id="art-donate-owned">🏛️ Alles im Besitz spenden</button>
+      {TYPES.map((type) => (
+        <button type="button" class="ac-btn" data-art-bulk={type}>
+          {TYPE_EMOJI[type] || '🖼️'} Alle {TYPE_PLURAL[type] || type} als gespendet
+        </button>
+      ))}
+      <button type="button" class="ac-btn" id="art-reset">🗑️ Alles zurücksetzen</button>
+    </div>
+  </InfoBox>
+
+  <ArtBootstrap />
+</Layout>
+
+<script>
+  import {
+    stats, statusOf, setMany, reset, subscribe, isPersistent,
+    ownedIds, MISSING, OWNED, DONATED,
+  } from '../lib/art-collection.js';
+  import { encodeStates, decodeStates } from '../lib/sync-code.js';
+  import { updateRing, showToast } from '../scripts/ui-kit.js';
+  import { initArtCollectionUI } from '../scripts/art-collection-ui.js';
+
+  let pieces = [];                                   // read back off the rendered wall
+  let filter = { status: 'all', type: 'all', q: '' };
+  let unsubscribe = null;
+
+  /* ── Filtering ───────────────────────────────────────────────────────────
+     The wall is server-rendered, so filtering is a matter of hiding rows —
+     no re-render, no lost scroll position, no flicker. */
+
+  function applyFilter() {
+    let shown = 0;
+    for (const el of pieces) {
+      const byStatus = filter.status === 'all' || String(statusOf(el.dataset.artId)) === filter.status;
+      const byType = filter.type === 'all' || el.dataset.artType === filter.type;
+      const byText = !filter.q || el.dataset.search.includes(filter.q);
+      const visible = byStatus && byType && byText;
+      el.classList.toggle('hide', !visible);
+      if (visible) shown++;
+    }
+    document.getElementById('art-empty')?.classList.toggle('hide', shown > 0);
+  }
+
+  /* ── Reiner-Check · only what is still open ──────────────────────────── */
+
+  function renderReiner() {
+    const rows = [...document.querySelectorAll('[data-reiner-row]')];
+    if (!rows.length) return 0;
+    let open = 0;
+    for (const row of rows) {
+      const missing = statusOf(row.dataset.artId) === MISSING;
+      row.classList.toggle('hide', !missing);
+      if (missing) open++;
+    }
+    document.querySelector('[data-reiner-empty]')?.classList.toggle('hide', open > 0);
+    const badge = document.querySelector('[data-reiner-count]');
+    if (badge) badge.textContent = String(open);
+    return open;
+  }
+
+  /* ── Render ──────────────────────────────────────────────────────────── */
+
+  function render() {
+    if (!pieces.length) return;
+    const rows = pieces.map((el) => ({ id: Number(el.dataset.artId), type: el.dataset.artType }));
+    const s = stats(rows);
+
+    const total = document.querySelector('[data-ring="art-total"]');
+    if (total) updateRing(total, s.donated, s.total);
+    // Matched by attribute rather than built into a selector — the ring key
+    // carries the raw type name ("Gemälde"), which has no place in a selector.
+    document.querySelectorAll('[data-ring^="art-type-"]').forEach((ring) => {
+      const bucket = s.byType[ring.getAttribute('data-ring').slice('art-type-'.length)];
+      if (bucket) updateRing(ring, bucket.donated, bucket.total);
+    });
+
+    renderReiner();
+    applyFilter();
+
+    const code = document.getElementById('art-sync-code');
+    if (code) code.value = encodeStates(rows.map((r) => r.id), statusOf);
+    document.getElementById('art-storage-warning')?.classList.toggle('hide', isPersistent());
+  }
+
+  /* ── Sync code ───────────────────────────────────────────────────────── */
+
+  function setHint(message, ok = true) {
+    const hint = document.getElementById('art-sync-hint');
+    if (!hint) return;
+    hint.textContent = message;
+    hint.classList.toggle('is-error', !ok);
+  }
+
+  async function copy(text, label) {
+    try {
+      await navigator.clipboard.writeText(text);
+      setHint(`${label} kopiert.`);
+    } catch {
+      setHint('Kopieren hat der Browser abgelehnt — markier den Code und kopier ihn von Hand.', false);
+    }
+  }
+
+  function applyCode(code) {
+    const ids = pieces.map((el) => Number(el.dataset.artId));
+    const result = decodeStates(code, ids);
+    if (!result.ok) { setHint(result.reason, false); return; }
+    if (!confirm(`${result.states.size} Einträge aus dem Code übernehmen? Dein aktueller Stand wird damit überschrieben.`)) return;
+
+    setMany(ids, MISSING);
+    setMany([...result.states].filter(([, v]) => v === OWNED).map(([id]) => id), OWNED);
+    setMany([...result.states].filter(([, v]) => v === DONATED).map(([id]) => id), DONATED);
+    setHint(`${result.states.size} Einträge übernommen.`);
+    showToast(`${result.states.size} Einträge übernommen`);
+  }
+
+  let hashBound = false;
+
+  function initSyncTools() {
+    document.getElementById('art-copy-code')?.addEventListener('click', () => {
+      copy(document.getElementById('art-sync-code').value, 'Code');
+    });
+    document.getElementById('art-copy-link')?.addEventListener('click', () => {
+      copy(`${location.origin}/kunstsammlung/#code=${document.getElementById('art-sync-code').value}`, 'Link');
+    });
+    document.getElementById('art-apply-code')?.addEventListener('click', () => {
+      applyCode(document.getElementById('art-import-code').value);
+    });
+
+    // A shared link carries the code in the hash — offer it once, then clean up.
+    const consumeHash = () => {
+      const fromLink = new URLSearchParams(location.hash.slice(1)).get('code');
+      if (!fromLink) return;
+      applyCode(fromLink);
+      history.replaceState(null, '', location.pathname);
+    };
+    if (!hashBound) { hashBound = true; window.addEventListener('hashchange', consumeHash); }
+    consumeHash();
+  }
+
+  /* ── Fälschungs-Vorschau ─────────────────────────────────────────────────
+     Flip a card to the fake and back. Handy right before buying: the tell is
+     printed under the plaque anyway, the picture makes it click. */
+
+  function initPeek() {
+    document.querySelector('.art-wall')?.addEventListener('click', (event) => {
+      const btn = event.target.closest('[data-art-peek]');
+      if (!btn) return;
+      const frame = btn.closest('.art-frame');
+      const img = frame.querySelector('.art-frame__img');
+      const showFake = btn.getAttribute('aria-pressed') !== 'true';
+      img.src = showFake ? img.dataset.artFake : img.dataset.artReal;
+      img.alt = showFake ? `Fälschung von ${frame.dataset.artName}` : frame.dataset.artName;
+      btn.setAttribute('aria-pressed', String(showFake));
+      frame.classList.toggle('is-peeking', showFake);
+    });
+  }
+
+  /* ── Wiring ──────────────────────────────────────────────────────────── */
+
+  function initArtPage() {
+    if (unsubscribe) { unsubscribe(); unsubscribe = null; }
+
+    pieces = [...document.querySelectorAll('[data-art-item]')];
+    if (!pieces.length) return;                    // navigated away
+    filter = { status: 'all', type: 'all', q: '' };
+
+    document.querySelectorAll('[data-art-filter]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        filter.status = btn.dataset.artFilter;
+        document.querySelectorAll('[data-art-filter]').forEach((b) => b.classList.toggle('active', b === btn));
+        applyFilter();
+      });
+    });
+    document.querySelectorAll('[data-art-type-filter]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        filter.type = btn.dataset.artTypeFilter;
+        document.querySelectorAll('[data-art-type-filter]').forEach((b) => b.classList.toggle('active', b === btn));
+        applyFilter();
+      });
+    });
+    document.getElementById('art-search')?.addEventListener('input', (e) => {
+      filter.q = e.target.value.trim().toLowerCase();
+      applyFilter();
+    });
+
+    document.getElementById('art-donate-owned')?.addEventListener('click', () => {
+      const { changed, undo } = setMany(ownedIds(), DONATED);
+      showToast(changed.length ? `${changed.length} Werke ans Museum gespendet` : 'Du hast gerade nichts Ungespendetes', changed.length ? undo : null);
+    });
+    document.querySelectorAll('[data-art-bulk]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const ids = pieces.filter((el) => el.dataset.artType === btn.dataset.artBulk).map((el) => Number(el.dataset.artId));
+        const { changed, undo } = setMany(ids, DONATED);
+        showToast(changed.length ? `${changed.length} Einträge ergänzt` : 'Da war schon alles gespendet', changed.length ? undo : null);
+      });
+    });
+    document.getElementById('art-reset')?.addEventListener('click', () => {
+      if (!confirm('Wirklich die komplette Kunstsammlung zurücksetzen? Das lässt sich nicht rückgängig machen.')) return;
+      reset();
+      showToast('Kunstsammlung zurückgesetzt');
+    });
+
+    initSyncTools();
+    initPeek();
+
+    initArtCollectionUI();          // mirrors the log into the markup + counters
+    unsubscribe = subscribe(render);
+    render();
+  }
+
+  document.addEventListener('astro:page-load', initArtPage);
+</script>

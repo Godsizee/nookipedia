@@ -1,0 +1,33 @@
+---
+/**
+ * ArtBootstrap · anti-FOUC for the art log.
+ * Place directly after the markup it applies to: this runs synchronously while
+ * the browser is still parsing, so owned and donated pieces never flash as
+ * "fehlt" before the module script boots. Same trick CaughtBootstrap uses —
+ * hence the duplicated storage key, which is the one place it may appear twice.
+ */
+---
+<script is:inline>
+  (function () {
+    try {
+      var raw = localStorage.getItem('nook_art_v1');
+      if (!raw) return;
+      var log = JSON.parse(raw) || {};
+      var status = Object.create(null);
+      var lists = [[log.owned || [], '1'], [log.donated || [], '2']];
+      for (var l = 0; l < lists.length; l++) {
+        for (var i = 0; i < lists[l][0].length; i++) status[lists[l][0][i]] = lists[l][1];
+      }
+      var nodes = document.querySelectorAll('[data-art-id]');
+      for (var j = 0; j < nodes.length; j++) {
+        var value = status[nodes[j].getAttribute('data-art-id')];
+        if (!value) continue;
+        nodes[j].setAttribute('data-art-status', value);
+        var segs = nodes[j].querySelectorAll('[data-art-set]');
+        for (var k = 0; k < segs.length; k++) {
+          segs[k].setAttribute('aria-pressed', String(segs[k].getAttribute('data-art-set') === value));
+        }
+      }
+    } catch (e) { /* storage blocked → module script takes over */ }
+  })();
+</script>

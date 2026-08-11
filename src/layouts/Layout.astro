@@ -18,7 +18,7 @@ const path = Astro.url.pathname;
 // `match` prefixes mark a link active so detail pages (e.g. /tier/…) still
 // highlight their parent section.
 const navItems = [
-  { href: '/museum/',      emoji: '🏛️', label: 'Museum',      short: 'Museum',   match: ['/museum'] },
+  { href: '/museum/',      emoji: '🏛️', label: 'Museum',      short: 'Museum',   match: ['/museum', '/kunstsammlung'] },
   { href: '/faunapaedie/', emoji: '🦋', label: 'Faunapädie',  short: 'Fauna',    match: ['/faunapaedie', '/tier'] },
   { href: '/blumen/',      emoji: '🌷', label: 'Pflanzen',    short: 'Pflanzen', match: ['/blumen', '/guides'] },
   { href: '/events/',      emoji: '🎉', label: 'Events',      short: 'Events',   match: ['/events'] },
@@ -39,6 +39,7 @@ const footerLinks = [
   { href: '/rezepte', label: 'Rezepte' },
   { href: '/villager/', label: 'Bewohner' },
   { href: '/sammlung/', label: 'Meine Sammlung' },
+  { href: '/kunstsammlung/', label: 'Meine Kunstsammlung' },
   { href: '/katalog/', label: 'Item-Katalog' },
   { href: '/guides/', label: 'Zucht-Guides' },
   { href: '/erfolge/', label: 'Erfolge' },

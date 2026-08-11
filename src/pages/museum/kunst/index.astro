@@ -1,27 +1,25 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import PageHero from '../../../components/PageHero.astro';
+import ArtBootstrap from '../../../components/ArtBootstrap.astro';
 import { getArtworks, DEFAULT_DIRECTUS } from '../../../lib/api.js';
 import { museumImage } from '../../../lib/format.js';
+import artworksFallback from '../../../data/artworks.json';
 
 const directusUrl = import.meta.env.PUBLIC_DIRECTUS_URL || DEFAULT_DIRECTUS;
 
-const FALLBACK_ART = [
-  { id: 1, name: 'Gemüsegemälde', type: 'Gemälde', artist: 'Giuseppe Arcimboldo', image_real: 'Gemuesegemaelde_real.png', image_fake: 'Gemuesegemaelde_fake.png' },
-  { id: 2, name: 'Altertumsgemälde', type: 'Gemälde', artist: 'Rembrandt van Rijn', image_real: 'Altertumsgemaelde_real.png', image_fake: 'Altertumsgemaelde_fake.png' },
-  { id: 3, name: 'Blumengemälde', type: 'Gemälde', artist: 'Vincent van Gogh', image_real: 'Blumengemaelde.png', image_fake: null },
-  { id: 4, name: 'Perlengemälde', type: 'Gemälde', artist: 'Johannes Vermeer', image_real: 'Perlengemaelde_real.png', image_fake: 'Perlengemaelde_fake.png' },
-  { id: 5, name: 'Detailgemälde', type: 'Gemälde', artist: 'Itō Jakuchū', image_real: 'Detailgemaelde_real.png', image_fake: 'Detailgemaelde_fake.png' },
-  { id: 6, name: 'Eleganzstatue', type: 'Skulptur', artist: 'Alexandros von Antiochia', image_real: 'Eleganzstatue_real.png', image_fake: 'Eleganzstatue_fake.png' },
-];
-
-const artworks = await getArtworks(directusUrl, FALLBACK_ART);
+const artworks = await getArtworks(directusUrl, artworksFallback);
 const types = ['all', ...new Set(artworks.map((a) => a.type).filter(Boolean))];
 const typeLabel = { all: 'Alle Werke', 'Gemälde': 'Gemälde', 'Skulptur': 'Skulpturen' };
 ---
 
 <Layout title="Kunstgalerie - Eugens Museum">
   <PageHero accent="museum" emoji="🖼️" title="Kunstgalerie" subtitle="Hüte dich vor Reiners raffinierten Fälschungen! Lerne hier den Unterschied." />
+
+  <p class="museum-progress accent-museum">
+    Du hast <strong><span data-art-count="donated">0</span> von <span data-art-count="total">{artworks.length}</span></strong>
+    Kunstwerken gespendet · <a href="/kunstsammlung/">Was fehlt noch?</a>
+  </p>
 
   <div class="cluster justify-center mb-8 accent-museum">
     {types.map((t, i) => (
@@ -31,8 +29,21 @@ const typeLabel = { all: 'Alle Werke', 'Gemälde': 'Gemälde', 'Skulptur': 'Skul
 
   <div class="grid-auto accent-museum" style="--min: 300px; margin-bottom: var(--sp-12);">
     {artworks.map((art) => (
-      <a href={`/museum/kunst/${art.id}`} class="art-card" data-type={art.type}>
-        <span class="art-img"><img src={museumImage(art.image_real)} alt={art.name} loading="lazy" onerror="this.src='/assets/img/acnh/placeholder.png'" /><span class="art-type">{art.type}</span></span>
+      <a
+        href={`/museum/kunst/${art.id}`}
+        class="art-card"
+        data-type={art.type}
+        data-art-item
+        data-art-id={art.id}
+        data-art-type={art.type}
+        data-art-status="0"
+      >
+        <span class="art-img">
+          <img src={museumImage(art.image_real)} alt={art.name} loading="lazy" onerror="this.src='/assets/img/acnh/placeholder.png'" />
+          <span class="art-type">{art.type}</span>
+          <span class="art-owned-flag art-owned-flag--owned">🎁 Im Besitz</span>
+          <span class="art-owned-flag art-owned-flag--donated">🏛️ Gespendet</span>
+        </span>
         <div class="art-body">
           <strong class="art-title">{art.name}</strong>
           <span class="art-artist">{art.artist_name || art.artist}</span>
@@ -46,6 +57,8 @@ const typeLabel = { all: 'Alle Werke', 'Gemälde': 'Gemälde', 'Skulptur': 'Skul
       </a>
     ))}
   </div>
+
+  <ArtBootstrap />
 </Layout>
 
 <style>
@@ -63,6 +76,10 @@ const typeLabel = { all: 'Alle Werke', 'Gemälde': 'Gemälde', 'Skulptur': 'Skul
   .art-flag.fake { background: #fde3ec; color: #c2185b; }
   .art-flag.real { background: #e3f3e8; color: #2e7d32; }
 </style>
+
+<script>
+  import '../../../scripts/art-collection-ui.js';
+</script>
 
 <script is:inline>
   function initGallery() {

@@ -1478,3 +1478,267 @@
   }
   .collection-section__head--split > div { min-width: 0; }
 }
+
+/* ════════════════════════════════════════════════════════════════
+   MEINE KUNSTSAMMLUNG · the art tracker
+   ----------------------------------------------------------------
+   Reopens the existing layers, so nothing above needs to change.
+
+   Two ideas carry the look:
+    · the wall — art hangs on a dark, spot-lit museum wall, not on a
+      paper card, so the frames read as objects instead of tiles;
+    · the three states are a traffic light that never changes meaning:
+      grey = fehlt, gold = im Besitz, green = gespendet (the same
+      "erledigt" green the catch log uses).
+   ════════════════════════════════════════════════════════════════ */
+
+@layer tokens {
+  :root {
+    --art-wall:      #241a14;   /* gallery wall */
+    --art-wall-2:    #1a120d;   /* wall in shadow */
+    --art-gold:      #d9b25a;   /* frame gilding */
+    --art-gold-deep: #a87e18;
+    --art-own:       #e0a72e;   /* gekauft, noch zu Hause */
+    --art-own-soft:  #fdf3d1;
+  }
+  [data-theme='dark'] {
+    --art-wall:      #1c1610;
+    --art-wall-2:    #12100c;
+    --art-own-soft:  #4a3f20;
+  }
+}
+
+@layer components {
+  /* ── Tri-state control (Fehlt · Besitz · Museum) ───────────── */
+  .art-status {
+    display: inline-flex; gap: 2px; padding: 3px;
+    background: var(--ac-surface-2);
+    border: 1px solid var(--ac-border);
+    border-radius: var(--radius-pill);
+  }
+  .art-status__seg {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    min-height: 38px; min-width: 42px; padding: 0.3rem 0.7rem;
+    font: inherit; font-weight: 800; font-size: 0.82rem;
+    color: var(--ac-text-muted);
+    background: none; border: none; border-radius: var(--radius-pill);
+    cursor: pointer;
+    transition: background var(--t-fast), color var(--t-fast), transform var(--t-fast) var(--ease-spring);
+  }
+  .art-status__seg:hover { color: var(--ac-text); background: var(--ac-surface); }
+  .art-status__seg:active { transform: scale(0.94); }
+  .art-status__seg:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .art-status__emoji { font-size: 1rem; line-height: 1; filter: grayscale(1); opacity: 0.6; }
+  .art-status__seg[aria-pressed='true'] .art-status__emoji { filter: none; opacity: 1; }
+
+  /* Pressed states — one colour per meaning, everywhere on the site. */
+  .art-status__seg[aria-pressed='true'] { color: var(--ac-text); background: var(--ac-surface); box-shadow: var(--ac-shadow-sm); }
+  .art-status__seg[data-art-set='1'][aria-pressed='true'] {
+    color: #4a3607; background: var(--art-own); box-shadow: 0 3px 10px color-mix(in srgb, var(--art-own) 40%, transparent);
+  }
+  .art-status__seg[data-art-set='2'][aria-pressed='true'] {
+    color: #fff; background: var(--caught); box-shadow: 0 3px 10px color-mix(in srgb, var(--caught) 40%, transparent);
+  }
+  .art-status--lg .art-status__seg { min-height: 46px; padding: 0.5rem 1.1rem; font-size: 0.92rem; }
+
+  /* The compact variant keeps the labels for screen readers only — until the
+     wall goes single-column, where there is room to simply write them out. */
+  .art-status--sm .art-status__text {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0;
+  }
+
+  /* ── Hero · the wing at a glance ──────────────────────────── */
+  .art-hero {
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+    gap: var(--sp-8) var(--sp-10);
+    padding: var(--sp-8) var(--sp-6);
+    margin-bottom: var(--sp-6);
+    background:
+      radial-gradient(120% 90% at 50% -10%, rgba(217, 178, 90, 0.18), transparent 62%),
+      linear-gradient(160deg, var(--art-wall), var(--art-wall-2));
+    border: 1px solid color-mix(in srgb, var(--art-gold) 35%, transparent);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--ac-shadow-lg);
+  }
+  .art-hero .progress-ring__track { stroke: rgba(255, 255, 255, 0.09); }
+  .art-hero .progress-ring__value { stroke: var(--art-gold); }
+  .art-hero .progress-ring.is-complete .progress-ring__value { stroke: var(--caught); }
+  .art-hero .progress-ring__count { color: #f8f1de; }
+  .art-hero .progress-ring__label { color: rgba(248, 241, 222, 0.66); }
+  .art-hero__types { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--sp-6); }
+
+  .art-tally { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
+  .art-tally > div {
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    min-width: 84px; padding: var(--sp-3) var(--sp-4);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: var(--radius-md);
+  }
+  .art-tally dt { font-size: 0.74rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.4px; color: rgba(248, 241, 222, 0.62); }
+  .art-tally dd { font-family: var(--font-display); font-size: 1.6rem; color: #f8f1de; }
+  .art-tally .is-owned dd { color: var(--art-own); }
+  .art-tally .is-donated dd { color: var(--caught); }
+
+  /* ── Toolbar ──────────────────────────────────────────────── */
+  .art-toolbar { display: flex; flex-direction: column; gap: var(--sp-3); margin-bottom: var(--sp-6); }
+  .art-toolbar__row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-3); }
+  .art-toolbar .art-search { flex: 1 1 260px; min-width: 0; }
+
+  /* ── The wall ─────────────────────────────────────────────── */
+  .art-wall {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(clamp(230px, 30vw, 280px), 1fr));
+    gap: var(--sp-5);
+    padding: var(--sp-6) var(--sp-5) var(--sp-8);
+    margin-bottom: var(--sp-8);
+    background:
+      radial-gradient(90% 60% at 50% 0%, rgba(217, 178, 90, 0.13), transparent 60%),
+      linear-gradient(180deg, var(--art-wall), var(--art-wall-2));
+    border-radius: var(--radius-xl);
+    box-shadow: inset 0 12px 30px rgba(0, 0, 0, 0.4);
+  }
+
+  .art-frame {
+    display: flex; flex-direction: column; gap: var(--sp-3);
+    padding: var(--sp-3);
+    background: linear-gradient(150deg, #3a2c20, #241b14);
+    border: 1px solid rgba(217, 178, 90, 0.25);
+    border-radius: var(--radius-md);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.45);
+    transition: transform var(--t-base) var(--ease-spring), box-shadow var(--t-base), border-color var(--t-base);
+  }
+  .art-frame:hover { transform: translateY(-5px); box-shadow: 0 22px 40px rgba(0, 0, 0, 0.55); }
+
+  .art-frame__canvas {
+    position: relative;
+    display: grid; place-items: center;
+    aspect-ratio: 4 / 3; padding: var(--sp-4);
+    background: radial-gradient(70% 70% at 50% 35%, #6b5843, #3c2e22);
+    border: 4px solid var(--art-gold-deep);
+    border-radius: var(--radius-sm);
+    box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.35), inset 0 8px 22px rgba(0, 0, 0, 0.45);
+  }
+  .art-frame__img {
+    max-width: 100%; max-height: 100%; object-fit: contain;
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5));
+    transition: filter var(--t-base), opacity var(--t-base), transform var(--t-base);
+  }
+
+  .art-frame__ribbon {
+    position: absolute; top: 8px; left: 8px;
+    padding: 3px 10px;
+    font-size: 0.7rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.4px;
+    color: #f2ead6; background: rgba(0, 0, 0, 0.55);
+    border-radius: var(--radius-pill);
+    backdrop-filter: blur(3px);
+  }
+  .art-frame__peek {
+    position: absolute; right: 8px; bottom: 8px;
+    display: inline-flex; align-items: center; gap: 5px;
+    min-height: 32px; padding: 0.25rem 0.7rem;
+    font: inherit; font-weight: 800; font-size: 0.74rem;
+    color: #ffe4ef; background: rgba(194, 24, 91, 0.85);
+    border: none; border-radius: var(--radius-pill);
+    cursor: pointer;
+    transition: filter var(--t-fast), transform var(--t-fast) var(--ease-spring);
+  }
+  .art-frame__peek:hover { filter: brightness(1.12); }
+  .art-frame__peek:active { transform: scale(0.94); }
+  .art-frame__peek[aria-pressed='true'] { color: #1a120d; background: var(--art-gold); }
+
+  .art-frame__plaque {
+    display: flex; flex-direction: column; gap: 3px;
+    /* Grows so the tri-state control lands on the same line in every card,
+       however long the forgery tell turns out to be. */
+    flex: 1;
+    padding: var(--sp-3);
+    background: linear-gradient(160deg, rgba(217, 178, 90, 0.16), rgba(217, 178, 90, 0.05));
+    border: 1px solid rgba(217, 178, 90, 0.22);
+    border-radius: var(--radius-sm);
+  }
+  .art-frame__title {
+    font-family: var(--font-display); font-weight: 700; font-size: 1.05rem;
+    color: #f8f1de; text-decoration: none;
+  }
+  .art-frame__title:hover { color: var(--art-gold); }
+  .art-frame__meta { font-size: 0.8rem; font-weight: 700; color: rgba(248, 241, 222, 0.62); }
+  .art-frame__meta em { color: var(--art-gold); }
+  .art-frame__tell {
+    margin-top: 4px; padding-top: 6px;
+    font-size: 0.76rem; font-weight: 700; line-height: 1.4;
+    color: rgba(248, 241, 222, 0.72);
+    border-top: 1px solid rgba(217, 178, 90, 0.18);
+  }
+  .art-frame__tell.is-safe { color: rgba(160, 214, 178, 0.85); }
+  .art-frame .art-status { align-self: center; background: rgba(0, 0, 0, 0.28); border-color: rgba(217, 178, 90, 0.22); }
+  .art-frame .art-status__seg { color: rgba(248, 241, 222, 0.55); }
+  .art-frame .art-status__seg:hover { color: #f8f1de; background: rgba(255, 255, 255, 0.08); }
+  .art-frame .art-status__seg[aria-pressed='true'] { color: #1a120d; background: rgba(248, 241, 222, 0.86); }
+
+  /* State: fehlt → the piece is still a gap in the wall. */
+  .art-frame[data-art-status='0'] .art-frame__img { filter: grayscale(1) brightness(0.72); opacity: 0.55; }
+  .art-frame[data-art-status='0'] .art-frame__canvas { border-color: #4a3b2c; }
+
+  /* State: im Besitz → gekauft, aber Eugen wartet noch. */
+  .art-frame[data-art-status='1'] { border-color: color-mix(in srgb, var(--art-own) 55%, transparent); }
+  .art-frame[data-art-status='1'] .art-frame__canvas { border-color: var(--art-own); }
+  .art-frame[data-art-status='1'] .art-frame__ribbon { color: #4a3607; background: var(--art-own); }
+
+  /* State: gespendet → hängt im Museum, mit Goldrahmen und Glanz. */
+  .art-frame[data-art-status='2'] { border-color: color-mix(in srgb, var(--caught) 55%, transparent); }
+  .art-frame[data-art-status='2'] .art-frame__canvas {
+    border-color: var(--art-gold);
+    box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.35), inset 0 8px 22px rgba(0, 0, 0, 0.4),
+                0 0 22px color-mix(in srgb, var(--art-gold) 35%, transparent);
+  }
+  .art-frame[data-art-status='2'] .art-frame__ribbon { color: #fff; background: var(--caught); }
+
+  /* Peeking at the forgery — unmistakably not the piece you want. */
+  .art-frame.is-peeking .art-frame__canvas { border-color: #c2185b; }
+  .art-frame.is-peeking .art-frame__img { filter: none; opacity: 1; }
+
+  /* ── Reiner-Check ─────────────────────────────────────────── */
+  .reiner-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--sp-3); list-style: none; padding: 0; margin: 0; }
+  .reiner-row {
+    display: flex; flex-direction: column; gap: var(--sp-2);
+    padding: var(--sp-3);
+    background: var(--ac-surface-2);
+    border: 1px solid var(--ac-border);
+    border-left: 4px solid var(--accent);
+    border-radius: var(--radius-md);
+  }
+  .reiner-row__head { display: flex; align-items: center; gap: var(--sp-3); color: inherit; text-decoration: none; }
+  .reiner-row__head img { width: 46px; height: 46px; object-fit: contain; flex-shrink: 0; }
+  .reiner-row__head span { display: flex; flex-direction: column; min-width: 0; }
+  .reiner-row__head strong { font-size: 0.96rem; line-height: 1.2; }
+  .reiner-row__head em { font-size: 0.76rem; font-weight: 700; font-style: normal; color: var(--ac-text-muted); }
+  .reiner-row__head:hover strong { color: var(--accent-deep); }
+  .reiner-row__tell { margin: 0; font-size: 0.84rem; font-weight: 700; line-height: 1.45; color: var(--ac-text-muted); }
+
+  /* ── Status badge on the gallery cards ────────────────────── */
+  .art-owned-flag {
+    display: none;
+    position: absolute; top: 10px; right: 10px;
+    padding: 3px 10px;
+    font-size: 0.7rem; font-weight: 900;
+    color: #fff; border-radius: var(--radius-pill);
+  }
+  [data-art-status='1'] .art-owned-flag--owned,
+  [data-art-status='2'] .art-owned-flag--donated { display: inline-block; }
+  .art-owned-flag--owned { color: #4a3607; background: var(--art-own); }
+  .art-owned-flag--donated { background: var(--caught); }
+}
+
+@media (max-width: 559px) {
+  @layer components {
+    .art-wall { grid-template-columns: 1fr; padding: var(--sp-4) var(--sp-3) var(--sp-6); }
+    .art-tally > div { flex: 1 1 0; min-width: 72px; }
+    .art-tally dt { white-space: nowrap; }
+    .art-frame .art-status--sm .art-status__text {
+      position: static; width: auto; height: auto; margin: 0;
+      overflow: visible; clip: auto;
+    }
+  }
+}
