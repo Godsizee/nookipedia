@@ -1677,9 +1677,15 @@
   .art-frame .art-status__seg:hover { color: #f8f1de; background: rgba(255, 255, 255, 0.08); }
   .art-frame .art-status__seg[aria-pressed='true'] { color: #1a120d; background: rgba(248, 241, 222, 0.86); }
 
-  /* State: fehlt → the piece is still a gap in the wall. */
-  .art-frame[data-art-status='0'] .art-frame__img { filter: grayscale(1) brightness(0.72); opacity: 0.55; }
-  .art-frame[data-art-status='0'] .art-frame__canvas { border-color: #4a3b2c; }
+  /* State: fehlt → the piece is still a gap in the wall.
+     The artwork itself always stays in full colour: this is a reference you
+     compare against before buying, so washing it out would defeat the point.
+     The state is carried by the frame instead — dull wood, unlit matte. */
+  .art-frame[data-art-status='0'] .art-frame__canvas {
+    border-color: #4a3b2c;
+    background: radial-gradient(70% 70% at 50% 35%, #4c3f31, #2b2118);
+  }
+  .art-frame[data-art-status='0'] { border-color: rgba(217, 178, 90, 0.13); }
 
   /* State: im Besitz → gekauft, aber Eugen wartet noch. */
   .art-frame[data-art-status='1'] { border-color: color-mix(in srgb, var(--art-own) 55%, transparent); }
@@ -1697,7 +1703,6 @@
 
   /* Peeking at the forgery — unmistakably not the piece you want. */
   .art-frame.is-peeking .art-frame__canvas { border-color: #c2185b; }
-  .art-frame.is-peeking .art-frame__img { filter: none; opacity: 1; }
 
   /* ── Reiner-Check ─────────────────────────────────────────── */
   .reiner-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: var(--sp-3); list-style: none; padding: 0; margin: 0; }
